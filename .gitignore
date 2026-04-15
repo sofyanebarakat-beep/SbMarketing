@@ -1,0 +1,28 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Build artifacts
+tourdubloc-theme.zip
+
+# Webflow binary export blobs (unnamed hash files)
+3c3c232f-890afdbd
+bc6dd28a-d4af1088
+
+# WordPress uploads / cache (if added later)
+wordpress-theme/tourdubloc/assets/cache/
+wordpress-theme/tourdubloc/assets/uploads/
+
+# Node / npm (if added later)
+node_modules/
+npm-debug.log*
+
+# Editor directories
+.vscode/
+.idea/
+*.swp
+*.swo
