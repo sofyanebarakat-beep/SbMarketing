@@ -9,7 +9,7 @@
  * Template Name: Elementor Full Width
  * Template Post Type: page
  *
- * @package Tourdubloc
+ * @package SbMarketing
  */
 
 get_header();

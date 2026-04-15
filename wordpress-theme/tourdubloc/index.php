@@ -3,7 +3,7 @@
  * Required WordPress fallback template.
  * WordPress routes to this when no more specific template is found.
  *
- * @package Tourdubloc
+ * @package SbMarketing
  */
 
 get_header();
@@ -23,7 +23,7 @@ get_header();
 
                     <?php the_posts_pagination(); ?>
                 <?php else : ?>
-                    <p><?php esc_html_e( 'Aucun contenu trouvé.', 'tourdubloc' ); ?></p>
+                    <p><?php esc_html_e( 'Aucun contenu trouvé.', 'sb-marketing' ); ?></p>
                 <?php endif; ?>
             </div>
         </div>

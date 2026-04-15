@@ -2,7 +2,7 @@
 /**
  * Single template for the "projet" custom post type.
  *
- * @package Tourdubloc
+ * @package SbMarketing
  */
 
 get_header();

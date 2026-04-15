@@ -2,7 +2,7 @@
 /**
  * Template Name: Nos projets
  *
- * @package Tourdubloc
+ * @package SbMarketing
  */
 get_header();
 

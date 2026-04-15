@@ -34,7 +34,7 @@
 
           <div class="padding-top padding-medium">
             <div class="footer7_bottom-wrapper">
-              <div class="footer7_credit-text"><?php echo date( 'Y' ); ?> &copy; tourdubloc</div>
+              <div class="footer7_credit-text"><?php echo date( 'Y' ); ?> &copy; Sb Marketing</div>
               <div class="w-layout-grid footer7_legal-list">
                 <a href="<?php echo esc_url( home_url( '/politique-de-confidentialite' ) ); ?>"
                    class="footer7_legal-link">Confidentialité</a>

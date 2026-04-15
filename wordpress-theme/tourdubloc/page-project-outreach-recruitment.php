@@ -2,7 +2,7 @@
 /**
  * Template Name: Projet – Outreach Recrutement
  *
- * @package Tourdubloc
+ * @package SbMarketing
  */
 get_header();
 

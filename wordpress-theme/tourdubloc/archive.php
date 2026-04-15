@@ -1,7 +1,7 @@
 <?php
 /**
  * Blog archive (archive.php)
- * @package Tourdubloc
+ * @package SbMarketing
  */
 get_header();
 

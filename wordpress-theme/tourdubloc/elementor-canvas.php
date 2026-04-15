@@ -9,7 +9,7 @@
  * Template Name: Elementor Canvas
  * Template Post Type: page
  *
- * @package Tourdubloc
+ * @package SbMarketing
  */
 ?>
 <!DOCTYPE html>

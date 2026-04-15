@@ -1,6 +1,6 @@
 <?php
 /**
- * Tourdubloc – Automatic Page Setup on Theme Activation
+ * Sb Marketing – Automatic Page Setup on Theme Activation
  *
  * Creates all site pages in the WordPress admin (Pages section) the first
  * time the theme is activated. Each page is assigned the correct slug and
@@ -9,7 +9,7 @@
  * Runs on:  after_switch_theme  (fires once on activation)
  * Safe to re-run: skips pages that already exist (matched by slug).
  *
- * @package Tourdubloc
+ * @package SbMarketing
  */
 
 /**
@@ -18,7 +18,7 @@
  * 'template' matches the Template Name declared in the corresponding .php file.
  * Leave empty for pages that use generic page.php or have a WordPress-special role.
  */
-function tourdubloc_get_page_definitions(): array {
+function sbm_get_page_definitions(): array {
     return [
         [
             'title'    => 'Accueil',
@@ -97,13 +97,13 @@ function tourdubloc_get_page_definitions(): array {
 /**
  * Create pages on theme activation (skips pages that already exist).
  */
-function tourdubloc_create_pages(): void {
+function sbm_create_pages(): void {
     // Guard: only run once per activation
-    if ( get_option( 'tourdubloc_pages_created' ) ) {
+    if ( get_option( 'sbm_pages_created' ) ) {
         return;
     }
 
-    $pages       = tourdubloc_get_page_definitions();
+    $pages       = sbm_get_page_definitions();
     $front_page_id = 0;
     $posts_page_id = 0;
 
@@ -152,26 +152,26 @@ function tourdubloc_create_pages(): void {
     }
 
     // Mark as done so this doesn't run again on subsequent activations
-    update_option( 'tourdubloc_pages_created', true );
+    update_option( 'sbm_pages_created', true );
 }
-add_action( 'after_switch_theme', 'tourdubloc_create_pages' );
+add_action( 'after_switch_theme', 'sbm_create_pages' );
 
 
 /**
  * Admin notice: confirm pages were created on activation.
  */
-function tourdubloc_pages_created_notice(): void {
-    if ( ! get_transient( 'tourdubloc_activation_notice' ) ) {
+function sbm_pages_created_notice(): void {
+    if ( ! get_transient( 'sbm_activation_notice' ) ) {
         return;
     }
     ?>
     <div class="notice notice-success is-dismissible">
         <p>
-            <strong>Tourdubloc :</strong>
-            <?php esc_html_e( 'Toutes les pages du site ont été créées automatiquement. Rendez-vous dans Pages pour les consulter.', 'tourdubloc' ); ?>
+            <strong>Sb Marketing :</strong>
+            <?php esc_html_e( 'Toutes les pages du site ont été créées automatiquement. Rendez-vous dans Pages pour les consulter.', 'sb-marketing' ); ?>
         </p>
     </div>
     <?php
-    delete_transient( 'tourdubloc_activation_notice' );
+    delete_transient( 'sbm_activation_notice' );
 }
-add_action( 'admin_notices', 'tourdubloc_pages_created_notice' );
+add_action( 'admin_notices', 'sbm_pages_created_notice' );

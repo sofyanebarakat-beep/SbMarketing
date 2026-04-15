@@ -2,7 +2,7 @@
 /**
  * Single post template (blog articles).
  *
- * @package Tourdubloc
+ * @package SbMarketing
  */
 
 get_header();

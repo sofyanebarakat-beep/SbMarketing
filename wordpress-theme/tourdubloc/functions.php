@@ -1,8 +1,8 @@
 <?php
 /**
- * Tourdubloc Theme Functions
+ * Sb Marketing Theme Functions
  *
- * @package Tourdubloc
+ * @package SbMarketing
  */
 
 // ─────────────────────────────────────────────
@@ -14,8 +14,8 @@ require_once get_template_directory() . '/inc/setup-pages.php';
 // ─────────────────────────────────────────────
 // 1. THEME SETUP
 // ─────────────────────────────────────────────
-function tourdubloc_setup() {
-    load_theme_textdomain( 'tourdubloc', get_template_directory() . '/languages' );
+function sbm_setup() {
+    load_theme_textdomain( 'sb-marketing', get_template_directory() . '/languages' );
 
     add_theme_support( 'title-tag' );
     add_theme_support( 'post-thumbnails' );
@@ -28,23 +28,23 @@ function tourdubloc_setup() {
     ] );
 
     register_nav_menus( [
-        'primary' => __( 'Menu principal', 'tourdubloc' ),
-        'footer'  => __( 'Menu pied de page', 'tourdubloc' ),
+        'primary' => __( 'Menu principal', 'sb-marketing' ),
+        'footer'  => __( 'Menu pied de page', 'sb-marketing' ),
     ] );
 }
-add_action( 'after_setup_theme', 'tourdubloc_setup' );
+add_action( 'after_setup_theme', 'sbm_setup' );
 
 
 // ─────────────────────────────────────────────
 // 2. ENQUEUE STYLES & SCRIPTS
 // ─────────────────────────────────────────────
-function tourdubloc_enqueue_assets() {
+function sbm_enqueue_assets() {
     $uri = get_template_directory_uri();
     $ver = '1.1.0';
 
     // ── Styles ────────────────────────────────
     wp_enqueue_style(
-        'tourdubloc-main',
+        'sb-marketing-main',
         $uri . '/assets/css/tourdubloc-3e0b2f.shared.9a219fb46.css',
         [],
         $ver
@@ -66,7 +66,7 @@ function tourdubloc_enqueue_assets() {
     ];
     $prev_handle = 'jquery';
     foreach ( $wf_chunks as $chunk ) {
-        $handle = 'tourdubloc-' . substr( md5( $chunk ), 0, 8 );
+        $handle = 'sb-marketing-' . substr( md5( $chunk ), 0, 8 );
         wp_enqueue_script( $handle, $uri . '/assets/js/' . $chunk, [ $prev_handle ], $ver, true );
         $prev_handle = $handle;
     }
@@ -85,21 +85,21 @@ function tourdubloc_enqueue_assets() {
 
     // Custom animations, callouts slideshow, navbar scroll behaviour
     wp_enqueue_script(
-        'tourdubloc-animations',
+        'sb-marketing-animations',
         $uri . '/assets/js/tourdubloc-animations.js',
         [ 'jquery', 'gsap', 'gsap-scrolltrigger', 'gsap-splittext', 'gsap-morphsvg', 'swiper', 'split-type' ],
         $ver,
         true
     );
 }
-add_action( 'wp_enqueue_scripts', 'tourdubloc_enqueue_assets' );
+add_action( 'wp_enqueue_scripts', 'sbm_enqueue_assets' );
 
 
 // ─────────────────────────────────────────────
 // 3. ANALYTICS – injected via wp_head / wp_body_open
 //    (keeps tracking code out of template files)
 // ─────────────────────────────────────────────
-function tourdubloc_gtm_head() {
+function sbm_gtm_head() {
     ?>
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -142,9 +142,9 @@ src="https://www.facebook.com/tr?id=669415017219216&ev=PageView&noscript=1"/></n
 <script src="https://app.enzuzo.com/scripts/cookiebar/82ae0f52-af32-11ee-97ce-e3989736d969"></script>
     <?php
 }
-add_action( 'wp_head', 'tourdubloc_gtm_head', 1 );
+add_action( 'wp_head', 'sbm_gtm_head', 1 );
 
-function tourdubloc_gtm_body() {
+function sbm_gtm_body() {
     ?>
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T875CVB"
@@ -152,24 +152,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
     <?php
 }
-add_action( 'wp_body_open', 'tourdubloc_gtm_body' );
+add_action( 'wp_body_open', 'sbm_gtm_body' );
 
 
 // ─────────────────────────────────────────────
 // 4. CUSTOM POST TYPE – Projets (Case Studies)
 // ─────────────────────────────────────────────
-function tourdubloc_register_cpts() {
+function sbm_register_cpts() {
     register_post_type( 'projet', [
         'labels' => [
-            'name'               => __( 'Projets', 'tourdubloc' ),
-            'singular_name'      => __( 'Projet', 'tourdubloc' ),
-            'add_new_item'       => __( 'Ajouter un projet', 'tourdubloc' ),
-            'edit_item'          => __( 'Modifier le projet', 'tourdubloc' ),
-            'new_item'           => __( 'Nouveau projet', 'tourdubloc' ),
-            'view_item'          => __( 'Voir le projet', 'tourdubloc' ),
-            'search_items'       => __( 'Rechercher des projets', 'tourdubloc' ),
-            'not_found'          => __( 'Aucun projet trouvé', 'tourdubloc' ),
-            'not_found_in_trash' => __( 'Aucun projet dans la corbeille', 'tourdubloc' ),
+            'name'               => __( 'Projets', 'sb-marketing' ),
+            'singular_name'      => __( 'Projet', 'sb-marketing' ),
+            'add_new_item'       => __( 'Ajouter un projet', 'sb-marketing' ),
+            'edit_item'          => __( 'Modifier le projet', 'sb-marketing' ),
+            'new_item'           => __( 'Nouveau projet', 'sb-marketing' ),
+            'view_item'          => __( 'Voir le projet', 'sb-marketing' ),
+            'search_items'       => __( 'Rechercher des projets', 'sb-marketing' ),
+            'not_found'          => __( 'Aucun projet trouvé', 'sb-marketing' ),
+            'not_found_in_trash' => __( 'Aucun projet dans la corbeille', 'sb-marketing' ),
         ],
         'public'             => true,
         'has_archive'        => true,
@@ -179,7 +179,7 @@ function tourdubloc_register_cpts() {
         'menu_icon'          => 'dashicons-portfolio',
     ] );
 }
-add_action( 'init', 'tourdubloc_register_cpts' );
+add_action( 'init', 'sbm_register_cpts' );
 
 
 // ─────────────────────────────────────────────
@@ -190,10 +190,10 @@ add_action( 'init', 'tourdubloc_register_cpts' );
  * Register theme locations for Elementor Theme Builder.
  * Enables header/footer/single/archive override from Elementor > Theme Builder.
  */
-function tourdubloc_register_elementor_locations( $elementor_theme_manager ) {
+function sbm_register_elementor_locations( $elementor_theme_manager ) {
     $elementor_theme_manager->register_all_core_location();
 }
-add_action( 'elementor/theme/register_locations', 'tourdubloc_register_elementor_locations' );
+add_action( 'elementor/theme/register_locations', 'sbm_register_elementor_locations' );
 
 /**
  * Returns true if the current page/post was built with Elementor.
@@ -223,7 +223,7 @@ function tdb_elementor_location( string $location ): bool {
 /**
  * Add Elementor's body classes when active (prevents JS targeting failures).
  */
-function tourdubloc_elementor_body_classes( array $classes ): array {
+function sbm_elementor_body_classes( array $classes ): array {
     if ( did_action( 'elementor/loaded' ) ) {
         $classes[] = 'elementor-default';
         if ( tdb_is_elementor_page() ) {
@@ -232,7 +232,7 @@ function tourdubloc_elementor_body_classes( array $classes ): array {
     }
     return $classes;
 }
-add_filter( 'body_class', 'tourdubloc_elementor_body_classes' );
+add_filter( 'body_class', 'sbm_elementor_body_classes' );
 
 
 // ─────────────────────────────────────────────
@@ -246,17 +246,17 @@ function tdb_asset( string $path ): string {
 // ─────────────────────────────────────────────
 // 7. WEBFLOW BODY CLASS (keeps Webflow JS happy)
 // ─────────────────────────────────────────────
-function tourdubloc_body_class( array $classes ): array {
+function sbm_body_class( array $classes ): array {
     $classes[] = 'w-mod-js';
     return $classes;
 }
-add_filter( 'body_class', 'tourdubloc_body_class' );
+add_filter( 'body_class', 'sbm_body_class' );
 
 
 // ─────────────────────────────────────────────
 // 8. CUSTOM EXCERPT LENGTH
 // ─────────────────────────────────────────────
-function tourdubloc_excerpt_length(): int {
+function sbm_excerpt_length(): int {
     return 30;
 }
-add_filter( 'excerpt_length', 'tourdubloc_excerpt_length' );
+add_filter( 'excerpt_length', 'sbm_excerpt_length' );

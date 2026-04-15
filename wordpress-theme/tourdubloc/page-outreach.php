@@ -2,7 +2,7 @@
 /**
  * Template Name: Outreach Recrutement
  *
- * @package Tourdubloc
+ * @package SbMarketing
  */
 get_header();
 
@@ -28,19 +28,19 @@ else :
 ?>
 <main class="main-wrapper">
 -- Last Published: Wed Apr 08 2026 01:01:41 GMT+0000 (Coordinated Universal Time) -->
-<html data-wf-domain="www.tourdubloc.com" data-wf-page="65e9f7af2e7d49d8c2513bea"
+<html data-wf-domain="www.Sb Marketing.com" data-wf-page="65e9f7af2e7d49d8c2513bea"
   data-wf-site="65e8e73c763653bff88eec98" lang="fr-CA" data-wf-collection="65e9f7af2e7d49d8c2513be0"
   data-wf-item-slug="erco" class=" w-mod-js">
 
 <head>
   <meta charset="utf-8">
-  <title>Outreach Recruitment - tourdubloc</title>
+  <title>Outreach Recruitment - Sb Marketing</title>
   <meta content="Maîtres Électriciens spécialisés" name="description">
-  <meta content="Outreach Recruitment - tourdubloc" property="og:title">
+  <meta content="Outreach Recruitment - Sb Marketing" property="og:title">
   <meta content="Maîtres Électriciens spécialisés" property="og:description">
   <meta content="images/65e9f7e260165d1cc86ac833_64cbc5c84d2f9623c5f175d4_ERCO_IMAGE_MAIN%20%281%29.webp"
     property="og:image">
-  <meta content="Outreach Recruitment - tourdubloc" property="twitter:title">
+  <meta content="Outreach Recruitment - Sb Marketing" property="twitter:title">
   <meta content="Maîtres Électriciens spécialisés" property="twitter:description">
   <meta
     content="https://cdn.prod.website-files.com/65e9f7ae4b442a097867652c/65e9f7e260165d1cc86ac833_64cbc5c84d2f9623c5f175d4_ERCO_IMAGE_MAIN%20(1).webp"
@@ -97,7 +97,7 @@ else :
     })(window, document, 'script', 'dataLayer', 'GTM-T875CVB');</script>
   <!-- End Google Tag Manager -->
 
-  <!-- Hotjar Tracking Code for Tourdubloc -->
+  <!-- Hotjar Tracking Code for Sb Marketing -->
   <script>
     (function (h, o, t, j, a, r) {
       h.hj = h.hj || function () { (h.hj.q = h.hj.q || []).push(arguments) };
@@ -626,7 +626,7 @@ Nous avons développé son image de marque, sa stratégie digitale, ses réseaux
                   </div>
                   <div class="text-rich-text w-richtext">
                     <p>Quand on dit qu'on commence où les autres s'arrêtent, c'est parce qu'une fois que les gens ont
-                      rempli une demande, un membre de l'équipe de tourdubloc donne un coup de fil à vos futurs clients
+                      rempli une demande, un membre de l'équipe de Sb Marketing donne un coup de fil à vos futurs clients
                       pour les qualifier, réchauffer la vente et prendre rendez-vous avec la personne directement dans
                       l'agenda de vos vendeurs. La SEULE chose qu'il vous reste à faire? Vous présenter et prendre leur
                       signature!</p>
@@ -740,7 +740,7 @@ Nous avons développé son image de marque, sa stratégie digitale, ses réseaux
                             <div class="text-style-tagline">Projets similaires</div>
                           </div>
                         </div>
-                        <h2>D'autres projets signés tourdubloc</h2>
+                        <h2>D'autres projets signés Sb Marketing</h2>
                       </div>
                       <p class="text-size-medium">On commence où les autres s'arrêtent</p>
                     </div>

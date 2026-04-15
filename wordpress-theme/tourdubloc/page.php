@@ -3,7 +3,7 @@
  * Generic page template.
  * Used for any WordPress Page with no more specific template assigned.
  *
- * @package Tourdubloc
+ * @package SbMarketing
  */
 
 get_header();
