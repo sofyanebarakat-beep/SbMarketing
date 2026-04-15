@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html data-wf-domain="www.tourdubloc.com" data-wf-page="blog" data-wf-site="65e8e73c763653bff88eec98" lang="fr-CA" class=" w-mod-js">
+<head>
+  <meta charset="utf-8">
+  <title>Blog | Tourdubloc</title>
+  <meta content="Marketing numérique, création de contenu, génération de leads — découvrez les insights de l'équipe Tourdubloc pour faire croître votre entreprise." name="description">
+  <meta content="Blog | Tourdubloc" property="og:title">
+  <meta content="Marketing numérique, création de contenu, génération de leads — découvrez les insights de l'équipe Tourdubloc pour faire croître votre entreprise." property="og:description">
+  <meta property="og:type" content="website">
+  <meta content="summary_large_image" name="twitter:card">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <link href="css/tourdubloc-3e0b2f.shared.9a219fb46.css" rel="stylesheet" type="text/css" crossorigin="anonymous">
+  <link href="images/65fb1793509dbf93775ee277_TDB%20FAV%20ICON%2032px.png" rel="shortcut icon" type="image/x-icon">
+  <link href="images/65fb17976bf5ce18b1582093_TDB%20FAV%20ICON%20256px.png" rel="apple-touch-icon">
+
+  <style>
+    /* ── Base ── */
+    * {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      -o-font-smoothing: antialiased;
+      box-sizing: border-box;
+    }
+
+    body::-webkit-scrollbar { display: none; }
+    body { -ms-overflow-style: none; scrollbar-width: none; }
+
+    .container-medium, .container-small, .container-large {
+      margin-right: auto !important;
+      margin-left: auto !important;
+    }
+
+    html { font-size: calc(0.625rem + 0.41666666666666663vw); }
+    @media screen and (max-width:1920px) { html { font-size: calc(0.625rem + 0.41666666666666674vw); } }
+    @media screen and (max-width:1440px) { html { font-size: calc(0.8126951092611863rem + 0.20811654526534862vw); } }
+    @media screen and (max-width:479px)  { html { font-size: calc(0.7494769874476988rem + 0.8368200836820083vw); } }
+
+    /* ── Sticky navbar ── */
+    .navbar2_component {
+      position: fixed !important;
+      top: 0 !important;
+      inset: 0 0 auto !important;
+      z-index: 9999;
+      background-color: #041020;
+      transition: background-color 0.3s ease;
+    }
+
+    /* ── Hero header ── */
+    .section_header30 {
+      position: relative;
+      overflow: hidden;
+      background: #041020;
+      color: #fff;
+    }
+
+    .header30_content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .header30_background-image-wrapper {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .header30_background-image {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: .18;
+    }
+
+    .bg-bloc-element {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: clamp(200px, 28vw, 420px);
+      opacity: .35;
+      pointer-events: none;
+    }
+
+    .bg-bloc-element.left  { left: 0; transform: translateY(-50%) translateX(-20%); }
+    .bg-bloc-element.right { right: 0; transform: translateY(-50%) translateX(20%) scaleX(-1); }
+
+    .hero-tagline {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      margin-bottom: .5rem;
+      padding: .45rem 1rem;
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 999px;
+      background: rgba(255,255,255,.07);
+      backdrop-filter: blur(4px);
+    }
+
+    .tagline-cube {
+      width: .6rem;
+      height: .6rem;
+      border-radius: 2px;
+      background: #41e082;
+      flex-shrink: 0;
+    }
+
+    .text-style-tagline {
+      color: rgba(255,255,255,.75);
+      font-size: .8rem;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .heading-style-hero {
+      margin: 0;
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      line-height: 1.1;
+      letter-spacing: -.04em;
+      color: #fff;
+    }
+
+    .max-width-hero {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    /* ── Blog section ── */
+    .blog-section {
+      padding: 4rem 0 7rem;
+      background: linear-gradient(180deg, #fff 0%, #f5f8fc 100%);
+    }
+
+    .blog-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.25rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .blog-toolbar_heading {
+      margin: 0 0 .35rem;
+      color: #041020;
+      font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+      letter-spacing: -.04em;
+    }
+
+    .blog-toolbar_text {
+      margin: 0;
+      color: #667085;
+      font-size: .96rem;
+      line-height: 1.8;
+    }
+
+    /* ── Filters ── */
+    .blog-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .6rem;
+    }
+
+    .blog-filter {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 2.75rem;
+      padding: .6rem 1.1rem;
+      border: 1.5px solid #d0d5dd;
+      border-radius: 999px;
+      background: rgba(255,255,255,.9);
+      color: #344054;
+      font-size: .88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease, background .22s ease, color .22s ease;
+    }
+
+    .blog-filter:hover,
+    .blog-filter.is-active {
+      border-color: #1f5eff;
+      background: #1f5eff;
+      color: #fff;
+      box-shadow: 0 .75rem 1.75rem rgba(31,94,255,.2);
+      transform: translateY(-2px);
+    }
+
+    /* ── Blog grid ── */
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.75rem;
+    }
+
+    /* ── Blog card ── */
+    .blog-card {
+      display: flex;
+      flex-direction: column;
+      border: 1px solid rgba(4,16,32,.08);
+      border-radius: 1.25rem;
+      overflow: hidden;
+      background: rgba(255,255,255,.97);
+      box-shadow: 0 .75rem 2rem rgba(4,16,32,.07);
+      transition: transform .32s ease, box-shadow .32s ease, border-color .32s ease;
+    }
+
+    .blog-card:hover {
+      transform: translateY(-.5rem);
+      box-shadow: 0 1.25rem 2.75rem rgba(4,16,32,.13);
+      border-color: rgba(31,94,255,.16);
+    }
+
+    .blog-card.is-hidden { display: none; }
+
+    .blog-card_media {
+      display: block;
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+      background: linear-gradient(135deg, #dbe8ff 0%, #eff4ff 100%);
+      flex-shrink: 0;
+    }
+
+    .blog-card_media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .42s ease;
+    }
+
+    .blog-card:hover .blog-card_media img { transform: scale(1.055); }
+
+    .blog-card_body {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      padding: 1.5rem;
+    }
+
+    .blog-card_tag {
+      align-self: flex-start;
+      margin-bottom: .9rem;
+      padding: .38rem .8rem;
+      border-radius: 999px;
+      background: #eff4ff;
+      color: #1f5eff;
+      font-size: .73rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    .blog-card_title {
+      margin: 0 0 .75rem;
+      color: #041020;
+      font-size: 1.2rem;
+      line-height: 1.35;
+      letter-spacing: -.03em;
+    }
+
+    .blog-card_title a {
+      color: inherit;
+      text-decoration: none;
+      transition: color .2s ease;
+    }
+
+    .blog-card_title a:hover { color: #1f5eff; }
+
+    .blog-card_description {
+      margin: 0 0 1.4rem;
+      color: #667085;
+      font-size: .93rem;
+      line-height: 1.8;
+      display: -webkit-box;
+      overflow: hidden;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+    }
+
+    .blog-card_footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: auto;
+      padding-top: 1rem;
+      border-top: 1px solid #eaecf0;
+    }
+
+    .blog-card_date {
+      color: #98a2b3;
+      font-size: .85rem;
+      white-space: nowrap;
+    }
+
+    .blog-card_button {
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem;
+      padding: .6rem 1rem;
+      border-radius: 999px;
+      background: #041020;
+      color: #fff;
+      font-size: .85rem;
+      font-weight: 700;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: transform .22s ease, background .22s ease, box-shadow .22s ease;
+    }
+
+    .blog-card_button:hover {
+      background: #1f5eff;
+      box-shadow: 0 .75rem 1.5rem rgba(31,94,255,.2);
+      transform: translateY(-2px);
+    }
+
+    /* ── No-results ── */
+    .blog-no-results {
+      display: none;
+      grid-column: 1 / -1;
+      padding: 3rem 1rem;
+      text-align: center;
+      color: #667085;
+      font-size: 1rem;
+    }
+
+    .blog-no-results.is-visible { display: block; }
+
+    /* ── Responsive ── */
+    @media screen and (max-width: 991px) {
+      .blog-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .bg-bloc-element { display: none; }
+    }
+
+    @media screen and (max-width: 767px) {
+      .blog-section { padding-bottom: 4.5rem; }
+      .blog-toolbar { align-items: flex-start; }
+      .blog-filters { width: 100%; }
+      .blog-grid { grid-template-columns: 1fr; gap: 1.25rem; }
+    }
+
+    @media screen and (max-width: 479px) {
+      .blog-filter { width: 100%; justify-content: center; }
+      .blog-card_body { padding: 1.2rem; }
+      .blog-card_footer { flex-direction: column; align-items: stretch; }
+      .blog-card_button { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+<div class="page-wrapper">
+
+  <div class="global-styles w-embed"><style>
+    .inherit-color * { color: inherit; }
+    *[tabindex]:focus-visible, input[type="file"]:focus-visible { outline: 0.125rem solid #4d65ff; outline-offset: 0.125rem; }
+    .w-richtext > :not(div):first-child, .w-richtext > div:first-child > :first-child { margin-top: 0 !important; }
+    .w-richtext>:last-child, .w-richtext ol li:last-child, .w-richtext ul li:last-child { margin-bottom: 0 !important; }
+    .pointer-events-off { pointer-events: none; }
+    .pointer-events-on { pointer-events: auto; }
+    .container-medium, .container-small, .container-large { margin-right: auto !important; margin-left: auto !important; }
+    .hide { display: none !important; }
+    @media screen and (max-width: 991px) { .hide, .hide-tablet { display: none !important; } }
+    @media screen and (max-width: 767px) { .hide-mobile-landscape { display: none !important; } }
+    @media screen and (max-width: 479px) { .hide-mobile { display: none !important; } }
+  </style></div>
+
+  <!-- ── Navbar ── -->
+  <div data-collapse="medium" data-animation="default" data-duration="400" data-easing="ease" data-easing2="ease" role="banner" class="navbar2_component w-nav">
+    <div class="navbar2_container">
+      <a href="index.html" class="navbar2_logo-link w-nav-brand">
+        <img loading="lazy" src="images/6723f2c00ddb72327590bdcb_Group.svg" alt="" class="navbar2_logo">
+      </a>
+      <nav role="navigation" class="navbar2_menu w-nav-menu">
+        <a href="index.html" class="navbar2_link w-nav-link">Marketing</a>
+        <a href="index.html" class="navbar2_link w-nav-link">Centre d'appel</a>
+        <a href="projets.html" class="navbar2_link w-nav-link">Nos projets</a>
+        <a href="blog.html" aria-current="page" class="navbar2_link w-nav-link w--current">Blog</a>
+      </nav>
+      <div class="navbar2_button-wrapper">
+        <a href="index.html#contact" data-wf--button--variant="no-icon" class="special-button is-icon w-variant-dcf8a2db-149b-093c-ad09-76811261ba97 w-inline-block">
+          <div class="div-block-7 w-variant-dcf8a2db-149b-093c-ad09-76811261ba97">
+            <div class="special-button-image-wrapper">
+              <img loading="lazy" src="images/soufiane-profile.jpg" alt="" class="image-3">
+              <div class="status-indicator"></div>
+            </div>
+          </div>
+          <div>Contact</div>
+        </a>
+        <div class="navbar2_menu-button w-nav-button">
+          <div class="menu-icon2">
+            <div class="menu-icon2_line-top"></div>
+            <div class="menu-icon2_line-middle"><div class="menu-icon2_line-middle-inner"></div></div>
+            <div class="menu-icon2_line-bottom"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Main ── -->
+  <main class="main-wrapper">
+
+    <!-- Hero -->
+    <header class="section_header30 text-color-white">
+      <div class="padding-global">
+        <div class="container-large">
+          <div class="header30_content">
+            <div class="padding-section-large">
+              <div class="text-align-center">
+                <div class="max-width-hero">
+                  <div class="hero-tagline">
+                    <div class="tagline-cube is-green"></div>
+                    <div class="text-style-tagline">Insights · Marketing · Croissance</div>
+                  </div>
+                  <div class="spacer-small"></div>
+                  <h1 class="heading-style-hero">Le blog des marques<br>qui veulent performer.</h1>
+                  <div class="spacer-medium"></div>
+                  <div class="button-group is-center">
+                    <a href="#blog" class="special-button is-icon w-variant-dcf8a2db-149b-093c-ad09-76811261ba97 w-inline-block">
+                      <div class="div-block-7 w-variant-dcf8a2db-149b-093c-ad09-76811261ba97">
+                        <div class="special-button-image-wrapper">
+                          <img loading="lazy" src="images/soufiane-profile.jpg" alt="" class="image-3">
+                          <div class="status-indicator"></div>
+                        </div>
+                      </div>
+                      <div>Explorer les articles</div>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Decorative background -->
+      <div class="header30_background-image-wrapper">
+        <img src="images/68f12d4049766a95c38482b3_left-3d-squares%201.png" loading="eager"
+          sizes="(max-width: 971px) 100vw, 971px"
+          srcset="images/68f12d4049766a95c38482b3_left-3d-squares%201-p-500.png 500w,
+                  images/68f12d4049766a95c38482b3_left-3d-squares%201-p-800.png 800w,
+                  images/68f12d4049766a95c38482b3_left-3d-squares%201.png 971w"
+          alt="" class="bg-bloc-element left">
+        <img src="images/68f12d409cb5821e2b9d3bbe_left-3d-squares%202.png" loading="eager"
+          sizes="(max-width: 971px) 100vw, 971px"
+          srcset="images/68f12d409cb5821e2b9d3bbe_left-3d-squares%202-p-500.png 500w,
+                  images/68f12d409cb5821e2b9d3bbe_left-3d-squares%202-p-800.png 800w,
+                  images/68f12d409cb5821e2b9d3bbe_left-3d-squares%202.png 971w"
+          alt="" class="bg-bloc-element right">
+        <img loading="eager" alt="" src="images/68f12ddb6bfb958dff8fe2c4_BG%20LINE%20PATTERN.svg" class="header30_background-image">
+      </div>
+    </header>
+
+    <!-- Blog posts -->
+    <section class="blog-section" id="blog">
+      <div class="padding-global">
+        <div class="container-large">
+
+          <!-- Toolbar -->
+          <div class="blog-toolbar">
+            <div>
+              <h2 class="blog-toolbar_heading">Tous les articles</h2>
+              <p class="blog-toolbar_text">Parcourez par catégorie et découvrez ce qui est nouveau.</p>
+            </div>
+            <div class="blog-filters" role="tablist" aria-label="Catégories du blog">
+              <button class="blog-filter is-active" type="button" data-filter="all">Tous</button>
+              <button class="blog-filter" type="button" data-filter="Marketing">Marketing</button>
+              <button class="blog-filter" type="button" data-filter="Contenu">Contenu</button>
+              <button class="blog-filter" type="button" data-filter="Leads">Génération de leads</button>
+              <button class="blog-filter" type="button" data-filter="Image de marque">Image de marque</button>
+              <button class="blog-filter" type="button" data-filter="Croissance">Croissance</button>
+            </div>
+          </div>
+
+          <!-- Grid -->
+          <div class="blog-grid" id="blog-grid">
+
+            <!-- Article 1 -->
+            <article class="blog-card" data-category="Marketing">
+              <a href="#" class="blog-card_media">
+                <img loading="lazy" src="images/68f84eae40bb20a3c83a5d91_TDB-Accueil-02-Prospects.jpg" alt="Stratégies de contenu qui convertissent vraiment">
+              </a>
+              <div class="blog-card_body">
+                <div class="blog-card_tag">Marketing</div>
+                <h3 class="blog-card_title"><a href="#">Stratégies de contenu qui convertissent vraiment</a></h3>
+                <p class="blog-card_description">Construisez un moteur de contenu qui attire des leads qualifiés, soutient votre équipe de vente et transforme l'attention en résultats mesurables.</p>
+                <div class="blog-card_footer">
+                  <div class="blog-card_date">8 mars 2026</div>
+                  <a href="#" class="blog-card_button">Lire l'article →</a>
+                </div>
+              </div>
+            </article>
+
+            <!-- Article 2 -->
+            <article class="blog-card" data-category="Leads">
+              <a href="#" class="blog-card_media">
+                <img loading="lazy" src="images/65e9f7e260165d1cc86ac833_64cbc5c84d2f9623c5f175d4_ERCO_IMAGE_MAIN%20%281%29.webp" alt="Comment générer 800 leads par mois en continu">
+              </a>
+              <div class="blog-card_body">
+                <div class="blog-card_tag">Génération de leads</div>
+                <h3 class="blog-card_title"><a href="#">Comment générer 800+ leads qualifiés par mois</a></h3>
+                <p class="blog-card_description">Découvrez le système de génération de leads qu'on a mis en place pour Groupe VVS — et les 3 leviers qui font passer la machine à plein régime.</p>
+                <div class="blog-card_footer">
+                  <div class="blog-card_date">22 février 2026</div>
+                  <a href="#" class="blog-card_button">Lire l'article →</a>
+                </div>
+              </div>
+            </article>
+
+            <!-- Article 3 -->
+            <article class="blog-card" data-category="Image de marque">
+              <a href="#" class="blog-card_media">
+                <img loading="lazy" src="images/65f60de9f5d896dedb2d41cb_MONSPRAYBRANDINGBOOK_V2%20%281%29_page-0002.webp" alt="Bâtir une identité visuelle qui inspire confiance">
+              </a>
+              <div class="blog-card_body">
+                <div class="blog-card_tag">Image de marque</div>
+                <h3 class="blog-card_title"><a href="#">Bâtir une identité visuelle qui inspire confiance</a></h3>
+                <p class="blog-card_description">Découvrez comment une charte graphique solide, une typographie cohérente et un système visuel fort créent de la crédibilité dès le premier coup d'œil.</p>
+                <div class="blog-card_footer">
+                  <div class="blog-card_date">14 février 2026</div>
+                  <a href="#" class="blog-card_button">Lire l'article →</a>
+                </div>
+              </div>
+            </article>
+
+            <!-- Article 4 -->
+            <article class="blog-card" data-category="Croissance">
+              <a href="#" class="blog-card_media">
+                <img loading="lazy" src="images/68f12d4049766a95c38482b3_left-3d-squares%201.png" alt="Boucles de croissance pour une acquisition scalable">
+              </a>
+              <div class="blog-card_body">
+                <div class="blog-card_tag">Croissance</div>
+                <h3 class="blog-card_title"><a href="#">Boucles de croissance pour une acquisition scalable</a></h3>
+                <p class="blog-card_description">Sortez des coups one-shot et construisez des systèmes répétables qui amènent de meilleurs leads au fur et à mesure que votre entreprise grandit.</p>
+                <div class="blog-card_footer">
+                  <div class="blog-card_date">5 février 2026</div>
+                  <a href="#" class="blog-card_button">Lire l'article →</a>
+                </div>
+              </div>
+            </article>
+
+            <!-- Article 5 -->
+            <article class="blog-card" data-category="Contenu">
+              <a href="#" class="blog-card_media">
+                <img loading="lazy" src="images/68f84c1e7b41f47ef74b7480_tourdublocbrunette.png" alt="Capsules vidéo : le format qui performe le plus en 2026">
+              </a>
+              <div class="blog-card_body">
+                <div class="blog-card_tag">Contenu</div>
+                <h3 class="blog-card_title"><a href="#">Capsules vidéo : le format qui performe le plus en 2026</a></h3>
+                <p class="blog-card_description">Courtes, percutantes, authentiques — les capsules vidéo sont devenues le levier numéro un pour capter l'attention et générer de l'engagement organique.</p>
+                <div class="blog-card_footer">
+                  <div class="blog-card_date">28 janvier 2026</div>
+                  <a href="#" class="blog-card_button">Lire l'article →</a>
+                </div>
+              </div>
+            </article>
+
+            <!-- Article 6 -->
+            <article class="blog-card" data-category="Marketing">
+              <a href="#" class="blog-card_media">
+                <img loading="lazy" src="images/68f7ba5e5ab7ad672f0622eb_5D206031%20%281%29.jpg" alt="Comment les marques bâtissent leur autorité en ligne">
+              </a>
+              <div class="blog-card_body">
+                <div class="blog-card_tag">Marketing</div>
+                <h3 class="blog-card_title"><a href="#">Comment les marques bâtissent leur autorité en ligne</a></h3>
+                <p class="blog-card_description">Du positionnement à la cohérence des campagnes, découvrez les mouvements qui rendent une marque crédible, premium et impossible à ignorer.</p>
+                <div class="blog-card_footer">
+                  <div class="blog-card_date">20 janvier 2026</div>
+                  <a href="#" class="blog-card_button">Lire l'article →</a>
+                </div>
+              </div>
+            </article>
+
+            <!-- Article 7 -->
+            <article class="blog-card" data-category="Leads">
+              <a href="#" class="blog-card_media">
+                <img loading="lazy" src="images/65fafc9c4e3f4d0c011d7b2a_Solution%20ISO%20Main%20Image.webp" alt="+500 % de rendez-vous : le cas Solution Isolation">
+              </a>
+              <div class="blog-card_body">
+                <div class="blog-card_tag">Génération de leads</div>
+                <h3 class="blog-card_title"><a href="#">+500 % de rendez-vous : le cas Solution Isolation</a></h3>
+                <p class="blog-card_description">Comment on a multiplié par 6 les rendez-vous hebdomadaires d'une entreprise d'isolation grâce à un mix pub sponsorisée + qualification par centre d'appel.</p>
+                <div class="blog-card_footer">
+                  <div class="blog-card_date">12 janvier 2026</div>
+                  <a href="#" class="blog-card_button">Lire l'article →</a>
+                </div>
+              </div>
+            </article>
+
+            <!-- Article 8 -->
+            <article class="blog-card" data-category="Contenu">
+              <a href="#" class="blog-card_media">
+                <img loading="lazy" src="images/65f619a4102b1cbeb6f5196a_RD%20MAIN%20IMAGE.webp" alt="Pourquoi votre contenu ne génère pas de ventes">
+              </a>
+              <div class="blog-card_body">
+                <div class="blog-card_tag">Contenu</div>
+                <h3 class="blog-card_title"><a href="#">Pourquoi votre contenu ne génère pas de ventes</a></h3>
+                <p class="blog-card_description">Beaucoup d'entreprises produisent du contenu, peu en tirent des revenus. On décortique les erreurs les plus courantes et comment les corriger rapidement.</p>
+                <div class="blog-card_footer">
+                  <div class="blog-card_date">4 janvier 2026</div>
+                  <a href="#" class="blog-card_button">Lire l'article →</a>
+                </div>
+              </div>
+            </article>
+
+            <!-- Article 9 -->
+            <article class="blog-card" data-category="Croissance">
+              <a href="#" class="blog-card_media">
+                <img loading="lazy" src="images/65f6159cdcbc7d17db7e5ae4_HOT%20N%20COLD%20MAIN%20IMAGE.webp" alt="Les 5 KPIs à suivre pour une croissance prévisible">
+              </a>
+              <div class="blog-card_body">
+                <div class="blog-card_tag">Croissance</div>
+                <h3 class="blog-card_title"><a href="#">Les 5 KPIs à suivre pour une croissance prévisible</a></h3>
+                <p class="blog-card_description">Arrêtez de mesurer les mauvaises choses. Voici les indicateurs qui permettent vraiment de piloter votre croissance et d'anticiper vos résultats mois après mois.</p>
+                <div class="blog-card_footer">
+                  <div class="blog-card_date">18 décembre 2025</div>
+                  <a href="#" class="blog-card_button">Lire l'article →</a>
+                </div>
+              </div>
+            </article>
+
+            <!-- No results message -->
+            <div class="blog-no-results" id="blog-no-results">
+              Aucun article trouvé dans cette catégorie pour l'instant.
+            </div>
+
+          </div><!-- /.blog-grid -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── Footer ── -->
+  <footer class="footer7_component">
+    <div class="padding-global">
+      <div class="container-large">
+        <div class="padding-vertical padding-xxlarge">
+          <div class="padding-bottom padding-xxlarge">
+            <div class="footer7_top-wrapper">
+              <a href="index.html" class="footer7_logo-link w-nav-brand">
+                <img src="images/65e8f27acdb01bdac80c165b_62fbe802a9246078ab3ac5a2_TOUR%20DU%20BLOC.webp" loading="lazy"
+                  sizes="98vw"
+                  srcset="images/65e8f27acdb01bdac80c165b_62fbe802a9246078ab3ac5a2_TOUR%20DU%20BLOC-p-500.webp 500w,
+                          images/65e8f27acdb01bdac80c165b_62fbe802a9246078ab3ac5a2_TOUR%20DU%20BLOC.webp 949w"
+                  alt="">
+              </a>
+              <div class="w-layout-grid footer7_link-list">
+                <a href="index.html" class="footer7_link">Accueil</a>
+                <a href="index.html" class="footer7_link">Marketing</a>
+                <a href="index.html" class="footer7_link">Centre d'appels</a>
+                <a href="projets.html" class="footer7_link">Nos projets</a>
+                <a href="blog.html" aria-current="page" class="footer7_link w--current">Blog</a>
+                <a href="index.html#contact" class="footer7_link">Contact</a>
+              </div>
+            </div>
+          </div>
+          <div class="line-divider"></div>
+          <div class="padding-top padding-medium">
+            <div class="footer7_bottom-wrapper">
+              <div class="footer7_credit-text">2026 © tourdubloc</div>
+              <div class="w-layout-grid footer7_legal-list">
+                <a href="#" class="footer7_legal-link">Confidentialité</a>
+                <a href="#" class="footer7_legal-link">Accès aux données</a>
+                <a href="#" class="footer7_legal-link">Consentement aux cookies</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</div><!-- /.page-wrapper -->
+
+<!-- Scripts -->
+<script src="js/jquery-3.5.1.min.dc5e7f18c8.js" type="text/javascript" crossorigin="anonymous"></script>
+<script src="js/gsap.min.js"></script>
+<script src="js/ScrollTrigger.min.js"></script>
+
+<script>
+(function () {
+  "use strict";
+
+  // ── Category filter ──
+  var filterButtons = document.querySelectorAll(".blog-filter");
+  var blogCards     = document.querySelectorAll(".blog-card");
+  var noResults     = document.getElementById("blog-no-results");
+
+  filterButtons.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var filter = btn.getAttribute("data-filter");
+
+      filterButtons.forEach(function (b) { b.classList.remove("is-active"); });
+      btn.classList.add("is-active");
+
+      var visible = 0;
+      blogCards.forEach(function (card) {
+        var cat = card.getAttribute("data-category");
+        var show = filter === "all" || filter === cat;
+        card.classList.toggle("is-hidden", !show);
+        if (show) visible++;
+      });
+
+      if (noResults) noResults.classList.toggle("is-visible", visible === 0);
+    });
+  });
+
+  // ── GSAP scroll animations ──
+  window.addEventListener("DOMContentLoaded", function () {
+    if (typeof gsap === "undefined" || typeof ScrollTrigger === "undefined") return;
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Hero text fade-in
+    gsap.from(".heading-style-hero", {
+      opacity: 0,
+      y: 40,
+      duration: 1,
+      ease: "power3.out",
+      delay: 0.2
+    });
+    gsap.from(".hero-tagline, .button-group", {
+      opacity: 0,
+      y: 20,
+      duration: 0.8,
+      ease: "power2.out",
+      stagger: 0.15,
+      delay: 0.5
+    });
+
+    // Blog toolbar fade-in
+    gsap.from(".blog-toolbar", {
+      opacity: 0,
+      y: 24,
+      duration: 0.7,
+      ease: "power2.out",
+      scrollTrigger: { trigger: ".blog-toolbar", start: "top 85%" }
+    });
+
+    // Cards stagger
+    gsap.from(".blog-card", {
+      opacity: 0,
+      y: 36,
+      duration: 0.6,
+      ease: "power2.out",
+      stagger: 0.09,
+      scrollTrigger: { trigger: "#blog-grid", start: "top 80%" }
+    });
+  });
+
+})();
+</script>
+
+</body>
+</html>
