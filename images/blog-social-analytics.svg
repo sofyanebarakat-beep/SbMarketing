@@ -1,0 +1,91 @@
+<svg viewBox="0 0 800 420" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
+  <rect width="800" height="420" fill="#f8f9fb"/>
+
+  <!-- Dashboard card -->
+  <rect x="40" y="30" width="720" height="360" rx="16" fill="#fff" stroke="#e8eaed" stroke-width="1.5"/>
+
+  <!-- Header bar -->
+  <rect x="40" y="30" width="720" height="52" rx="16" fill="#041020"/>
+  <rect x="40" y="62" width="720" height="20" fill="#041020"/>
+  <circle cx="72" cy="56" r="7" fill="rgba(255,255,255,0.15)"/>
+  <circle cx="96" cy="56" r="7" fill="rgba(255,255,255,0.1)"/>
+  <circle cx="120" cy="56" r="7" fill="rgba(255,255,255,0.08)"/>
+  <text x="400" y="61" text-anchor="middle" fill="rgba(255,255,255,0.6)" font-size="13" font-weight="600">Tableau de bord · Réseaux sociaux</text>
+
+  <!-- KPI cards -->
+  <!-- Portée -->
+  <rect x="64" y="102" width="148" height="80" rx="10" fill="#f8f9fb" stroke="#e8eaed" stroke-width="1"/>
+  <text x="88" y="126" fill="#9ca3af" font-size="10" font-weight="600" text-transform="uppercase">PORTÉE</text>
+  <text x="88" y="152" fill="#041020" font-size="22" font-weight="700">128.4K</text>
+  <text x="88" y="170" fill="#16a34a" font-size="11" font-weight="600">↑ +34.2%</text>
+
+  <!-- Engagement -->
+  <rect x="224" y="102" width="148" height="80" rx="10" fill="#f8f9fb" stroke="#e8eaed" stroke-width="1"/>
+  <text x="248" y="126" fill="#9ca3af" font-size="10" font-weight="600">ENGAGEMENT</text>
+  <text x="248" y="152" fill="#041020" font-size="22" font-weight="700">6.8%</text>
+  <text x="248" y="170" fill="#16a34a" font-size="11" font-weight="600">↑ +1.4 pts</text>
+
+  <!-- Leads -->
+  <rect x="384" y="102" width="148" height="80" rx="10" fill="#fffbf2" stroke="rgba(245,166,35,0.3)" stroke-width="1"/>
+  <text x="408" y="126" fill="#9ca3af" font-size="10" font-weight="600">LEADS GÉNÉRÉS</text>
+  <text x="408" y="152" fill="#d4890a" font-size="22" font-weight="700">342</text>
+  <text x="408" y="170" fill="#16a34a" font-size="11" font-weight="600">↑ +87.6%</text>
+
+  <!-- ROAS -->
+  <rect x="544" y="102" width="172" height="80" rx="10" fill="#f8f9fb" stroke="#e8eaed" stroke-width="1"/>
+  <text x="568" y="126" fill="#9ca3af" font-size="10" font-weight="600">ROAS MOYEN</text>
+  <text x="568" y="152" fill="#041020" font-size="22" font-weight="700">4.2×</text>
+  <text x="568" y="170" fill="#16a34a" font-size="11" font-weight="600">↑ +0.8×</text>
+
+  <!-- Chart area label -->
+  <text x="64" y="214" fill="#6b7280" font-size="11" font-weight="600">Évolution sur 6 mois</text>
+
+  <!-- Mini line chart -->
+  <rect x="64" y="222" width="432" height="130" rx="8" fill="#f8f9fb" stroke="#e8eaed" stroke-width="1"/>
+  <!-- Grid -->
+  <line x1="80" y1="240" x2="480" y2="240" stroke="#e8eaed" stroke-width="1"/>
+  <line x1="80" y1="260" x2="480" y2="260" stroke="#e8eaed" stroke-width="1"/>
+  <line x1="80" y1="280" x2="480" y2="280" stroke="#e8eaed" stroke-width="1"/>
+  <line x1="80" y1="300" x2="480" y2="300" stroke="#e8eaed" stroke-width="1"/>
+  <line x1="80" y1="320" x2="480" y2="320" stroke="#e8eaed" stroke-width="1"/>
+  <!-- Reach area fill -->
+  <path d="M90,330 L156,310 L222,295 L288,270 L354,248 L420,232 L470,225 L470,340 L90,340 Z" fill="rgba(245,166,35,0.08)"/>
+  <!-- Reach line -->
+  <polyline points="90,330 156,310 222,295 288,270 354,248 420,232 470,225" fill="none" stroke="#f5a623" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Leads line -->
+  <polyline points="90,338 156,332 222,320 288,308 354,285 420,262 470,245" fill="none" stroke="#041020" stroke-width="2" stroke-dasharray="5,3" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Month labels -->
+  <text x="90" y="356" fill="#9ca3af" font-size="9" text-anchor="middle">Nov</text>
+  <text x="156" y="356" fill="#9ca3af" font-size="9" text-anchor="middle">Déc</text>
+  <text x="222" y="356" fill="#9ca3af" font-size="9" text-anchor="middle">Jan</text>
+  <text x="288" y="356" fill="#9ca3af" font-size="9" text-anchor="middle">Fév</text>
+  <text x="354" y="356" fill="#9ca3af" font-size="9" text-anchor="middle">Mar</text>
+  <text x="420" y="356" fill="#9ca3af" font-size="9" text-anchor="middle">Avr</text>
+  <!-- Legend -->
+  <line x1="80" y1="368" x2="102" y2="368" stroke="#f5a623" stroke-width="2.5"/>
+  <text x="107" y="371" fill="#6b7280" font-size="9">Portée</text>
+  <line x1="150" y1="368" x2="172" y2="368" stroke="#041020" stroke-width="2" stroke-dasharray="4,2"/>
+  <text x="177" y="371" fill="#6b7280" font-size="9">Leads</text>
+
+  <!-- Donut chart (platform split) -->
+  <text x="536" y="214" fill="#6b7280" font-size="11" font-weight="600">Répartition plateformes</text>
+  <circle cx="628" cy="292" r="52" fill="none" stroke="#e8eaed" stroke-width="20"/>
+  <circle cx="628" cy="292" r="52" fill="none" stroke="#f5a623" stroke-width="20"
+    stroke-dasharray="98 229" stroke-dashoffset="0" transform="rotate(-90 628 292)"/>
+  <circle cx="628" cy="292" r="52" fill="none" stroke="#041020" stroke-width="20"
+    stroke-dasharray="65 262" stroke-dashoffset="-98" transform="rotate(-90 628 292)"/>
+  <circle cx="628" cy="292" r="52" fill="none" stroke="#d4890a" stroke-width="20"
+    stroke-dasharray="46 281" stroke-dashoffset="-163" transform="rotate(-90 628 292)"/>
+  <circle cx="628" cy="292" r="36" fill="#fff"/>
+  <text x="628" y="288" text-anchor="middle" fill="#041020" font-size="12" font-weight="700">43%</text>
+  <text x="628" y="301" text-anchor="middle" fill="#9ca3af" font-size="9">Meta</text>
+  <!-- Legend -->
+  <rect x="692" y="258" width="10" height="10" rx="2" fill="#f5a623"/>
+  <text x="706" y="268" fill="#6b7280" font-size="10">Meta (43%)</text>
+  <rect x="692" y="278" width="10" height="10" rx="2" fill="#041020"/>
+  <text x="706" y="288" fill="#6b7280" font-size="10">Google (28%)</text>
+  <rect x="692" y="298" width="10" height="10" rx="2" fill="#d4890a"/>
+  <text x="706" y="308" fill="#6b7280" font-size="10">Organique (20%)</text>
+  <rect x="692" y="318" width="10" height="10" rx="2" fill="#e8eaed"/>
+  <text x="706" y="328" fill="#6b7280" font-size="10">Autres (9%)</text>
+</svg>

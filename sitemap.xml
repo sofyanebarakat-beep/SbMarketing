@@ -49,6 +49,14 @@
     <priority>0.6</priority>
   </url>
 
+  <!-- ── Blog articles ── -->
+  <url>
+    <loc>https://www.sbmarketing.fr/blog/gestion-reseaux-sociaux-croissance-entreprise/</loc>
+    <lastmod>2026-04-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
   <!-- ── Legal pages ── -->
   <url>
     <loc>https://www.sbmarketing.fr/politique-de-confidentialite/</loc>
