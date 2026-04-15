@@ -1,0 +1,47 @@
+# robots.txt — www.sbmarketing.fr
+# Generated: 2026-04-16
+# https://developers.google.com/search/docs/crawling-indexing/robots/intro
+
+# ── All crawlers ─────────────────────────────────────────────────────
+User-agent: *
+Allow: /
+
+# Block non-content assets that should not be indexed
+Disallow: /js/
+Disallow: /css/
+Disallow: /media/
+
+# Block legal pages from being crawled with query params
+Disallow: /*?*
+
+# ── Google ───────────────────────────────────────────────────────────
+User-agent: Googlebot
+Allow: /
+Allow: /images/
+
+# ── Google Image Bot ─────────────────────────────────────────────────
+User-agent: Googlebot-Image
+Allow: /images/
+
+# ── Bing ─────────────────────────────────────────────────────────────
+User-agent: Bingbot
+Allow: /
+
+# ── Block AI scrapers ────────────────────────────────────────────────
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+# ── Sitemap ──────────────────────────────────────────────────────────
+Sitemap: https://www.sbmarketing.fr/sitemap.xml
