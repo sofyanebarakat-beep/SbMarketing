@@ -1,43 +1,66 @@
-# Tourdubloc — Marketing Website Clone
+# Sb Marketing Website
 
-A static clone of the [Tourdubloc](https://www.tourdubloc.com) marketing agency website. Tourdubloc is a French-Canadian agency offering rapid, predictable growth: content creation, lead generation, and prospect-to-appointment conversion.
-
-## Project Structure
-
-```
-SBMarketing Clone/
-├── index.html          # Main page (single-page site)
-├── css/
-│   └── tourdubloc-3e0b2f.shared.9a219fb46.css   # All styles
-├── js/
-│   ├── gsap.min.js                  # GSAP animation library
-│   ├── ScrollTrigger.min.js         # GSAP ScrollTrigger plugin
-│   ├── SplitText.min.js             # GSAP SplitText plugin
-│   ├── MorphSVGPlugin.min.js        # GSAP MorphSVG plugin
-│   ├── swiper-bundle.min.js         # Swiper slider
-│   ├── jquery-3.5.1.min.dc5e7f18c8.js
-│   └── tourdubloc-3e0b2f.*.js      # Webflow-generated scripts
-├── images/             # Static images and WebP assets
-├── media/              # Video assets (MP4/WebM)
-└── fonts/              # Web fonts
-```
+Static marketing website for Sb Marketing, exported from Webflow and maintained as deployable HTML/CSS/JS.
 
 ## Tech Stack
 
-- **Framework**: Webflow (exported static HTML)
-- **Animations**: GSAP (ScrollTrigger, SplitText, MorphSVG)
-- **Slider**: Swiper.js
-- **Analytics**: Google Tag Manager, Meta Pixel, Hotjar
-- **Language**: French (fr-CA)
+- Static HTML pages
+- Webflow-generated CSS and JavaScript
+- GSAP, ScrollTrigger, SplitText, MorphSVG, Swiper, and jQuery
+- Static assets in `images/`, `media/`, and `fonts/`
+- GitHub Pages/custom-domain friendly deployment via the repository root
 
-## Brand Colors
+## Installation
 
-| Token | Hex |
-|-------|-----|
-| Primary / Black | `#041020` |
+```bash
+npm install
+```
 
-## Usage
+There are no external npm runtime dependencies. `npm install` creates the lockfile used for consistent maintenance scripts.
 
-Open `index.html` directly in a browser. No build step required — this is a fully self-contained static export.
+## Development
 
-> **Note:** Some dynamic content (CMS items, form submissions) requires the original Webflow backend to function.
+```bash
+npm run dev
+```
+
+This starts a local static server at `http://localhost:5173`.
+
+## Build / Validation
+
+```bash
+npm run build
+```
+
+The build command validates local asset references across HTML, CSS, JS, and XML files. This project does not compile into a separate `dist/` folder because the repository root is the deployable static site.
+
+## Deployment Notes
+
+- Keep `CNAME`, `robots.txt`, `sitemap.xml`, and the route folders at the repository root.
+- Deploy the repository root as the public web root.
+- Do not move `css/`, `js/`, `images/`, `media/`, or `fonts/` without updating every relative reference in the exported pages.
+
+## Folder Structure
+
+```text
+.
+├── index.html
+├── contact/
+├── projets/
+├── blog/
+├── outreach/
+├── edmond-garage/
+├── css/
+├── js/
+├── images/
+│   └── Projects/
+├── media/
+├── fonts/
+├── scripts/
+├── docs/
+├── CNAME
+├── robots.txt
+└── sitemap.xml
+```
+
+Route folders contain page-level `index.html` files. Shared production assets stay in the root-level asset folders to match the static export paths.

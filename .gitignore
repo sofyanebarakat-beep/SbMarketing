@@ -9,9 +9,8 @@
 # Build artifacts
 tourdubloc-theme.zip
 
-# Webflow binary export blobs (unnamed hash files)
-3c3c232f-890afdbd
-bc6dd28a-d4af1088
+# Unnamed binary export blobs
+/[0-9a-f][0-9a-f]*-[0-9a-f][0-9a-f]*
 
 # WordPress uploads / cache (if added later)
 wordpress-theme/tourdubloc/assets/cache/
