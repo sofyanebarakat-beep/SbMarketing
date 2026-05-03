@@ -149,7 +149,7 @@
     }
 
     .template-single-portfolio-section {
-      background: #fff;
+      background: #000;
       overflow: hidden;
       width: 100%;
     }
@@ -163,6 +163,31 @@
       border-radius: 8px;
       background: #fff;
       box-shadow: 0 20px 70px rgba(4, 16, 32, 0.08);
+    }
+
+    .template-browser-bar {
+      height: 2.5rem;
+      padding: 0 1rem;
+      border-bottom: 1px solid rgba(4, 16, 32, 0.1);
+      background: linear-gradient(180deg, #fff, #f7f8fb);
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .template-browser-dot {
+      width: 0.55rem;
+      height: 0.55rem;
+      border-radius: 999px;
+      background: rgba(4, 16, 32, 0.22);
+    }
+
+    .template-browser-address {
+      height: 0.72rem;
+      width: min(18rem, 44%);
+      margin-left: 0.55rem;
+      border-radius: 999px;
+      background: rgba(4, 16, 32, 0.07);
     }
 
     .template-single-portfolio-image {
@@ -355,6 +380,12 @@
       <section class="template-single-portfolio-section portfolio p-desktop">
         <div class="padding-section-large">
           <div class="template-single-portfolio-wrap">
+            <div class="template-browser-bar" aria-hidden="true">
+              <span class="template-browser-dot"></span>
+              <span class="template-browser-dot"></span>
+              <span class="template-browser-dot"></span>
+              <span class="template-browser-address"></span>
+            </div>
             <img src="../images/template/criacao-de-site-hplanet-15.webp" loading="lazy" width="1920" height="2857" alt="Single desktop portfolio showcase" class="template-single-portfolio-image">
           </div>
         </div>
