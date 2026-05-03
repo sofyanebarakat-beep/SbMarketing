@@ -151,18 +151,31 @@
     .template-single-portfolio-section {
       background: #fff;
       overflow: hidden;
+      width: 100%;
     }
 
     .template-single-portfolio-wrap {
       width: min(64rem, calc(100% - 3rem));
       margin-right: auto;
       margin-left: auto;
+      overflow: hidden;
+      border: 1px solid rgba(4, 16, 32, 0.12);
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 20px 70px rgba(4, 16, 32, 0.08);
     }
 
     .template-single-portfolio-image {
       display: block;
       width: 100%;
       height: auto;
+      transform: scale(1);
+      transition: transform 900ms cubic-bezier(.2, .8, .2, 1);
+      will-change: transform;
+    }
+
+    .template-single-portfolio-wrap:hover .template-single-portfolio-image {
+      transform: scale(1.018);
     }
 
     @media screen and (max-width: 767px) {
@@ -185,6 +198,10 @@
 
       .template-single-portfolio-wrap {
         width: min(100% - 1.5rem, 64rem);
+      }
+
+      .template-single-portfolio-wrap:hover .template-single-portfolio-image {
+        transform: scale(1.008);
       }
     }
   </style>
