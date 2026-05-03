@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="fr" class="w-mod-js">
+<head>
+  <meta charset="utf-8">
+  <title>Hplanet | Projet site web | SB Marketing</title>
+  <meta name="description" content="Projet Hplanet : clone de la page projet HPLANET avec une première section au style SB Marketing et les visuels du site original.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.sbmarketing.fr/hplanet/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:site_name" content="Sb Marketing">
+  <meta property="og:title" content="Hplanet | Projet site web | SB Marketing">
+  <meta property="og:description" content="Projet de site Hplanet, infrastructure TI, Data Center, Cloud Computing et connectivite B2B.">
+  <meta property="og:url" content="https://www.sbmarketing.fr/hplanet/">
+  <meta property="og:image" content="https://www.sbmarketing.fr/images/hplanet/desenvolvimento-de-site-hplanet.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Hplanet | Projet site web | SB Marketing">
+  <meta name="twitter:description" content="Projet Hplanet : site tech B2B, performance, infrastructure et conversion.">
+  <meta name="twitter:image" content="https://www.sbmarketing.fr/images/hplanet/desenvolvimento-de-site-hplanet.webp">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="../css/tourdubloc-3e0b2f.shared.9a219fb46.css" rel="stylesheet" type="text/css" crossorigin="anonymous">
+  <link href="../images/sb-favicon.png" rel="shortcut icon" type="image/x-icon">
+  <link rel="icon" type="image/png" href="../images/sb-favicon.png">
+  <link href="../images/sb-favicon.png" rel="apple-touch-icon">
+  <style>
+    * {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      -o-font-smoothing: antialiased;
+    }
+
+    body {
+      background: #03020a;
+    }
+
+    .navbar2_component {
+      position: fixed !important;
+      top: 0 !important;
+      inset: 0 0 auto !important;
+      z-index: 9999;
+      background-color: rgba(4, 16, 32, 0.82);
+      backdrop-filter: blur(16px);
+    }
+
+    .hplanet-hero-media {
+      width: min(62rem, 100%);
+      margin: 0 auto;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      box-shadow: 0 34px 100px rgba(0, 0, 0, 0.36);
+    }
+
+    .hplanet-hero-media img,
+    .hplanet-showcase img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .hplanet-intro {
+      background: #05050d;
+      color: #fff;
+    }
+
+    .hplanet-intro-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(18rem, 0.85fr);
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .hplanet-copy {
+      display: grid;
+      gap: 1rem;
+      color: rgba(255, 255, 255, 0.72);
+      font-size: 1.125rem;
+      line-height: 1.65;
+    }
+
+    .hplanet-copy strong,
+    .hplanet-facts strong {
+      color: #fff;
+    }
+
+    .hplanet-facts {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1px;
+      overflow: hidden;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .hplanet-fact {
+      display: grid;
+      gap: 0.35rem;
+      padding: 1.15rem;
+      background: rgba(255, 255, 255, 0.055);
+    }
+
+    .hplanet-fact span {
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .hplanet-showcase {
+      background: #46006e;
+      padding: 5rem 0;
+      overflow: hidden;
+    }
+
+    .hplanet-showcase.is-pink {
+      background: #fa0078;
+    }
+
+    .hplanet-showcase.is-dark {
+      background: #05050d;
+    }
+
+    .hplanet-stage {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .hplanet-stage.is-wide {
+      width: min(1320px, calc(100% - 32px));
+    }
+
+    .hplanet-device-pair {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(14rem, 0.24fr);
+      gap: 2rem;
+      align-items: start;
+    }
+
+    .hplanet-mobile-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1.25rem;
+      align-items: start;
+    }
+
+    .hplanet-mobile-grid.is-three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .hplanet-frame {
+      overflow: hidden;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 22px 70px rgba(0, 0, 0, 0.26);
+    }
+
+    .hplanet-desktop {
+      border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    .hplanet-mobile {
+      border: 10px solid #111118;
+      border-radius: 26px;
+    }
+
+    .hplanet-source {
+      background: #05050d;
+      color: rgba(255, 255, 255, 0.64);
+      text-align: center;
+      padding: 2rem 1rem 4rem;
+      font-size: 0.9rem;
+    }
+
+    .hplanet-source a {
+      color: #fff;
+      text-decoration: underline;
+      text-underline-offset: 0.2em;
+    }
+
+    @media screen and (max-width: 991px) {
+      .hplanet-intro-grid,
+      .hplanet-device-pair {
+        grid-template-columns: 1fr;
+      }
+
+      .hplanet-mobile-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media screen and (max-width: 479px) {
+      .hplanet-mobile-grid,
+      .hplanet-mobile-grid.is-three {
+        grid-template-columns: 1fr;
+      }
+
+      .hplanet-showcase {
+        padding: 3rem 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page-wrapper">
+    <div data-collapse="medium" data-animation="default" data-duration="400" fs-scrolldisable-element="smart-nav" data-easing="ease" data-easing2="ease" role="banner" class="navbar2_component w-nav">
+      <div class="navbar2_container">
+        <a href="/" class="navbar2_logo-link w-nav-brand"><img loading="lazy" src="../images/6723f2c00ddb72327590bdcb_Group.svg" alt="SB Marketing" class="navbar2_logo"></a>
+        <nav role="navigation" class="navbar2_menu w-nav-menu"></nav>
+        <div id="w-node-e2b655d2-e396-ce84-c19b-32499953e043-9953e038" class="navbar2_button-wrapper">
+          <a href="../contact/" data-wf--button--variant="no-icon" class="special-button is-icon w-variant-dcf8a2db-149b-093c-ad09-76811261ba97 w-inline-block">
+            <div class="div-block-7 w-variant-dcf8a2db-149b-093c-ad09-76811261ba97">
+              <div class="special-button-image-wrapper">
+                <img loading="lazy" src="../images/soufiane-profile.jpg" alt="" class="image-3">
+                <div class="status-indicator"></div>
+              </div>
+            </div>
+            <div>Contact</div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <main class="main-wrapper">
+      <header class="section_header30 text-color-white">
+        <div class="padding-global">
+          <div class="container-large">
+            <div class="header30_content">
+              <div class="padding-section-large">
+                <div class="text-align-center">
+                  <div class="max-width-hero">
+                    <div class="hero-tagline">
+                      <div class="tagline-cube is-green"></div>
+                      <div class="text-style-tagline">Etude de cas - Site web technologie B2B</div>
+                    </div>
+                    <div class="spacer-small"></div>
+                    <h1 class="heading-style-hero">HPLANET<br><span style="opacity:.55">Infrastructure TI, cloud et conversion B2B.</span></h1>
+                    <div class="spacer-medium"></div>
+                    <div class="button-group is-center">
+                      <a href="https://www.agenciafante.com.br/projeto/hplanet/" target="_blank" rel="noopener" class="button is-secondary is-alternate w-button">Voir la reference</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="spacer-xlarge"></div>
+                <div class="hplanet-hero-media">
+                  <img src="../images/hplanet/desenvolvimento-de-sites-hplanet.webp" width="2400" height="1200" alt="Hplanet - interface de site technologie B2B" loading="eager">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="header30_background-image-wrapper">
+          <img src="../images/68f12d4049766a95c38482b3_left-3d-squares%201.png" loading="eager" sizes="(max-width: 971px) 100vw, 971px" srcset="../images/68f12d4049766a95c38482b3_left-3d-squares%201-p-500.png 500w, ../images/68f12d4049766a95c38482b3_left-3d-squares%201-p-800.png 800w, ../images/68f12d4049766a95c38482b3_left-3d-squares%201.png 971w" alt="" class="bg-bloc-element left">
+          <img src="../images/68f12d409cb5821e2b9d3bbe_left-3d-squares%202.png" loading="eager" sizes="(max-width: 971px) 100vw, 971px" srcset="../images/68f12d409cb5821e2b9d3bbe_left-3d-squares%202-p-500.png 500w, ../images/68f12d409cb5821e2b9d3bbe_left-3d-squares%202-p-800.png 800w, ../images/68f12d409cb5821e2b9d3bbe_left-3d-squares%202.png 971w" alt="" class="bg-bloc-element right">
+          <img loading="eager" alt="" src="../images/68f12ddb6bfb958dff8fe2c4_BG%20LINE%20PATTERN.svg" class="header30_background-image">
+        </div>
+      </header>
+
+      <section class="hplanet-intro">
+        <div class="padding-global">
+          <div class="container-large">
+            <div class="padding-section-large">
+              <div class="hplanet-intro-grid">
+                <div>
+                  <div class="margin-bottom margin-small">
+                    <h2>O projeto</h2>
+                  </div>
+                  <div class="hplanet-copy">
+                    <p>A <strong>HPLANET</strong> e uma provedora de solucoes avancadas em infraestrutura de TI, especializada em Data Center, Cloud Computing e conectividade empresarial.</p>
+                    <p>Neste projeto, a Agencia Fante desenvolveu um site de alta performance, refletindo a precisao e a modernidade da infraestrutura da Hplanet.</p>
+                    <p>O desafio foi traduzir servicos tecnicos complexos em uma interface visualmente impactante, com design tech e clareza imediata.</p>
+                    <p>Performance, estabilidade extrema, arquitetura de conversao B2B e clareza na oferta de servicos foram evidenciadas no projeto.</p>
+                  </div>
+                </div>
+                <div class="hplanet-facts">
+                  <div class="hplanet-fact"><span>Empresa</span><strong>HPLANET</strong></div>
+                  <div class="hplanet-fact"><span>Servicos</span><strong>Desenvolvimento de site / WordPress</strong></div>
+                  <div class="hplanet-fact"><span>Segmento</span><strong>Tecnologia</strong></div>
+                  <div class="hplanet-fact"><span>Ano</span><strong>2025</strong></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="hplanet-showcase">
+        <div class="hplanet-stage is-wide">
+          <div class="hplanet-device-pair">
+            <div class="hplanet-frame hplanet-desktop"><img src="../images/hplanet/criacao-de-site-hplanet-12.webp" width="1920" height="6408" alt="Hplanet desktop page preview"></div>
+            <div class="hplanet-frame hplanet-mobile"><img src="../images/hplanet/criacao-de-site-hplanet-16.webp" width="370" height="5603" alt="Hplanet mobile long page preview"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="hplanet-showcase">
+        <div class="hplanet-stage">
+          <div class="hplanet-frame hplanet-desktop"><img src="../images/hplanet/criacao-de-site-hplanet-15.webp" width="1920" height="2857" alt="Hplanet desktop section preview"></div>
+        </div>
+      </section>
+
+      <section class="hplanet-showcase">
+        <div class="hplanet-stage">
+          <div class="hplanet-mobile-grid">
+            <div class="hplanet-frame hplanet-mobile"><img src="../images/hplanet/criacao-de-site-hplanet-07.webp" width="818" height="1774" alt="Hplanet mobile screen 1"></div>
+            <div class="hplanet-frame hplanet-mobile"><img src="../images/hplanet/criacao-de-site-hplanet-06.webp" width="818" height="1774" alt="Hplanet mobile screen 2"></div>
+            <div class="hplanet-frame hplanet-mobile"><img src="../images/hplanet/criacao-de-site-hplanet-05.webp" width="818" height="1774" alt="Hplanet mobile screen 3"></div>
+            <div class="hplanet-frame hplanet-mobile"><img src="../images/hplanet/criacao-de-site-hplanet-04.webp" width="818" height="1774" alt="Hplanet mobile screen 4"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="hplanet-showcase is-pink">
+        <div class="hplanet-stage">
+          <div class="hplanet-frame hplanet-desktop"><img src="../images/hplanet/criacao-de-site-hplanet-14.webp" width="1920" height="1543" alt="Hplanet interface detail"></div>
+        </div>
+      </section>
+
+      <section class="hplanet-showcase">
+        <div class="hplanet-stage">
+          <div class="hplanet-mobile-grid">
+            <div class="hplanet-frame hplanet-mobile"><img src="../images/hplanet/criacao-de-site-hplanet-11.webp" width="818" height="1774" alt="Hplanet mobile screen 5"></div>
+            <div class="hplanet-frame hplanet-mobile"><img src="../images/hplanet/criacao-de-site-hplanet-10.webp" width="818" height="1774" alt="Hplanet mobile screen 6"></div>
+            <div class="hplanet-frame hplanet-mobile"><img src="../images/hplanet/criacao-de-site-hplanet-09.webp" width="818" height="1774" alt="Hplanet mobile screen 7"></div>
+            <div class="hplanet-frame hplanet-mobile"><img src="../images/hplanet/criacao-de-site-hplanet-08.webp" width="818" height="1774" alt="Hplanet mobile screen 8"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="hplanet-showcase">
+        <div class="hplanet-stage">
+          <div class="hplanet-frame hplanet-desktop"><img src="../images/hplanet/criacao-de-site-hplanet-13.webp" width="1920" height="2834" alt="Hplanet desktop lower page preview"></div>
+        </div>
+      </section>
+
+      <section class="hplanet-showcase is-pink">
+        <div class="hplanet-stage">
+          <div class="hplanet-mobile-grid">
+            <div class="hplanet-frame hplanet-mobile"><img src="../images/hplanet/criacao-de-site-hplanet-03.webp" width="690" height="1500" alt="Hplanet mobile screen 9"></div>
+            <div class="hplanet-frame hplanet-mobile"><img src="../images/hplanet/criacao-de-site-hplanet-02.webp" width="690" height="1500" alt="Hplanet mobile screen 10"></div>
+            <div class="hplanet-frame hplanet-mobile"><img src="../images/hplanet/criacao-de-site-hplanet-01.webp" width="690" height="1500" alt="Hplanet mobile screen 11"></div>
+            <div class="hplanet-frame hplanet-mobile"><img src="../images/hplanet/criacao-de-site-hplanet-11.webp" width="818" height="1774" alt="Hplanet mobile screen 12"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="hplanet-showcase is-dark">
+        <div class="hplanet-stage">
+          <div class="hplanet-frame hplanet-desktop"><img src="../images/hplanet/desenvolvimento-de-site-hplanet.webp" width="1200" height="1438" alt="Hplanet project cover"></div>
+        </div>
+      </section>
+
+      <div class="hplanet-source">
+        Source reference: <a href="https://www.agenciafante.com.br/projeto/hplanet/" target="_blank" rel="noopener">Agencia Fante - HPLANET</a>
+      </div>
+    </main>
+  </div>
+  <script src="../js/jquery-3.5.1.min.dc5e7f18c8.js"></script>
+  <script src="../js/tourdubloc-3e0b2f.schunk.36b8fb49256177c8.js"></script>
+  <script src="../js/tourdubloc-3e0b2f.schunk.7bc38d72505cd683.js"></script>
+  <script src="../js/tourdubloc-3e0b2f.schunk.479bf77bc9dfc952.js"></script>
+  <script src="../js/tourdubloc-3e0b2f.schunk.9dfb96661114d3db.js"></script>
+  <script src="../js/tourdubloc-3e0b2f.c2a30b54.35b17dfba2d07dca.js"></script>
+</body>
+</html>
