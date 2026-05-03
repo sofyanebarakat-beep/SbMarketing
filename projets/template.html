@@ -148,6 +148,23 @@
       justify-self: center;
     }
 
+    .template-single-portfolio-section {
+      background: #46006e;
+      overflow: hidden;
+    }
+
+    .template-single-portfolio-wrap {
+      width: min(86rem, calc(100% - 3rem));
+      margin-right: auto;
+      margin-left: auto;
+    }
+
+    .template-single-portfolio-image {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
     @media screen and (max-width: 767px) {
       .template-visual-wrap {
         width: min(100% - 1rem, 92rem);
@@ -164,6 +181,10 @@
 
       .template-showcase-mobile {
         max-width: 18rem;
+      }
+
+      .template-single-portfolio-wrap {
+        width: min(100% - 1.5rem, 86rem);
       }
     }
   </style>
@@ -311,6 +332,13 @@
             <div class="template-showcase-frame template-showcase-mobile">
               <img src="../images/template/criacao-de-site-hplanet-16.webp" loading="lazy" width="370" height="5603" alt="Mobile website showcase">
             </div>
+          </div>
+        </div>
+      </section>
+      <section class="template-single-portfolio-section portfolio p-desktop">
+        <div class="padding-section-large">
+          <div class="template-single-portfolio-wrap">
+            <img src="../images/template/criacao-de-site-hplanet-15.webp" loading="lazy" width="1920" height="2857" alt="Single desktop portfolio showcase" class="template-single-portfolio-image">
           </div>
         </div>
       </section>
