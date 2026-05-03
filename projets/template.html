@@ -115,6 +115,39 @@
       will-change: transform;
     }
 
+    .template-showcase-section {
+      background: #46006e;
+      overflow: hidden;
+    }
+
+    .template-showcase-grid {
+      width: min(86rem, calc(100% - 3rem));
+      margin-right: auto;
+      margin-left: auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(13rem, 0.28fr);
+      gap: clamp(1.5rem, 4vw, 3.5rem);
+      align-items: start;
+    }
+
+    .template-showcase-frame {
+      overflow: hidden;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.24);
+    }
+
+    .template-showcase-frame img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .template-showcase-mobile {
+      max-width: 24rem;
+      justify-self: center;
+    }
+
     @media screen and (max-width: 767px) {
       .template-visual-wrap {
         width: min(100% - 1rem, 92rem);
@@ -122,6 +155,15 @@
 
       .template-visual-image {
         transform: scale(1.02);
+      }
+
+      .template-showcase-grid {
+        width: min(100% - 1.5rem, 86rem);
+        grid-template-columns: 1fr;
+      }
+
+      .template-showcase-mobile {
+        max-width: 18rem;
       }
     }
   </style>
@@ -257,6 +299,18 @@
         <div class="padding-section-large">
           <div class="template-visual-wrap">
             <img src="../images/template/test.webp" loading="lazy" width="2048" height="1024" alt="Template project visual" class="template-visual-image" data-template-visual>
+          </div>
+        </div>
+      </section>
+      <section class="template-showcase-section">
+        <div class="padding-section-large">
+          <div class="template-showcase-grid">
+            <div class="template-showcase-frame">
+              <img src="../images/template/criacao-de-site-hplanet-12.webp" loading="lazy" width="1920" height="6408" alt="Desktop website showcase">
+            </div>
+            <div class="template-showcase-frame template-showcase-mobile">
+              <img src="../images/template/criacao-de-site-hplanet-16.webp" loading="lazy" width="370" height="5603" alt="Mobile website showcase">
+            </div>
           </div>
         </div>
       </section>
