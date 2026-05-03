@@ -78,6 +78,37 @@
     .footer7_component a {
       color: #041020;
     }
+
+    .template-visual-section {
+      background: #000;
+      overflow: hidden;
+    }
+
+    .template-visual-wrap {
+      width: min(92rem, calc(100% - 2rem));
+      margin-right: auto;
+      margin-left: auto;
+      overflow: hidden;
+      border-radius: 8px;
+    }
+
+    .template-visual-image {
+      display: block;
+      width: 100%;
+      height: auto;
+      transform: scale(1.04);
+      will-change: transform;
+    }
+
+    @media screen and (max-width: 767px) {
+      .template-visual-wrap {
+        width: min(100% - 1rem, 92rem);
+      }
+
+      .template-visual-image {
+        transform: scale(1.02);
+      }
+    }
   </style>
 </head>
 <body>
@@ -207,6 +238,13 @@
           </div>
         </div>
       </section>
+      <section class="template-visual-section">
+        <div class="padding-section-large">
+          <div class="template-visual-wrap">
+            <img src="../images/template/test.webp" loading="lazy" width="2048" height="1024" alt="Template project visual" class="template-visual-image" data-template-visual>
+          </div>
+        </div>
+      </section>
     </main>
 
     <footer class="footer7_component">
@@ -257,6 +295,35 @@
       }
       window.addEventListener('scroll', onScroll, { passive: true });
       onScroll();
+    })();
+
+    (function () {
+      var image = document.querySelector('[data-template-visual]');
+      if (!image || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      var isMobile = window.matchMedia('(max-width: 767px)').matches;
+      var minScale = isMobile ? 1.02 : 1.04;
+      var maxScale = isMobile ? 1.055 : 1.09;
+      var ticking = false;
+
+      function updateVisual() {
+        var rect = image.getBoundingClientRect();
+        var viewport = window.innerHeight || document.documentElement.clientHeight;
+        var progress = 1 - Math.min(Math.max((rect.bottom) / (viewport + rect.height), 0), 1);
+        var scale = minScale + (maxScale - minScale) * progress;
+        image.style.transform = 'scale(' + scale.toFixed(4) + ')';
+        ticking = false;
+      }
+
+      function requestTick() {
+        if (ticking) return;
+        ticking = true;
+        window.requestAnimationFrame(updateVisual);
+      }
+
+      window.addEventListener('scroll', requestTick, { passive: true });
+      window.addEventListener('resize', requestTick);
+      requestTick();
     })();
   </script>
 </body>
