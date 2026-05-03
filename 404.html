@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Page Not Found | SB Marketing</title>
+  <script>
+    (function () {
+      var target = "https://sbmarketing.fr/project/outreach-exemple";
+      var path = window.location.pathname.replace(/\/+$/, "");
+      var projectPath = path.indexOf("/projects") === 0 || (path.indexOf("/project/") === 0 && path !== "/project/outreach-exemple");
+
+      if (projectPath) {
+        window.location.replace(target);
+      }
+    })();
+  </script>
+</head>
+<body>
+  <main>
+    <h1>Page Not Found</h1>
+    <p>Project pages now live at <a href="https://sbmarketing.fr/project/outreach-exemple">Outreach Exemple</a>.</p>
+  </main>
+</body>
+</html>
