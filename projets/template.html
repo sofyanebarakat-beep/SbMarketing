@@ -40,6 +40,36 @@
       background: #041020;
     }
 
+    .template-case-hero {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .template-case-hero .header30_content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .template-case-hero .max-width-hero {
+      margin-right: auto;
+      margin-left: auto;
+    }
+
+    .template-case-hero .header30_background-image-wrapper {
+      pointer-events: none;
+    }
+
+    @media screen and (max-width: 767px) {
+      .template-case-hero .bg-bloc-element {
+        opacity: 0.35;
+        max-width: 70vw;
+      }
+
+      .template-case-hero .heading-style-hero {
+        overflow-wrap: anywhere;
+      }
+    }
+
     .footer7_component {
       background: #fff;
       color: #041020;
@@ -98,7 +128,35 @@
     </div>
 
     <main class="main-wrapper">
-      <section class="template-empty"></section>
+      <header class="section_header30 text-color-white template-case-hero">
+        <div class="padding-global">
+          <div class="container-large">
+            <div class="header30_content">
+              <div class="padding-section-large">
+                <div class="text-align-center">
+                  <div class="max-width-hero">
+                    <div class="hero-tagline">
+                      <div class="tagline-cube is-green"></div>
+                      <div class="text-style-tagline">Etude de cas - Template projet</div>
+                    </div>
+                    <div class="spacer-small"></div>
+                    <h1 class="heading-style-hero">Nom du projet<br><span style="opacity:.55">Une experience pensee pour convertir.</span></h1>
+                    <div class="spacer-medium"></div>
+                    <div class="button-group is-center">
+                      <a href="../contact/" class="button is-secondary is-alternate w-button">Demarrer un projet</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="header30_background-image-wrapper">
+          <img src="../images/68f12d4049766a95c38482b3_left-3d-squares%201.png" loading="eager" sizes="(max-width: 971px) 100vw, 971px" srcset="../images/68f12d4049766a95c38482b3_left-3d-squares%201-p-500.png 500w, ../images/68f12d4049766a95c38482b3_left-3d-squares%201-p-800.png 800w, ../images/68f12d4049766a95c38482b3_left-3d-squares%201.png 971w" alt="" class="bg-bloc-element left">
+          <img src="../images/68f12d409cb5821e2b9d3bbe_left-3d-squares%202.png" loading="eager" sizes="(max-width: 971px) 100vw, 971px" srcset="../images/68f12d409cb5821e2b9d3bbe_left-3d-squares%202-p-500.png 500w, ../images/68f12d409cb5821e2b9d3bbe_left-3d-squares%202-p-800.png 800w, ../images/68f12d409cb5821e2b9d3bbe_left-3d-squares%202.png 971w" alt="" class="bg-bloc-element right">
+          <img loading="eager" alt="" src="../images/68f12ddb6bfb958dff8fe2c4_BG%20LINE%20PATTERN.svg" class="header30_background-image">
+        </div>
+      </header>
     </main>
 
     <footer class="footer7_component">
