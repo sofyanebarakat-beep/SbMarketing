@@ -27,8 +27,12 @@
       top: 0 !important;
       inset: 0 0 auto !important;
       z-index: 9999;
-      background-color: #041020;
+      background-color: transparent;
       transition: background-color 0.3s ease;
+    }
+
+    .navbar2_component.is-scrolled {
+      background-color: #041020 !important;
     }
 
     .template-empty {
@@ -60,7 +64,7 @@
     <div data-collapse="medium" data-animation="default" data-duration="400" data-easing="ease" data-easing2="ease" role="banner" class="navbar2_component w-nav">
       <div class="navbar2_container">
         <a href="../" class="navbar2_logo-link w-nav-brand">
-          <img loading="lazy" src="../images/6723f2c00ddb72327590bdcb_Group.svg" alt="SB Marketing" class="navbar2_logo">
+          <img loading="lazy" src="../images/logo-climanova.svg" alt="" class="navbar2_logo">
         </a>
         <nav role="navigation" class="navbar2_menu w-nav-menu"></nav>
         <div class="navbar2_button-wrapper">
@@ -95,7 +99,7 @@
             <div class="padding-bottom padding-xxlarge">
               <div class="footer7_top-wrapper">
                 <a href="../" class="footer7_logo-link w-nav-brand">
-                  <img src="../images/65e8f27acdb01bdac80c165b_62fbe802a9246078ab3ac5a2_TOUR%20DU%20BLOC.webp" loading="lazy" sizes="98vw" srcset="../images/65e8f27acdb01bdac80c165b_62fbe802a9246078ab3ac5a2_TOUR%20DU%20BLOC-p-500.webp 500w, ../images/65e8f27acdb01bdac80c165b_62fbe802a9246078ab3ac5a2_TOUR%20DU%20BLOC.webp 949w" alt="">
+                  <img src="../images/logo-climanova.svg" loading="lazy" alt="" class="footer7_logo-img">
                 </a>
                 <div class="w-layout-grid footer7_link-list">
                   <a href="../contact/" class="footer7_link">Contact</a>
@@ -107,9 +111,9 @@
               <div class="footer7_bottom-wrapper">
                 <div class="footer7_credit-text">2026 © Sb Marketing</div>
                 <div class="w-layout-grid footer7_legal-list">
-                  <a href="../politique-de-confidentialite/" class="footer7_legal-link">Confidentialité</a>
-                  <a href="../acces-aux-donnees/" class="footer7_legal-link">Accès aux données</a>
-                  <a href="../consentement-aux-cookies/" class="footer7_legal-link">Consentement aux cookies</a>
+                  <a href="/politique-de-confidentialite/">Confidentialité</a>
+                  <a href="/acces-aux-donnees/">Accès aux données</a>
+                  <a href="#manage_cookies" class="footer7_legal-link">Consentement aux cookies</a>
                 </div>
               </div>
             </div>
@@ -123,5 +127,20 @@
   <script src="../js/tourdubloc-3e0b2f.schunk.36b8fb49256177c8.js" type="text/javascript" crossorigin="anonymous"></script>
   <script src="../js/tourdubloc-3e0b2f.schunk.7bc38d72505cd683.js" type="text/javascript" crossorigin="anonymous"></script>
   <script src="../js/tourdubloc-3e0b2f.c2a30b54.35b17dfba2d07dca.js" type="text/javascript" crossorigin="anonymous"></script>
+  <script>
+    (function () {
+      var navbar = document.querySelector('.navbar2_component');
+      if (!navbar) return;
+      function onScroll() {
+        if (window.scrollY > 10) {
+          navbar.classList.add('is-scrolled');
+        } else {
+          navbar.classList.remove('is-scrolled');
+        }
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    })();
+  </script>
 </body>
 </html>
