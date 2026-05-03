@@ -231,6 +231,61 @@
         transform: scale(1.008);
       }
     }
+
+    .portfolio.p-mobile {
+      background: #46006e;
+      overflow: hidden;
+    }
+
+    .template-mobile-carousel {
+      width: min(72rem, calc(100% - 4rem));
+      margin: 0 auto;
+    }
+
+    .template-mobile-track {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: clamp(0.75rem, 1.5vw, 1.25rem);
+    }
+
+    .template-mobile-item {
+      overflow: hidden;
+      border-radius: 16px;
+    }
+
+    .template-mobile-item img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    @media screen and (max-width: 767px) {
+      .template-mobile-carousel {
+        width: 100%;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding: 0 1.25rem;
+        box-sizing: border-box;
+      }
+
+      .template-mobile-carousel::-webkit-scrollbar {
+        display: none;
+      }
+
+      .template-mobile-track {
+        display: flex;
+        gap: 0.875rem;
+        width: max-content;
+      }
+
+      .template-mobile-item {
+        width: 72vw;
+        flex-shrink: 0;
+        scroll-snap-align: center;
+      }
+    }
   </style>
 </head>
 <body>
@@ -513,6 +568,26 @@
               <span class="template-browser-address"></span>
             </div>
             <img src="../images/template/criacao-de-site-hplanet-15.webp" loading="lazy" width="1920" height="2857" alt="Single desktop portfolio showcase" class="template-single-portfolio-image">
+          </div>
+        </div>
+      </section>
+      <section class="portfolio p-mobile">
+        <div class="padding-section-large">
+          <div class="template-mobile-carousel">
+            <div class="template-mobile-track">
+              <div class="template-mobile-item">
+                <img src="../images/template/criacao-de-site-hplanet-07.webp" loading="lazy" alt="Mobile screenshot 1">
+              </div>
+              <div class="template-mobile-item">
+                <img src="../images/template/criacao-de-site-hplanet-06.webp" loading="lazy" alt="Mobile screenshot 2">
+              </div>
+              <div class="template-mobile-item">
+                <img src="../images/template/criacao-de-site-hplanet-05.webp" loading="lazy" alt="Mobile screenshot 3">
+              </div>
+              <div class="template-mobile-item">
+                <img src="../images/template/criacao-de-site-hplanet-04.webp" loading="lazy" alt="Mobile screenshot 4">
+              </div>
+            </div>
           </div>
         </div>
       </section>
