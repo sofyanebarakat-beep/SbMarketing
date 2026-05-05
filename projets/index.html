@@ -16,7 +16,6 @@
   <link href="../images/sb-favicon.png" rel="apple-touch-icon">
 
   <style>
-    /* Font smoothing */
     * {
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
@@ -38,17 +37,14 @@
       transform-origin: bottom;
     }
 
-    /* Sticky navbar with primary color on scroll */
-    .navbar2_component {
+    .navbar2_component,
+    .navbar2_component.is-scrolled {
       position: fixed !important;
       top: 0 !important;
       inset: 0 0 auto !important;
       z-index: 9999;
-      background-color: transparent;
+      background-color: transparent !important;
       transition: background-color 0.3s ease;
-    }
-    .navbar2_component.is-scrolled {
-      background-color: #041020 !important;
     }
   </style>
 </head>
