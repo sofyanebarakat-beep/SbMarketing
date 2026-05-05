@@ -38,14 +38,17 @@
       transform-origin: bottom;
     }
 
-    /* ── Sticky navbar ── */
+    /* Sticky navbar with primary color on scroll */
     .navbar2_component {
       position: fixed !important;
       top: 0 !important;
       inset: 0 0 auto !important;
       z-index: 9999;
-      background-color: #041020;
+      background-color: transparent;
       transition: background-color 0.3s ease;
+    }
+    .navbar2_component.is-scrolled {
+      background-color: #041020 !important;
     }
   </style>
 </head>
@@ -81,10 +84,10 @@
   <div data-collapse="medium" data-animation="default" data-duration="400" fs-scrolldisable-element="smart-nav" data-easing="ease" data-easing2="ease" role="banner" class="navbar2_component w-nav">
     <div class="navbar2_container">
       <a href="../" class="navbar2_logo-link w-nav-brand">
-        <img loading="lazy" src="../images/6723f2c00ddb72327590bdcb_Group.svg" alt="" class="navbar2_logo">
+        <img loading="lazy" src="../images/logo-climanova.svg" alt="" class="navbar2_logo">
       </a>
       <nav role="navigation" class="navbar2_menu w-nav-menu"></nav>
-      <div class="navbar2_button-wrapper">
+      <div id="w-node-e2b655d2-e396-ce84-c19b-32499953e043-9953e038" class="navbar2_button-wrapper">
         <a href="../contact/" data-wf--button--variant="no-icon" class="special-button is-icon w-variant-dcf8a2db-149b-093c-ad09-76811261ba97 w-inline-block">
           <div class="div-block-7 w-variant-dcf8a2db-149b-093c-ad09-76811261ba97">
             <div class="special-button-image-wrapper">
@@ -433,7 +436,7 @@
           <div class="padding-bottom padding-xxlarge">
             <div class="footer7_top-wrapper">
               <a href="../" class="footer7_logo-link w-nav-brand">
-                <img src="../images/6723f2c00ddb72327590bdcb_Group.svg" loading="lazy" alt="Sb Marketing" class="footer7_logo-img">
+                <img src="../images/logo-climanova.svg" loading="lazy" alt="Sb Marketing" class="footer7_logo-img">
               </a>
               <div class="w-layout-grid footer7_link-list"><a href="../contact/" class="footer7_link">Contact</a></div>
             </div>
