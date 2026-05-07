@@ -4,7 +4,7 @@ This repository is a static Webflow export. The deployment root is the repositor
 
 ## Production Structure
 
-- `index.html` and route folders such as `contact/`, `projets/`, `blog/`, and `edmond-garage/` contain deployable pages.
+- `index.html` and route folders such as `contact/`, `projets/`, `blog/`, and `outreach/` contain deployable pages.
 - `css/`, `js/`, `images/`, `media/`, and `fonts/` contain shared production assets referenced by the pages.
 - `scripts/` contains maintenance tooling for local validation.
 - `docs/` contains project notes and cleanup records.

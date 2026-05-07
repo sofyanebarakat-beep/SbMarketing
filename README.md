@@ -49,7 +49,6 @@ The build command validates local asset references across HTML, CSS, JS, and XML
 ├── projets/
 ├── blog/
 ├── outreach/
-├── edmond-garage/
 ├── css/
 ├── js/
 ├── images/
