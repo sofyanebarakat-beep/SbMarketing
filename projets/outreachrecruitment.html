@@ -168,7 +168,7 @@
       display: grid;
       grid-template-columns: minmax(0, 1fr) minmax(13rem, 0.28fr);
       gap: clamp(1.5rem, 4vw, 3.5rem);
-      align-items: start;
+      align-items: stretch;
     }
 
     .template-showcase-frame {
@@ -176,12 +176,15 @@
       border-radius: 8px;
       background: rgba(255, 255, 255, 0.05);
       box-shadow: 0 24px 80px rgba(0, 0, 0, 0.24);
+      height: clamp(36rem, 68vw, 78rem);
     }
 
     .template-showcase-frame img {
       display: block;
       width: 100%;
-      height: auto;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
     }
 
     .template-showcase-mobile {
