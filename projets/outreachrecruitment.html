@@ -73,23 +73,33 @@
       padding: 0;
     }
 
+    .template-iframe-wrap {
+      width: 100%;
+      min-height: 100vh;
+      overflow: hidden;
+      background: #fff;
+      line-height: 0;
+    }
+
     .template-iframe-section iframe {
       display: block;
       width: 100%;
-      height: 12000px;
+      min-height: 100vh;
       border: 0;
       overflow: hidden;
+      background: #fff;
+      transition: height 180ms ease;
     }
 
     @media screen and (max-width: 991px) {
       .template-iframe-section iframe {
-        height: 15000px;
+        min-height: 100vh;
       }
     }
 
     @media screen and (max-width: 767px) {
       .template-iframe-section iframe {
-        height: 17000px;
+        min-height: 100vh;
       }
     }
 
@@ -570,21 +580,19 @@
           </div>
         </div>
       </section>
-     <div style="position:relative;width:100%;height:100vh;">
-
-      
-<iframe
-  src="https://sb-marketing-boost.lovable.app/portfolio/angy-makeup-artist?embed=1"
-  style="width:100%;height:8000px;border:0;display:block;"
-  loading="lazy"
-  title="SB Marketing — Angy Makeup Artist"
-  allow="clipboard-write; fullscreen">
-</iframe>
-
-
-
-
-</div>
+      <section class="template-iframe-section" aria-label="Angy Makeup Artist website preview">
+        <div class="template-iframe-wrap">
+          <iframe
+            id="angy-makeup-embed"
+            src="https://sb-marketing-boost.lovable.app/portfolio/angy-makeup-artist?embed=1"
+            title="SB Marketing - Angy Makeup Artist"
+            loading="lazy"
+            scrolling="no"
+            allow="clipboard-write; fullscreen"
+            data-resize-iframe>
+          </iframe>
+        </div>
+      </section>
       <section class="section_portfolio2-content4 template-details-section portfolio p-desktop">
         <div class="padding-global">
           <div class="container-large">
@@ -827,6 +835,68 @@
       window.addEventListener('scroll', requestTick, { passive: true });
       window.addEventListener('resize', requestTick);
       requestTick();
+    })();
+
+    (function () {
+      var iframe = document.querySelector('[data-resize-iframe]');
+      if (!iframe) return;
+
+      var embedOrigin = 'https://sb-marketing-boost.lovable.app';
+      var minHeight = Math.max(window.innerHeight || 0, 720);
+      var lastHeight = 0;
+
+      function setHeight(height) {
+        var nextHeight = Math.max(Math.ceil(Number(height) || 0), minHeight);
+        if (!nextHeight || Math.abs(nextHeight - lastHeight) < 2) return;
+
+        lastHeight = nextHeight;
+        iframe.style.height = nextHeight + 'px';
+      }
+
+      function readHeight(data) {
+        if (typeof data === 'number') return data;
+        if (typeof data === 'string') {
+          var parsedHeight = Number(data);
+          if (parsedHeight) return parsedHeight;
+
+          try {
+            data = JSON.parse(data);
+          } catch (error) {
+            return 0;
+          }
+        }
+        if (!data || typeof data !== 'object') return 0;
+
+        return data.height ||
+          data.iframeHeight ||
+          data.documentHeight ||
+          data.scrollHeight ||
+          (data.payload && (data.payload.height || data.payload.scrollHeight)) ||
+          0;
+      }
+
+      function requestHeight() {
+        minHeight = Math.max(window.innerHeight || 0, 720);
+        setHeight(lastHeight || minHeight);
+
+        if (!iframe.contentWindow) return;
+        iframe.contentWindow.postMessage({
+          type: 'sb-marketing:request-embed-height',
+          source: 'sb-marketing-parent'
+        }, embedOrigin);
+      }
+
+      window.addEventListener('message', function (event) {
+        if (event.origin !== embedOrigin) return;
+        if (event.source !== iframe.contentWindow) return;
+
+        setHeight(readHeight(event.data));
+      });
+
+      iframe.addEventListener('load', requestHeight);
+      window.addEventListener('resize', requestHeight, { passive: true });
+      window.addEventListener('orientationchange', requestHeight);
+      requestHeight();
     })();
   </script>
 </body>
