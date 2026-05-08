@@ -77,6 +77,7 @@
     }
 
     .template-iframe-wrap {
+      position: relative;
       width: 100%;
       height: auto;
       min-height: 0;
@@ -93,6 +94,45 @@
       border: 0;
       overflow: hidden;
       background: #fff;
+      pointer-events: none;
+    }
+
+    .template-iframe-wrap.is-active iframe {
+      pointer-events: auto;
+    }
+
+    .template-iframe-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      border: 0;
+      background: rgba(4, 16, 32, 0.08);
+      cursor: pointer;
+      transition: opacity 180ms ease, visibility 180ms ease;
+    }
+
+    .template-iframe-overlay span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 2.75rem;
+      padding: 0.75rem 1rem;
+      border-radius: 999px;
+      background: #041020;
+      color: #fff;
+      font-size: 0.95rem;
+      line-height: 1;
+      box-shadow: 0 12px 36px rgba(4, 16, 32, 0.2);
+    }
+
+    .template-iframe-wrap.is-active .template-iframe-overlay {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
     }
 
     .template-case-hero {
@@ -573,7 +613,10 @@
         </div>
       </section>
       <section class="template-iframe-section" aria-label="Angy Makeup Artist website preview">
-  <div class="template-iframe-wrap">
+  <div class="template-iframe-wrap" data-iframe-interaction>
+    <button class="template-iframe-overlay" type="button" aria-label="Click to interact with embedded preview">
+      <span>Click to interact</span>
+    </button>
     <iframe
       src="https://sb-marketing-boost.lovable.app/p2/sdv"
       style="
@@ -836,6 +879,42 @@
       window.addEventListener('scroll', requestTick, { passive: true });
       window.addEventListener('resize', requestTick);
       requestTick();
+    })();
+
+    (function () {
+      var iframeWrap = document.querySelector('[data-iframe-interaction]');
+      if (!iframeWrap) return;
+
+      var overlay = iframeWrap.querySelector('.template-iframe-overlay');
+
+      function activateEmbed() {
+        iframeWrap.classList.add('is-active');
+      }
+
+      function deactivateEmbed() {
+        iframeWrap.classList.remove('is-active');
+      }
+
+      if (overlay) {
+        overlay.addEventListener('click', function (event) {
+          event.stopPropagation();
+          activateEmbed();
+        });
+      }
+
+      iframeWrap.addEventListener('mouseleave', deactivateEmbed);
+
+      document.addEventListener('click', function (event) {
+        if (!iframeWrap.contains(event.target)) {
+          deactivateEmbed();
+        }
+      });
+
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+          deactivateEmbed();
+        }
+      });
     })();
   </script>
 </body>
