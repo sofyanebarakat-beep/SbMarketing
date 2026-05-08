@@ -70,7 +70,7 @@
     .template-iframe-section {
       width: 100%;
       height: auto;
-      min-height: 100vh;
+      min-height: 0;
       overflow: visible;
       background: #fff;
       padding: 0;
@@ -79,7 +79,7 @@
     .template-iframe-wrap {
       width: 100%;
       height: auto;
-      min-height: 100vh;
+      min-height: 0;
       overflow: visible;
       background: #fff;
       line-height: 0;
@@ -88,12 +88,11 @@
     .template-iframe-section iframe {
       display: block;
       width: 100%;
-      height: 100vh;
-      min-height: 100vh;
+      height: 980px;
+      min-height: 0;
       border: 0;
       overflow: hidden;
       background: #fff;
-      transition: height 180ms ease;
     }
 
     .template-case-hero {
@@ -575,15 +574,7 @@
       </section>
       <section class="template-iframe-section" aria-label="Angy Makeup Artist website preview">
         <div class="template-iframe-wrap">
-          <iframe
-            id="angy-makeup-embed"
-            src="https://sb-marketing-boost.lovable.app/portfolio/angy-makeup-artist?embed=1"
-            title="SB Marketing - Angy Makeup Artist"
-            loading="lazy"
-            scrolling="no"
-            allow="clipboard-write; fullscreen"
-            data-resize-iframe>
-          </iframe>
+          <iframe style="width: 100%; height: 980px; border: none; overflow: hidden;" src="https://sb-marketing-boost.lovable.app/portfolio/angy-makeup-artist"></iframe>
         </div>
       </section>
       <section class="section_portfolio2-content4 template-details-section portfolio p-desktop">
@@ -828,82 +819,6 @@
       window.addEventListener('scroll', requestTick, { passive: true });
       window.addEventListener('resize', requestTick);
       requestTick();
-    })();
-
-    (function () {
-      var iframe = document.querySelector('[data-resize-iframe]');
-      if (!iframe) return;
-
-      var embedOrigin = 'https://sb-marketing-boost.lovable.app';
-      var allowedMessageOrigins = [embedOrigin, window.location.origin];
-      var minHeight = Math.max(window.innerHeight || 0, 720);
-      var lastHeight = 0;
-
-      function setHeight(height) {
-        var nextHeight = Math.max(Math.ceil(Number(height) || 0), minHeight);
-        if (nextHeight <= minHeight + 80 && lastHeight > minHeight + 80) return;
-        if (!nextHeight || Math.abs(nextHeight - lastHeight) < 2) return;
-
-        lastHeight = nextHeight;
-        iframe.style.height = nextHeight + 'px';
-        if (iframe.parentElement) {
-          iframe.parentElement.style.minHeight = nextHeight + 'px';
-        }
-      }
-
-      function readHeight(data) {
-        if (typeof data === 'number') return data;
-        if (typeof data === 'string') {
-          var parsedHeight = Number(data);
-          if (parsedHeight) return parsedHeight;
-
-          try {
-            data = JSON.parse(data);
-          } catch (error) {
-            return 0;
-          }
-        }
-        if (!data || typeof data !== 'object') return 0;
-
-        return data.height ||
-          data.iframeHeight ||
-          data.documentHeight ||
-          data.scrollHeight ||
-          data.offsetHeight ||
-          data.clientHeight ||
-          (data.payload && (
-            data.payload.height ||
-            data.payload.iframeHeight ||
-            data.payload.documentHeight ||
-            data.payload.scrollHeight ||
-            data.payload.offsetHeight ||
-            data.payload.clientHeight
-          )) ||
-          0;
-      }
-
-      function requestHeight() {
-        minHeight = Math.max(window.innerHeight || 0, 720);
-        setHeight(lastHeight || minHeight);
-
-        if (!iframe.contentWindow) return;
-        iframe.contentWindow.postMessage({
-          type: 'sb-marketing:request-embed-height',
-          source: 'sb-marketing-parent'
-        }, '*');
-      }
-
-      window.addEventListener('message', function (event) {
-        if (event.source !== iframe.contentWindow) return;
-        if (allowedMessageOrigins.indexOf(event.origin) === -1) return;
-
-        setHeight(readHeight(event.data));
-      });
-
-      iframe.addEventListener('load', requestHeight);
-      window.addEventListener('resize', requestHeight, { passive: true });
-      window.addEventListener('orientationchange', requestHeight);
-      requestHeight();
     })();
   </script>
 </body>
