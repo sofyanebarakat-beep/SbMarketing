@@ -79,7 +79,7 @@
     .template-iframe-wrap {
       width: 100%;
       height: auto;
-      min-height: var(--embed-fallback-height, 11000px);
+      min-height: 100vh;
       overflow: visible;
       background: #fff;
       line-height: 0;
@@ -88,32 +88,12 @@
     .template-iframe-section iframe {
       display: block;
       width: 100%;
-      height: var(--embed-fallback-height, 11000px);
+      height: 100vh;
       min-height: 100vh;
       border: 0;
       overflow: hidden;
       background: #fff;
       transition: height 180ms ease;
-    }
-
-    @media screen and (max-width: 991px) {
-      .template-iframe-wrap {
-        min-height: var(--embed-fallback-height-tablet, 13000px);
-      }
-
-      .template-iframe-section iframe {
-        height: var(--embed-fallback-height-tablet, 13000px);
-      }
-    }
-
-    @media screen and (max-width: 767px) {
-      .template-iframe-wrap {
-        min-height: var(--embed-fallback-height-mobile, 15000px);
-      }
-
-      .template-iframe-section iframe {
-        height: var(--embed-fallback-height-mobile, 15000px);
-      }
     }
 
     .template-case-hero {
@@ -856,16 +836,8 @@
 
       var embedOrigin = 'https://sb-marketing-boost.lovable.app';
       var allowedMessageOrigins = [embedOrigin, window.location.origin];
-      var fallbackHeight = getFallbackHeight();
       var minHeight = Math.max(window.innerHeight || 0, 720);
       var lastHeight = 0;
-
-      function getFallbackHeight() {
-        var width = window.innerWidth || document.documentElement.clientWidth || 0;
-        if (width <= 767) return 15000;
-        if (width <= 991) return 13000;
-        return 11000;
-      }
 
       function setHeight(height) {
         var nextHeight = Math.max(Math.ceil(Number(height) || 0), minHeight);
@@ -911,9 +883,8 @@
       }
 
       function requestHeight() {
-        fallbackHeight = getFallbackHeight();
         minHeight = Math.max(window.innerHeight || 0, 720);
-        setHeight(lastHeight || fallbackHeight);
+        setHeight(lastHeight || minHeight);
 
         if (!iframe.contentWindow) return;
         iframe.contentWindow.postMessage({
@@ -932,7 +903,6 @@
       iframe.addEventListener('load', requestHeight);
       window.addEventListener('resize', requestHeight, { passive: true });
       window.addEventListener('orientationchange', requestHeight);
-      setHeight(fallbackHeight);
       requestHeight();
     })();
   </script>
