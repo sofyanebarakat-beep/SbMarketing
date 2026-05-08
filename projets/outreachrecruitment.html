@@ -851,6 +851,7 @@
       if (!iframe) return;
 
       var embedOrigin = 'https://sb-marketing-boost.lovable.app';
+      var allowedMessageOrigins = [embedOrigin, window.location.origin];
       var fallbackHeight = getFallbackHeight();
       var minHeight = Math.max(window.innerHeight || 0, 720);
       var lastHeight = 0;
@@ -913,12 +914,12 @@
         iframe.contentWindow.postMessage({
           type: 'sb-marketing:request-embed-height',
           source: 'sb-marketing-parent'
-        }, embedOrigin);
+        }, '*');
       }
 
       window.addEventListener('message', function (event) {
-        if (event.origin !== embedOrigin) return;
         if (event.source !== iframe.contentWindow) return;
+        if (allowedMessageOrigins.indexOf(event.origin) === -1) return;
 
         setHeight(readHeight(event.data));
       });
