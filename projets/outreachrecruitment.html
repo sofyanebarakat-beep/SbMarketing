@@ -75,7 +75,7 @@
 
     .template-iframe-wrap {
       width: 100%;
-      min-height: 100vh;
+      min-height: var(--embed-fallback-height, 12000px);
       overflow: hidden;
       background: #fff;
       line-height: 0;
@@ -84,6 +84,7 @@
     .template-iframe-section iframe {
       display: block;
       width: 100%;
+      height: var(--embed-fallback-height, 12000px);
       min-height: 100vh;
       border: 0;
       overflow: hidden;
@@ -92,14 +93,22 @@
     }
 
     @media screen and (max-width: 991px) {
+      .template-iframe-wrap {
+        min-height: var(--embed-fallback-height-tablet, 15000px);
+      }
+
       .template-iframe-section iframe {
-        min-height: 100vh;
+        height: var(--embed-fallback-height-tablet, 15000px);
       }
     }
 
     @media screen and (max-width: 767px) {
+      .template-iframe-wrap {
+        min-height: var(--embed-fallback-height-mobile, 17000px);
+      }
+
       .template-iframe-section iframe {
-        min-height: 100vh;
+        height: var(--embed-fallback-height-mobile, 17000px);
       }
     }
 
@@ -842,8 +851,16 @@
       if (!iframe) return;
 
       var embedOrigin = 'https://sb-marketing-boost.lovable.app';
+      var fallbackHeight = getFallbackHeight();
       var minHeight = Math.max(window.innerHeight || 0, 720);
       var lastHeight = 0;
+
+      function getFallbackHeight() {
+        var width = window.innerWidth || document.documentElement.clientWidth || 0;
+        if (width <= 767) return 17000;
+        if (width <= 991) return 15000;
+        return 12000;
+      }
 
       function setHeight(height) {
         var nextHeight = Math.max(Math.ceil(Number(height) || 0), minHeight);
@@ -851,6 +868,9 @@
 
         lastHeight = nextHeight;
         iframe.style.height = nextHeight + 'px';
+        if (iframe.parentElement) {
+          iframe.parentElement.style.minHeight = nextHeight + 'px';
+        }
       }
 
       function readHeight(data) {
@@ -871,13 +891,23 @@
           data.iframeHeight ||
           data.documentHeight ||
           data.scrollHeight ||
-          (data.payload && (data.payload.height || data.payload.scrollHeight)) ||
+          data.offsetHeight ||
+          data.clientHeight ||
+          (data.payload && (
+            data.payload.height ||
+            data.payload.iframeHeight ||
+            data.payload.documentHeight ||
+            data.payload.scrollHeight ||
+            data.payload.offsetHeight ||
+            data.payload.clientHeight
+          )) ||
           0;
       }
 
       function requestHeight() {
+        fallbackHeight = getFallbackHeight();
         minHeight = Math.max(window.innerHeight || 0, 720);
-        setHeight(lastHeight || minHeight);
+        setHeight(lastHeight || fallbackHeight);
 
         if (!iframe.contentWindow) return;
         iframe.contentWindow.postMessage({
@@ -896,6 +926,7 @@
       iframe.addEventListener('load', requestHeight);
       window.addEventListener('resize', requestHeight, { passive: true });
       window.addEventListener('orientationchange', requestHeight);
+      setHeight(fallbackHeight);
       requestHeight();
     })();
   </script>
