@@ -573,13 +573,38 @@
      <div style="position:relative;width:100%;height:100vh;">
 
       
- <iframe
-  src="https://sb-marketing-boost.lovable.app/portfolio/angy-makeup-artist?embed=1"
-  style="width:100%;border:0;display:block;min-height:2400px;"
-  loading="lazy"
-  title="SB Marketing — Angy Makeup Artist"
-  allow="clipboard-write; fullscreen"
-></iframe>
+<div style="width:100%;overflow:hidden;">
+  <iframe
+    id="portfolioFrame"
+    src="https://sb-marketing-boost.lovable.app/portfolio/angy-makeup-artist?embed=1"
+    style="width:100%;border:0;display:block;overflow:hidden;"
+    scrolling="no"
+    loading="lazy"
+    title="SB Marketing — Angy Makeup Artist"
+    allow="clipboard-write; fullscreen"
+    onload="resizeIframe(this)">
+  </iframe>
+</div>
+
+<script>
+function resizeIframe(iframe) {
+  try {
+    const updateHeight = () => {
+      const doc = iframe.contentWindow.document;
+      iframe.style.height =
+        Math.max(
+          doc.body.scrollHeight,
+          doc.documentElement.scrollHeight
+        ) + 'px';
+    };
+
+    updateHeight();
+    setInterval(updateHeight, 1000);
+  } catch(e) {
+    console.log('Cross-origin iframe resize blocked');
+  }
+}
+</script>
 
 
 </div>
