@@ -76,14 +76,20 @@
     .template-iframe-section iframe {
       display: block;
       width: 100%;
-      height: min(92vh, 62rem);
+      height: 22000px;
       border: 0;
-      overflow: auto;
+      overflow: hidden;
+    }
+
+    @media screen and (max-width: 991px) {
+      .template-iframe-section iframe {
+        height: 26000px;
+      }
     }
 
     @media screen and (max-width: 767px) {
       .template-iframe-section iframe {
-        height: 82vh;
+        height: 32000px;
       }
     }
 
@@ -565,7 +571,7 @@
         </div>
       </section>
       <section class="portfolio p-desktop template-iframe-section">
-        <iframe src="https://sb-marketing-boost.lovable.app/portfolio/angy-makeup-artist" title="Angy Makeup Artist portfolio page" loading="lazy" scrolling="yes"></iframe>
+        <iframe src="https://sb-marketing-boost.lovable.app/portfolio/angy-makeup-artist" title="Angy Makeup Artist portfolio page" loading="lazy" scrolling="no"></iframe>
       </section>
       <section class="section_portfolio2-content4 template-details-section portfolio p-desktop">
         <div class="padding-global">
