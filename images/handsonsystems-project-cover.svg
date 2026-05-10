@@ -1,0 +1,12 @@
+<svg width="1600" height="1000" viewBox="0 0 1600 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="1000" fill="#08111F"/>
+  <rect x="80" y="80" width="1440" height="840" rx="32" fill="#0B1728"/>
+  <path d="M270 650V350H330V470H470V350H530V650H470V522H330V650H270Z" fill="#F8FBFF"/>
+  <path d="M602 650V350H720C786 350 830 390 830 452C830 513 786 552 720 552H662V650H602ZM662 500H714C749 500 769 482 769 452C769 422 749 403 714 403H662V500Z" fill="#F8FBFF"/>
+  <path d="M910 654C846 654 803 619 798 562H858C862 591 882 606 912 606C941 606 960 593 960 570C960 547 945 538 898 526C836 511 807 485 807 438C807 384 849 346 909 346C971 346 1012 381 1018 437H958C954 410 937 394 909 394C884 394 867 408 867 431C867 451 881 460 925 471C991 487 1020 513 1020 563C1020 619 976 654 910 654Z" fill="#F8FBFF"/>
+  <path d="M1110 650V402H1026V350H1254V402H1170V650H1110Z" fill="#F8FBFF"/>
+  <circle cx="1330" cy="500" r="76" stroke="#25D7A4" stroke-width="24"/>
+  <path d="M1326 449L1371 500L1326 551" stroke="#25D7A4" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M248 742H1352" stroke="#25D7A4" stroke-width="4" stroke-linecap="round"/>
+  <text x="800" y="815" text-anchor="middle" fill="#C9D6E5" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="700" letter-spacing="8">HANDS ON SYSTEMS</text>
+</svg>
