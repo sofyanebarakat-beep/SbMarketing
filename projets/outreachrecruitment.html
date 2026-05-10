@@ -156,9 +156,7 @@
       display: flex;
       flex-wrap: nowrap;
       justify-content: flex-start;
-      width: fit-content;
-      min-width: max-content;
-      animation: banner15-scroll 28s linear infinite;
+      width: max-content;
       will-change: transform;
     }
 
@@ -166,15 +164,9 @@
       flex-shrink: 0;
       display: flex;
       align-items: center;
-      padding-top: 0;
-      padding-bottom: 0;
+      padding-top: 1.5rem;
+      padding-bottom: 1.5rem;
       transform: none !important;
-      will-change: auto !important;
-    }
-
-    @keyframes banner15-scroll {
-      from { transform: translateX(0); }
-      to { transform: translateX(-50%); }
     }
 
     .portfolio.p-desktop,
@@ -946,6 +938,27 @@
       window.addEventListener('resize', function () {
         embeds.forEach(requestEmbedHeight);
       }, { passive: true });
+    })();
+
+    (function () {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var wrapper = document.querySelector('.section_banner15 .banner15_inner-wrapper');
+      if (!wrapper) return;
+
+      var duration = 28000;
+      var startTime = null;
+      var halfWidth = 0;
+
+      function tick(ts) {
+        if (!halfWidth) halfWidth = wrapper.scrollWidth / 2;
+        if (!halfWidth) { requestAnimationFrame(tick); return; }
+        if (!startTime) startTime = ts;
+        var x = -halfWidth * (((ts - startTime) % duration) / duration);
+        wrapper.style.transform = 'translateX(' + x + 'px)';
+        requestAnimationFrame(tick);
+      }
+
+      requestAnimationFrame(tick);
     })();
   </script>
 </body>
