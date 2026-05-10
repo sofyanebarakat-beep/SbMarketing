@@ -1,0 +1,11 @@
+<svg width="1600" height="1000" viewBox="0 0 1600 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="1000" fill="#2A0D0D"/>
+  <rect x="96" y="96" width="1408" height="808" rx="36" fill="#381111"/>
+  <circle cx="800" cy="430" r="158" fill="#4A1717" stroke="#D9B46F" stroke-width="16"/>
+  <path d="M720 470C720 410 757 366 800 366C843 366 880 410 880 470C880 516 847 552 800 552C753 552 720 516 720 470Z" fill="#F8EFE2"/>
+  <path d="M735 394C682 389 646 414 646 459C646 500 681 527 734 520" stroke="#D9B46F" stroke-width="22" stroke-linecap="round"/>
+  <path d="M865 394C918 389 954 414 954 459C954 500 919 527 866 520" stroke="#D9B46F" stroke-width="22" stroke-linecap="round"/>
+  <path d="M754 333L800 287L846 333" stroke="#D9B46F" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="800" y="705" text-anchor="middle" fill="#F8EFE2" font-family="Arial, Helvetica, sans-serif" font-size="92" font-weight="800" letter-spacing="1">Boucherie Walima</text>
+  <text x="800" y="780" text-anchor="middle" fill="#D9B46F" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700" letter-spacing="10">QUALITE • TRADITION • ARTISANAT</text>
+</svg>
