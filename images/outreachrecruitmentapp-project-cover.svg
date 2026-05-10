@@ -1,0 +1,15 @@
+<svg width="1600" height="1000" viewBox="0 0 1600 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="1000" fill="#071527"/>
+  <rect x="96" y="96" width="1408" height="808" rx="36" fill="#0B1D33"/>
+  <rect x="520" y="285" width="560" height="330" rx="38" fill="#102A46" stroke="#39D98A" stroke-width="16"/>
+  <rect x="575" y="350" width="190" height="42" rx="21" fill="#F8FBFF"/>
+  <rect x="575" y="430" width="450" height="34" rx="17" fill="#BBD3EF"/>
+  <rect x="575" y="500" width="310" height="34" rx="17" fill="#BBD3EF"/>
+  <circle cx="970" cy="370" r="55" fill="#39D98A"/>
+  <path d="M946 370L964 388L998 348" stroke="#071527" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M690 615V682" stroke="#39D98A" stroke-width="14" stroke-linecap="round"/>
+  <path d="M910 615V682" stroke="#39D98A" stroke-width="14" stroke-linecap="round"/>
+  <path d="M620 682H980" stroke="#39D98A" stroke-width="14" stroke-linecap="round"/>
+  <text x="800" y="760" text-anchor="middle" fill="#F8FBFF" font-family="Arial, Helvetica, sans-serif" font-size="82" font-weight="800" letter-spacing="1">Outreach Recruitment</text>
+  <text x="800" y="835" text-anchor="middle" fill="#BBD3EF" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700" letter-spacing="10">WEB APPLICATION</text>
+</svg>
