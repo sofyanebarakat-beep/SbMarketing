@@ -1,0 +1,13 @@
+<svg width="1600" height="1000" viewBox="0 0 1600 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="1000" fill="#08111F"/>
+  <rect x="96" y="96" width="1408" height="808" rx="36" fill="#0B1728"/>
+  <circle cx="800" cy="430" r="150" fill="#102238" stroke="#25D7A4" stroke-width="18"/>
+  <circle cx="800" cy="430" r="86" stroke="#25D7A4" stroke-width="18"/>
+  <circle cx="800" cy="430" r="24" fill="#25D7A4"/>
+  <path d="M676 316C592 379 592 481 676 544" stroke="#F8FBFF" stroke-width="22" stroke-linecap="round"/>
+  <path d="M924 316C1008 379 1008 481 924 544" stroke="#F8FBFF" stroke-width="22" stroke-linecap="round"/>
+  <path d="M720 363C682 399 682 461 720 497" stroke="#F8FBFF" stroke-width="18" stroke-linecap="round"/>
+  <path d="M880 363C918 399 918 461 880 497" stroke="#F8FBFF" stroke-width="18" stroke-linecap="round"/>
+  <text x="800" y="675" text-anchor="middle" fill="#F8FBFF" font-family="Arial, Helvetica, sans-serif" font-size="86" font-weight="800" letter-spacing="2">Hands On RFID</text>
+  <text x="800" y="750" text-anchor="middle" fill="#C9D6E5" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700" letter-spacing="10">RFID TECHNOLOGY</text>
+</svg>
