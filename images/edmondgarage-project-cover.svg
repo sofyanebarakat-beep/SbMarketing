@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 810" width="1440" height="810">
+  <defs>
+    <filter id="txt-shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#000" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+  <rect width="1440" height="810" fill="#2AC4F5"/>
+  <text
+    x="720"
+    y="450"
+    font-family="'Arial Black', 'Franklin Gothic Heavy', 'Impact', sans-serif"
+    font-size="210"
+    font-weight="900"
+    font-style="italic"
+    fill="#ffffff"
+    text-anchor="middle"
+    filter="url(#txt-shadow)"
+    letter-spacing="-4">EDMOND GARAGE</text>
+</svg>
