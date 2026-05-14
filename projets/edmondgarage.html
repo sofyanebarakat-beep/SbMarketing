@@ -69,12 +69,12 @@
 
     .outreach-details-before-iframe {
       position: relative;
-      z-index: 0;
     }
 
     .outreach-identity-behind-iframe {
       position: relative;
-      z-index: 0;
+      z-index: 3;
+      background: #fff;
     }
 
     .template-iframe-section {
@@ -110,8 +110,11 @@
       border: 0;
       overflow: hidden;
       background: #fff;
-      pointer-events: none;
       transition: height 180ms ease;
+    }
+
+    iframe[data-sb-embed] {
+      pointer-events: none;
     }
 
     .template-case-hero {
@@ -146,36 +149,60 @@
 
     .section_banner15 {
       background: #fff;
-      padding-block: clamp(4rem, 7vw, 7rem);
-    }
-
-    .section_banner15 .banner15_component {
       overflow: hidden;
+      border-top: 1px solid rgba(4, 16, 32, 0.1);
+      border-bottom: 1px solid rgba(4, 16, 32, 0.1);
     }
 
-    .section_banner15 .banner15_inner-wrapper {
+    .section_banner15 .banner15_row {
+      overflow: hidden;
+      padding-block: clamp(1.1rem, 2vw, 1.6rem);
+    }
+
+    .section_banner15 .banner15_inner {
       display: flex;
-      flex-wrap: nowrap;
-      justify-content: flex-start;
-      width: fit-content;
-      min-width: max-content;
-      animation: banner15-scroll 28s linear infinite;
-      will-change: transform;
+      width: max-content;
     }
 
-    .section_banner15 .banner15_marquee {
-      flex-shrink: 0;
+    .section_banner15 .banner15_inner--left {
+      animation: banner-scroll-left 34s linear infinite;
+    }
+
+    .section_banner15 .banner15_items {
       display: flex;
       align-items: center;
-      padding-top: 0;
-      padding-bottom: 0;
-      transform: none !important;
-      will-change: auto !important;
+      flex-shrink: 0;
+      gap: clamp(1.5rem, 2.8vw, 2.5rem);
+      padding-right: clamp(1.5rem, 2.8vw, 2.5rem);
     }
 
-    @keyframes banner15-scroll {
+    .section_banner15 .banner15_item {
+      white-space: nowrap;
+      font-size: clamp(0.875rem, 1.5vw, 1.25rem);
+      font-weight: 500;
+      color: #041020;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      line-height: 1;
+    }
+
+    .section_banner15 .banner15_sep {
+      display: inline-block;
+      width: 0.45rem;
+      height: 0.45rem;
+      background: #FFE500;
+      border-radius: 1px;
+      flex-shrink: 0;
+      vertical-align: middle;
+    }
+
+    @keyframes banner-scroll-left {
       from { transform: translateX(0); }
-      to { transform: translateX(-50%); }
+      to   { transform: translateX(-50%); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .section_banner15 .banner15_inner { animation: none; }
     }
 
     .portfolio.p-desktop,
@@ -511,6 +538,7 @@
           <img loading="eager" alt="" src="../images/68f12ddb6bfb958dff8fe2c4_BG%20LINE%20PATTERN.svg" class="header30_background-image">
         </div>
       </header>
+
       <section class="section_portfolio2-content1 template-details-section portfolio p-mobile">
         <div class="padding-global">
           <div class="container-large">
@@ -562,7 +590,8 @@
           </div>
         </div>
       </section>
-      <section class="section_portfolio2-content2 template-details-section portfolio p-desktop outreach-details-before-iframe">
+
+      <section class="section_portfolio2-content2 template-details-section portfolio p-desktop">
         <div class="padding-global">
           <div class="container-large">
             <div class="padding-section-large">
@@ -577,6 +606,23 @@
                       <p>Nous avons structuré le site autour des services de chauffeur privé, de la flotte, des zones desservies et des demandes de réservation — avec une expérience pensée pour convertir à chaque niveau de la page.</p>
                       <p>Le résultat : une vitrine professionnelle qui positionne Edmond Garage comme un partenaire de confiance et qui simplifie la demande de transport pour les voyageurs comme pour les clients professionnels.</p>
                     </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+<iframe src="https://sb-marketing-boost.lovable.app/p2/f" data-sb-embed style="width:100%;border:0;display:block;" scrolling="no" loading="lazy"></iframe>
+<script>(function(){if(window.__sbEmbedInit)return;window.__sbEmbedInit=true;window.addEventListener('message',function(e){var d=e.data;if(!d||d.type!=='sb-marketing:embed-height')return;document.querySelectorAll('iframe[data-sb-embed]').forEach(function(f){if(f.contentWindow===e.source){f.style.height=d.height+'px';}});});})();</script>
+
+      <section class="section_portfolio2-content2 template-details-section portfolio p-desktop outreach-details-before-iframe">
+        <div class="padding-global">
+          <div class="container-large">
+            <div class="padding-section-large">
+              <div class="max-width-large align-center">
+                <div class="fx-up">
+                  <div class="portfolio2-content2_component">
                     <div class="template-inline-subsection outreach-identity-behind-iframe">
                       <div class="margin-bottom margin-small">
                         <h2>Identité &amp; contenu</h2>
@@ -592,21 +638,9 @@
           </div>
         </div>
       </section>
-      <section class="template-iframe-section outreach-iframe-overlap" aria-label="Edmond Garage website preview">
-  <div class="template-iframe-wrap">
-    <iframe
-      data-sb-embed
-      src="https://sb-marketing-boost.lovable.app/p2/f"
-      style="
-        width:100%;
-        height:100vh;
-        border:none;
-      "
-      scrolling="no">
-    </iframe>
- 
-  </div>
-</section>
+<iframe src="https://sb-marketing-boost.lovable.app/p2/social-media-outreach" data-sb-embed style="width:100%;border:0;display:block;" scrolling="no" loading="lazy"></iframe>
+<script>(function(){if(window.__sbEmbedInit)return;window.__sbEmbedInit=true;window.addEventListener('message',function(e){var d=e.data;if(!d||d.type!=='sb-marketing:embed-height')return;document.querySelectorAll('iframe[data-sb-embed]').forEach(function(f){if(f.contentWindow===e.source){f.style.height=d.height+'px';}});});})();</script>
+
       <section class="section_portfolio2-content4 template-details-section portfolio p-desktop">
         <div class="padding-global">
           <div class="container-large">
@@ -632,88 +666,42 @@
           </div>
         </div>
       </section>
+
       <section class="section_banner15">
-        <div class="banner15_component">
-          <div class="banner15_inner-wrapper">
-            <div class="banner15_marquee">
-              <div class="banner15_heading-wrapper">
-                <div class="heading-style-h4">On valorise votre flotte</div>
-              </div>
-              <div class="banner15_image-wrapper"></div>
-              <div class="banner15_heading-wrapper">
-                <div class="heading-style-h4">On rassure les voyageurs</div>
-              </div>
-              <div class="banner15_image-wrapper"></div>
-              <div class="banner15_heading-wrapper">
-                <div class="heading-style-h4">On simplifie la réservation</div>
-              </div>
-              <div class="banner15_image-wrapper"></div>
-              <div class="banner15_heading-wrapper">
-                <div class="heading-style-h4">On met en avant vos trajets</div>
-              </div>
-              <div class="banner15_image-wrapper"></div>
-              <div class="banner15_heading-wrapper">
-                <div class="heading-style-h4">On renforce votre image premium</div>
-              </div>
-              <div class="banner15_image-wrapper"></div>
-              <div class="banner15_heading-wrapper">
-                <div class="heading-style-h4">On crée des sites qui convertissent</div>
-              </div>
-              <div class="banner15_image-wrapper"></div>
-              <div class="banner15_heading-wrapper">
-                <div class="heading-style-h4">On clarifie vos services</div>
-              </div>
-              <div class="banner15_image-wrapper"></div>
-              <div class="banner15_heading-wrapper">
-                <div class="heading-style-h4">On facilite la prise de contact</div>
-              </div>
-              <div class="banner15_image-wrapper"></div>
-              <div class="banner15_heading-wrapper">
-                <div class="heading-style-h4">On accompagne les voyageurs</div>
-              </div>
-              <div class="banner15_image-wrapper"></div>
+        <div class="banner15_row">
+          <div class="banner15_inner banner15_inner--left">
+            <div class="banner15_items">
+              <span class="banner15_item">Website Design</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Brand Identity</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Art Direction</span><span class="banner15_sep"></span>
+              <span class="banner15_item">SEO Local</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Social Media</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Marketing Digital</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Développement Web</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Stratégie de Contenu</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Identité Visuelle</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Campagnes Ads</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Email Marketing</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Conversion</span><span class="banner15_sep"></span>
             </div>
-            <div class="banner15_marquee">
-              <div class="banner15_heading-wrapper">
-                <div class="heading-style-h4">On valorise votre flotte</div>
-              </div>
-              <div class="banner15_image-wrapper"></div>
-              <div class="banner15_heading-wrapper">
-                <div class="heading-style-h4">On rassure les voyageurs</div>
-              </div>
-              <div class="banner15_image-wrapper"></div>
-              <div class="banner15_heading-wrapper">
-                <div class="heading-style-h4">On simplifie la réservation</div>
-              </div>
-              <div class="banner15_image-wrapper"></div>
-              <div class="banner15_heading-wrapper">
-                <div class="heading-style-h4">On met en avant vos trajets</div>
-              </div>
-              <div class="banner15_image-wrapper"></div>
-              <div class="banner15_heading-wrapper">
-                <div class="heading-style-h4">On renforce votre image premium</div>
-              </div>
-              <div class="banner15_image-wrapper"></div>
-              <div class="banner15_heading-wrapper">
-                <div class="heading-style-h4">On crée des sites qui convertissent</div>
-              </div>
-              <div class="banner15_image-wrapper"></div>
-              <div class="banner15_heading-wrapper">
-                <div class="heading-style-h4">On clarifie vos services</div>
-              </div>
-              <div class="banner15_image-wrapper"></div>
-              <div class="banner15_heading-wrapper">
-                <div class="heading-style-h4">On facilite la prise de contact</div>
-              </div>
-              <div class="banner15_image-wrapper"></div>
-              <div class="banner15_heading-wrapper">
-                <div class="heading-style-h4">On accompagne les voyageurs</div>
-              </div>
-              <div class="banner15_image-wrapper"></div>
+            <div class="banner15_items" aria-hidden="true">
+              <span class="banner15_item">Website Design</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Brand Identity</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Art Direction</span><span class="banner15_sep"></span>
+              <span class="banner15_item">SEO Local</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Social Media</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Marketing Digital</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Développement Web</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Stratégie de Contenu</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Identité Visuelle</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Campagnes Ads</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Email Marketing</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Conversion</span><span class="banner15_sep"></span>
             </div>
           </div>
         </div>
       </section>
+
       <section class="section_portfolio2-related background-color-secondary">
         <div class="padding-global">
           <div class="container-large">
@@ -741,8 +729,27 @@
                   <div class="portfolio8_list-wrapper w-dyn-list">
                     <div role="list" class="portfolio8_list w-dyn-items">
                       <div role="listitem" class="w-dyn-item">
-                        <div class="portfolio8_item"><a href="/angy-makeup-artist/" class="portfolio8_item-link w-inline-block">
-                            <div class="portfolio8_image-wrapper"><img src="../images/68f7ba5e5ab7ad672f0622eb_5D206031%20%281%29-p-1600.jpg" loading="lazy" alt="Angy Makeup Artist - site web beauté" class="portfolio8_image"></div>
+                        <div class="portfolio8_item"><a href="/projets/outreachrecruitment.html" class="portfolio8_item-link w-inline-block">
+                            <div class="portfolio8_image-wrapper"><img src="../images/outreach-project-cover.png" loading="lazy" alt="Outreach Recruitment" class="portfolio8_image"></div>
+                            <div class="portfolio8_title-wrapper">
+                              <div class="portfolio8_item-content-top">
+                                <div class="margin-bottom margin-xxsmall">
+                                  <h3 class="heading-style-h5">OUTREACH RECRUITMENT</h3>
+                                </div>
+                                <div class="text-size-regular">Site web et image de marque</div>
+                              </div>
+                              <div class="portfolio8_button-wrapper">
+                                <div class="button is-link is-icon">
+                                  <div>Voir le projet</div>
+                                  <div class="icon-embed-xxsmall w-embed"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 3L11 8L6 13" stroke="CurrentColor" stroke-width="1.5"></path></svg></div>
+                                </div>
+                              </div>
+                            </div>
+                          </a></div>
+                      </div>
+                      <div role="listitem" class="w-dyn-item">
+                        <div class="portfolio8_item"><a href="/projets/angymakeupartist.html" class="portfolio8_item-link w-inline-block">
+                            <div class="portfolio8_image-wrapper"><img src="../images/angymakeupartist-project-cover.svg" loading="lazy" alt="Angy Makeup Artist" class="portfolio8_image"></div>
                             <div class="portfolio8_title-wrapper">
                               <div class="portfolio8_item-content-top">
                                 <div class="margin-bottom margin-xxsmall">
