@@ -148,18 +148,15 @@
     }
 
     .section_banner15 {
-      background: #041020;
-      padding-block: clamp(3rem, 5.5vw, 5.5rem);
+      background: #fff;
       overflow: hidden;
+      border-top: 1px solid rgba(4, 16, 32, 0.1);
+      border-bottom: 1px solid rgba(4, 16, 32, 0.1);
     }
 
     .section_banner15 .banner15_row {
       overflow: hidden;
-      padding-block: clamp(0.6rem, 1.1vw, 1rem);
-    }
-
-    .section_banner15 .banner15_row + .banner15_row {
-      border-top: 1px solid rgba(255, 255, 255, 0.07);
+      padding-block: clamp(1.1rem, 2vw, 1.6rem);
     }
 
     .section_banner15 .banner15_inner {
@@ -171,42 +168,37 @@
       animation: banner-scroll-left 34s linear infinite;
     }
 
-    .section_banner15 .banner15_inner--right {
-      animation: banner-scroll-right 34s linear infinite;
-    }
-
     .section_banner15 .banner15_items {
       display: flex;
       align-items: center;
       flex-shrink: 0;
-      gap: clamp(1.25rem, 2.5vw, 2.25rem);
-      padding-right: clamp(1.25rem, 2.5vw, 2.25rem);
+      gap: clamp(1.5rem, 2.8vw, 2.5rem);
+      padding-right: clamp(1.5rem, 2.8vw, 2.5rem);
     }
 
     .section_banner15 .banner15_item {
       white-space: nowrap;
-      font-size: clamp(1.1rem, 2.2vw, 1.875rem);
-      font-weight: 600;
-      color: rgba(255, 255, 255, 0.82);
-      letter-spacing: -0.02em;
-      line-height: 1.2;
+      font-size: clamp(0.875rem, 1.5vw, 1.25rem);
+      font-weight: 500;
+      color: #041020;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      line-height: 1;
     }
 
     .section_banner15 .banner15_sep {
-      color: #4ade80;
-      font-size: clamp(0.5rem, 0.85vw, 0.75rem);
+      display: inline-block;
+      width: 0.45rem;
+      height: 0.45rem;
+      background: #4ade80;
+      border-radius: 1px;
       flex-shrink: 0;
-      opacity: 0.75;
+      vertical-align: middle;
     }
 
     @keyframes banner-scroll-left {
       from { transform: translateX(0); }
       to   { transform: translateX(-50%); }
-    }
-
-    @keyframes banner-scroll-right {
-      from { transform: translateX(-50%); }
-      to   { transform: translateX(0); }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -682,53 +674,35 @@
         </div>
       </section>
       <section class="section_banner15">
-        <!-- Row 1 — scrolls left -->
         <div class="banner15_row">
           <div class="banner15_inner banner15_inner--left">
             <div class="banner15_items">
-              <span class="banner15_item">Website Design</span><span class="banner15_sep">✦</span>
-              <span class="banner15_item">Brand Identity</span><span class="banner15_sep">✦</span>
-              <span class="banner15_item">Art Direction</span><span class="banner15_sep">✦</span>
-              <span class="banner15_item">SEO Local</span><span class="banner15_sep">✦</span>
-              <span class="banner15_item">Social Media</span><span class="banner15_sep">✦</span>
-              <span class="banner15_item">Marketing Digital</span><span class="banner15_sep">✦</span>
-              <span class="banner15_item">Développement Web</span><span class="banner15_sep">✦</span>
-              <span class="banner15_item">Stratégie de Contenu</span><span class="banner15_sep">✦</span>
+              <span class="banner15_item">Website Design</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Brand Identity</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Art Direction</span><span class="banner15_sep"></span>
+              <span class="banner15_item">SEO Local</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Social Media</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Marketing Digital</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Développement Web</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Stratégie de Contenu</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Identité Visuelle</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Campagnes Ads</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Email Marketing</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Conversion</span><span class="banner15_sep"></span>
             </div>
             <div class="banner15_items" aria-hidden="true">
-              <span class="banner15_item">Website Design</span><span class="banner15_sep">✦</span>
-              <span class="banner15_item">Brand Identity</span><span class="banner15_sep">✦</span>
-              <span class="banner15_item">Art Direction</span><span class="banner15_sep">✦</span>
-              <span class="banner15_item">SEO Local</span><span class="banner15_sep">✦</span>
-              <span class="banner15_item">Social Media</span><span class="banner15_sep">✦</span>
-              <span class="banner15_item">Marketing Digital</span><span class="banner15_sep">✦</span>
-              <span class="banner15_item">Développement Web</span><span class="banner15_sep">✦</span>
-              <span class="banner15_item">Stratégie de Contenu</span><span class="banner15_sep">✦</span>
-            </div>
-          </div>
-        </div>
-        <!-- Row 2 — scrolls right -->
-        <div class="banner15_row">
-          <div class="banner15_inner banner15_inner--right">
-            <div class="banner15_items">
-              <span class="banner15_item">Identité Visuelle</span><span class="banner15_sep">✦</span>
-              <span class="banner15_item">Campagnes Ads</span><span class="banner15_sep">✦</span>
-              <span class="banner15_item">Email Marketing</span><span class="banner15_sep">✦</span>
-              <span class="banner15_item">Conversion</span><span class="banner15_sep">✦</span>
-              <span class="banner15_item">Recrutement</span><span class="banner15_sep">✦</span>
-              <span class="banner15_item">Marque Employeur</span><span class="banner15_sep">✦</span>
-              <span class="banner15_item">Stratégie Digitale</span><span class="banner15_sep">✦</span>
-              <span class="banner15_item">UX &amp; Design</span><span class="banner15_sep">✦</span>
-            </div>
-            <div class="banner15_items" aria-hidden="true">
-              <span class="banner15_item">Identité Visuelle</span><span class="banner15_sep">✦</span>
-              <span class="banner15_item">Campagnes Ads</span><span class="banner15_sep">✦</span>
-              <span class="banner15_item">Email Marketing</span><span class="banner15_sep">✦</span>
-              <span class="banner15_item">Conversion</span><span class="banner15_sep">✦</span>
-              <span class="banner15_item">Recrutement</span><span class="banner15_sep">✦</span>
-              <span class="banner15_item">Marque Employeur</span><span class="banner15_sep">✦</span>
-              <span class="banner15_item">Stratégie Digitale</span><span class="banner15_sep">✦</span>
-              <span class="banner15_item">UX &amp; Design</span><span class="banner15_sep">✦</span>
+              <span class="banner15_item">Website Design</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Brand Identity</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Art Direction</span><span class="banner15_sep"></span>
+              <span class="banner15_item">SEO Local</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Social Media</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Marketing Digital</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Développement Web</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Stratégie de Contenu</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Identité Visuelle</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Campagnes Ads</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Email Marketing</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Conversion</span><span class="banner15_sep"></span>
             </div>
           </div>
         </div>
