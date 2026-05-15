@@ -85,6 +85,10 @@ body { -ms-overflow-style: none; scrollbar-width: none; background: #fff; }
   gap: 10px;
   margin-bottom: 24px;
 }
+.article-author {
+  color: rgba(255,255,255,.4);
+  font-size: .8rem;
+}
 .article-category {
   display: inline-block;
   background: rgba(245,166,35,.15);
@@ -137,6 +141,26 @@ body { -ms-overflow-style: none; scrollbar-width: none; background: #fff; }
   transition: color .2s, border-color .2s;
 }
 .article-tag:hover { color: #f5a623; border-color: rgba(245,166,35,.4); }
+.article-share {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 24px;
+}
+.share-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.4rem;
+  padding: 0 .9rem;
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 999px;
+  background: rgba(255,255,255,.06);
+  color: #fff;
+  font-size: .82rem;
+  text-decoration: none;
+  cursor: pointer;
+  font: inherit;
+}
 
 /* Hero image */
 .article-hero-img {
@@ -295,6 +319,59 @@ body { -ms-overflow-style: none; scrollbar-width: none; background: #fff; }
   border: none;
   border-top: 1px solid #e8eaed;
   margin: 48px 0;
+}
+.inline-cta {
+  margin: 34px 0;
+  padding: 24px;
+  border: 1px solid #e8eaed;
+  border-radius: 14px;
+  background: #f8f9fb;
+}
+.inline-cta h3 { margin-top: 0; }
+.inline-cta p { margin-bottom: 14px; }
+.inline-cta a { font-weight: 700; }
+.faq-list {
+  margin: 26px 0 0;
+}
+.faq-item {
+  padding: 22px 0;
+  border-top: 1px solid #e8eaed;
+}
+.faq-item h3 {
+  margin-top: 0;
+  color: #041020;
+}
+.related-posts {
+  margin: 56px 0 0;
+}
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+.related-card {
+  overflow: hidden;
+  border: 1px solid #e8eaed;
+  border-radius: 14px;
+  background: #fff;
+  text-decoration: none;
+}
+.related-card img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+}
+.related-card div {
+  padding: 18px;
+}
+.related-card strong {
+  display: block;
+  color: #041020;
+  font-size: 1rem;
+}
+@media (max-width: 767px) {
+  .related-grid { grid-template-columns: 1fr; }
 }
 
 /* CTA block */
@@ -467,6 +544,7 @@ html { font-size: calc(.625rem + .41666666666666663vw); }
         <a href="/blog/" class="article-category">Marketing Digital</a>
         <span class="article-read-time">4 min de lecture</span>
         <span class="article-date">15 mai 2026</span>
+        <span class="article-author">Par Sb Marketing · Mis à jour le 15 mai 2026</span>
       </div>
       <h1>Qu'est-ce que la publicité Meta ?</h1>
       <p class="article-hero__lead">La publicité Meta permet de diffuser des annonces sur Facebook, Instagram, Messenger et d'autres emplacements du groupe Meta pour toucher les bonnes personnes au bon moment.</p>
@@ -476,6 +554,11 @@ html { font-size: calc(.625rem + .41666666666666663vw); }
         <a href="/blog/" class="article-tag">#InstagramAds</a>
         <a href="/blog/" class="article-tag">#MarketingDigital</a>
         <a href="/blog/" class="article-tag">#Acquisition</a>
+      </div>
+      <div class="article-share">
+        <a class="share-link" href="https://www.linkedin.com/sharing/share-offsite/?url=https://www.sbmarketing.fr/blog/quest-ce-que-la-publicite-meta/" target="_blank" rel="noopener">Partager sur LinkedIn</a>
+        <a class="share-link" href="https://www.facebook.com/sharer/sharer.php?u=https://www.sbmarketing.fr/blog/quest-ce-que-la-publicite-meta/" target="_blank" rel="noopener">Partager sur Facebook</a>
+        <button class="share-link" type="button" data-copy-link>Copier le lien</button>
       </div>
     </div>
     <div class="article-hero-img">
@@ -490,13 +573,13 @@ html { font-size: calc(.625rem + .41666666666666663vw); }
       <!-- Main content -->
       <article class="article-content">
 
-        <h2>La publicité Meta, en bref</h2>
+        <h2 id="definition">La publicité Meta, en bref</h2>
         <p>La publicité Meta regroupe les campagnes diffusées sur les plateformes de Meta, notamment <strong>Facebook</strong>, <strong>Instagram</strong> et <strong>Messenger</strong>. Elle permet à une entreprise de promouvoir une offre auprès d'une audience choisie selon sa localisation, ses centres d'intérêt, ses comportements ou ses interactions passées avec la marque.</p>
         <p>Contrairement à une publication organique, une annonce sponsorisée peut être montrée rapidement à des personnes qui ne vous suivent pas encore. C'est ce qui en fait un levier puissant pour gagner en visibilité, générer des demandes et soutenir les ventes.</p>
 
         <hr class="article-divider">
 
-        <h2>Où apparaissent les annonces ?</h2>
+        <h2 id="placements">Où apparaissent les annonces ?</h2>
         <p>Les campagnes Meta peuvent apparaître dans le fil Facebook, les stories Instagram, les Reels, Messenger ou encore l'Audience Network. Le format s'adapte à l'objectif : image, vidéo, carrousel, formulaire de contact ou annonce de retargeting.</p>
 
         <ul class="checklist">
@@ -506,11 +589,32 @@ html { font-size: calc(.625rem + .41666666666666663vw); }
           <li>Relancer les personnes qui ont déjà montré un intérêt</li>
         </ul>
 
+        <div class="inline-cta">
+          <h3>Besoin d'une campagne qui génère vraiment des demandes ?</h3>
+          <p>Nous pouvons gérer la stratégie, les créations, le ciblage et l'optimisation pendant que vous restez concentré sur votre activité.</p>
+          <a href="#launch-campaign">Voir comment lancer votre campagne</a>
+        </div>
+
         <hr class="article-divider">
 
-        <h2>Pourquoi les entreprises l'utilisent</h2>
+        <h2 id="benefits">Pourquoi les entreprises l'utilisent</h2>
         <p>La publicité Meta est appréciée parce qu'elle combine <strong>ciblage</strong>, <strong>créativité</strong> et <strong>mesure</strong>. Vous pouvez tester plusieurs visuels, comparer les résultats, puis investir davantage sur ce qui fonctionne vraiment.</p>
         <p>Pour être rentable, une campagne doit cependant être bien construite : bon objectif, bonne audience, bon message, bonne page d'atterrissage et suivi régulier des performances.</p>
+
+        <div class="stat-box">
+          <div class="stat-box__item">
+            <div class="stat-box__number">1</div>
+            <div class="stat-box__label">objectif clair par campagne</div>
+          </div>
+          <div class="stat-box__item">
+            <div class="stat-box__number">3</div>
+            <div class="stat-box__label">éléments à tester : audience, créa, offre</div>
+          </div>
+          <div class="stat-box__item">
+            <div class="stat-box__number">∞</div>
+            <div class="stat-box__label">optimisations possibles dans le temps</div>
+          </div>
+        </div>
 
         <div class="article-quote">
           <p>Une bonne campagne Meta ne consiste pas seulement à diffuser une publicité. Elle consiste à envoyer le bon message à la bonne personne avec une offre claire.</p>
@@ -518,8 +622,24 @@ html { font-size: calc(.625rem + .41666666666666663vw); }
 
         <hr class="article-divider">
 
-        <h2>Conclusion</h2>
+        <h2 id="conclusion">Conclusion</h2>
         <p>La publicité Meta est un outil simple à comprendre, mais exigeant à bien piloter. Bien utilisée, elle peut accélérer la notoriété, générer des leads et donner plus de régularité à votre acquisition.</p>
+
+        <section class="faq-list" id="faq">
+          <h2>Questions fréquentes</h2>
+          <div class="faq-item">
+            <h3>Quelle est la différence entre Meta Ads et Google Ads ?</h3>
+            <p>Meta Ads capte l'attention sur les réseaux sociaux, tandis que Google Ads répond souvent à une intention déjà exprimée dans la recherche. Les deux canaux peuvent très bien se compléter.</p>
+          </div>
+          <div class="faq-item">
+            <h3>Quel budget faut-il pour démarrer ?</h3>
+            <p>Le bon budget dépend de votre marché, de votre offre et de votre objectif. Le plus important est de prévoir assez de volume pour tester les audiences et les créations correctement.</p>
+          </div>
+          <div class="faq-item">
+            <h3>Faut-il déjà avoir beaucoup d'abonnés ?</h3>
+            <p>Non. Les campagnes Meta peuvent toucher des personnes qui ne suivent pas encore votre marque, ce qui en fait justement un levier d'acquisition.</p>
+          </div>
+        </section>
 
         <!-- CTA -->
         <div class="article-cta" id="launch-campaign">
@@ -532,6 +652,16 @@ html { font-size: calc(.625rem + .41666666666666663vw); }
           </a>
         </div>
 
+        <section class="related-posts">
+          <h2>Articles liés</h2>
+          <div class="related-grid">
+            <a class="related-card" href="../gestion-reseaux-sociaux-croissance-entreprise/">
+              <img src="../../images/blog-social-hero.svg" alt="">
+              <div><strong>Le rôle de la gestion des réseaux sociaux dans la croissance de votre entreprise</strong></div>
+            </a>
+          </div>
+        </section>
+
       </article>
 
       <!-- Sidebar -->
@@ -539,10 +669,11 @@ html { font-size: calc(.625rem + .41666666666666663vw); }
         <div class="sidebar-card">
           <h4>Dans cet article</h4>
           <ol class="toc-list">
-            <li><a href="#" onclick="return false">La publicité Meta, en bref</a></li>
-            <li><a href="#" onclick="return false">Où apparaissent les annonces ?</a></li>
-            <li><a href="#" onclick="return false">Pourquoi les entreprises l'utilisent</a></li>
-            <li><a href="#" onclick="return false">Conclusion</a></li>
+            <li><a href="#definition">La publicité Meta, en bref</a></li>
+            <li><a href="#placements">Où apparaissent les annonces ?</a></li>
+            <li><a href="#benefits">Pourquoi les entreprises l'utilisent</a></li>
+            <li><a href="#conclusion">Conclusion</a></li>
+            <li><a href="#faq">Questions fréquentes</a></li>
           </ol>
         </div>
 
@@ -619,6 +750,12 @@ html { font-size: calc(.625rem + .41666666666666663vw); }
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 })();
+document.querySelectorAll('[data-copy-link]').forEach(function (button) {
+  button.addEventListener('click', function () {
+    navigator.clipboard.writeText(window.location.href);
+    button.textContent = 'Lien copié';
+  });
+});
 </script>
 </body>
 </html>
