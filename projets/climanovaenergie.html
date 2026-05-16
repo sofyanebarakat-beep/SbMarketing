@@ -69,12 +69,12 @@
 
     .outreach-details-before-iframe {
       position: relative;
-      z-index: 0;
     }
 
     .outreach-identity-behind-iframe {
       position: relative;
-      z-index: 0;
+      z-index: 3;
+      background: #fff;
     }
 
     .template-iframe-section {
@@ -110,8 +110,11 @@
       border: 0;
       overflow: hidden;
       background: #fff;
-      pointer-events: none;
       transition: height 180ms ease;
+    }
+
+    iframe[data-sb-embed] {
+      pointer-events: none;
     }
 
     .template-case-hero {
@@ -146,36 +149,64 @@
 
     .section_banner15 {
       background: #fff;
-      padding-block: clamp(4rem, 7vw, 7rem);
-    }
-
-    .section_banner15 .banner15_component {
       overflow: hidden;
+      border-top: 1px solid rgba(4, 16, 32, 0.1);
+      border-bottom: 1px solid rgba(4, 16, 32, 0.1);
     }
 
-    .section_banner15 .banner15_inner-wrapper {
+    .section_banner15 .banner15_row {
+      overflow: hidden;
+      padding-block: clamp(1.1rem, 2vw, 1.6rem);
+    }
+
+    .section_banner15 .banner15_inner {
       display: flex;
-      flex-wrap: nowrap;
-      justify-content: flex-start;
-      width: fit-content;
-      min-width: max-content;
-      animation: banner15-scroll 28s linear infinite;
-      will-change: transform;
+      width: max-content;
     }
 
-    .section_banner15 .banner15_marquee {
-      flex-shrink: 0;
+    .section_banner15 .banner15_inner--left {
+      animation: banner-scroll-left 34s linear infinite;
+    }
+
+    .section_banner15 .banner15_items {
       display: flex;
       align-items: center;
-      padding-top: 0;
-      padding-bottom: 0;
-      transform: none !important;
-      will-change: auto !important;
+      flex-shrink: 0;
+      gap: clamp(1.5rem, 2.8vw, 2.5rem);
+      padding-right: clamp(1.5rem, 2.8vw, 2.5rem);
     }
 
-    @keyframes banner15-scroll {
+    .section_banner15 .banner15_item {
+      white-space: nowrap;
+      font-size: clamp(0.875rem, 1.5vw, 1.25rem);
+      font-weight: 500;
+      color: #041020;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      line-height: 1;
+    }
+
+    .section_banner15 .banner15_sep {
+      display: inline-block;
+      width: 0.45rem;
+      height: 0.45rem;
+      background: #FFE500;
+      border-radius: 1px;
+      flex-shrink: 0;
+      vertical-align: middle;
+    }
+
+    @keyframes banner-scroll-left {
       from { transform: translateX(0); }
-      to { transform: translateX(-50%); }
+      to   { transform: translateX(-50%); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .section_banner15 .banner15_inner { animation: none; }
+    }
+
+    .hero-embed-wrap {
+      margin-bottom: clamp(0.75rem, 1.5vw, 1.25rem);
     }
 
     .portfolio.p-desktop,
@@ -593,21 +624,9 @@
           </div>
         </div>
       </section>
-      <section class="template-iframe-section outreach-iframe-overlap" aria-label="Climanova Energie website preview">
-  <div class="template-iframe-wrap">
-    <iframe
-      data-sb-embed
-      src="https://sb-marketing-boost.lovable.app/p2/f"
-      style="
-        width:100%;
-        height:100vh;
-        border:none;
-      "
-      scrolling="no">
-    </iframe>
- 
-  </div>
-</section>
+      <div class="hero-embed-wrap">
+        <iframe src="https://sb-marketing-boost.lovable.app/p2/hero-climanova" data-sb-embed style="width:100%;border:0;display:block;" scrolling="no" loading="lazy"></iframe>
+      </div>
       <section class="section_portfolio2-content4 template-details-section portfolio p-desktop">
         <div class="padding-global">
           <div class="container-large">
@@ -634,91 +653,27 @@
         </div>
       </section>
       <section class="section_banner15">
-        <div class="banner15_component">
-          <div class="banner15_inner-wrapper">
-            <div class="banner15_marquee">
-              <div class="banner15_heading-wrapper">
-                <div class="heading-style-h4">On valorise votre expertise énergétique</div>
-              </div>
-              <div class="banner15_image-wrapper"></div>
-              <div class="banner15_heading-wrapper">
-                <div class="heading-style-h4">On simplifie les demandes de devis</div>
-              </div>
-              <div class="banner15_image-wrapper"></div>
-              <div class="banner15_heading-wrapper">
-                <div class="heading-style-h4">On modernise votre présence digitale</div>
-              </div>
-              <div class="banner15_image-wrapper"></div>
-              <div class="banner15_heading-wrapper">
-                <div class="heading-style-h4">On améliore votre visibilité locale</div>
-              </div>
-              <div class="banner15_image-wrapper"></div>
-              <div class="banner15_heading-wrapper">
-                <div class="heading-style-h4">On met en avant vos services</div>
-              </div>
-              <div class="banner15_image-wrapper"></div>
-              <div class="banner15_heading-wrapper">
-                <div class="heading-style-h4">On transforme les visites en contacts</div>
-              </div>
-              <div class="banner15_image-wrapper"></div>
-              <div class="banner15_heading-wrapper">
-                <div class="heading-style-h4">On crée une expérience professionnelle</div>
-              </div>
-              <div class="banner15_image-wrapper"></div>
-              <div class="banner15_heading-wrapper">
-                <div class="heading-style-h4">On renforce votre crédibilité</div>
-              </div>
-              <div class="banner15_image-wrapper"></div>
-              <div class="banner15_heading-wrapper">
-                <div class="heading-style-h4">On accompagne votre croissance digitale</div>
-              </div>
-              <div class="banner15_image-wrapper"></div>
-              <div class="banner15_heading-wrapper">
-                <div class="heading-style-h4">On optimise votre conversion</div>
-              </div>
-              <div class="banner15_image-wrapper"></div>
+        <div class="banner15_row">
+          <div class="banner15_inner banner15_inner--left">
+            <div class="banner15_items">
+              <span class="banner15_item">Website Design</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Energy Solutions</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Heating</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Air Conditioning</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Local Business</span><span class="banner15_sep"></span>
+              <span class="banner15_item">SEO Local</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Corporate Website</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Conversion</span><span class="banner15_sep"></span>
             </div>
-            <div class="banner15_marquee">
-              <div class="banner15_heading-wrapper">
-                <div class="heading-style-h4">On valorise votre expertise énergétique</div>
-              </div>
-              <div class="banner15_image-wrapper"></div>
-              <div class="banner15_heading-wrapper">
-                <div class="heading-style-h4">On simplifie les demandes de devis</div>
-              </div>
-              <div class="banner15_image-wrapper"></div>
-              <div class="banner15_heading-wrapper">
-                <div class="heading-style-h4">On modernise votre présence digitale</div>
-              </div>
-              <div class="banner15_image-wrapper"></div>
-              <div class="banner15_heading-wrapper">
-                <div class="heading-style-h4">On améliore votre visibilité locale</div>
-              </div>
-              <div class="banner15_image-wrapper"></div>
-              <div class="banner15_heading-wrapper">
-                <div class="heading-style-h4">On met en avant vos services</div>
-              </div>
-              <div class="banner15_image-wrapper"></div>
-              <div class="banner15_heading-wrapper">
-                <div class="heading-style-h4">On transforme les visites en contacts</div>
-              </div>
-              <div class="banner15_image-wrapper"></div>
-              <div class="banner15_heading-wrapper">
-                <div class="heading-style-h4">On crée une expérience professionnelle</div>
-              </div>
-              <div class="banner15_image-wrapper"></div>
-              <div class="banner15_heading-wrapper">
-                <div class="heading-style-h4">On renforce votre crédibilité</div>
-              </div>
-              <div class="banner15_image-wrapper"></div>
-              <div class="banner15_heading-wrapper">
-                <div class="heading-style-h4">On accompagne votre croissance digitale</div>
-              </div>
-              <div class="banner15_image-wrapper"></div>
-              <div class="banner15_heading-wrapper">
-                <div class="heading-style-h4">On optimise votre conversion</div>
-              </div>
-              <div class="banner15_image-wrapper"></div>
+            <div class="banner15_items" aria-hidden="true">
+              <span class="banner15_item">Website Design</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Energy Solutions</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Heating</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Air Conditioning</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Local Business</span><span class="banner15_sep"></span>
+              <span class="banner15_item">SEO Local</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Corporate Website</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Conversion</span><span class="banner15_sep"></span>
             </div>
           </div>
         </div>
