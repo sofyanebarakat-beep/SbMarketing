@@ -80,6 +80,39 @@
       pointer-events: auto;
     }
 
+    .hero-offer-rotator {
+      position: relative;
+      min-height: 1.7rem;
+      margin-top: 1.25rem;
+      color: rgba(255, 255, 255, 0.72);
+      font-size: clamp(0.95rem, 1.35vw, 1.1rem);
+    }
+
+    .hero-offer-item {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transform: translateY(0.75rem);
+      transition: opacity 0.45s ease, transform 0.45s ease;
+    }
+
+    .hero-offer-item.is-active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero-offer-item {
+        position: static;
+        display: none;
+        transition: none;
+      }
+
+      .hero-offer-item.is-active {
+        display: block;
+      }
+    }
+
     .landing-hero {
       padding-top: clamp(7rem, 12vw, 10rem);
       padding-bottom: clamp(3rem, 7vw, 5rem);
@@ -405,6 +438,12 @@
                         <div>Réserver ma place</div>
                       </a>
                     </div>
+                    <div class="hero-offer-rotator" aria-live="polite">
+                      <div class="hero-offer-item is-active">Création ou refonte de site internet</div>
+                      <div class="hero-offer-item">1 mois de gestion réseaux sociaux offert</div>
+                      <div class="hero-offer-item">Shooting photo/vidéo offert à Nice</div>
+                      <div class="hero-offer-item">SEO setup inclus</div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -437,7 +476,7 @@
 <path d="M15.2325 11.69C15.2325 10.614 16.1048 9.7417 17.1809 9.7417C19.3329 9.7417 21.0775 11.4863 21.0775 13.6384C21.0775 15.7904 19.3329 17.535 17.1809 17.535C16.1048 17.535 15.2325 16.6628 15.2325 15.5867V11.69Z" stroke="currentColor" stroke-width="1.46125"></path>
 <path d="M9.38748 11.69C9.38748 10.614 8.51518 9.7417 7.43915 9.7417C5.28708 9.7417 3.54248 11.4863 3.54248 13.6384C3.54248 15.7904 5.28708 17.535 7.43915 17.535C8.51518 17.535 9.38748 16.6628 9.38748 15.5867V11.69Z" stroke="currentColor" stroke-width="1.46125"></path>
 <path d="M3.54248 13.6384V10.7159C3.54248 5.87371 7.46783 1.94836 12.31 1.94836C17.1522 1.94836 21.0775 5.87371 21.0775 10.7159V15.4369C21.0775 17.3933 21.0775 18.3714 20.7342 19.1343C20.3434 20.0025 19.6483 20.6977 18.7801 21.0884C18.0172 21.4317 17.0391 21.4317 15.0827 21.4317H12.31" stroke="currentColor" stroke-width="1.46125" stroke-linecap="round" stroke-linejoin="round"></path>
-</svg></div></div></div></div></div></div></div></div><div class="logo1_component hide"><div class="logo1_content"><div class="logo1_list"><img loading="lazy" src="../images/65e9c3bb1345ac8d5b100d0b_65d61f89e9961819318deaf6_fenestria.webp" alt="" class="logo1_logo"><img loading="lazy" src="../images/66ec89afb0189b83c59cfbd4_LUMIA%20Logo%20Site%20TDB.png" alt="" class="logo1_logo"><img loading="lazy" src="../images/66ec89aed44be8f1806eeebe_BTL%20Logo%20Site%20TDB.png" alt="" class="logo1_logo"></div></div></div></div></div></section>
+</svg></div></div></div></div></div></div></div></div><div class="logo1_component hide"><div class="logo1_content"><div class="logo1_list"><img loading="lazy" src="../images/65e9c3bb1345ac8d5b100d0b_65d61f89e9961819318deaf6_fenestria.webp" alt="" class="logo1_logo"><img loading="lazy" src="../images/66ec89afb0189b83c59cfbd4_LUMIA%20Logo%20Site%20TDB.png" alt="" class="logo1_logo"><img loading="lazy" src="../images/66ec89aed44be8f1806eeebe_BTL%20Logo%20Site%20TDB.png" alt="" class="logo1_logo"></div></div></div></div></div></section><section class="section_layout408"><div class="padding-global"><div class="container-large"><div class="padding-section-large"><div class="margin-bottom margin-xxlarge"><div class="text-align-center"><div class="fx-up"><div class="max-width-large align-center"><div class="margin-bottom margin-xsmall"><div class="tagline-wrapper fx-up"><div class="tagline-cube is-yellow"></div><div class="text-style-tagline">Notre formule tout-en-un</div></div></div><div class="margin-bottom margin-small"><h2>En 4 étapes</h2></div></div></div></div></div><div data-w-id="5ae34697-5fd6-46f7-957b-07f9c61d4381" class="w-layout-grid layout408_component"><div id="w-node-_5ae34697-5fd6-46f7-957b-07f9c61d4382-f88eecce" class="layout408_card card-1"><div id="w-node-_5ae34697-5fd6-46f7-957b-07f9c61d4383-f88eecce" class="layout408_card-content"><div class="layout408_card-content-top"><div class="margin-bottom margin-small"><h3>On crée du contenu engageant</h3></div><div class="layout16_item-list"><div id="w-node-_5039504c-224c-904e-a195-9af5b62d75ed-f88eecce" class="layout16_item"><div class="layout16_item-icon-wrapper"><div class="small-cube"></div></div><div class="layout16_item-text-wrapper"><p class="text-style-muted">Stratégie de contenu</p></div></div><div id="w-node-_5039504c-224c-904e-a195-9af5b62d75f3-f88eecce" class="layout16_item"><div class="layout16_item-icon-wrapper"><div class="small-cube"></div></div><div class="layout16_item-text-wrapper"><p class="text-style-muted">Rédaction de scripts</p></div></div><div id="w-node-a11a30c2-8e8a-2504-842a-7355fe57c27b-f88eecce" class="layout16_item"><div class="layout16_item-icon-wrapper"><div class="small-cube"></div></div><div class="layout16_item-text-wrapper"><p class="text-style-muted">Nous réalisons des shootings pour votre entreprise</p></div></div><div id="w-node-_5039504c-224c-904e-a195-9af5b62d75f9-f88eecce" class="layout16_item"><div class="layout16_item-icon-wrapper"><div class="small-cube"></div></div><div class="layout16_item-text-wrapper"><p class="text-style-muted">Planification de contenu par calendrier</p></div></div><div id="w-node-e6bdf7f9-75b3-28c2-53a4-affbd6f17eb0-f88eecce" class="layout16_item"><div class="layout16_item-icon-wrapper"><div class="small-cube"></div></div><div class="layout16_item-text-wrapper"><p class="text-style-muted">Montage complet</p></div></div></div></div><div class="margin-top margin-medium"><div class="button-group"><a href="/projets" data-wf--button--variant="no-icon" class="special-button is-icon w-variant-dcf8a2db-149b-093c-ad09-76811261ba97 w-inline-block"><div class="div-block-7 w-variant-dcf8a2db-149b-093c-ad09-76811261ba97"><div class="special-button-image-wrapper"><img loading="lazy" src="../images/soufiane-profile.jpg" alt="" class="image-3"><div class="status-indicator"></div></div></div><div>Voir nos projets</div></a></div></div></div><div class="layout408_image-wrapper"><img src="../images/social-media-post-design.jpg" loading="lazy" alt="Création de contenu réseaux sociaux – Sb Marketing" style="width:100%;height:100%;object-fit:cover;border-radius:inherit"><div class="div-block-24"><div class="heading-style-h2">01</div></div></div></div><div class="layout408_card card-2"><div id="w-node-_5ae34697-5fd6-46f7-957b-07f9c61d4398-f88eecce" class="layout408_image-wrapper"><img src="../images/68f84eae40bb20a3c83a5d91_TDB-Accueil-02-Prospects.jpg" loading="lazy" sizes="100vw" srcset="../images/68f84eae40bb20a3c83a5d91_TDB-Accueil-02-Prospects-p-500.jpg 500w, ../images/68f84eae40bb20a3c83a5d91_TDB-Accueil-02-Prospects-p-800.jpg 800w, ../images/68f84eae40bb20a3c83a5d91_TDB-Accueil-02-Prospects-p-1080.jpg 1080w, ../images/68f84eae40bb20a3c83a5d91_TDB-Accueil-02-Prospects.jpg 1440w" alt="" class="layout408_image"><div class="div-block-24 alt"><div class="heading-style-h2">02</div></div></div><div class="layout408_card-content"><div class="layout408_card-content-top"><div class="margin-bottom margin-small"><h3>On vous amène des prospects</h3></div><div class="layout16_item-list"><div id="w-node-_13aaafec-7795-2286-71b3-7692c2b96976-f88eecce" class="layout16_item"><div class="layout16_item-icon-wrapper"><div class="small-cube"></div></div><div class="layout16_item-text-wrapper"><p class="text-style-muted">Campagnes sponsorisées : Meta, Google, TikTok, YouTube</p></div></div><div id="w-node-_90e065a6-0b4b-396b-7bf1-a23575684710-f88eecce" class="layout16_item"><div class="layout16_item-icon-wrapper"><div class="small-cube"></div></div><div class="layout16_item-text-wrapper"><p class="text-style-muted">Plan de croissance personnalisé</p></div></div><div id="w-node-_13aaafec-7795-2286-71b3-7692c2b9697c-f88eecce" class="layout16_item"><div class="layout16_item-icon-wrapper"><div class="small-cube"></div></div><div class="layout16_item-text-wrapper"><p class="text-style-muted">Création de visuels statiques</p></div></div><div id="w-node-_13aaafec-7795-2286-71b3-7692c2b96982-f88eecce" class="layout16_item"><div class="layout16_item-icon-wrapper"><div class="small-cube"></div></div><div class="layout16_item-text-wrapper"><p class="text-style-muted">Rédaction persuasive</p></div></div></div></div><div class="margin-top margin-medium"><div class="button-group"><a href="/marketing" data-wf--button--variant="no-icon" class="special-button is-icon w-variant-dcf8a2db-149b-093c-ad09-76811261ba97 w-inline-block"><div class="div-block-7 w-variant-dcf8a2db-149b-093c-ad09-76811261ba97"><div class="special-button-image-wrapper"><img loading="lazy" src="../images/soufiane-profile.jpg" alt="" class="image-3"><div class="status-indicator"></div></div></div><div>Nos services marketing</div></a></div></div></div></div><div class="layout408_card card-3"><div class="layout408_card-content"><div class="layout408_card-content-top"><div class="margin-bottom margin-small"><h3><strong>On les transforme en rendez-vous qualifiés</strong></h3></div><div class="layout16_item-list"><div id="w-node-_876c04f4-9b4d-2729-c007-919579beb6fd-f88eecce" class="layout16_item"><div class="layout16_item-icon-wrapper"><div class="small-cube"></div></div><div class="layout16_item-text-wrapper"><p class="text-style-muted">Qualification par téléphone (équipe 100% Québec)</p></div></div><div id="w-node-_876c04f4-9b4d-2729-c007-919579beb703-f88eecce" class="layout16_item"><div class="layout16_item-icon-wrapper"><div class="small-cube"></div></div><div class="layout16_item-text-wrapper"><p class="text-style-muted">Booking dans votre calendrier, selon vos dispos & zones</p></div></div><div id="w-node-_9830ae8d-7132-0891-be4e-92fd81aea98f-f88eecce" class="layout16_item"><div class="layout16_item-icon-wrapper"><div class="small-cube"></div></div><div class="layout16_item-text-wrapper"><p class="text-style-muted">Gestion des commentaires et messages sur vos pages sociales</p></div></div><div id="w-node-_9116df8f-66dc-5321-a8f1-73590a422566-f88eecce" class="layout16_item"><div class="layout16_item-icon-wrapper"><div class="small-cube"></div></div><div class="layout16_item-text-wrapper"><p class="text-style-muted">Prise en charge des leads organiques</p></div></div><div id="w-node-a29ee3eb-4ecc-8a53-33fd-035cc45d12f6-f88eecce" class="layout16_item"><div class="layout16_item-icon-wrapper"><div class="small-cube"></div></div><div class="layout16_item-text-wrapper"><p class="text-style-muted">6 jour sur 7, du matin au soir</p></div></div><div id="w-node-_4d4366c7-2f37-82e4-904c-c62f69b974f7-f88eecce" class="layout16_item"><div class="layout16_item-icon-wrapper"><div class="small-cube"></div></div><div class="layout16_item-text-wrapper"><p class="text-style-muted">Toujours fait par des humains</p></div></div></div></div><div class="margin-top margin-medium"><div class="button-group"><a href="/centre-dappel-et-qualification" data-wf--button--variant="no-icon" class="special-button is-icon w-variant-dcf8a2db-149b-093c-ad09-76811261ba97 w-inline-block"><div class="div-block-7 w-variant-dcf8a2db-149b-093c-ad09-76811261ba97"><div class="special-button-image-wrapper"><img loading="lazy" src="../images/soufiane-profile.jpg" alt="" class="image-3"><div class="status-indicator"></div></div></div><div>Notre centre d'appel</div></a></div></div></div><div id="w-node-_5ae34697-5fd6-46f7-957b-07f9c61d43bf-f88eecce" class="layout408_image-wrapper"><img src="../images/68f84c1e7b41f47ef74b7480_tourdublocbrunette.png" loading="lazy" sizes="100vw" srcset="../images/68f84c1e7b41f47ef74b7480_tourdublocbrunette-p-500.png 500w, ../images/68f84c1e7b41f47ef74b7480_tourdublocbrunette-p-800.png 800w, ../images/68f84c1e7b41f47ef74b7480_tourdublocbrunette.png 1024w" alt="" class="layout408_image"><div class="div-block-24"><div class="heading-style-h2">03</div></div></div></div><div class="layout408_card card-4"><div class="layout408_card-content"><div class="layout408_card-content-top"><div class="margin-bottom margin-small"><h3>Design web</h3></div><div class="layout16_item-list"><div class="layout16_item"><div class="layout16_item-icon-wrapper"><div class="small-cube"></div></div><div class="layout16_item-text-wrapper"><p class="text-style-muted">Conception de sites web sur mesure</p></div></div><div class="layout16_item"><div class="layout16_item-icon-wrapper"><div class="small-cube"></div></div><div class="layout16_item-text-wrapper"><p class="text-style-muted">Design UX/UI moderne et intuitif</p></div></div><div class="layout16_item"><div class="layout16_item-icon-wrapper"><div class="small-cube"></div></div><div class="layout16_item-text-wrapper"><p class="text-style-muted">Optimisé pour la conversion et le SEO</p></div></div><div class="layout16_item"><div class="layout16_item-icon-wrapper"><div class="small-cube"></div></div><div class="layout16_item-text-wrapper"><p class="text-style-muted">Compatible mobile, tablette et bureau</p></div></div><div class="layout16_item"><div class="layout16_item-icon-wrapper"><div class="small-cube"></div></div><div class="layout16_item-text-wrapper"><p class="text-style-muted">Intégration CMS et outils marketing</p></div></div></div></div><div class="margin-top margin-medium"><div class="button-group"><a href="/projets" data-wf--button--variant="no-icon" class="special-button is-icon w-variant-dcf8a2db-149b-093c-ad09-76811261ba97 w-inline-block"><div class="div-block-7 w-variant-dcf8a2db-149b-093c-ad09-76811261ba97"><div class="special-button-image-wrapper"><img loading="lazy" src="../images/soufiane-profile.jpg" alt="" class="image-3"><div class="status-indicator"></div></div></div><div>Voir nos projets</div></a></div></div></div><div class="layout408_image-wrapper"><img src="../images/design-web-neovision.png" loading="lazy" sizes="100vw" alt="" class="layout408_image"><div class="div-block-24"><div class="heading-style-h2">04</div></div></div></div></div></div></div></div></section>
 
       <section class="landing-section is-muted">
         <div class="padding-global">
@@ -644,6 +683,18 @@
   <script src="../js/tourdubloc-3e0b2f.schunk.7bc38d72505cd683.js" type="text/javascript" crossorigin="anonymous"></script>
   <script src="../js/tourdubloc-3e0b2f.c2a30b54.35b17dfba2d07dca.js" type="text/javascript" crossorigin="anonymous"></script>
   <script>
+    (function () {
+      var offerItems = document.querySelectorAll('.hero-offer-item');
+      if (!offerItems.length || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      var currentOffer = 0;
+      setInterval(function () {
+        offerItems[currentOffer].classList.remove('is-active');
+        currentOffer = (currentOffer + 1) % offerItems.length;
+        offerItems[currentOffer].classList.add('is-active');
+      }, 2500);
+    })();
+
     (function () {
       var callouts = document.querySelectorAll('.callouts-wrapper');
       if (callouts.length) {
