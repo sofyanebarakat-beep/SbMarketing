@@ -346,10 +346,49 @@
       margin-top: 1.5rem;
     }
 
+    .landing-faq-group,
     .landing-faq-item {
       padding: 1.25rem;
       border: 1px solid rgba(4, 16, 32, 0.1);
       background: #fff;
+    }
+
+    .landing-faq-group {
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .landing-faq-group summary {
+      position: relative;
+      cursor: pointer;
+      list-style: none;
+      padding: 1.25rem 3rem 1.25rem 1.25rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .landing-faq-group summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .landing-faq-group summary::after {
+      position: absolute;
+      top: 50%;
+      right: 1.25rem;
+      content: "+";
+      transform: translateY(-50%);
+      font-size: 1.5rem;
+      line-height: 1;
+    }
+
+    .landing-faq-group[open] summary::after {
+      content: "-";
+    }
+
+    .landing-faq-group-content {
+      display: grid;
+      gap: 0.9rem;
+      padding: 0 1.25rem 1.25rem;
     }
 
     .landing-faq-item h3 {
@@ -376,6 +415,15 @@
 
     .landing-layout408 {
       background: rgb(255, 255, 255);
+    }
+
+    .footer7_component {
+      background: #fff;
+      color: #041020;
+    }
+
+    .footer7_component a {
+      color: #041020;
     }
 
     @media screen and (max-width: 991px) {
@@ -515,13 +563,47 @@
           <div class="container-large">
             <h2>Questions fréquentes</h2>
             <div class="landing-faq-grid">
-              <article class="landing-faq-item"><h3>Quel est le prix de l’offre ?</h3><p>L’offre lancement est à 499€ avec facture professionnelle.</p></article>
-              <article class="landing-faq-item"><h3>Est-ce que je peux payer par carte ?</h3><p>Oui, paiement par carte ou virement possible.</p></article>
-              <article class="landing-faq-item"><h3>Le nom de domaine et l’hébergement sont-ils inclus ?</h3><p>Non, le nom de domaine et l’hébergement ne sont pas inclus sauf mention dans le devis.</p></article>
-              <article class="landing-faq-item"><h3>Est-ce que vous pouvez refaire mon site actuel ?</h3><p>Oui, l’offre inclut la création d’un nouveau site ou la refonte d’un site existant.</p></article>
-              <article class="landing-faq-item"><h3>Le shooting est-il inclus ?</h3><p>Oui, 1 shooting photo/vidéo est offert uniquement à Nice.</p></article>
-              <article class="landing-faq-item"><h3>Est-ce que le SEO est inclus ?</h3><p>Oui, un SEO setup de base est inclus : structure, titres, descriptions, mots-clés locaux et optimisation de base.</p></article>
-              <article class="landing-faq-item"><h3>Combien d’entreprises peuvent profiter de l’offre ?</h3><p>L’offre est limitée à 5 entreprises à Nice.</p></article>
+              <details class="landing-faq-group" open>
+                <summary>Général</summary>
+                <div class="landing-faq-group-content">
+                  <article class="landing-faq-item"><h3>Quel est le prix de l’offre ?</h3><p>L’offre est proposée à 399€ avec facture professionnelle.</p></article>
+                  <article class="landing-faq-item"><h3>Combien de places sont disponibles ?</h3><p>L’offre est limitée à 5 entreprises locales à Nice.</p></article>
+                  <article class="landing-faq-item"><h3>Quels moyens de paiement acceptez-vous ?</h3><p>Paiement par carte ou virement bancaire.</p></article>
+                  <article class="landing-faq-item"><h3>Le nom de domaine et l’hébergement sont-ils inclus ?</h3><p>Non, sauf si cela est précisé dans votre devis.</p></article>
+                </div>
+              </details>
+              <details class="landing-faq-group">
+                <summary>Design web</summary>
+                <div class="landing-faq-group-content">
+                  <article class="landing-faq-item"><h3>Pouvez-vous refaire mon site actuel ?</h3><p>Oui, nous pouvons créer un nouveau site ou moderniser l’existant.</p></article>
+                  <article class="landing-faq-item"><h3>Le site sera-t-il adapté au mobile ?</h3><p>Oui, chaque site est pensé pour mobile, tablette et ordinateur.</p></article>
+                  <article class="landing-faq-item"><h3>Le design sera-t-il personnalisé ?</h3><p>Oui, le rendu est adapté à votre activité et à votre image.</p></article>
+                </div>
+              </details>
+              <details class="landing-faq-group">
+                <summary>Shooting</summary>
+                <div class="landing-faq-group-content">
+                  <article class="landing-faq-item"><h3>Le shooting est-il inclus ?</h3><p>Oui, un shooting photo/vidéo est offert uniquement à Nice.</p></article>
+                  <article class="landing-faq-item"><h3>Que peut-on photographier ?</h3><p>Votre lieu, vos produits, votre équipe ou vos prestations.</p></article>
+                  <article class="landing-faq-item"><h3>Les contenus servent-ils aussi aux réseaux sociaux ?</h3><p>Oui, ils peuvent alimenter votre site et vos publications.</p></article>
+                </div>
+              </details>
+              <details class="landing-faq-group">
+                <summary>Réseaux sociaux</summary>
+                <div class="landing-faq-group-content">
+                  <article class="landing-faq-item"><h3>Que comprend le mois offert ?</h3><p>Planification, création de contenus et publications régulières.</p></article>
+                  <article class="landing-faq-item"><h3>Travaillez-vous uniquement sur Instagram ?</h3><p>Instagram est prioritaire, selon votre activité et vos besoins.</p></article>
+                  <article class="landing-faq-item"><h3>Puis-je continuer après le mois offert ?</h3><p>Oui, une formule adaptée peut être proposée ensuite.</p></article>
+                </div>
+              </details>
+              <details class="landing-faq-group">
+                <summary>SEO &amp; Référencement</summary>
+                <div class="landing-faq-group-content">
+                  <article class="landing-faq-item"><h3>Que comprend le SEO setup ?</h3><p>Titres, descriptions, structure et mots-clés locaux de base.</p></article>
+                  <article class="landing-faq-item"><h3>Optimisez-vous Google Business Profile ?</h3><p>Oui, pour renforcer votre présence locale à Nice.</p></article>
+                  <article class="landing-faq-item"><h3>Le référencement est-il garanti ?</h3><p>Non, nous posons des bases solides sans promettre de classement garanti.</p></article>
+                </div>
+              </details>
             </div>
           </div>
         </div>
