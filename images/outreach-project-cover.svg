@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 810" width="1440" height="810">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3228EE"/>
+      <stop offset="100%" stop-color="#4540FF"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1440" height="810" fill="url(#bg)"/>
+
+  <!-- Subtle bottom-right lighter stripe (matches brand screenshot) -->
+  <polygon points="1180,810 1440,560 1440,810" fill="#5550FF" opacity="0.35"/>
+  <polygon points="1300,810 1440,680 1440,810" fill="#6A65FF" opacity="0.25"/>
+
+  <!-- Logo group centered ~720, 400 -->
+  <!-- Double-arrow icon (exchange/swap arrows — Outreach brand mark) -->
+  <!-- Arrow 1: pointing LEFT (top row) -->
+  <polygon points="362,394 400,372 400,394" fill="#ffffff"/>
+  <rect x="400" y="379" width="58" height="15" fill="#ffffff"/>
+  <!-- Arrow 2: pointing RIGHT (bottom row) -->
+  <rect x="362" y="397" width="58" height="15" fill="#ffffff"/>
+  <polygon points="420,412 420,397 458,404" fill="#ffffff"/>
+
+  <!-- OUTREACH wordmark -->
+  <text
+    x="476"
+    y="413"
+    font-family="'Arial Black','Franklin Gothic Heavy','Impact',Arial,sans-serif"
+    font-size="118"
+    font-weight="900"
+    fill="#ffffff"
+    text-anchor="start"
+    letter-spacing="2">OUTREACH</text>
+
+  <!-- THE PEOPLE COMPANY tagline — right-aligned under OUTREACH -->
+  <text
+    x="1000"
+    y="455"
+    font-family="'Arial Black','Franklin Gothic Heavy','Impact',Arial,sans-serif"
+    font-size="36"
+    font-weight="700"
+    fill="#ffffff"
+    text-anchor="end"
+    letter-spacing="5">THE PEOPLE COMPANY</text>
+</svg>
