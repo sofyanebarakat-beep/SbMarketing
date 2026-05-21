@@ -167,37 +167,6 @@
     .tagline { font-size: .83rem; color: var(--muted); text-align: center; line-height: 1.55; max-width: 260px; margin-bottom: 1.2rem; }
 
 
-    /* ── Showcase ── */
-    .showcase {
-      width: 100%; height: 86px;
-      background: linear-gradient(135deg, #041020 0%, #0d2242 100%);
-      border-radius: 16px; overflow: hidden; margin-bottom: 1.2rem; position: relative;
-    }
-    .showcase-slide {
-      position: absolute; inset: 0;
-      display: flex; align-items: center; padding: 0 1.2rem; gap: .9rem;
-      opacity: 0; transition: opacity .5s ease;
-    }
-    .showcase-slide.active { opacity: 1; }
-    .showcase-icon { font-size: 1.7rem; flex-shrink: 0; }
-    .showcase-text { display: flex; flex-direction: column; flex: 1; min-width: 0; }
-    .showcase-title { font-size: .88rem; font-weight: 700; color: #fff; margin-bottom: .12rem; white-space: nowrap; }
-    .showcase-sub { font-size: .71rem; color: rgba(255,255,255,.5); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .showcase-badge {
-      background: var(--yellow); color: var(--dark);
-      font-size: .69rem; font-weight: 700; padding: .18rem .5rem;
-      border-radius: 20px; flex-shrink: 0; white-space: nowrap;
-    }
-    .showcase-dots {
-      position: absolute; bottom: 7px; left: 50%; transform: translateX(-50%);
-      display: flex; gap: 4px;
-    }
-    .s-dot {
-      width: 5px; height: 5px; border-radius: 50%;
-      background: rgba(255,255,255,.25);
-      transition: background .3s, width .3s;
-    }
-    .s-dot.active { background: var(--yellow); width: 14px; border-radius: 3px; }
 
 
     /* ── Buttons ── */
@@ -367,47 +336,6 @@
     <p class="agency-label">Agence digitale · Nice</p>
     <p class="tagline">Marketing digital &amp; création web pour entreprises ambitieuses</p>
 
-    <div class="showcase" id="showcase">
-      <div class="showcase-slide active">
-        <span class="showcase-icon">📈</span>
-        <div class="showcase-text">
-          <span class="showcase-title">Meta &amp; Google Ads</span>
-          <span class="showcase-sub">Campagnes qui convertissent vraiment</span>
-        </div>
-        <span class="showcase-badge">+ROI</span>
-      </div>
-      <div class="showcase-slide">
-        <span class="showcase-icon">🌐</span>
-        <div class="showcase-text">
-          <span class="showcase-title">Création web</span>
-          <span class="showcase-sub">Sites performants &amp; modernes</span>
-        </div>
-        <span class="showcase-badge">Webflow</span>
-      </div>
-      <div class="showcase-slide">
-        <span class="showcase-icon">📱</span>
-        <div class="showcase-text">
-          <span class="showcase-title">Social Media</span>
-          <span class="showcase-sub">Contenu &amp; gestion de vos réseaux</span>
-        </div>
-        <span class="showcase-badge">Créatif</span>
-      </div>
-      <div class="showcase-slide">
-        <span class="showcase-icon">📞</span>
-        <div class="showcase-text">
-          <span class="showcase-title">Centre d'appel</span>
-          <span class="showcase-sub">Qualification de leads, 24/7</span>
-        </div>
-        <span class="showcase-badge">800+ leads</span>
-      </div>
-      <div class="showcase-dots">
-        <div class="s-dot active"></div>
-        <div class="s-dot"></div>
-        <div class="s-dot"></div>
-        <div class="s-dot"></div>
-      </div>
-    </div>
-
     <div class="btn-list">
       <a href="https://www.sbmarketing.fr/pack-presence-digitale-nice/?utm_source=linktree&utm_medium=social&utm_campaign=link" class="btn btn-primary" target="_blank" rel="noopener">
         Pack Présence Digitale
@@ -502,16 +430,6 @@
     function applyTheme(t){ html.dataset.theme=t; tBtn.textContent=t==='dark'?'☀️':'🌙'; localStorage.setItem('sb-theme',t); }
     applyTheme(localStorage.getItem('sb-theme')||'light');
     tBtn.addEventListener('click',function(){ applyTheme(html.dataset.theme==='dark'?'light':'dark'); });
-
-    /* Showcase slideshow */
-    (function(){
-      var slides=document.querySelectorAll('.showcase-slide'), dots=document.querySelectorAll('.s-dot'), cur=0;
-      setInterval(function(){
-        slides[cur].classList.remove('active'); dots[cur].classList.remove('active');
-        cur=(cur+1)%slides.length;
-        slides[cur].classList.add('active'); dots[cur].classList.add('active');
-      },3200);
-    })();
 
     /* Share */
     document.getElementById('shareBtn').addEventListener('click',function(){
