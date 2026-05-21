@@ -1,361 +1,659 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sb Marketing | Links</title>
   <meta name="robots" content="noindex, follow">
+  <meta property="og:title" content="Sb Marketing — Agence digitale à Nice">
+  <meta property="og:description" content="Marketing digital & création web pour entreprises ambitieuses. Démarrez un projet dès aujourd'hui.">
+  <meta property="og:image" content="https://www.sbmarketing.fr/images/sb-favicon.png">
+  <meta property="og:url" content="https://www.sbmarketing.fr/link/">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" type="image/png" href="../images/sb-favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>document.documentElement.dataset.theme = localStorage.getItem('sb-theme') || 'light';</script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --dark:    #041020;
-      --yellow:  #FFE500;
-      --white:   #ffffff;
-      --bg:      #f0f1f3;
-      --card:    #ffffff;
-      --muted:   #6b7280;
-      --btn-hover: #0d2242;
-      --wa-green: #25D366;
+      --dark:     #041020;
+      --yellow:   #FFE500;
+      --white:    #ffffff;
+      --card:     #ffffff;
+      --muted:    #6b7280;
+      --hover:    #0d2242;
+      --text:     #041020;
+      --border:   rgba(4,16,32,0.08);
+      --shadow:   rgba(4,16,32,0.10);
+      --surface:  #f3f4f6;
+    }
+
+    html[data-theme="dark"] {
+      --card:    #0a1828;
+      --muted:   #8a9ab5;
+      --hover:   #1a3560;
+      --text:    #f0f4ff;
+      --border:  rgba(255,255,255,0.07);
+      --shadow:  rgba(0,0,0,0.45);
+      --surface: #0f2038;
     }
 
     html, body {
-      height: 100%;
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      background: var(--bg);
-      color: var(--dark);
+      font-family: 'Inter', system-ui, sans-serif;
       -webkit-font-smoothing: antialiased;
     }
 
     body {
       display: flex;
-      align-items: center;
       justify-content: center;
       min-height: 100dvh;
-      padding: 1.5rem 1rem;
-      background: radial-gradient(ellipse at 60% 0%, rgba(4,16,32,0.06) 0%, transparent 70%),
-                  radial-gradient(ellipse at 20% 100%, rgba(255,229,0,0.07) 0%, transparent 60%),
-                  var(--bg);
+      padding: 1.5rem 1rem 5rem;
+      background-size: 400% 400%;
+      animation: grad 20s ease infinite;
+      position: relative;
+      overflow-x: hidden;
+      color: var(--text);
     }
+
+    html[data-theme="light"] body { background-image: linear-gradient(-45deg,#f0f1f3,#eceef5,#f5f1e8,#f0f1f3); }
+    html[data-theme="dark"]  body { background-image: linear-gradient(-45deg,#020c18,#061525,#03111f,#020c18); }
+
+    @keyframes grad   { 0%,100%{background-position:0 50%} 50%{background-position:100% 50%} }
+    @keyframes fadeUp { to{opacity:1;transform:translateY(0)} }
+    @keyframes bounceY{ 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(5px)} }
+    @keyframes pulseRing {
+      0%   { box-shadow: 0 0 0 0   rgba(255,229,0,.55), 0 2px 16px rgba(255,229,0,.35); }
+      70%  { box-shadow: 0 0 0 10px rgba(255,229,0,0),  0 2px 16px rgba(255,229,0,.35); }
+      100% { box-shadow: 0 0 0 0   rgba(255,229,0,0),   0 2px 16px rgba(255,229,0,.35); }
+    }
+    @keyframes dotPulse { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.5);opacity:.7} }
+    @keyframes availGlow {
+      0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.4)}
+      50%    {box-shadow:0 0 0 5px rgba(34,197,94,0)}
+    }
+
+    /* ── Canvas ── */
+    #particles-canvas {
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 0; opacity: .5;
+    }
+
+    /* ── Scroll hint ── */
+    .scroll-hint {
+      position: fixed; bottom: 1.4rem; left: 50%;
+      transform: translateX(-50%) translateY(0);
+      font-size: .85rem; color: var(--muted);
+      animation: bounceY 1.8s ease infinite;
+      z-index: 10; pointer-events: none;
+      transition: opacity .4s ease;
+    }
+    .scroll-hint.hidden { opacity: 0; }
 
     /* ── Card ── */
     .card {
-      width: 100%;
-      max-width: 420px;
+      position: relative; z-index: 1;
+      width: 100%; max-width: 420px;
       background: var(--card);
       border-radius: 28px;
-      box-shadow:
-        0 4px 6px rgba(4,16,32,0.04),
-        0 10px 40px rgba(4,16,32,0.10),
-        0 1px 2px rgba(4,16,32,0.06);
+      box-shadow: 0 4px 6px var(--border), 0 12px 40px var(--shadow);
       padding: 2.5rem 2rem 2rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0;
-      opacity: 0;
-      transform: translateY(18px);
-      animation: fadeUp 0.55s cubic-bezier(.22,.68,0,1.2) 0.1s forwards;
+      display: flex; flex-direction: column; align-items: center;
+      opacity: 0; transform: translateY(18px);
+      animation: fadeUp .55s cubic-bezier(.22,.68,0,1.2) .1s forwards;
     }
 
-    @keyframes fadeUp {
-      to { opacity: 1; transform: translateY(0); }
+    /* ── Theme toggle ── */
+    .theme-toggle {
+      position: absolute; top: 1rem; right: 1rem;
+      width: 34px; height: 34px; border-radius: 50%;
+      background: var(--surface); border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .95rem;
+      transition: background .2s, transform .2s;
+    }
+    .theme-toggle:hover { transform: scale(1.12); }
+
+    /* ── Available badge ── */
+    .available-badge {
+      display: inline-flex; align-items: center; gap: .4rem;
+      background: rgba(34,197,94,.09);
+      border: 1px solid rgba(34,197,94,.22);
+      color: #16a34a; font-size: .71rem; font-weight: 600;
+      letter-spacing: .02em; padding: .28rem .7rem;
+      border-radius: 20px; margin-bottom: .9rem;
+      animation: availGlow 2.6s ease infinite;
+    }
+    html[data-theme="dark"] .available-badge { color: #4ade80; }
+    .avail-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: #22c55e;
+      animation: dotPulse 1.8s ease infinite;
     }
 
     /* ── Avatar ── */
     .avatar-wrap {
-      position: relative;
-      width: 96px;
-      height: 96px;
-      margin-bottom: 1.1rem;
+      position: relative; width: 96px; height: 96px; margin-bottom: 1rem;
     }
-
     .avatar-wrap::before {
-      content: '';
-      position: absolute;
-      inset: -3px;
-      border-radius: 25px;
+      content: ''; position: absolute; inset: -3px; border-radius: 25px;
       background: linear-gradient(135deg, var(--yellow) 0%, var(--dark) 100%);
       z-index: 0;
     }
-
     .avatar {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      height: 100%;
-      border-radius: 22px;
-      object-fit: cover;
-      border: 3px solid var(--white);
-      display: block;
+      position: relative; z-index: 1;
+      width: 100%; height: 100%; border-radius: 22px;
+      object-fit: cover; border: 3px solid var(--card); display: block;
+    }
+    .online-dot {
+      position: absolute; bottom: 6px; right: 6px;
+      width: 12px; height: 12px; border-radius: 50%;
+      background: #22c55e; border: 2px solid var(--card); z-index: 2;
+      animation: dotPulse 2s ease infinite;
     }
 
     /* ── Identity ── */
-    .username {
-      font-size: 1.25rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      color: var(--dark);
-      margin-bottom: 0.35rem;
+    .identity-row { display: flex; align-items: center; gap: .4rem; margin-bottom: .2rem; }
+    .username { font-size: 1.25rem; font-weight: 800; letter-spacing: -.02em; color: var(--text); }
+    .verified {
+      width: 20px; height: 20px; border-radius: 50%; background: #3b82f6;
+      display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
     }
+    .verified svg { width: 11px; height: 11px; fill: none; stroke: #fff; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+    .agency-label { font-size: .77rem; font-weight: 600; color: var(--muted); letter-spacing: .04em; margin-bottom: .5rem; }
+    .tagline { font-size: .83rem; color: var(--muted); text-align: center; line-height: 1.55; max-width: 260px; margin-bottom: 1.2rem; }
 
-    .tagline {
-      font-size: 0.83rem;
-      font-weight: 400;
-      color: var(--muted);
-      text-align: center;
-      line-height: 1.5;
-      max-width: 260px;
-      margin-bottom: 1.8rem;
+    /* ── Stats row ── */
+    .stats-row {
+      display: flex; align-items: center;
+      width: 100%; background: var(--surface); border-radius: 14px;
+      padding: .7rem 0; margin-bottom: 1.3rem;
     }
+    .stat-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: .12rem; }
+    .stat-num { font-size: 1rem; font-weight: 800; color: var(--text); }
+    .stat-lbl { font-size: .66rem; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+    .stat-sep { width: 1px; height: 26px; background: var(--border); }
+
+    /* ── Socials ── */
+    .socials { display: flex; gap: .75rem; margin-bottom: 1.2rem; }
+    .social-btn {
+      width: 40px; height: 40px; border-radius: 12px;
+      background: var(--surface); display: flex; align-items: center;
+      justify-content: center; text-decoration: none; color: var(--text);
+      transition: background .18s, transform .18s;
+    }
+    .social-btn:hover { background: var(--dark); color: var(--white); transform: translateY(-2px); }
+    html[data-theme="dark"] .social-btn:hover { background: rgba(255,255,255,.12); }
+    .social-btn svg { width: 17px; height: 17px; fill: currentColor; }
+
+    /* ── Metrics strip ── */
+    .metrics-strip {
+      display: flex; align-items: center; justify-content: center;
+      width: 100%; background: var(--dark); border-radius: 14px;
+      padding: .8rem 1rem; margin-bottom: 1.2rem;
+      gap: .5rem;
+    }
+    html[data-theme="dark"] .metrics-strip {
+      background: rgba(255,229,0,.06); border: 1px solid rgba(255,229,0,.12);
+    }
+    .metric-item { flex: 1; display: flex; flex-direction: column; align-items: center; }
+    .metric-num { font-size: 1.05rem; font-weight: 800; color: var(--yellow); }
+    .metric-lbl { font-size: .63rem; font-weight: 500; color: rgba(255,255,255,.55); text-transform: uppercase; letter-spacing: .04em; }
+    .metric-sep { color: rgba(255,255,255,.18); font-size: 1.2rem; }
+
+    /* ── Showcase ── */
+    .showcase {
+      width: 100%; height: 86px;
+      background: linear-gradient(135deg, #041020 0%, #0d2242 100%);
+      border-radius: 16px; overflow: hidden; margin-bottom: 1.2rem; position: relative;
+    }
+    .showcase-slide {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; padding: 0 1.2rem; gap: .9rem;
+      opacity: 0; transition: opacity .5s ease;
+    }
+    .showcase-slide.active { opacity: 1; }
+    .showcase-icon { font-size: 1.7rem; flex-shrink: 0; }
+    .showcase-text { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+    .showcase-title { font-size: .88rem; font-weight: 700; color: #fff; margin-bottom: .12rem; white-space: nowrap; }
+    .showcase-sub { font-size: .71rem; color: rgba(255,255,255,.5); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .showcase-badge {
+      background: var(--yellow); color: var(--dark);
+      font-size: .69rem; font-weight: 700; padding: .18rem .5rem;
+      border-radius: 20px; flex-shrink: 0; white-space: nowrap;
+    }
+    .showcase-dots {
+      position: absolute; bottom: 7px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 4px;
+    }
+    .s-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: rgba(255,255,255,.25);
+      transition: background .3s, width .3s;
+    }
+    .s-dot.active { background: var(--yellow); width: 14px; border-radius: 3px; }
+
+    /* ── Lang toggle ── */
+    .lang-section {
+      width: 100%; display: flex; align-items: center;
+      justify-content: space-between; margin-bottom: .55rem; padding: 0 .1rem;
+    }
+    .lang-label { font-size: .7rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+    .lang-toggle { display: flex; gap: .25rem; background: var(--surface); border-radius: 10px; padding: .22rem; }
+    .lang-btn {
+      background: none; border: none; padding: .2rem .5rem; border-radius: 7px;
+      font-size: .73rem; font-weight: 600; color: var(--muted);
+      cursor: pointer; transition: background .15s, color .15s; font-family: inherit;
+    }
+    .lang-btn.active { background: var(--card); color: var(--text); box-shadow: 0 1px 4px var(--shadow); }
 
     /* ── Buttons ── */
-    .btn-list {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 0.7rem;
-      margin-bottom: 1.6rem;
-    }
+    .btn-list { width: 100%; display: flex; flex-direction: column; gap: .65rem; margin-bottom: 1.4rem; }
 
     .btn {
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      height: 62px;
-      padding: 0 1.25rem;
-      border-radius: 18px;
-      background: var(--dark);
-      color: var(--white);
-      font-size: 0.92rem;
-      font-weight: 600;
-      letter-spacing: 0.01em;
-      text-decoration: none;
-      border: none;
-      cursor: pointer;
-      overflow: hidden;
-      transition:
-        transform 0.18s cubic-bezier(.22,.68,0,1.3),
-        background 0.18s ease,
-        box-shadow 0.18s ease;
-      box-shadow: 0 2px 10px rgba(4,16,32,0.18);
-      opacity: 0;
-      animation: fadeUp 0.45s cubic-bezier(.22,.68,0,1.2) forwards;
+      position: relative; display: flex; align-items: center; justify-content: center;
+      width: 100%; height: 62px; padding: 0 1.25rem; border-radius: 18px;
+      background: var(--dark); color: var(--white);
+      font-size: .92rem; font-weight: 600; letter-spacing: .01em;
+      text-decoration: none; border: none; cursor: pointer; overflow: hidden;
+      transition: transform .18s cubic-bezier(.22,.68,0,1.3), background .18s, box-shadow .18s;
+      box-shadow: 0 2px 10px rgba(4,16,32,.18);
+      opacity: 0; animation: fadeUp .45s cubic-bezier(.22,.68,0,1.2) forwards;
     }
+    html[data-theme="dark"] .btn { background: #0f2540; }
 
-    /* staggered entrance */
-    .btn:nth-child(1) { animation-delay: 0.25s; }
-    .btn:nth-child(2) { animation-delay: 0.33s; }
-    .btn:nth-child(3) { animation-delay: 0.41s; }
-    .btn:nth-child(4) { animation-delay: 0.49s; }
-    .btn:nth-child(5) { animation-delay: 0.57s; }
-    .btn:nth-child(6) { animation-delay: 0.65s; }
+    .btn:nth-child(1) { animation-delay: .28s; }
+    .btn:nth-child(2) { animation-delay: .36s; }
+    .btn:nth-child(3) { animation-delay: .44s; }
+    .btn:nth-child(4) { animation-delay: .52s; }
+    .btn:nth-child(5) { animation-delay: .60s; }
+    .btn:nth-child(6) { animation-delay: .68s; }
 
-    /* yellow left accent bar */
     .btn::before {
-      content: '';
-      position: absolute;
-      left: 0; top: 0; bottom: 0;
-      width: 4px;
-      background: var(--yellow);
-      border-radius: 18px 0 0 18px;
-      transform: scaleY(0);
-      transition: transform 0.2s cubic-bezier(.22,.68,0,1.3);
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+      width: 4px; background: var(--yellow); border-radius: 18px 0 0 18px;
+      transform: scaleY(0); transition: transform .2s cubic-bezier(.22,.68,0,1.3);
     }
+    .btn:hover { background: var(--hover); transform: scale(1.025) translateY(-1px); box-shadow: 0 6px 24px rgba(4,16,32,.22); }
+    html[data-theme="dark"] .btn:hover { background: #1a3560; }
+    .btn:hover::before { transform: scaleY(1); }
+    .btn:active { transform: scale(.98); }
 
-    .btn:hover {
-      background: var(--btn-hover);
-      transform: scale(1.025) translateY(-1px);
-      box-shadow: 0 6px 24px rgba(4,16,32,0.22);
-    }
-
-    .btn:hover::before {
-      transform: scaleY(1);
-    }
-
-    .btn:active {
-      transform: scale(0.98);
-    }
-
-    /* ── Primary button (Pack Présence Digitale) ── */
     .btn-primary {
-      background: var(--yellow);
-      color: var(--dark);
-      box-shadow: 0 2px 16px rgba(255,229,0,0.35);
-      font-size: 0.97rem;
-      font-weight: 700;
+      background: var(--yellow); color: var(--dark);
+      font-size: .97rem; font-weight: 700;
+      animation: fadeUp .45s cubic-bezier(.22,.68,0,1.2) .28s both, pulseRing 2.6s ease 1.5s infinite;
     }
+    .btn-primary::before { background: var(--dark); }
+    .btn-primary:hover { background: #f0d800; }
+    .btn-primary .btn-arrow { color: var(--dark); opacity: .45; }
 
-    .btn-primary::before {
-      background: var(--dark);
-    }
+    .btn-whatsapp { background: #075E54; }
+    .btn-whatsapp:hover { background: #064d44; }
+    .btn-whatsapp::before { background: #25D366; }
 
-    .btn-primary:hover {
-      background: #f0d800;
-      box-shadow: 0 6px 28px rgba(255,229,0,0.45);
-    }
-
-    .btn-primary .btn-arrow {
-      color: var(--dark);
-      opacity: 0.5;
-    }
-
-    /* arrow icon on right */
     .btn-arrow {
-      position: absolute;
-      right: 1.1rem;
-      opacity: 0.35;
-      font-size: 0.75rem;
-      transition: opacity 0.18s ease, transform 0.18s ease;
+      position: absolute; right: 1.1rem; opacity: .32; font-size: .75rem;
+      transition: opacity .18s, transform .18s;
     }
+    .btn:hover .btn-arrow { opacity: .8; transform: translateX(2px); }
 
-    .btn:hover .btn-arrow {
-      opacity: 0.8;
-      transform: translateX(2px);
-    }
-
-    /* ── WhatsApp icon left ── */
     .btn-icon {
-      position: absolute;
-      left: 1.1rem;
-      display: flex;
-      align-items: center;
-      opacity: 0.7;
-      transition: opacity 0.18s ease;
+      position: absolute; left: 1.1rem;
+      display: flex; align-items: center;
+      opacity: .8; font-size: 1.05rem;
     }
+    .btn-icon svg { width: 17px; height: 17px; fill: currentColor; }
+    .btn:hover .btn-icon { opacity: 1; }
 
-    .btn-icon svg {
-      width: 18px;
-      height: 18px;
-      fill: currentColor;
+    /* ── Testimonial ── */
+    .testimonial {
+      width: 100%; background: var(--surface); border-radius: 16px;
+      padding: 1rem 1.2rem; margin-bottom: 1.2rem;
+      border-left: 3px solid var(--yellow);
+      opacity: 0; animation: fadeUp .4s ease .95s forwards;
     }
-
-    .btn:hover .btn-icon {
-      opacity: 1;
+    .t-quote { font-size: 2.2rem; line-height: 1; color: var(--yellow); font-family: Georgia, serif; }
+    .t-text { font-size: .81rem; color: var(--muted); line-height: 1.6; font-style: italic; margin: .2rem 0 .75rem; }
+    .t-author { display: flex; align-items: center; gap: .6rem; }
+    .t-avatar {
+      width: 30px; height: 30px; border-radius: 50%;
+      background: var(--dark); color: var(--yellow);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .73rem; font-weight: 800; flex-shrink: 0;
     }
+    html[data-theme="dark"] .t-avatar { background: rgba(255,229,0,.15); }
+    .t-name { font-size: .79rem; font-weight: 700; color: var(--text); display: block; }
+    .t-role { font-size: .71rem; color: var(--muted); }
 
-    /* ── Social icons row ── */
-    .socials {
-      display: flex;
-      gap: 0.75rem;
-      margin-bottom: 1.4rem;
+    /* ── Contact mini ── */
+    .contact-mini {
+      width: 100%; margin-bottom: 1.2rem;
+      opacity: 0; animation: fadeUp .4s ease 1.05s forwards;
     }
-
-    .social-btn {
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
-      background: rgba(4,16,32,0.06);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      color: var(--dark);
-      transition: background 0.18s ease, transform 0.18s ease;
+    .contact-lbl {
+      font-size: .7rem; font-weight: 600; color: var(--muted);
+      text-align: center; text-transform: uppercase; letter-spacing: .06em; margin-bottom: .5rem;
     }
-
-    .social-btn:hover {
-      background: var(--dark);
-      color: var(--white);
-      transform: translateY(-2px);
+    .contact-row { display: flex; gap: .45rem; }
+    .contact-input {
+      flex: 1; height: 46px; padding: 0 1rem; border-radius: 14px;
+      background: var(--surface); border: 1.5px solid var(--border);
+      font-size: .85rem; color: var(--text); font-family: inherit; outline: none;
+      transition: border-color .2s;
     }
-
-    .social-btn svg {
-      width: 17px;
-      height: 17px;
-      fill: currentColor;
+    .contact-input::placeholder { color: var(--muted); }
+    .contact-input:focus { border-color: var(--yellow); }
+    .contact-send {
+      width: 46px; height: 46px; border-radius: 14px;
+      background: var(--dark); color: var(--yellow);
+      border: none; cursor: pointer; font-size: 1.1rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .18s, transform .18s; flex-shrink: 0;
     }
+    .contact-send:hover { background: var(--hover); transform: scale(1.06); }
+    .contact-ok { display: none; text-align: center; font-size: .8rem; color: #16a34a; font-weight: 600; padding: .4rem; }
 
-    /* ── Responsive ── */
+    /* ── Share ── */
+    .share-btn {
+      display: flex; align-items: center; gap: .45rem;
+      background: none; border: 1.5px solid var(--border);
+      border-radius: 12px; padding: .48rem 1rem;
+      font-size: .77rem; font-weight: 600; color: var(--muted);
+      cursor: pointer; font-family: inherit;
+      transition: background .18s, color .18s, border-color .18s;
+      margin-bottom: 1.2rem;
+    }
+    .share-btn:hover { background: var(--dark); color: var(--white); border-color: var(--dark); }
+    html[data-theme="dark"] .share-btn:hover { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.2); }
+    .share-btn svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* ── Partner logos ── */
+    .partner-logos {
+      display: flex; align-items: center; justify-content: center; gap: 1.5rem;
+      opacity: 0; animation: fadeUp .4s ease 1.15s forwards;
+    }
+    .partner-logos img {
+      height: 20px; opacity: .3; filter: grayscale(1); object-fit: contain;
+      transition: opacity .2s;
+    }
+    .partner-logos img:hover { opacity: .6; }
+    html[data-theme="dark"] .partner-logos img { filter: grayscale(1) invert(1); }
+
     @media (max-width: 440px) {
-      .card { padding: 2rem 1.4rem 1.6rem; border-radius: 22px; }
+      .card { padding: 2rem 1.25rem 1.6rem; border-radius: 22px; }
       .btn  { height: 58px; }
     }
   </style>
 </head>
 <body>
 
+  <canvas id="particles-canvas"></canvas>
+  <div class="scroll-hint" id="scrollHint">↓</div>
+
   <div class="card">
 
-    <!-- Avatar -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">🌙</button>
+
+    <div class="available-badge">
+      <span class="avail-dot"></span>
+      Disponible pour de nouveaux projets
+    </div>
+
     <div class="avatar-wrap">
       <img src="../images/sb-favicon.png" alt="Sb Marketing" class="avatar">
+      <div class="online-dot"></div>
     </div>
 
-    <!-- Identity -->
-    <p class="username">@sbmarketing</p>
+    <div class="identity-row">
+      <p class="username">@sbmarketing</p>
+      <span class="verified" title="Vérifié">
+        <svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg>
+      </span>
+    </div>
+    <p class="agency-label">Agence digitale · Nice</p>
     <p class="tagline">Marketing digital &amp; création web pour entreprises ambitieuses</p>
 
-    <!-- Social icons -->
+    <div class="stats-row">
+      <div class="stat-item">
+        <span class="stat-num">10+</span>
+        <span class="stat-lbl">clients</span>
+      </div>
+      <div class="stat-sep"></div>
+      <div class="stat-item">
+        <span class="stat-num">3 ans</span>
+        <span class="stat-lbl">d'expérience</span>
+      </div>
+      <div class="stat-sep"></div>
+      <div class="stat-item">
+        <span class="stat-num">Nice</span>
+        <span class="stat-lbl">Côte d'Azur</span>
+      </div>
+    </div>
+
     <div class="socials">
-      <!-- Instagram -->
       <a href="https://www.instagram.com/sb.marketing.fr/" target="_blank" rel="noopener" class="social-btn" aria-label="Instagram">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
-        </svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
       </a>
-      <!-- LinkedIn -->
       <a href="https://www.linkedin.com/company/sb-marketing-fr/" target="_blank" rel="noopener" class="social-btn" aria-label="LinkedIn">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-        </svg>
+        <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
       </a>
-      <!-- TikTok -->
       <a href="https://www.tiktok.com/@sb.marketing.fr" target="_blank" rel="noopener" class="social-btn" aria-label="TikTok">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
-        </svg>
+        <svg viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
       </a>
     </div>
 
-    <!-- Buttons -->
-    <div class="btn-list">
+    <div class="metrics-strip">
+      <div class="metric-item">
+        <span class="metric-num">800+</span>
+        <span class="metric-lbl">leads/mois</span>
+      </div>
+      <div class="metric-sep">|</div>
+      <div class="metric-item">
+        <span class="metric-num">500%</span>
+        <span class="metric-lbl">visibilité</span>
+      </div>
+      <div class="metric-sep">|</div>
+      <div class="metric-item">
+        <span class="metric-num">15×</span>
+        <span class="metric-lbl">réservations</span>
+      </div>
+    </div>
 
-      <a href="https://www.sbmarketing.fr/pack-presence-digitale-nice/" class="btn btn-primary" target="_blank" rel="noopener">
+    <div class="showcase" id="showcase">
+      <div class="showcase-slide active">
+        <span class="showcase-icon">📈</span>
+        <div class="showcase-text">
+          <span class="showcase-title">Meta &amp; Google Ads</span>
+          <span class="showcase-sub">Campagnes qui convertissent vraiment</span>
+        </div>
+        <span class="showcase-badge">+ROI</span>
+      </div>
+      <div class="showcase-slide">
+        <span class="showcase-icon">🌐</span>
+        <div class="showcase-text">
+          <span class="showcase-title">Création web</span>
+          <span class="showcase-sub">Sites performants &amp; modernes</span>
+        </div>
+        <span class="showcase-badge">Webflow</span>
+      </div>
+      <div class="showcase-slide">
+        <span class="showcase-icon">📱</span>
+        <div class="showcase-text">
+          <span class="showcase-title">Social Media</span>
+          <span class="showcase-sub">Contenu &amp; gestion de vos réseaux</span>
+        </div>
+        <span class="showcase-badge">Créatif</span>
+      </div>
+      <div class="showcase-slide">
+        <span class="showcase-icon">📞</span>
+        <div class="showcase-text">
+          <span class="showcase-title">Centre d'appel</span>
+          <span class="showcase-sub">Qualification de leads, 24/7</span>
+        </div>
+        <span class="showcase-badge">800+ leads</span>
+      </div>
+      <div class="showcase-dots">
+        <div class="s-dot active"></div>
+        <div class="s-dot"></div>
+        <div class="s-dot"></div>
+        <div class="s-dot"></div>
+      </div>
+    </div>
+
+    <div class="lang-section">
+      <span class="lang-label">WhatsApp</span>
+      <div class="lang-toggle">
+        <button class="lang-btn active" data-lang="all">Tous</button>
+        <button class="lang-btn" data-lang="en">🇬🇧 EN</button>
+        <button class="lang-btn" data-lang="fr">🇫🇷 FR</button>
+      </div>
+    </div>
+
+    <div class="btn-list">
+      <a href="https://www.sbmarketing.fr/pack-presence-digitale-nice/?utm_source=linktree&utm_medium=social&utm_campaign=link" class="btn btn-primary" target="_blank" rel="noopener">
         Pack Présence Digitale
         <span class="btn-arrow">→</span>
       </a>
-
-      <a href="https://www.sbmarketing.fr/contact/" class="btn" target="_blank" rel="noopener">
+      <a href="https://www.sbmarketing.fr/contact/?utm_source=linktree&utm_medium=social&utm_campaign=link" class="btn" target="_blank" rel="noopener">
         Démarrer un projet
         <span class="btn-arrow">→</span>
       </a>
-
-      <a href="https://www.sbmarketing.fr/projets/" class="btn" target="_blank" rel="noopener">
+      <a href="https://www.sbmarketing.fr/projets/?utm_source=linktree&utm_medium=social&utm_campaign=link" class="btn" target="_blank" rel="noopener">
         Voir nos projets
         <span class="btn-arrow">→</span>
       </a>
-
-      <a href="https://wa.me/35699728213" class="btn" target="_blank" rel="noopener">
-        <span class="btn-icon">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        </span>
+      <a href="https://wa.me/35699728213" class="btn btn-whatsapp" data-wa-lang="en" target="_blank" rel="noopener">
+        <span class="btn-icon">🇬🇧</span>
         WhatsApp — English
         <span class="btn-arrow">→</span>
       </a>
-
-      <a href="https://wa.me/33745115391" class="btn" target="_blank" rel="noopener">
-        <span class="btn-icon">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        </span>
+      <a href="https://wa.me/33745115391" class="btn btn-whatsapp" data-wa-lang="fr" target="_blank" rel="noopener">
+        <span class="btn-icon">🇫🇷</span>
         WhatsApp — Français
         <span class="btn-arrow">→</span>
       </a>
-
-      <a href="https://www.sbmarketing.fr/" class="btn" target="_blank" rel="noopener">
+      <a href="https://www.sbmarketing.fr/?utm_source=linktree&utm_medium=social&utm_campaign=link" class="btn" target="_blank" rel="noopener">
         Visiter le site
         <span class="btn-arrow">→</span>
       </a>
+    </div>
 
+    <div class="testimonial">
+      <span class="t-quote">"</span>
+      <p class="t-text">On a essayé 4 agences avant Sb Marketing et c'est la seule qui a réussi à lever la compagnie. Le game changer, c'est leur centre d'appel !</p>
+      <div class="t-author">
+        <div class="t-avatar">S</div>
+        <div>
+          <span class="t-name">Samuel</span>
+          <span class="t-role">Président, Fenestria</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-mini">
+      <p class="contact-lbl">Recevoir notre offre par email</p>
+      <div class="contact-row" id="contactRow">
+        <input type="email" class="contact-input" id="emailInput" placeholder="votre@email.com">
+        <button class="contact-send" id="emailSend">→</button>
+      </div>
+      <p class="contact-ok" id="contactOk">✓ On vous recontacte très bientôt !</p>
+    </div>
+
+    <button class="share-btn" id="shareBtn">
+      <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      Partager cette page
+    </button>
+
+    <div class="partner-logos">
+      <img src="../images/65eb5e01113586fd1e0de089_metapartner.png" alt="Meta Partner">
+      <img src="../images/65eb5dc1fb41bc22e75db7b4_googlepartnernoir.png" alt="Google Partner">
     </div>
 
   </div>
+
+  <script>
+    /* Particles */
+    (function(){
+      var c = document.getElementById('particles-canvas'), x = c.getContext('2d'), ps = [], W, H;
+      function resize(){ W = c.width = innerWidth; H = c.height = innerHeight; }
+      resize(); addEventListener('resize', resize);
+      for(var i=0;i<38;i++) ps.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*2+.5,vx:(Math.random()-.5)*.3,vy:-Math.random()*.35-.08,a:Math.random()*.35+.08});
+      function dark(){ return document.documentElement.dataset.theme==='dark'; }
+      function draw(){
+        x.clearRect(0,0,W,H);
+        var col=dark()?'255,229,0':'4,16,32';
+        ps.forEach(function(p){
+          x.beginPath(); x.arc(p.x,p.y,p.r,0,Math.PI*2);
+          x.fillStyle='rgba('+col+','+p.a+')'; x.fill();
+          p.x+=p.vx; p.y+=p.vy;
+          if(p.y<-5){p.y=H+5;p.x=Math.random()*W;}
+          if(p.x<-5||p.x>W+5){p.x=Math.random()*W;}
+        });
+        requestAnimationFrame(draw);
+      }
+      draw();
+    })();
+
+    /* Dark mode */
+    var html = document.documentElement;
+    var tBtn = document.getElementById('themeToggle');
+    function applyTheme(t){ html.dataset.theme=t; tBtn.textContent=t==='dark'?'☀️':'🌙'; localStorage.setItem('sb-theme',t); }
+    applyTheme(localStorage.getItem('sb-theme')||'light');
+    tBtn.addEventListener('click',function(){ applyTheme(html.dataset.theme==='dark'?'light':'dark'); });
+
+    /* Showcase slideshow */
+    (function(){
+      var slides=document.querySelectorAll('.showcase-slide'), dots=document.querySelectorAll('.s-dot'), cur=0;
+      setInterval(function(){
+        slides[cur].classList.remove('active'); dots[cur].classList.remove('active');
+        cur=(cur+1)%slides.length;
+        slides[cur].classList.add('active'); dots[cur].classList.add('active');
+      },3200);
+    })();
+
+    /* Language toggle */
+    document.querySelectorAll('.lang-btn').forEach(function(b){
+      b.addEventListener('click',function(){
+        document.querySelectorAll('.lang-btn').forEach(function(x){x.classList.remove('active');});
+        b.classList.add('active');
+        var lang=b.dataset.lang;
+        document.querySelectorAll('[data-wa-lang]').forEach(function(el){
+          el.style.display=(lang==='all'||el.dataset.waLang===lang)?'':'none';
+        });
+      });
+    });
+
+    /* Share */
+    document.getElementById('shareBtn').addEventListener('click',function(){
+      var d={title:'Sb Marketing',text:'Marketing digital & création web à Nice',url:location.href};
+      if(navigator.share){navigator.share(d).catch(function(){});}
+      else{
+        navigator.clipboard.writeText(location.href);
+        var b=document.getElementById('shareBtn'), orig=b.innerHTML;
+        b.textContent='✓ Lien copié !';
+        setTimeout(function(){b.innerHTML=orig;},2200);
+      }
+    });
+
+    /* Email form */
+    function sendEmail(){
+      var v=document.getElementById('emailInput').value.trim();
+      if(!v||!v.includes('@'))return;
+      document.getElementById('contactRow').style.display='none';
+      document.getElementById('contactOk').style.display='block';
+      window.open('https://www.sbmarketing.fr/contact/?email='+encodeURIComponent(v)+'&utm_source=linktree&utm_medium=email','_blank');
+    }
+    document.getElementById('emailSend').addEventListener('click',sendEmail);
+    document.getElementById('emailInput').addEventListener('keydown',function(e){if(e.key==='Enter')sendEmail();});
+
+    /* Scroll hint */
+    var hint=document.getElementById('scrollHint');
+    addEventListener('scroll',function(){hint.classList[scrollY>80?'add':'remove']('hidden');},{passive:true});
+  </script>
 
 </body>
 </html>
