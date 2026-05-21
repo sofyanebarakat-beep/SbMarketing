@@ -449,14 +449,17 @@
       </div>
     </div>
 
-    <div class="contact-mini">
+    <form class="contact-mini" action="https://formsubmit.co/sofyanebarakat@gmail.com" method="POST">
+      <input type="hidden" name="_subject" value="Nouveau abonné — Sb Marketing link page">
+      <input type="hidden" name="_next" value="https://sofyanebarakat-beep.github.io/SbMarketing/linkssubscribe/">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_template" value="table">
       <p class="contact-lbl">Recevoir notre offre par email</p>
-      <div class="contact-row" id="contactRow">
-        <input type="email" class="contact-input" id="emailInput" placeholder="votre@email.com">
-        <button class="contact-send" id="emailSend">→</button>
+      <div class="contact-row">
+        <input type="email" name="email" class="contact-input" placeholder="votre@email.com" required>
+        <button type="submit" class="contact-send">→</button>
       </div>
-      <p class="contact-ok" id="contactOk">✓ On vous recontacte très bientôt !</p>
-    </div>
+    </form>
 
     <button class="share-btn" id="shareBtn">
       <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
@@ -521,17 +524,6 @@
         setTimeout(function(){b.innerHTML=orig;},2200);
       }
     });
-
-    /* Email form */
-    function sendEmail(){
-      var v=document.getElementById('emailInput').value.trim();
-      if(!v||!v.includes('@'))return;
-      document.getElementById('contactRow').style.display='none';
-      document.getElementById('contactOk').style.display='block';
-      window.open('https://www.sbmarketing.fr/contact/?email='+encodeURIComponent(v)+'&utm_source=linktree&utm_medium=email','_blank');
-    }
-    document.getElementById('emailSend').addEventListener('click',sendEmail);
-    document.getElementById('emailInput').addEventListener('keydown',function(e){if(e.key==='Enter')sendEmail();});
 
     /* Scroll hint */
     var hint=document.getElementById('scrollHint');
