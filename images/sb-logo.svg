@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="500" height="500">
+  <defs>
+    <linearGradient id="gold" x1="15%" y1="0%" x2="85%" y2="100%">
+      <stop offset="0%"   stop-color="#fcd05a"/>
+      <stop offset="45%"  stop-color="#fabb32"/>
+      <stop offset="100%" stop-color="#d9920e"/>
+    </linearGradient>
+    <linearGradient id="shine" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="rgba(255,255,255,0.18)"/>
+      <stop offset="50%"  stop-color="rgba(255,255,255,0.06)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="500" height="500" fill="#0b1729"/>
+
+  <!-- "sb" letters -->
+  <!-- s -->
+  <path d="
+    M 96 148
+    C 96 148 72 148 72 172
+    C 72 196 96 204 120 208
+    C 148 213 168 218 168 244
+    C 168 270 144 278 120 278
+    C 96 278 72 268 66 256
+    L 66 256
+    C 66 256 76 270 104 270
+    C 132 270 156 260 156 244
+    C 156 228 136 222 108 217
+    C 80 212 60 202 60 172
+    C 60 142 84 136 110 136
+    C 136 136 158 148 162 162
+    L 150 168
+    C 146 156 130 148 110 148
+    Z
+  " fill="url(#gold)" transform="scale(1.55) translate(25, 28)"/>
+
+  <!-- b -->
+  <path d="
+    M 68 48
+    L 68 278
+    L 100 278
+    C 140 278 170 258 170 222
+    C 170 186 140 166 100 166
+    L 80 166
+    L 80 278
+
+    M 80 60
+    L 80 166
+    L 100 166
+    C 132 166 158 182 158 222
+    C 158 262 132 266 100 266
+    L 80 266
+    L 80 60
+    L 68 60
+    Z
+  " fill="url(#gold)" transform="scale(1.55) translate(107, 28)"/>
+
+  <!-- Cleaner approach: use text for accurate glyph rendering -->
+  <text
+    x="250" y="318"
+    font-family="'Arial Rounded MT Bold','Helvetica Rounded',Arial,sans-serif"
+    font-size="248"
+    font-weight="900"
+    fill="url(#gold)"
+    text-anchor="middle"
+    letter-spacing="-8">sb</text>
+
+  <!-- Sheen overlay on letters area -->
+  <rect x="80" y="80" width="340" height="210" fill="url(#shine)" rx="8"/>
+
+  <!-- "Marketing" -->
+  <text
+    x="250" y="415"
+    font-family="'Arial Rounded MT Bold','Helvetica Rounded','Trebuchet MS',Arial,sans-serif"
+    font-size="72"
+    font-weight="700"
+    fill="url(#gold)"
+    text-anchor="middle"
+    letter-spacing="3">Marketing</text>
+</svg>
