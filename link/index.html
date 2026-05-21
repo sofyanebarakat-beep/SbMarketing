@@ -166,32 +166,6 @@
     .agency-label { font-size: .77rem; font-weight: 600; color: var(--muted); letter-spacing: .04em; margin-bottom: .5rem; }
     .tagline { font-size: .83rem; color: var(--muted); text-align: center; line-height: 1.55; max-width: 260px; margin-bottom: 1.2rem; }
 
-    /* ── Stats row ── */
-    .stats-row {
-      display: flex; align-items: center;
-      width: 100%; background: var(--surface); border-radius: 14px;
-      padding: .7rem 0; margin-bottom: 1.3rem;
-    }
-    .stat-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: .12rem; }
-    .stat-num { font-size: 1rem; font-weight: 800; color: var(--text); }
-    .stat-lbl { font-size: .66rem; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
-    .stat-sep { width: 1px; height: 26px; background: var(--border); }
-
-
-    /* ── Metrics strip ── */
-    .metrics-strip {
-      display: flex; align-items: center; justify-content: center;
-      width: 100%; background: var(--dark); border-radius: 14px;
-      padding: .8rem 1rem; margin-bottom: 1.2rem;
-      gap: .5rem;
-    }
-    html[data-theme="dark"] .metrics-strip {
-      background: rgba(255,229,0,.06); border: 1px solid rgba(255,229,0,.12);
-    }
-    .metric-item { flex: 1; display: flex; flex-direction: column; align-items: center; }
-    .metric-num { font-size: 1.05rem; font-weight: 800; color: var(--yellow); }
-    .metric-lbl { font-size: .63rem; font-weight: 500; color: rgba(255,255,255,.55); text-transform: uppercase; letter-spacing: .04em; }
-    .metric-sep { color: rgba(255,255,255,.18); font-size: 1.2rem; }
 
     /* ── Showcase ── */
     .showcase {
@@ -225,19 +199,6 @@
     }
     .s-dot.active { background: var(--yellow); width: 14px; border-radius: 3px; }
 
-    /* ── Lang toggle ── */
-    .lang-section {
-      width: 100%; display: flex; align-items: center;
-      justify-content: space-between; margin-bottom: .55rem; padding: 0 .1rem;
-    }
-    .lang-label { font-size: .7rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
-    .lang-toggle { display: flex; gap: .25rem; background: var(--surface); border-radius: 10px; padding: .22rem; }
-    .lang-btn {
-      background: none; border: none; padding: .2rem .5rem; border-radius: 7px;
-      font-size: .73rem; font-weight: 600; color: var(--muted);
-      cursor: pointer; transition: background .15s, color .15s; font-family: inherit;
-    }
-    .lang-btn.active { background: var(--card); color: var(--text); box-shadow: 0 1px 4px var(--shadow); }
 
     /* ── Buttons ── */
     .btn-list { width: 100%; display: flex; flex-direction: column; gap: .65rem; margin-bottom: 1.4rem; }
@@ -406,41 +367,6 @@
     <p class="agency-label">Agence digitale · Nice</p>
     <p class="tagline">Marketing digital &amp; création web pour entreprises ambitieuses</p>
 
-    <div class="stats-row">
-      <div class="stat-item">
-        <span class="stat-num">10+</span>
-        <span class="stat-lbl">clients</span>
-      </div>
-      <div class="stat-sep"></div>
-      <div class="stat-item">
-        <span class="stat-num">3 ans</span>
-        <span class="stat-lbl">d'expérience</span>
-      </div>
-      <div class="stat-sep"></div>
-      <div class="stat-item">
-        <span class="stat-num">Nice</span>
-        <span class="stat-lbl">Côte d'Azur</span>
-      </div>
-    </div>
-
-
-    <div class="metrics-strip">
-      <div class="metric-item">
-        <span class="metric-num">800+</span>
-        <span class="metric-lbl">leads/mois</span>
-      </div>
-      <div class="metric-sep">|</div>
-      <div class="metric-item">
-        <span class="metric-num">500%</span>
-        <span class="metric-lbl">visibilité</span>
-      </div>
-      <div class="metric-sep">|</div>
-      <div class="metric-item">
-        <span class="metric-num">15×</span>
-        <span class="metric-lbl">réservations</span>
-      </div>
-    </div>
-
     <div class="showcase" id="showcase">
       <div class="showcase-slide active">
         <span class="showcase-icon">📈</span>
@@ -482,15 +408,6 @@
       </div>
     </div>
 
-    <div class="lang-section">
-      <span class="lang-label">WhatsApp</span>
-      <div class="lang-toggle">
-        <button class="lang-btn active" data-lang="all">Tous</button>
-        <button class="lang-btn" data-lang="en">🇬🇧 EN</button>
-        <button class="lang-btn" data-lang="fr">🇫🇷 FR</button>
-      </div>
-    </div>
-
     <div class="btn-list">
       <a href="https://www.sbmarketing.fr/pack-presence-digitale-nice/?utm_source=linktree&utm_medium=social&utm_campaign=link" class="btn btn-primary" target="_blank" rel="noopener">
         Pack Présence Digitale
@@ -504,12 +421,12 @@
         Voir nos projets
         <span class="btn-arrow">→</span>
       </a>
-      <a href="https://wa.me/35699728213" class="btn btn-whatsapp" data-wa-lang="en" target="_blank" rel="noopener">
+      <a href="https://wa.me/35699728213" class="btn btn-whatsapp" target="_blank" rel="noopener">
         <span class="btn-icon">🇬🇧</span>
         WhatsApp — English
         <span class="btn-arrow">→</span>
       </a>
-      <a href="https://wa.me/33745115391" class="btn btn-whatsapp" data-wa-lang="fr" target="_blank" rel="noopener">
+      <a href="https://wa.me/33745115391" class="btn btn-whatsapp" target="_blank" rel="noopener">
         <span class="btn-icon">🇫🇷</span>
         WhatsApp — Français
         <span class="btn-arrow">→</span>
@@ -592,18 +509,6 @@
         slides[cur].classList.add('active'); dots[cur].classList.add('active');
       },3200);
     })();
-
-    /* Language toggle */
-    document.querySelectorAll('.lang-btn').forEach(function(b){
-      b.addEventListener('click',function(){
-        document.querySelectorAll('.lang-btn').forEach(function(x){x.classList.remove('active');});
-        b.classList.add('active');
-        var lang=b.dataset.lang;
-        document.querySelectorAll('[data-wa-lang]').forEach(function(el){
-          el.style.display=(lang==='all'||el.dataset.waLang===lang)?'':'none';
-        });
-      });
-    });
 
     /* Share */
     document.getElementById('shareBtn').addEventListener('click',function(){
