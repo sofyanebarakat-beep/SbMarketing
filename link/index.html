@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sb Marketing | Links</title>
+  <meta name="robots" content="noindex, follow">
+  <link rel="icon" type="image/png" href="../images/sb-favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --dark:    #041020;
+      --yellow:  #FFE500;
+      --white:   #ffffff;
+      --bg:      #f0f1f3;
+      --card:    #ffffff;
+      --muted:   #6b7280;
+      --btn-hover: #0d2242;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--dark);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100dvh;
+      padding: 1.5rem 1rem;
+      background: radial-gradient(ellipse at 60% 0%, rgba(4,16,32,0.06) 0%, transparent 70%),
+                  radial-gradient(ellipse at 20% 100%, rgba(255,229,0,0.07) 0%, transparent 60%),
+                  var(--bg);
+    }
+
+    /* ── Card ── */
+    .card {
+      width: 100%;
+      max-width: 420px;
+      background: var(--card);
+      border-radius: 28px;
+      box-shadow:
+        0 4px 6px rgba(4,16,32,0.04),
+        0 10px 40px rgba(4,16,32,0.10),
+        0 1px 2px rgba(4,16,32,0.06);
+      padding: 2.5rem 2rem 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+      opacity: 0;
+      transform: translateY(18px);
+      animation: fadeUp 0.55s cubic-bezier(.22,.68,0,1.2) 0.1s forwards;
+    }
+
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Avatar ── */
+    .avatar-wrap {
+      position: relative;
+      width: 90px;
+      height: 90px;
+      margin-bottom: 1.1rem;
+    }
+
+    .avatar-wrap::before {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--yellow) 0%, var(--dark) 100%);
+      z-index: 0;
+    }
+
+    .avatar {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--white);
+      display: block;
+    }
+
+    /* ── Identity ── */
+    .username {
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--dark);
+      margin-bottom: 0.35rem;
+    }
+
+    .tagline {
+      font-size: 0.83rem;
+      font-weight: 400;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.5;
+      max-width: 260px;
+      margin-bottom: 1.8rem;
+    }
+
+    /* ── Buttons ── */
+    .btn-list {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      margin-bottom: 1.6rem;
+    }
+
+    .btn {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 62px;
+      padding: 0 1.25rem;
+      border-radius: 18px;
+      background: var(--dark);
+      color: var(--white);
+      font-size: 0.92rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      overflow: hidden;
+      transition:
+        transform 0.18s cubic-bezier(.22,.68,0,1.3),
+        background 0.18s ease,
+        box-shadow 0.18s ease;
+      box-shadow: 0 2px 10px rgba(4,16,32,0.18);
+      opacity: 0;
+      animation: fadeUp 0.45s cubic-bezier(.22,.68,0,1.2) forwards;
+    }
+
+    /* staggered entrance */
+    .btn:nth-child(1) { animation-delay: 0.25s; }
+    .btn:nth-child(2) { animation-delay: 0.33s; }
+    .btn:nth-child(3) { animation-delay: 0.41s; }
+    .btn:nth-child(4) { animation-delay: 0.49s; }
+    .btn:nth-child(5) { animation-delay: 0.57s; }
+
+    /* yellow left accent bar */
+    .btn::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+      background: var(--yellow);
+      border-radius: 18px 0 0 18px;
+      transform: scaleY(0);
+      transition: transform 0.2s cubic-bezier(.22,.68,0,1.3);
+    }
+
+    .btn:hover {
+      background: var(--btn-hover);
+      transform: scale(1.025) translateY(-1px);
+      box-shadow: 0 6px 24px rgba(4,16,32,0.22);
+    }
+
+    .btn:hover::before {
+      transform: scaleY(1);
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    /* arrow icon on right */
+    .btn-arrow {
+      position: absolute;
+      right: 1.1rem;
+      opacity: 0.35;
+      font-size: 0.75rem;
+      transition: opacity 0.18s ease, transform 0.18s ease;
+    }
+
+    .btn:hover .btn-arrow {
+      opacity: 0.8;
+      transform: translateX(2px);
+    }
+
+    /* ── Divider ── */
+    .divider {
+      width: 40px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(4,16,32,0.10), transparent);
+      border-radius: 2px;
+      margin-bottom: 1.2rem;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      opacity: 0;
+      animation: fadeUp 0.4s ease 0.72s forwards;
+    }
+
+    .footer-brand {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(4,16,32,0.35);
+    }
+
+    .footer-dot {
+      display: inline-block;
+      width: 5px;
+      height: 5px;
+      background: var(--yellow);
+      border-radius: 50%;
+      vertical-align: middle;
+      margin: 0 4px;
+      position: relative;
+      top: -1px;
+    }
+
+    /* ── Social icons row (optional) ── */
+    .socials {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 1.4rem;
+    }
+
+    .social-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: rgba(4,16,32,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      color: var(--dark);
+      transition: background 0.18s ease, transform 0.18s ease;
+    }
+
+    .social-btn:hover {
+      background: var(--dark);
+      color: var(--white);
+      transform: translateY(-2px);
+    }
+
+    .social-btn svg {
+      width: 17px;
+      height: 17px;
+      fill: currentColor;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 440px) {
+      .card { padding: 2rem 1.4rem 1.6rem; border-radius: 22px; }
+      .btn  { height: 58px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+
+    <!-- Avatar -->
+    <div class="avatar-wrap">
+      <img src="../images/soufiane-profile.jpg" alt="Sb Marketing" class="avatar">
+    </div>
+
+    <!-- Identity -->
+    <p class="username">@sbmarketing</p>
+    <p class="tagline">Marketing digital &amp; création web pour entreprises ambitieuses à Nice 🌊</p>
+
+    <!-- Social icons -->
+    <div class="socials">
+      <!-- Instagram -->
+      <a href="https://www.instagram.com/sb.marketing.fr/" target="_blank" rel="noopener" class="social-btn" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+        </svg>
+      </a>
+      <!-- LinkedIn -->
+      <a href="https://www.linkedin.com/company/sb-marketing-fr/" target="_blank" rel="noopener" class="social-btn" aria-label="LinkedIn">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+        </svg>
+      </a>
+      <!-- TikTok -->
+      <a href="https://www.tiktok.com/@sb.marketing.fr" target="_blank" rel="noopener" class="social-btn" aria-label="TikTok">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+        </svg>
+      </a>
+    </div>
+
+    <!-- Buttons -->
+    <div class="btn-list">
+      <a href="https://www.sbmarketing.fr/contact/" class="btn" target="_blank" rel="noopener">
+        Démarrer un projet
+        <span class="btn-arrow">→</span>
+      </a>
+      <a href="https://www.sbmarketing.fr/projets/" class="btn" target="_blank" rel="noopener">
+        Voir nos projets
+        <span class="btn-arrow">→</span>
+      </a>
+      <a href="https://www.sbmarketing.fr/blog/" class="btn" target="_blank" rel="noopener">
+        Lire notre dernier article
+        <span class="btn-arrow">→</span>
+      </a>
+      <a href="https://www.sbmarketing.fr/pack-presence-digitale-nice/" class="btn" target="_blank" rel="noopener">
+        Notre offre à Nice
+        <span class="btn-arrow">→</span>
+      </a>
+      <a href="https://www.sbmarketing.fr/" class="btn" target="_blank" rel="noopener">
+        Visiter le site
+        <span class="btn-arrow">→</span>
+      </a>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <p class="footer-brand">Sb Marketing<span class="footer-dot"></span>Nice, FR</p>
+    </div>
+
+  </div>
+
+</body>
+</html>
