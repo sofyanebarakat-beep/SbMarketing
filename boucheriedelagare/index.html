@@ -207,6 +207,26 @@
     .btn-icon svg { width: 17px; height: 17px; fill: currentColor; }
     .btn:hover .btn-icon { opacity: 1; }
 
+    /* ── Open/closed badge ── */
+    .status-badge {
+      display: inline-flex; align-items: center; gap: .4rem;
+      border-radius: 20px; padding: .28rem .75rem;
+      font-size: .71rem; font-weight: 600; letter-spacing: .02em;
+      margin-bottom: .9rem;
+    }
+    .status-badge.open {
+      background: rgba(34,197,94,.09); border: 1px solid rgba(34,197,94,.22); color: #16a34a;
+    }
+    .status-badge.closed {
+      background: rgba(224,82,82,.09); border: 1px solid rgba(224,82,82,.22); color: #dc2626;
+    }
+    .status-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      animation: dotPulse 1.8s ease infinite;
+    }
+    .status-badge.open .status-dot { background: #22c55e; }
+    .status-badge.closed .status-dot { background: #e05252; animation: none; }
+
     /* ── Hours card ── */
     .hours-card {
       width: 100%; background: var(--bg); border-radius: 16px;
@@ -224,9 +244,20 @@
       border-bottom: 1px solid rgba(33,47,75,.07);
     }
     .hours-row:last-child { border-bottom: none; }
+    .hours-row.today { background: rgba(173,137,95,.07); margin: 0 -.4rem; padding: .25rem .4rem; border-radius: 6px; }
     .hours-day { font-weight: 600; color: var(--text); }
     .hours-time { color: var(--muted); }
     .hours-closed { color: #e05252; }
+
+    /* ── Map embed ── */
+    .map-wrap {
+      width: 100%; border-radius: 16px; overflow: hidden;
+      margin-bottom: 1.2rem; border: 1.5px solid var(--border);
+      opacity: 0; animation: fadeUp .4s ease 1s forwards;
+    }
+    .map-wrap iframe {
+      width: 100%; height: 200px; display: block; border: 0;
+    }
 
     /* ── Share ── */
     .share-btn {
@@ -288,6 +319,11 @@
     <p class="agency-label">Boucherie Artisanale · Nice</p>
     <p class="tagline">Viandes de qualité, savoir-faire traditionnel depuis des générations</p>
 
+    <div class="status-badge" id="statusBadge">
+      <span class="status-dot"></span>
+      <span id="statusText">…</span>
+    </div>
+
     <!-- Social icons -->
     <div class="social-row">
       <!-- Instagram -->
@@ -320,7 +356,7 @@
         Voir nos produits
         <span class="btn-arrow">→</span>
       </a>
-      <a href="https://maps.google.com/?q=Boucherie+de+la+Gare+Nice" class="btn" target="_blank" rel="noopener">
+      <a href="https://maps.google.com/?q=5+Avenue+Thiers,+06000+Nice" class="btn" target="_blank" rel="noopener">
         <span class="btn-icon">📍</span>
         Nous trouver — Nice
         <span class="btn-arrow">→</span>
@@ -342,34 +378,45 @@
     <!-- Hours -->
     <div class="hours-card">
       <p class="hours-title">🕐 Horaires d'ouverture</p>
-      <div class="hours-row">
+      <div class="hours-row" data-day="1">
         <span class="hours-day">Lundi</span>
         <span class="hours-time">08h30 – 14h00 / 15h30 – 19h00</span>
       </div>
-      <div class="hours-row">
+      <div class="hours-row" data-day="2">
         <span class="hours-day">Mardi</span>
         <span class="hours-time">11h00 – 19h00</span>
       </div>
-      <div class="hours-row">
+      <div class="hours-row" data-day="3">
         <span class="hours-day">Mercredi</span>
         <span class="hours-closed">Fermé</span>
       </div>
-      <div class="hours-row">
+      <div class="hours-row" data-day="4">
         <span class="hours-day">Jeudi</span>
         <span class="hours-time">08h30 – 14h00 / 15h30 – 19h00</span>
       </div>
-      <div class="hours-row">
+      <div class="hours-row" data-day="5">
         <span class="hours-day">Vendredi</span>
         <span class="hours-time">08h30 – 14h00 / 15h30 – 19h00</span>
       </div>
-      <div class="hours-row">
+      <div class="hours-row" data-day="6">
         <span class="hours-day">Samedi</span>
         <span class="hours-time">08h30 – 14h00 / 15h30 – 19h00</span>
       </div>
-      <div class="hours-row">
+      <div class="hours-row" data-day="0">
         <span class="hours-day">Dimanche</span>
         <span class="hours-time">08h30 – 17h00</span>
       </div>
+    </div>
+
+    <!-- Map -->
+    <div class="map-wrap">
+      <iframe
+        src="https://maps.google.com/maps?q=5+Av.+Thiers+06000+Nice+France&output=embed&z=16"
+        loading="lazy"
+        allowfullscreen
+        referrerpolicy="no-referrer-when-downgrade"
+        title="Boucherie de la Gare — 5 Av. Thiers, Nice">
+      </iframe>
     </div>
 
     <button class="share-btn" id="shareBtn">
@@ -388,7 +435,88 @@
   </div>
 
   <script>
-    /* Share */
+    /* ── Open/closed status ── */
+    (function() {
+      // hours per day (0=Sun): [open1, close1, open2, close2] in minutes from midnight, null=closed
+      var HOURS = {
+        0: [510, 1020, null, null],      // Dimanche 08h30–17h00
+        1: [510, 840, 930, 1140],        // Lundi    08h30–14h00 / 15h30–19h00
+        2: [660, 1140, null, null],      // Mardi    11h00–19h00
+        3: null,                          // Mercredi fermé
+        4: [510, 840, 930, 1140],        // Jeudi    08h30–14h00 / 15h30–19h00
+        5: [510, 840, 930, 1140],        // Vendredi 08h30–14h00 / 15h30–19h00
+        6: [510, 840, 930, 1140]         // Samedi   08h30–14h00 / 15h30–19h00
+      };
+
+      var DAY_NAMES = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+
+      function toMin(h, m) { return h * 60 + m; }
+      function fmt(min) {
+        var h = Math.floor(min / 60), m = min % 60;
+        return h + 'h' + (m === 0 ? '00' : m);
+      }
+
+      // Get current time in Europe/Paris
+      var now = new Date();
+      var parisStr = now.toLocaleString('en-US', { timeZone: 'Europe/Paris' });
+      var paris = new Date(parisStr);
+      var day = paris.getDay();
+      var cur = toMin(paris.getHours(), paris.getMinutes());
+
+      // Highlight today's row
+      var todayRow = document.querySelector('.hours-row[data-day="' + day + '"]');
+      if (todayRow) todayRow.classList.add('today');
+
+      var badge = document.getElementById('statusBadge');
+      var txt = document.getElementById('statusText');
+      var todayH = HOURS[day];
+
+      function isOpen(h, c) {
+        if (!h) return false;
+        if (cur >= h[0] && cur < h[1]) return true;
+        if (h[2] !== null && cur >= h[2] && cur < h[3]) return true;
+        return false;
+      }
+
+      function closesAt(h) {
+        if (cur >= h[0] && cur < h[1]) return h[1];
+        if (h[2] !== null && cur >= h[2] && cur < h[3]) return h[3];
+        return null;
+      }
+
+      function nextOpen() {
+        for (var i = 1; i <= 7; i++) {
+          var nd = (day + i) % 7;
+          var nh = HOURS[nd];
+          if (nh) return { day: nd, min: nh[0] };
+        }
+        return null;
+      }
+
+      if (isOpen(todayH, cur)) {
+        badge.classList.add('open');
+        txt.textContent = 'Ouvert · Ferme à ' + fmt(closesAt(todayH));
+      } else {
+        badge.classList.add('closed');
+        // check if opens later today (after break)
+        if (todayH && todayH[2] !== null && cur >= todayH[1] && cur < todayH[2]) {
+          txt.textContent = 'Pause · Réouvre à ' + fmt(todayH[2]);
+          badge.classList.remove('closed');
+          badge.classList.add('open');
+          badge.querySelector('.status-dot').style.background = '#f59e0b';
+        } else {
+          var next = nextOpen();
+          if (next) {
+            var label = next.day === (day + 1) % 7 ? 'demain' : DAY_NAMES[next.day];
+            txt.textContent = 'Fermé · Ouvre ' + label + ' à ' + fmt(next.min);
+          } else {
+            txt.textContent = 'Fermé';
+          }
+        }
+      }
+    })();
+
+    /* ── Share ── */
     document.getElementById('shareBtn').addEventListener('click', function() {
       var d = {
         title: 'Boucherie de la Gare — Nice',
@@ -405,7 +533,7 @@
       }
     });
 
-    /* Scroll hint */
+    /* ── Scroll hint ── */
     var hint = document.getElementById('scrollHint');
     addEventListener('scroll', function(){
       hint.classList[scrollY > 80 ? 'add' : 'remove']('hidden');
