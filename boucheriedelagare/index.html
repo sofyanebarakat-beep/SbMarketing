@@ -238,13 +238,16 @@
       font-size: .7rem; font-weight: 700; text-transform: uppercase;
       letter-spacing: .06em; color: var(--gold); margin-bottom: .6rem;
     }
+    .hours-rows {
+      width: 100%; max-width: 270px; margin: 0 auto;
+    }
     .hours-row {
       display: flex; justify-content: space-between; align-items: center;
       font-size: .8rem; padding: .22rem 0;
       border-bottom: 1px solid rgba(33,47,75,.07);
     }
     .hours-row:last-child { border-bottom: none; }
-    .hours-row.today { background: rgba(173,137,95,.07); margin: 0 -.4rem; padding: .25rem .4rem; border-radius: 6px; }
+    .hours-row.today { background: rgba(173,137,95,.07); margin: 0 -.5rem; padding: .25rem .5rem; border-radius: 6px; }
     .hours-day { font-weight: 600; color: var(--text); }
     .hours-time { color: var(--muted); text-align: right; }
     .hours-closed { color: #e05252; text-align: right; }
@@ -378,6 +381,7 @@
     <!-- Hours -->
     <div class="hours-card">
       <p class="hours-title">🕐 Horaires d'ouverture</p>
+      <div class="hours-rows">
       <div class="hours-row" data-day="1">
         <span class="hours-day">Lundi</span>
         <span class="hours-time">08h30 – 14h00 / 15h30 – 19h00</span>
@@ -406,6 +410,7 @@
         <span class="hours-day">Dimanche</span>
         <span class="hours-time">08h30 – 17h00</span>
       </div>
+      </div><!-- /hours-rows -->
     </div>
 
     <!-- Map -->
