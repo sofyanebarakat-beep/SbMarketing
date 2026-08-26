@@ -227,6 +227,7 @@
 
   function updateHeader() {
     var current = window.scrollY;
+    header.classList.toggle("is-announcement-scrolled", current > 24);
     header.classList.toggle("is-scrolled", current > 12);
     header.classList.toggle("is-compact", current > 90);
     header.classList.toggle("is-hidden", current > 180 && current > lastScroll + 5 && !header.classList.contains("is-menu-open") && !servicesWrap.classList.contains("is-open"));
