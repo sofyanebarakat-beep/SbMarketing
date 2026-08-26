@@ -13,7 +13,7 @@
     growth: "Growth", creative: "Creative & Technology", featured: "Featured case study",
     featuredTitle: "247Pay — Fintech brand & digital experience", featuredCta: "View case study",
     goalsTitle: "What do you want to achieve?", goalLeads: "Get more leads", goalBrand: "Build my brand", goalWebsite: "Launch a website",
-    announcement: "Free 20-minute growth audit for new projects", announcementCta: "Book yours", dismiss: "Dismiss announcement",
+    announcement: "Free growth audit", announcementCta: "Book yours", dismiss: "Dismiss announcement",
     studio: "Growth studio", servicesIntro: "One team to grow your entire digital presence", allServices: "Explore all services"
   } : {
     home: "Accueil", work: "Nos projets", blog: "Blog", services: "Services", contact: "Réserver un appel gratuit",
@@ -22,7 +22,7 @@
     growth: "Croissance", creative: "Création & Technologie", featured: "Étude de cas à la une",
     featuredTitle: "247Pay — Marque fintech & expérience digitale", featuredCta: "Voir l’étude de cas",
     goalsTitle: "Quel est votre objectif ?", goalLeads: "Obtenir plus de leads", goalBrand: "Développer ma marque", goalWebsite: "Lancer un site web",
-    announcement: "Audit croissance gratuit de 20 minutes pour les nouveaux projets", announcementCta: "Réserver", dismiss: "Fermer l’annonce",
+    announcement: "Audit croissance offert", announcementCta: "Réserver", dismiss: "Fermer l’annonce",
     studio: "Studio de croissance", servicesIntro: "Une seule équipe pour développer toute votre présence digitale", allServices: "Découvrir tous les services"
   };
   var services = english ? [

@@ -44,9 +44,15 @@ html.is-language-changing { opacity: 0.72; }
 }
 
 .language-switcher__button[aria-pressed="true"] {
-  background: #fff;
+  background: #f2c94c;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
-  color: #041020;
+  color: #041021;
+}
+
+.header-language-switcher {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.18);
+  margin-right: 0.1rem;
 }
 
 .footer-language-switcher {
@@ -132,4 +138,8 @@ html.is-language-changing { opacity: 0.72; }
   .language-notice span {
     flex: 1 1 calc(100% - 2rem);
   }
+}
+
+@media (max-width: 991px) {
+  .header-language-switcher { display: none; }
 }
