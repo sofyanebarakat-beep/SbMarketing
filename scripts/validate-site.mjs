@@ -105,7 +105,10 @@ const missing = [];
 
 for (const file of scannedFiles) {
   const content = fs.readFileSync(file, "utf8");
-  for (const ref of collectReferences(file, content)) {
+  const contentWithoutDisabledHtml = path.extname(file) === ".html"
+    ? content.replace(/<!--[\s\S]*?-->/g, "")
+    : content;
+  for (const ref of collectReferences(file, contentWithoutDisabledHtml)) {
     const target = resolveReference(file, ref);
     if (!target.startsWith(root) || assetExtensions.has(path.extname(target)) === false) {
       continue;

@@ -11,6 +11,13 @@
   padding: 0.22rem;
 }
 
+html { transition: opacity 0.18s ease; }
+html.is-language-changing { opacity: 0.72; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { transition: none; }
+}
+
 .language-switcher__button {
   appearance: none;
   background: transparent;
