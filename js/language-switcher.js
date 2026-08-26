@@ -61,6 +61,8 @@
 
   function goToLanguage(language) {
     saveLanguage(language);
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: "header_language_switch", header_action: language });
     document.documentElement.classList.add("is-language-changing");
     window.location.assign(localizedPath(language) + window.location.search + window.location.hash);
   }
