@@ -25,17 +25,16 @@
 .sb-portfolio-stat strong { color: #f2c94c; font-size: 1.65rem; line-height: 1; }
 .sb-portfolio-stat span { color: rgba(255,255,255,.62); font-size: 0.75rem; }
 
-.sb-portfolio-toolbar { align-items: center; background: #fff; border: 1px solid rgba(4,16,33,.1); border-radius: 1rem; box-shadow: 0 12px 35px rgba(4,16,33,.08); display: flex; gap: 0.8rem; justify-content: space-between; margin: 0 auto 2.5rem; max-width: 80rem; padding: 0.65rem; position: sticky; top: 4.5rem; z-index: 20; }
-.sb-portfolio-filters { display: flex; flex-wrap: wrap; gap: 0.35rem; }
-.sb-portfolio-filter { appearance: none; background: transparent; border: 0; border-radius: 999px; color: #425166; cursor: pointer; font: inherit; font-size: 0.78rem; font-weight: 750; padding: 0.65rem 0.8rem; }
-.sb-portfolio-filter:hover { background: #f3f5f7; color: #041021; }
-.sb-portfolio-filter[aria-pressed="true"] { background: #041021; color: #fff; }
+.sb-portfolio-toolbar { align-items: flex-end; background: #fff; border: 1px solid rgba(4,16,33,.1); border-radius: 1.15rem; box-shadow: 0 12px 35px rgba(4,16,33,.08); display: flex; gap: 1.5rem; justify-content: space-between; margin: 0 auto 2.5rem; max-width: 80rem; padding: 1rem 1.1rem; position: relative; }
+.sb-portfolio-toolbar__intro { display: grid; flex: 0 0 auto; gap: .18rem; padding: .25rem; }
+.sb-portfolio-toolbar__intro strong { color: #041021; font-size: .88rem; }
+.sb-portfolio-toolbar__intro span { color: #687487; font-size: .68rem; }
+.sb-portfolio-filters { display: flex; flex-wrap: wrap; gap: 0.4rem; justify-content: flex-end; }
+.sb-portfolio-filter { align-items: center; appearance: none; background: #f4f6f8; border: 1px solid transparent; border-radius: .7rem; color: #425166; cursor: pointer; display: inline-flex; font: inherit; font-size: 0.76rem; font-weight: 750; gap: .15rem; padding: 0.65rem 0.72rem; transition: background-color .18s ease, border-color .18s ease, color .18s ease, transform .18s ease; white-space: nowrap; }
+.sb-portfolio-filter:hover { border-color: rgba(4,16,33,.14); color: #041021; transform: translateY(-1px); }
+.sb-portfolio-filter[aria-pressed="true"] { background: #f2c94c; border-color: #d9ae27; color: #041021; }
 .sb-portfolio-filter b { background: rgba(4,16,33,.08); border-radius: 999px; font-size: .62rem; margin-left: .3rem; padding: .15rem .38rem; }
-.sb-portfolio-filter[aria-pressed="true"] b { background: #f2c94c; color: #041021; }
-.sb-portfolio-search { align-items: center; background: #f3f5f7; border: 1px solid transparent; border-radius: 999px; display: flex; flex: 0 0 min(20rem, 32vw); gap: 0.5rem; padding: 0 0.85rem; }
-.sb-portfolio-search:focus-within { background: #fff; border-color: #041021; box-shadow: 0 0 0 3px rgba(242,201,76,.35); }
-.sb-portfolio-search svg { fill: none; flex: 0 0 auto; height: 1rem; stroke: #5e6b7b; stroke-width: 2; width: 1rem; }
-.sb-portfolio-search input { background: transparent; border: 0; color: #041021; font: inherit; font-size: 0.82rem; outline: 0; padding: 0.65rem 0; width: 100%; }
+.sb-portfolio-filter[aria-pressed="true"] b { background: #041021; color: #fff; }
 .sb-portfolio-count { color: #667386; font-size: 0.75rem; margin: -1.5rem auto 1.5rem; max-width: 80rem; }
 
 .sb-portfolio-page .portfolio8_list { display: grid !important; gap: 1.5rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -64,11 +63,6 @@
 .sb-featured-label { color: #8b6b00; font-size: .68rem; font-weight: 850; letter-spacing: .1em; margin-bottom: .65rem; text-transform: uppercase; }
 .sb-project-hidden { display: none !important; }
 
-.sb-portfolio-break { align-items: center; background: #041021; border-radius: 1.2rem; color: #fff; display: flex; gap: 1rem; grid-column: 1 / -1; justify-content: space-between; overflow: hidden; padding: 1.5rem 1.7rem; position: relative; }
-.sb-portfolio-break::after { background: #f2c94c; border-radius: 50%; content: ""; filter: blur(8px); height: 7rem; opacity: .22; position: absolute; right: -2rem; top: -4rem; width: 7rem; }
-.sb-portfolio-break strong { display: block; font-size: 1.2rem; margin-bottom: .2rem; }
-.sb-portfolio-break span { color: rgba(255,255,255,.66); font-size: .82rem; }
-.sb-portfolio-break a { background: #f2c94c; border-radius: 999px; color: #041021; flex: 0 0 auto; font-size: .78rem; font-weight: 850; padding: .75rem 1rem; position: relative; text-decoration: none; z-index: 1; }
 .sb-portfolio-testimonial { background: #fff8df; border-left: 4px solid #f2c94c; border-radius: 1rem; color: #041021; grid-column: 1 / -1; padding: 1.4rem 1.6rem; }
 .sb-portfolio-testimonial blockquote { font-size: 1.05rem; font-weight: 650; line-height: 1.45; margin: 0 0 .65rem; }
 .sb-portfolio-testimonial cite { color: #667386; font-size: .75rem; font-style: normal; }
@@ -77,8 +71,8 @@
 
 @media (max-width: 991px) {
   .sb-portfolio-hero { padding-top: 8.5rem; }
-  .sb-portfolio-toolbar { align-items: stretch; flex-direction: column; position: relative; top: auto; }
-  .sb-portfolio-search { flex-basis: auto; }
+  .sb-portfolio-toolbar { align-items: stretch; flex-direction: column; }
+  .sb-portfolio-filters { justify-content: flex-start; }
 }
 @media (max-width: 767px) {
   .sb-portfolio-hero { padding: 7.5rem 1rem 4rem; }
@@ -88,7 +82,10 @@
   .sb-project-featured:first-child { grid-column: auto; }
   .sb-project-featured:first-child .portfolio8_item-link { display: block; }
   .sb-project-featured:first-child .portfolio8_image-wrapper { min-height: 0; }
-  .sb-portfolio-break { align-items: flex-start; flex-direction: column; }
+  .sb-portfolio-toolbar { overflow: hidden; padding: 1rem 0; }
+  .sb-portfolio-toolbar__intro { padding: 0 1rem; }
+  .sb-portfolio-filters { flex-wrap: nowrap; justify-content: flex-start; overflow-x: auto; padding: .15rem 1rem .55rem; scrollbar-width: none; }
+  .sb-portfolio-filters::-webkit-scrollbar { display: none; }
 }
 @media (hover: none) { .sb-project-action { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .sb-portfolio-page .portfolio8_item, .sb-portfolio-page .portfolio8_image, .sb-project-action { transition: none; } }

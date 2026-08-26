@@ -5,21 +5,16 @@
   if (!list || document.querySelector(".sb-portfolio-toolbar")) return;
 
   var english = document.documentElement.lang.toLowerCase().indexOf("en") === 0;
-  var prefix = english ? "/en" : "";
   var copy = english ? {
     all: "All", websites: "Websites", branding: "Branding", webapps: "Web apps", seo: "SEO", leads: "Lead generation",
-    search: "Search by project, industry or service", count: "projects shown", featured: "Featured case study",
-    view: "View case study", noResults: "No projects match this search. Try another filter.",
-    ctaTitle: "Want results like these?", ctaText: "Let’s identify your strongest growth opportunity.", cta: "Book a free growth audit",
-    ctaByFilter: { seo: "Request a free SEO audit", websites: "Discuss your website", branding: "Build your brand", webapps: "Plan your product", leads: "Estimate your lead potential" },
+    count: "projects shown", featured: "Featured case study", filterTitle: "Explore by expertise", filterHint: "Choose a service to view relevant work",
+    view: "View case study",
     quote: "We tried four agencies before Sb Marketing, and this is the only one that helped the company take off. Their call center was the game changer!",
     quoteBy: "Samuel — President, Fenestria · Google review"
   } : {
     all: "Tous", websites: "Sites web", branding: "Image de marque", webapps: "Applications web", seo: "SEO", leads: "Génération de leads",
-    search: "Rechercher par projet, secteur ou service", count: "projets affichés", featured: "Étude de cas à la une",
-    view: "Voir l’étude de cas", noResults: "Aucun projet ne correspond à votre recherche. Essayez un autre filtre.",
-    ctaTitle: "Vous voulez des résultats comme ceux-ci ?", ctaText: "Identifions ensemble votre meilleure opportunité de croissance.", cta: "Réserver un audit croissance offert",
-    ctaByFilter: { seo: "Demander un audit SEO offert", websites: "Discuter de votre site web", branding: "Développer votre marque", webapps: "Planifier votre produit", leads: "Estimer votre potentiel de leads" },
+    count: "projets affichés", featured: "Étude de cas à la une", filterTitle: "Explorer par expertise", filterHint: "Choisissez un service pour voir les projets associés",
+    view: "Voir l’étude de cas",
     quote: "On a essayé 4 agences avant Sb Marketing et c’est la seule qui a réussi à lever la compagnie. Le game changer, c'est leur centre d'appel !",
     quoteBy: "Samuel — Président, Fenestria · Avis Google"
   };
@@ -47,9 +42,6 @@
   var categoryCounts = { all: 16, websites: 14, branding: 12, webapps: 4, seo: 7, leads: 2 };
   var items = Array.prototype.slice.call(list.querySelectorAll(":scope > .w-dyn-item"));
 
-  function normalized(value) {
-    return String(value || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-  }
   function saveReturnLocation() {
     try { sessionStorage.setItem("sb-portfolio-return", window.location.pathname + window.location.search); } catch (error) {}
   }
@@ -59,7 +51,6 @@
     var title = titleNode ? titleNode.textContent.trim() : "";
     var meta = projects[title] || { c: ["websites"], industry: ["Digital", "Digital"], d: ["Projet digital", "Digital project"] };
     item.dataset.categories = meta.c.join(" ");
-    item.dataset.search = normalized([title, meta.industry[english ? 1 : 0], meta.d[english ? 1 : 0], meta.c.map(function (key) { return copy[key]; }).join(" ")].join(" "));
     if (featured.indexOf(title) !== -1) item.classList.add("sb-project-featured");
 
     var description = item.querySelector(".portfolio8_item-content-top > .text-size-regular");
@@ -124,67 +115,42 @@
   var toolbar = document.createElement("div");
   toolbar.className = "sb-portfolio-toolbar";
   toolbar.setAttribute("aria-label", english ? "Filter projects" : "Filtrer les projets");
-  toolbar.innerHTML = '<div class="sb-portfolio-filters">' + categoryOrder.map(function (category, index) {
+  toolbar.innerHTML = '<div class="sb-portfolio-toolbar__intro"><strong>' + copy.filterTitle + '</strong><span>' + copy.filterHint + '</span></div><div class="sb-portfolio-filters">' + categoryOrder.map(function (category, index) {
     return '<button class="sb-portfolio-filter" type="button" data-filter="' + category + '" aria-pressed="' + (index === 0) + '"><span>' + copy[category] + '</span><b>' + categoryCounts[category] + '</b></button>';
-  }).join("") + '</div><label class="sb-portfolio-search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m16 16 5 5"></path></svg><span class="sr-only">' + copy.search + '</span><input type="search" placeholder="' + copy.search + '" autocomplete="off"></label>';
+  }).join("") + '</div>';
   var component = document.querySelector(".portfolio8_component");
   component.parentNode.insertBefore(toolbar, component);
   var count = document.createElement("p");
   count.className = "sb-portfolio-count";
   toolbar.parentNode.insertBefore(count, component);
-  var empty = document.createElement("div");
-  empty.className = "sb-portfolio-empty";
-  empty.textContent = copy.noResults;
-  list.appendChild(empty);
-
   var initialParams = new URLSearchParams(window.location.search);
   var requestedFilter = initialParams.get("service");
   var activeFilter = categoryOrder.indexOf(requestedFilter) !== -1 ? requestedFilter : "all";
-  var query = initialParams.get("q") || "";
-  toolbar.querySelector("input").value = query;
   toolbar.querySelectorAll("[data-filter]").forEach(function (button) { button.setAttribute("aria-pressed", String(button.dataset.filter === activeFilter)); });
   function syncUrl(addHistory) {
     var params = new URLSearchParams();
     if (activeFilter !== "all") params.set("service", activeFilter);
-    if (query) params.set("q", query);
     var target = window.location.pathname + (params.toString() ? "?" + params.toString() : "");
-    window.history[addHistory ? "pushState" : "replaceState"]({ service: activeFilter, q: query }, "", target);
+    window.history[addHistory ? "pushState" : "replaceState"]({ service: activeFilter }, "", target);
   }
   function insertEditorialBlocks(visible) {
-    list.querySelectorAll(".sb-portfolio-break, .sb-portfolio-testimonial").forEach(function (node) { node.remove(); });
+    list.querySelectorAll(".sb-portfolio-testimonial").forEach(function (node) { node.remove(); });
     if (visible.length >= 3) {
       var testimonial = document.createElement("aside");
       testimonial.className = "sb-portfolio-testimonial";
       testimonial.innerHTML = "<blockquote>“" + copy.quote + "”</blockquote><cite>" + copy.quoteBy + "</cite>";
       visible[2].insertAdjacentElement("afterend", testimonial);
     }
-    [12, 6].forEach(function (position) {
-      if (visible.length < position) return;
-      var block = document.createElement("aside");
-      block.className = "sb-portfolio-break";
-      var ctaLabel = copy.ctaByFilter[activeFilter] || copy.cta;
-      block.innerHTML = "<div><strong>" + copy.ctaTitle + "</strong><span>" + copy.ctaText + "</span></div><a href=\"" + prefix + "/contact/?interest=" + encodeURIComponent(activeFilter) + "\">" + ctaLabel + " →</a>";
-      visible[position - 1].insertAdjacentElement("afterend", block);
-    });
-    if (visible.length > 0 && visible.length < 6) {
-      var compactBlock = document.createElement("aside");
-      var compactCtaLabel = copy.ctaByFilter[activeFilter] || copy.cta;
-      compactBlock.className = "sb-portfolio-break";
-      compactBlock.innerHTML = "<div><strong>" + copy.ctaTitle + "</strong><span>" + copy.ctaText + "</span></div><a href=\"" + prefix + "/contact/?interest=" + encodeURIComponent(activeFilter) + "\">" + compactCtaLabel + " →</a>";
-      visible[visible.length - 1].insertAdjacentElement("afterend", compactBlock);
-    }
   }
   function render() {
     var visible = [];
     items.forEach(function (item) {
       var categoryMatch = activeFilter === "all" || item.dataset.categories.split(" ").indexOf(activeFilter) !== -1;
-      var searchMatch = !query || item.dataset.search.indexOf(normalized(query)) !== -1;
-      var show = categoryMatch && searchMatch;
+      var show = categoryMatch;
       item.classList.toggle("sb-project-hidden", !show);
       if (show) visible.push(item);
     });
     count.textContent = visible.length + " " + copy.count;
-    empty.classList.toggle("is-visible", visible.length === 0);
     insertEditorialBlocks(visible);
   }
   toolbar.addEventListener("click", function (event) {
@@ -196,7 +162,6 @@
     render();
     toolbar.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
   });
-  toolbar.querySelector("input").addEventListener("input", function (event) { query = event.target.value.trim(); syncUrl(false); render(); });
   document.addEventListener("click", function (event) {
     var tag = event.target.closest("[data-project-filter]");
     if (!tag) return;
@@ -213,8 +178,6 @@
   window.addEventListener("popstate", function () {
     var params = new URLSearchParams(window.location.search);
     activeFilter = categoryOrder.indexOf(params.get("service")) !== -1 ? params.get("service") : "all";
-    query = params.get("q") || "";
-    toolbar.querySelector("input").value = query;
     toolbar.querySelectorAll("[data-filter]").forEach(function (button) { button.setAttribute("aria-pressed", String(button.dataset.filter === activeFilter)); });
     render();
   });
