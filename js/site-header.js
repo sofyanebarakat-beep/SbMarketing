@@ -13,7 +13,8 @@
     growth: "Growth", creative: "Creative & Technology", featured: "Featured case study",
     featuredTitle: "247Pay — Fintech brand & digital experience", featuredCta: "View case study",
     goalsTitle: "What do you want to achieve?", goalLeads: "Get more leads", goalBrand: "Build my brand", goalWebsite: "Launch a website",
-    announcement: "Free 20-minute growth audit for new projects", announcementCta: "Book yours", dismiss: "Dismiss announcement"
+    announcement: "Free 20-minute growth audit for new projects", announcementCta: "Book yours", dismiss: "Dismiss announcement",
+    studio: "Growth studio", servicesIntro: "One team to grow your entire digital presence", allServices: "Explore all services"
   } : {
     home: "Accueil", work: "Nos projets", blog: "Blog", services: "Services", contact: "Réserver un appel gratuit",
     menu: "Ouvrir le menu", close: "Fermer le menu", available: "Disponible pour de nouveaux projets",
@@ -21,7 +22,8 @@
     growth: "Croissance", creative: "Création & Technologie", featured: "Étude de cas à la une",
     featuredTitle: "247Pay — Marque fintech & expérience digitale", featuredCta: "Voir l’étude de cas",
     goalsTitle: "Quel est votre objectif ?", goalLeads: "Obtenir plus de leads", goalBrand: "Développer ma marque", goalWebsite: "Lancer un site web",
-    announcement: "Audit croissance gratuit de 20 minutes pour les nouveaux projets", announcementCta: "Réserver", dismiss: "Fermer l’annonce"
+    announcement: "Audit croissance gratuit de 20 minutes pour les nouveaux projets", announcementCta: "Réserver", dismiss: "Fermer l’annonce",
+    studio: "Studio de croissance", servicesIntro: "Une seule équipe pour développer toute votre présence digitale", allServices: "Découvrir tous les services"
   };
   var services = english ? [
     ["Lead generation", "/en/outreach/", "target", "growth"],
@@ -83,7 +85,7 @@
   header.className = "sb-site-header";
   header.innerHTML = '<div class="sb-site-header__announcement"><span>' + labels.announcement + '</span><a data-header-track="announcement" href="' + prefix + '/contact/">' + labels.announcementCta + ' <span aria-hidden="true">→</span></a><button type="button" aria-label="' + labels.dismiss + '">×</button></div>' +
     '<div class="sb-site-header__inner">' +
-    '<a class="sb-site-header__logo" data-header-track="logo" href="' + (english ? "/en/" : "/") + '" aria-label="Sb Marketing — ' + (english ? "Home" : "Accueil") + '"><img src="/images/logo-climanova.svg" alt="Sb Marketing"></a>' +
+    '<a class="sb-site-header__logo" data-header-track="logo" href="' + (english ? "/en/" : "/") + '" aria-label="Sb Marketing — ' + (english ? "Home" : "Accueil") + '"><img src="/images/logo-climanova.svg" alt="Sb Marketing"><span>' + labels.studio + '</span></a>' +
     '<nav class="sb-site-header__nav" id="sb-site-navigation" aria-label="' + (english ? "Main navigation" : "Navigation principale") + '">' +
       '<a class="sb-site-header__link" data-header-track="home" href="' + (english ? "/en/" : "/") + '"' + (isActive(english ? "/en/" : "/") ? ' aria-current="page"' : '') + '>' + labels.home + '</a>' +
       '<a class="sb-site-header__link" data-header-track="work" href="' + prefix + '/projets/"' + (isActive(prefix + "/projets/") ? ' aria-current="page"' : '') + '>' + labels.work + '</a>' +
@@ -91,6 +93,7 @@
       '<div class="sb-site-header__services">' +
         '<button class="sb-site-header__link sb-site-header__services-button" type="button" aria-expanded="false" aria-controls="sb-services-menu">' + labels.services + '<span aria-hidden="true">⌄</span></button>' +
         '<div class="sb-site-header__services-menu" id="sb-services-menu" aria-label="' + labels.serviceMenu + '">' +
+          '<div class="sb-mega-services__heading"><span><small>SB Marketing</small><strong>' + labels.servicesIntro + '</strong></span><a href="' + prefix + '/pack-presence-digitale-nice/">' + labels.allServices + ' →</a></div>' +
           '<div class="sb-mega-services__columns"><section><h2>' + labels.growth + '</h2>' + serviceLinks("growth") + '</section><section><h2>' + labels.creative + '</h2>' + serviceLinks("creative") + '</section></div>' +
           '<a class="sb-mega-services__case" data-header-track="featured-case" href="' + prefix + '/projets/247pay.html"><span><small>' + labels.featured + '</small><strong>' + labels.featuredTitle + '</strong></span><b>' + labels.featuredCta + ' →</b></a>' +
           '<div class="sb-mega-services__goals"><strong>' + labels.goalsTitle + '</strong><a href="' + prefix + '/outreach/">' + labels.goalLeads + '</a><a href="' + prefix + '/contact/">' + labels.goalBrand + '</a><a href="' + prefix + '/projets/">' + labels.goalWebsite + '</a></div>' +
@@ -101,7 +104,7 @@
       '<a class="sb-site-header__mobile-cta" data-header-track="mobile-cta" href="' + prefix + '/contact/">' + labels.contact + '</a>' +
     '</nav>' +
     '<div class="navbar2_button-wrapper sb-site-header__actions">' +
-      '<a class="sb-site-header__cta" data-header-track="desktop-cta" href="' + prefix + '/contact/">' + labels.contact + '</a>' +
+      '<a class="sb-site-header__cta" data-header-track="desktop-cta" href="' + prefix + '/contact/"><span class="sb-site-header__cta-avatar"><img src="/images/soufiane-profile.jpg" alt="" aria-hidden="true"><i aria-hidden="true"></i></span><span>' + labels.contact + '</span><b aria-hidden="true">↗</b></a>' +
       '<span class="sb-site-header__availability"><i aria-hidden="true"></i>' + labels.available + '</span>' +
       '<button class="sb-site-header__menu-button" type="button" aria-controls="sb-site-navigation" aria-expanded="false" aria-label="' + labels.menu + '"><span class="sb-site-header__menu-icon" aria-hidden="true"></span></button>' +
     '</div>' +
@@ -138,6 +141,10 @@
     servicesWrap.classList.remove("is-open");
     servicesButton.setAttribute("aria-expanded", "false");
   }
+  function openServices() {
+    servicesWrap.classList.add("is-open");
+    servicesButton.setAttribute("aria-expanded", "true");
+  }
   function closeMenu(returnFocus) {
     var wasOpen = header.classList.contains("is-menu-open");
     header.classList.remove("is-menu-open");
@@ -163,9 +170,21 @@
   });
   servicesButton.addEventListener("click", function () {
     var open = !servicesWrap.classList.contains("is-open");
-    servicesWrap.classList.toggle("is-open", open);
-    servicesButton.setAttribute("aria-expanded", String(open));
+    open ? openServices() : closeServices();
     if (open) track("header_services_open", currentLanguage());
+  });
+  servicesButton.addEventListener("keydown", function (event) {
+    if (event.key !== "ArrowDown") return;
+    event.preventDefault();
+    openServices();
+    var firstService = servicesWrap.querySelector(".sb-site-header__services-menu a");
+    if (firstService) firstService.focus();
+  });
+  servicesWrap.addEventListener("mouseenter", function () {
+    if (window.matchMedia("(min-width: 992px) and (hover: hover)").matches) openServices();
+  });
+  servicesWrap.addEventListener("mouseleave", function () {
+    if (window.matchMedia("(min-width: 992px) and (hover: hover)").matches) closeServices();
   });
   header.addEventListener("click", function (event) {
     var languageLink = event.target.closest("[data-mobile-language]");
