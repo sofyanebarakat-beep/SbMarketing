@@ -1,0 +1,58 @@
+.language-switcher {
+  align-items: center;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  background: rgba(4, 16, 32, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 999px;
+  display: flex;
+  flex: 0 0 auto;
+  gap: 0.2rem;
+  padding: 0.22rem;
+}
+
+.language-switcher__button {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  padding: 0.52rem 0.62rem;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.language-switcher__button:hover {
+  transform: translateY(-1px);
+}
+
+.language-switcher__button:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+.language-switcher__button[aria-pressed="true"] {
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  color: #041020;
+}
+
+.footer-language-switcher {
+  margin-top: 1rem;
+  width: max-content;
+}
+
+@media (max-width: 767px) {
+  .navbar2_button-wrapper .language-switcher {
+    margin-left: auto;
+  }
+
+  .language-switcher__button {
+    padding: 0.48rem 0.55rem;
+  }
+}
