@@ -1,0 +1,24 @@
+.sb-project-navigation { background: #f3f5f7; color: #041021; padding: clamp(3.5rem, 7vw, 6rem) 1.25rem; }
+.sb-project-navigation__inner { margin: 0 auto; max-width: 80rem; }
+.sb-project-navigation__top { align-items: center; display: flex; gap: 1rem; justify-content: space-between; margin-bottom: 2.5rem; }
+.sb-project-navigation__back { align-items: center; color: #041021; display: inline-flex; font-size: .78rem; font-weight: 800; gap: .45rem; text-decoration: none; }
+.sb-project-navigation__back:hover { color: #8b6b00; }
+.sb-project-navigation__position { color: #687487; font-size: .72rem; }
+.sb-project-navigation__pager { display: grid; gap: 1rem; grid-template-columns: 1fr 1fr; margin-bottom: 4rem; }
+.sb-project-navigation__pager a { align-items: center; background: #041021; border-radius: 1rem; color: #fff; display: flex; gap: 1rem; justify-content: space-between; min-height: 7rem; padding: 1.25rem 1.4rem; text-decoration: none; transition: transform .2s ease, box-shadow .2s ease; }
+.sb-project-navigation__pager a:hover { box-shadow: 0 14px 35px rgba(4,16,33,.18); transform: translateY(-3px); }
+.sb-project-navigation__pager a:last-child { text-align: right; }
+.sb-project-navigation__pager small { color: #f2c94c; display: block; font-size: .65rem; font-weight: 800; letter-spacing: .08em; margin-bottom: .3rem; text-transform: uppercase; }
+.sb-project-navigation__pager strong { font-size: clamp(.95rem, 2vw, 1.3rem); }
+.sb-project-navigation h2 { font-size: clamp(1.8rem, 4vw, 3rem); letter-spacing: -.035em; margin: 0 0 1.5rem; }
+.sb-project-navigation__related { display: grid; gap: 1rem; grid-template-columns: repeat(3, 1fr); }
+.sb-related-project { background: #fff; border: 1px solid rgba(4,16,33,.09); border-radius: 1rem; color: #041021; overflow: hidden; text-decoration: none; transition: transform .22s ease, box-shadow .22s ease; }
+.sb-related-project:hover { box-shadow: 0 14px 34px rgba(4,16,33,.12); transform: translateY(-4px); }
+.sb-related-project img { aspect-ratio: 16/10; display: block; height: auto; object-fit: cover; width: 100%; }
+.sb-related-project span { align-items: center; display: flex; font-size: .85rem; font-weight: 800; justify-content: space-between; padding: 1rem; }
+.sb-related-project span b { color: #8b6b00; }
+@media (max-width: 767px) {
+  .sb-project-navigation__pager, .sb-project-navigation__related { grid-template-columns: 1fr; }
+  .sb-project-navigation__pager { margin-bottom: 3rem; }
+}
+@media (prefers-reduced-motion: reduce) { .sb-project-navigation * { transition: none !important; } }

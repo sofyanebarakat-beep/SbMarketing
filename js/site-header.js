@@ -122,6 +122,17 @@
   existingHeaders.forEach(function (item) { item.remove(); });
   document.documentElement.classList.add("sb-header-ready");
 
+  if (/\/projets\/[^/]+(?:\.html)?\/?$/.test(window.location.pathname) && !/\/projets\/index\.html\/?$/.test(window.location.pathname)) {
+    var projectNavigationStyle = document.createElement("link");
+    projectNavigationStyle.rel = "stylesheet";
+    projectNavigationStyle.href = "/css/project-navigation.css";
+    document.head.appendChild(projectNavigationStyle);
+    var projectNavigationScript = document.createElement("script");
+    projectNavigationScript.src = "/js/project-navigation.js";
+    projectNavigationScript.defer = true;
+    document.head.appendChild(projectNavigationScript);
+  }
+
   var menuButton = header.querySelector(".sb-site-header__menu-button");
   var servicesButton = header.querySelector(".sb-site-header__services-button");
   var servicesWrap = header.querySelector(".sb-site-header__services");

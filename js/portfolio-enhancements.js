@@ -11,6 +11,7 @@
     search: "Search by project, industry or service", count: "projects shown", featured: "Featured case study",
     view: "View case study", noResults: "No projects match this search. Try another filter.",
     ctaTitle: "Want results like these?", ctaText: "Let’s identify your strongest growth opportunity.", cta: "Book a free growth audit",
+    ctaByFilter: { seo: "Request a free SEO audit", websites: "Discuss your website", branding: "Build your brand", webapps: "Plan your product", leads: "Estimate your lead potential" },
     quote: "We tried four agencies before Sb Marketing, and this is the only one that helped the company take off. Their call center was the game changer!",
     quoteBy: "Samuel — President, Fenestria · Google review"
   } : {
@@ -18,6 +19,7 @@
     search: "Rechercher par projet, secteur ou service", count: "projets affichés", featured: "Étude de cas à la une",
     view: "Voir l’étude de cas", noResults: "Aucun projet ne correspond à votre recherche. Essayez un autre filtre.",
     ctaTitle: "Vous voulez des résultats comme ceux-ci ?", ctaText: "Identifions ensemble votre meilleure opportunité de croissance.", cta: "Réserver un audit croissance offert",
+    ctaByFilter: { seo: "Demander un audit SEO offert", websites: "Discuter de votre site web", branding: "Développer votre marque", webapps: "Planifier votre produit", leads: "Estimer votre potentiel de leads" },
     quote: "On a essayé 4 agences avant Sb Marketing et c’est la seule qui a réussi à lever la compagnie. Le game changer, c'est leur centre d'appel !",
     quoteBy: "Samuel — Président, Fenestria · Avis Google"
   };
@@ -28,24 +30,28 @@
     "Edmond Garage": { c: ["websites", "branding", "seo"], industry: ["Automobile", "Automotive"], d: ["Transport privé à Malte et Gozo", "Private transport in Malta and Gozo"], result: ["UX", "pensée pour les réservations", "built for bookings"] },
     "HandsOn Systems": { c: ["websites", "branding"], industry: ["Technologie", "Technology"], d: ["Solutions technologiques B2B", "B2B technology solutions"] },
     "Hands On RFID": { c: ["websites", "branding"], industry: ["SaaS", "SaaS"], d: ["Solutions RFID pour les entreprises", "RFID solutions for businesses"] },
-    "Hands On Taskmaster": { c: ["websites", "webapps", "branding"], industry: ["SaaS", "SaaS"], d: ["Plateforme de gestion des tâches", "Task management platform"] },
+    "Hands On Taskmaster": { c: ["webapps", "branding"], industry: ["SaaS", "SaaS"], d: ["Plateforme de gestion des tâches", "Task management platform"] },
     "Boucherie Walima": { c: ["websites", "branding", "seo"], industry: ["Commerce local", "Local business"], d: ["Boucherie et commerce alimentaire local", "Local butcher and food retailer"] },
     "Cimatti": { c: ["websites", "branding", "seo"], industry: ["Industrie", "Industrial"], d: ["Solutions techniques pour professionnels", "Technical solutions for businesses"] },
     "Find Forsa": { c: ["websites", "branding"], industry: ["Recrutement", "Recruitment"], d: ["Plateforme d’opportunités professionnelles", "Career opportunities platform"] },
     "Outreach Study": { c: ["websites", "branding"], industry: ["Éducation", "Education"], d: ["Accompagnement des études à l’international", "International study support"] },
     "Angy Makeup Artist": { c: ["websites", "branding", "seo"], industry: ["Beauté", "Beauty"], d: ["Maquillage professionnel et beauté", "Professional makeup and beauty"] },
     "Odds & More": { c: ["websites", "branding"], industry: ["Média", "Media"], d: ["Plateforme de contenu sportif", "Sports content platform"] },
-    "247Pay Shop": { c: ["websites", "webapps", "branding"], industry: ["Fintech", "Fintech"], d: ["Expérience e-commerce et paiement", "E-commerce and payment experience"] },
-    "247Pay": { c: ["websites", "branding"], industry: ["Fintech", "Fintech"], d: ["Marque fintech et expérience digitale", "Fintech brand and digital experience"], result: ["UX", "parcours orienté conversion", "conversion-ready journey"] },
-    "Climanova Energie": { c: ["websites", "branding", "seo"], industry: ["Énergie", "Energy"], d: ["Solutions énergétiques et climatisation", "Energy and climate solutions"] },
+    "247Pay Shop": { c: ["websites", "webapps"], industry: ["Fintech", "Fintech"], d: ["Expérience e-commerce et paiement", "E-commerce and payment experience"] },
+    "247Pay": { c: ["websites", "webapps", "branding"], industry: ["Fintech", "Fintech"], d: ["Marque fintech et expérience digitale", "Fintech brand and digital experience"], result: ["UX", "parcours orienté conversion", "conversion-ready journey"] },
+    "Climanova Energie": { c: ["websites", "seo", "leads"], industry: ["Énergie", "Energy"], d: ["Solutions énergétiques et climatisation", "Energy and climate solutions"] },
     "MK Multiservices": { c: ["websites", "seo"], industry: ["Commerce local", "Local business"], d: ["Services administratifs et automobiles à Nice", "Administrative and automotive services in Nice"] }
   };
   var featured = ["Outreach Recruitment", "247Pay", "Edmond Garage"];
   var categoryOrder = ["all", "websites", "branding", "webapps", "seo", "leads"];
+  var categoryCounts = { all: 16, websites: 14, branding: 12, webapps: 4, seo: 7, leads: 2 };
   var items = Array.prototype.slice.call(list.querySelectorAll(":scope > .w-dyn-item"));
 
   function normalized(value) {
     return String(value || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  }
+  function saveReturnLocation() {
+    try { sessionStorage.setItem("sb-portfolio-return", window.location.pathname + window.location.search); } catch (error) {}
   }
 
   items.forEach(function (item) {
@@ -96,11 +102,13 @@
       card.setAttribute("aria-label", title + " — " + copy.view);
       card.addEventListener("click", function (event) {
         if (event.target.closest("a, button")) return;
+        saveReturnLocation();
         window.location.href = primaryLink.href;
       });
       card.addEventListener("keydown", function (event) {
         if ((event.key === "Enter" || event.key === " ") && !event.target.closest("a, button")) {
           event.preventDefault();
+          saveReturnLocation();
           window.location.href = primaryLink.href;
         }
       });
@@ -117,7 +125,7 @@
   toolbar.className = "sb-portfolio-toolbar";
   toolbar.setAttribute("aria-label", english ? "Filter projects" : "Filtrer les projets");
   toolbar.innerHTML = '<div class="sb-portfolio-filters">' + categoryOrder.map(function (category, index) {
-    return '<button class="sb-portfolio-filter" type="button" data-filter="' + category + '" aria-pressed="' + (index === 0) + '">' + copy[category] + '</button>';
+    return '<button class="sb-portfolio-filter" type="button" data-filter="' + category + '" aria-pressed="' + (index === 0) + '"><span>' + copy[category] + '</span><b>' + categoryCounts[category] + '</b></button>';
   }).join("") + '</div><label class="sb-portfolio-search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m16 16 5 5"></path></svg><span class="sr-only">' + copy.search + '</span><input type="search" placeholder="' + copy.search + '" autocomplete="off"></label>';
   var component = document.querySelector(".portfolio8_component");
   component.parentNode.insertBefore(toolbar, component);
@@ -129,8 +137,19 @@
   empty.textContent = copy.noResults;
   list.appendChild(empty);
 
-  var activeFilter = "all";
-  var query = "";
+  var initialParams = new URLSearchParams(window.location.search);
+  var requestedFilter = initialParams.get("service");
+  var activeFilter = categoryOrder.indexOf(requestedFilter) !== -1 ? requestedFilter : "all";
+  var query = initialParams.get("q") || "";
+  toolbar.querySelector("input").value = query;
+  toolbar.querySelectorAll("[data-filter]").forEach(function (button) { button.setAttribute("aria-pressed", String(button.dataset.filter === activeFilter)); });
+  function syncUrl(addHistory) {
+    var params = new URLSearchParams();
+    if (activeFilter !== "all") params.set("service", activeFilter);
+    if (query) params.set("q", query);
+    var target = window.location.pathname + (params.toString() ? "?" + params.toString() : "");
+    window.history[addHistory ? "pushState" : "replaceState"]({ service: activeFilter, q: query }, "", target);
+  }
   function insertEditorialBlocks(visible) {
     list.querySelectorAll(".sb-portfolio-break, .sb-portfolio-testimonial").forEach(function (node) { node.remove(); });
     if (visible.length >= 3) {
@@ -143,9 +162,17 @@
       if (visible.length < position) return;
       var block = document.createElement("aside");
       block.className = "sb-portfolio-break";
-      block.innerHTML = "<div><strong>" + copy.ctaTitle + "</strong><span>" + copy.ctaText + "</span></div><a href=\"" + prefix + "/contact/\">" + copy.cta + " →</a>";
+      var ctaLabel = copy.ctaByFilter[activeFilter] || copy.cta;
+      block.innerHTML = "<div><strong>" + copy.ctaTitle + "</strong><span>" + copy.ctaText + "</span></div><a href=\"" + prefix + "/contact/?interest=" + encodeURIComponent(activeFilter) + "\">" + ctaLabel + " →</a>";
       visible[position - 1].insertAdjacentElement("afterend", block);
     });
+    if (visible.length > 0 && visible.length < 6) {
+      var compactBlock = document.createElement("aside");
+      var compactCtaLabel = copy.ctaByFilter[activeFilter] || copy.cta;
+      compactBlock.className = "sb-portfolio-break";
+      compactBlock.innerHTML = "<div><strong>" + copy.ctaTitle + "</strong><span>" + copy.ctaText + "</span></div><a href=\"" + prefix + "/contact/?interest=" + encodeURIComponent(activeFilter) + "\">" + compactCtaLabel + " →</a>";
+      visible[visible.length - 1].insertAdjacentElement("afterend", compactBlock);
+    }
   }
   function render() {
     var visible = [];
@@ -165,14 +192,29 @@
     if (!filter) return;
     activeFilter = filter.getAttribute("data-filter") || filter.getAttribute("data-project-filter");
     toolbar.querySelectorAll("[data-filter]").forEach(function (button) { button.setAttribute("aria-pressed", String(button.dataset.filter === activeFilter)); });
+    syncUrl(true);
     render();
     toolbar.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
   });
-  toolbar.querySelector("input").addEventListener("input", function (event) { query = event.target.value; render(); });
+  toolbar.querySelector("input").addEventListener("input", function (event) { query = event.target.value.trim(); syncUrl(false); render(); });
   document.addEventListener("click", function (event) {
     var tag = event.target.closest("[data-project-filter]");
     if (!tag) return;
     activeFilter = tag.dataset.projectFilter;
+    toolbar.querySelectorAll("[data-filter]").forEach(function (button) { button.setAttribute("aria-pressed", String(button.dataset.filter === activeFilter)); });
+    syncUrl(true);
+    render();
+  });
+  list.addEventListener("click", function (event) {
+    var projectLink = event.target.closest('a[href*="/projets/"]');
+    if (!projectLink) return;
+    saveReturnLocation();
+  });
+  window.addEventListener("popstate", function () {
+    var params = new URLSearchParams(window.location.search);
+    activeFilter = categoryOrder.indexOf(params.get("service")) !== -1 ? params.get("service") : "all";
+    query = params.get("q") || "";
+    toolbar.querySelector("input").value = query;
     toolbar.querySelectorAll("[data-filter]").forEach(function (button) { button.setAttribute("aria-pressed", String(button.dataset.filter === activeFilter)); });
     render();
   });
