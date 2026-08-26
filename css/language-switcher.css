@@ -54,6 +54,63 @@ html.is-language-changing { opacity: 0.72; }
   width: max-content;
 }
 
+.language-notice {
+  align-items: center;
+  animation: language-notice-in 0.28s ease both;
+  background: #041020;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 0.9rem;
+  bottom: 1.25rem;
+  box-shadow: 0 12px 36px rgba(4, 16, 32, 0.28);
+  color: #fff;
+  display: flex;
+  gap: 0.75rem;
+  left: 50%;
+  max-width: min(92vw, 44rem);
+  padding: 0.75rem 0.85rem 0.75rem 1rem;
+  position: fixed;
+  transform: translateX(-50%);
+  z-index: 10001;
+}
+
+.language-notice__switch,
+.language-notice__close {
+  appearance: none;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+}
+
+.language-notice__switch {
+  background: #fff;
+  border-radius: 999px;
+  color: #041020;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 0.48rem 0.75rem;
+  white-space: nowrap;
+}
+
+.language-notice__close {
+  background: transparent;
+  color: #fff;
+  font-size: 1.25rem;
+  line-height: 1;
+  opacity: 0.72;
+  padding: 0.25rem;
+}
+
+.language-notice__switch:focus-visible,
+.language-notice__close:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+@keyframes language-notice-in {
+  from { opacity: 0; transform: translate(-50%, 0.75rem); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
 @media (max-width: 767px) {
   .navbar2_button-wrapper .language-switcher {
     margin-left: auto;
@@ -61,5 +118,18 @@ html.is-language-changing { opacity: 0.72; }
 
   .language-switcher__button {
     padding: 0.48rem 0.55rem;
+  }
+
+  .language-notice {
+    align-items: flex-start;
+    bottom: 0.75rem;
+    flex-wrap: wrap;
+    font-size: 0.9rem;
+    gap: 0.55rem;
+    width: calc(100vw - 1.5rem);
+  }
+
+  .language-notice span {
+    flex: 1 1 calc(100% - 2rem);
   }
 }
