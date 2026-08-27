@@ -117,7 +117,7 @@
   toolbar.setAttribute("aria-label", english ? "Filter projects" : "Filtrer les projets");
   toolbar.innerHTML = '<div class="sb-portfolio-toolbar__intro"><strong>' + copy.filterTitle + '</strong><span>' + copy.filterHint + '</span></div><div class="sb-portfolio-filters">' + categoryOrder.map(function (category, index) {
     return '<button class="sb-portfolio-filter" type="button" data-filter="' + category + '" aria-pressed="' + (index === 0) + '"><span>' + copy[category] + '</span><b>' + categoryCounts[category] + '</b></button>';
-  }).join("") + '</div>';
+  }).join("") + '<i class="sb-portfolio-filter-indicator" aria-hidden="true"></i></div>';
   var component = document.querySelector(".portfolio8_component");
   component.parentNode.insertBefore(toolbar, component);
   var count = document.createElement("p");
@@ -127,6 +127,14 @@
   var requestedFilter = initialParams.get("service");
   var activeFilter = categoryOrder.indexOf(requestedFilter) !== -1 ? requestedFilter : "all";
   toolbar.querySelectorAll("[data-filter]").forEach(function (button) { button.setAttribute("aria-pressed", String(button.dataset.filter === activeFilter)); });
+  function updateIndicator() {
+    var selected = toolbar.querySelector('[data-filter="' + activeFilter + '"]');
+    var indicator = toolbar.querySelector(".sb-portfolio-filter-indicator");
+    if (!selected || !indicator) return;
+    indicator.style.width = selected.offsetWidth + "px";
+    indicator.style.height = selected.offsetHeight + "px";
+    indicator.style.transform = "translate(" + selected.offsetLeft + "px, " + selected.offsetTop + "px)";
+  }
   function syncUrl(addHistory) {
     var params = new URLSearchParams();
     if (activeFilter !== "all") params.set("service", activeFilter);
@@ -158,6 +166,7 @@
     if (!filter) return;
     activeFilter = filter.getAttribute("data-filter") || filter.getAttribute("data-project-filter");
     toolbar.querySelectorAll("[data-filter]").forEach(function (button) { button.setAttribute("aria-pressed", String(button.dataset.filter === activeFilter)); });
+    updateIndicator();
     syncUrl(true);
     render();
     toolbar.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
@@ -167,6 +176,7 @@
     if (!tag) return;
     activeFilter = tag.dataset.projectFilter;
     toolbar.querySelectorAll("[data-filter]").forEach(function (button) { button.setAttribute("aria-pressed", String(button.dataset.filter === activeFilter)); });
+    updateIndicator();
     syncUrl(true);
     render();
   });
@@ -179,8 +189,11 @@
     var params = new URLSearchParams(window.location.search);
     activeFilter = categoryOrder.indexOf(params.get("service")) !== -1 ? params.get("service") : "all";
     toolbar.querySelectorAll("[data-filter]").forEach(function (button) { button.setAttribute("aria-pressed", String(button.dataset.filter === activeFilter)); });
+    updateIndicator();
     render();
   });
   document.body.classList.add("sb-portfolio-page");
   render();
+  window.requestAnimationFrame(updateIndicator);
+  window.addEventListener("resize", updateIndicator, { passive: true });
 })();
