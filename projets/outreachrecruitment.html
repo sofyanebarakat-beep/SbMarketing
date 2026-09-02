@@ -188,6 +188,7 @@
 
     @media (prefers-reduced-motion: reduce) {
       .section_banner15 .banner15_inner { animation: none; }
+      .mobile-auto-scroll img { animation: none; }
     }
 
     .portfolio.p-desktop,
@@ -230,42 +231,58 @@
     }
 
     .template-showcase-section .padding-section-large {
-      background: #141416;
+      background: #0b0c10;
       margin-inline: clamp(1rem, 4vw, 3rem);
       border-radius: 16px;
       overflow: hidden;
+      padding-inline: clamp(1rem, 3vw, 3rem);
     }
 
+    .live-showcase-heading { width: min(94rem, 100%); margin: 0 auto clamp(1.5rem, 3vw, 2.5rem); display: flex; align-items: end; justify-content: space-between; gap: 1.5rem; color: #fff; }
+    .live-showcase-heading h2 { margin: 0 0 0.5rem; color: #fff; }
+    .live-showcase-heading p { max-width: 42rem; margin: 0; color: rgba(255,255,255,.65); }
+    .live-showcase-link { flex: 0 0 auto; color: #041020; background: #ffe500; border-radius: 999px; padding: 0.8rem 1.1rem; font-size: 0.8rem; font-weight: 800; text-decoration: none; }
+
     .template-showcase-grid {
-      width: min(94rem, calc(100% - 3rem));
+      width: min(94rem, 100%);
       margin-right: auto;
       margin-left: auto;
       display: grid;
-      grid-template-columns: minmax(0, 4.8fr) minmax(9rem, 1fr);
+      grid-template-columns: minmax(0, 1fr) minmax(14rem, 0.27fr);
       gap: clamp(1rem, 3vw, 2.5rem);
-      align-items: stretch;
+      align-items: start;
     }
 
-    .template-showcase-frame {
+    .live-device {
       overflow: hidden;
-      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 12px;
       background: rgba(255, 255, 255, 0.05);
       box-shadow: 0 24px 80px rgba(0, 0, 0, 0.24);
-      height: clamp(34rem, 62vw, 72rem);
     }
-
-    .template-showcase-frame img {
+    .live-device__bar { min-height: 2.7rem; padding: 0 0.9rem; display: flex; align-items: center; gap: 0.45rem; border-bottom: 1px solid rgba(255,255,255,.1); background: #17191f; }
+    .live-device__dot { width: 0.55rem; height: 0.55rem; border-radius: 50%; background: rgba(255,255,255,.24); }
+    .live-device__address { min-width: 0; margin-left: 0.45rem; padding: 0.36rem 0.7rem; overflow: hidden; border-radius: 999px; background: rgba(255,255,255,.07); color: rgba(255,255,255,.55); font-size: 0.66rem; text-overflow: ellipsis; white-space: nowrap; }
+    .live-device__status { margin-left: auto; display: flex; align-items: center; gap: 0.35rem; color: rgba(255,255,255,.58); font-size: 0.64rem; text-transform: uppercase; letter-spacing: .06em; }
+    .live-device__status::before { content: ''; width: 0.42rem; height: 0.42rem; border-radius: 50%; background: #42d77d; box-shadow: 0 0 0 3px rgba(66,215,125,.13); }
+    .live-device--desktop iframe { display: block; width: 100%; height: clamp(34rem, 52vw, 54rem); border: 0; background: #fff; }
+    .live-device--mobile { width: 100%; max-width: 18rem; justify-self: center; border: 7px solid #252832; border-radius: 28px; }
+    .live-device--mobile .live-device__bar { justify-content: center; min-height: 2rem; padding: 0; }
+    .live-device--mobile .live-device__bar::before { content: ''; width: 34%; height: 0.36rem; border-radius: 999px; background: rgba(255,255,255,.18); }
+    .mobile-auto-scroll { position: relative; height: clamp(34rem, 52vw, 54rem); overflow: hidden; background: #fff; }
+    .mobile-auto-scroll img {
       display: block;
       width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: top center;
+      height: auto;
+      animation: mobile-page-scroll 34s ease-in-out infinite alternate;
+      will-change: transform;
     }
+    .mobile-auto-scroll:hover img { animation-play-state: paused; }
+    .mobile-auto-scroll__label { position: absolute; right: 0.65rem; bottom: 0.65rem; z-index: 2; padding: 0.4rem 0.6rem; border-radius: 999px; background: rgba(4,16,32,.88); color: #fff; font-size: 0.62rem; font-weight: 700; }
 
-    .template-showcase-mobile {
-      width: 100%;
-      max-width: 16rem;
-      justify-self: start;
+    @keyframes mobile-page-scroll {
+      0%, 8% { transform: translateY(0); }
+      92%, 100% { transform: translateY(calc(-100% + clamp(34rem, 52vw, 54rem))); }
     }
 
     .outreach-fullwidth-section {
@@ -346,14 +363,17 @@
       }
 
       .template-showcase-grid {
-        width: min(100% - 1.5rem, 86rem);
+        width: 100%;
         grid-template-columns: 1fr;
       }
 
-      .template-showcase-mobile {
-        width: min(100%, 18rem);
-        max-width: 18rem;
-        justify-self: center;
+      .live-showcase-heading { align-items: flex-start; flex-direction: column; }
+      .live-device--desktop iframe { height: 34rem; }
+      .live-device--mobile { max-width: 20rem; }
+      .mobile-auto-scroll { height: 38rem; }
+      @keyframes mobile-page-scroll {
+        0%, 8% { transform: translateY(0); }
+        92%, 100% { transform: translateY(calc(-100% + 38rem)); }
       }
 
       .template-single-portfolio-wrap {
@@ -616,13 +636,29 @@
       </section>
       <section id="realisations" class="template-showcase-section" aria-label="Aperçus du site Outreach Recruitment">
         <div class="padding-section-large">
+          <div class="live-showcase-heading">
+            <div>
+              <h2>Explorez le site en direct</h2>
+              <p>Naviguez dans l'expérience desktop, puis observez le parcours mobile défiler automatiquement dans son format natif.</p>
+            </div>
+            <a class="live-showcase-link" href="https://outreachrecruitment.net/" target="_blank" rel="noopener noreferrer">Ouvrir le site ↗</a>
+          </div>
           <div class="template-showcase-grid">
-            <figure class="template-showcase-frame">
-              <img src="../images/outreachrecruitment/desktop-showcase.webp" loading="lazy" decoding="async" alt="Version ordinateur du site Outreach Recruitment présentant ses services de recrutement">
-            </figure>
-            <figure class="template-showcase-frame template-showcase-mobile">
-              <img src="../images/outreachrecruitment/mobile-showcase.webp" loading="lazy" decoding="async" alt="Version mobile du site Outreach Recruitment avec navigation et appels à l'action">
-            </figure>
+            <div class="live-device live-device--desktop">
+              <div class="live-device__bar" aria-hidden="true">
+                <span class="live-device__dot"></span><span class="live-device__dot"></span><span class="live-device__dot"></span>
+                <span class="live-device__address">outreachrecruitment.net</span>
+                <span class="live-device__status">Site en direct</span>
+              </div>
+              <iframe src="https://outreachrecruitment.net/" title="Site web interactif d'Outreach Recruitment" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+            </div>
+            <div class="live-device live-device--mobile" aria-label="Aperçu mobile automatique du site Outreach Recruitment">
+              <div class="live-device__bar" aria-hidden="true"></div>
+              <div class="mobile-auto-scroll">
+                <img src="../images/outreachrecruitment/mobile-showcase.webp" loading="lazy" decoding="async" alt="Version mobile complète du site Outreach Recruitment">
+                <span class="mobile-auto-scroll__label">Défilement automatique</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>

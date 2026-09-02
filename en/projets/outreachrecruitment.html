@@ -118,6 +118,180 @@
       pointer-events: none;
     }
 
+    /* Live site showcase — desktop + auto-scrolling mobile preview */
+    .template-live-showcase-section {
+      background: #fff;
+      padding: clamp(2rem, 5vw, 4rem) 0;
+    }
+
+    .live-showcase-grid {
+      width: min(80rem, calc(100% - 2rem));
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr);
+      gap: clamp(1.75rem, 4vw, 3rem);
+      align-items: start;
+    }
+
+    @media screen and (max-width: 900px) {
+      .live-showcase-grid {
+        grid-template-columns: 1fr;
+        justify-items: center;
+      }
+    }
+
+    .live-frame {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      width: 100%;
+    }
+
+    .live-frame--mobile {
+      max-width: 300px;
+    }
+
+    .live-frame__label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(4, 16, 32, 0.55);
+    }
+
+    .browser-chrome {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.6rem 0.9rem;
+      background: #e9edf2;
+      border: 1px solid rgba(4, 16, 32, 0.12);
+      border-bottom: 0;
+      border-radius: 14px 14px 0 0;
+    }
+
+    .browser-chrome__dots {
+      display: flex;
+      gap: 0.35rem;
+      flex-shrink: 0;
+    }
+
+    .browser-chrome__dots span {
+      width: 0.6rem;
+      height: 0.6rem;
+      border-radius: 50%;
+      background: rgba(4, 16, 32, 0.18);
+    }
+
+    .browser-chrome__url {
+      flex: 1;
+      background: #fff;
+      border-radius: 999px;
+      padding: 0.3rem 0.9rem;
+      font-size: 0.78rem;
+      color: rgba(4, 16, 32, 0.55);
+      text-align: center;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .live-frame__viewport {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1440 / 900;
+      overflow: hidden;
+      background: #fff;
+      border: 1px solid rgba(4, 16, 32, 0.12);
+      border-radius: 0 0 14px 14px;
+    }
+
+    .live-frame__viewport iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1440px;
+      height: 900px;
+      border: 0;
+      transform-origin: top left;
+      transform: scale(var(--live-scale, 0.3));
+    }
+
+    .phone-frame {
+      position: relative;
+      width: min(100%, 300px);
+      aspect-ratio: 390 / 844;
+      margin: 0 auto;
+      background: #041020;
+      border: 10px solid #041020;
+      border-radius: 2.4rem;
+      overflow: hidden;
+      box-shadow: 0 20px 45px rgba(4, 16, 32, 0.25);
+    }
+
+    .phone-frame::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 38%;
+      height: 1.1rem;
+      background: #041020;
+      border-radius: 0 0 1rem 1rem;
+      z-index: 3;
+    }
+
+    .phone-frame__viewport {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .phone-frame__scroller {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 390px;
+      will-change: transform, opacity;
+      animation: phoneAutoScroll 42s ease-in-out infinite;
+    }
+
+    .phone-frame__scroller iframe {
+      display: block;
+      width: 390px;
+      height: var(--mobile-total-height, 6200px);
+      border: 0;
+      pointer-events: none;
+    }
+
+    @keyframes phoneAutoScroll {
+      0%   { transform: translateY(0); opacity: 1; }
+      6%   { transform: translateY(0); opacity: 1; }
+      88%  { transform: translateY(calc(-1 * (var(--mobile-total-height, 6200px) - var(--mobile-viewport-height, 844px)))); opacity: 1; }
+      92%  { opacity: 0; }
+      94%  { transform: translateY(0); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .phone-frame__scroller {
+        animation: none;
+      }
+    }
+
+    .live-frame__cta {
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .live-frame__cta a {
+      color: #041020;
+      text-decoration: underline;
+    }
+
     .template-case-hero {
       position: relative;
       overflow: hidden;
@@ -627,6 +801,43 @@
 </div>
 </div>
 </section>
+<section id="site-live" class="template-live-showcase-section" aria-label="Live preview of the Outreach Recruitment website">
+<div class="live-showcase-grid">
+<div class="live-frame live-frame--desktop">
+<div class="live-frame__label">Desktop version — live</div>
+<div class="browser-chrome">
+<div class="browser-chrome__dots"><span></span><span></span><span></span></div>
+<div class="browser-chrome__url">outreachrecruitment.net</div>
+</div>
+<div class="live-frame__viewport">
+<iframe src="https://outreachrecruitment.net/" title="Live preview — desktop version" loading="lazy" referrerpolicy="no-referrer"></iframe>
+</div>
+<div class="live-frame__cta"><a href="https://outreachrecruitment.net/" target="_blank" rel="noopener">Open the live site ↗</a></div>
+</div>
+<div class="live-frame live-frame--mobile">
+<div class="live-frame__label">Mobile version — auto-scrolling</div>
+<div class="phone-frame">
+<div class="phone-frame__viewport">
+<div class="phone-frame__scroller">
+<iframe src="https://outreachrecruitment.net/" title="Live preview — mobile version" loading="lazy" referrerpolicy="no-referrer" tabindex="-1"></iframe>
+</div>
+</div>
+</div>
+<div class="live-frame__cta"><a href="https://outreachrecruitment.net/" target="_blank" rel="noopener">View on mobile ↗</a></div>
+</div>
+</div>
+</section>
+<script>(function(){
+  var viewports = document.querySelectorAll('#site-live .live-frame__viewport');
+  if (!viewports.length) return;
+  function scaleAll(){
+    viewports.forEach(function(vp){
+      vp.style.setProperty('--live-scale', vp.offsetWidth / 1440);
+    });
+  }
+  scaleAll();
+  window.addEventListener('resize', scaleAll);
+})();</script>
 <script>(function(){if(window.__sbEmbedInit)return;window.__sbEmbedInit=true;window.addEventListener('message',function(e){var d=e.data;if(!d||d.type!=='sb-marketing:embed-height')return;document.querySelectorAll('iframe[data-sb-embed]').forEach(function(f){if(f.contentWindow===e.source){f.style.height=d.height+'px';}});});})();</script>
 <iframe data-sb-embed="" loading="lazy" scrolling="no" src="https://sb-marketing-boost.lovable.app/p2/social-media-outreach" style="width:100%;border:0;display:block;"></iframe>
 <section class="section_portfolio2-content4 template-details-section portfolio p-desktop">
