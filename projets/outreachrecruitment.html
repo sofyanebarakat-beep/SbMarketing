@@ -3,9 +3,19 @@
 <head>
   <meta charset="utf-8">
   <title>Outreach Recruitment | Sb Marketing</title>
-  <meta name="robots" content="noindex, follow">
+  <meta name="robots" content="index, follow">
+  <meta name="description" content="Découvrez comment Sb Marketing a conçu pour Outreach Recruitment un site de recrutement clair, crédible et optimisé pour générer des candidats et des mandats.">
   <meta name="author" content="Sb Marketing">
   <link rel="canonical" href="https://www.sbmarketing.fr/projets/outreachrecruitment.html">
+  <meta property="og:type" content="article">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:site_name" content="Sb Marketing">
+  <meta property="og:title" content="Outreach Recruitment — Étude de cas | Sb Marketing">
+  <meta property="og:description" content="Un site de recrutement pensé pour attirer les bons candidats, rassurer les entreprises et générer des demandes entrantes.">
+  <meta property="og:url" content="https://www.sbmarketing.fr/projets/outreachrecruitment.html">
+  <meta property="og:image" content="https://www.sbmarketing.fr/images/outreach-project-cover.png">
+  <meta property="og:image:alt" content="Aperçu du site web conçu pour Outreach Recruitment">
+  <meta name="twitter:card" content="summary_large_image">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="../css/tourdubloc-3e0b2f.shared.9a219fb46.css" rel="stylesheet" type="text/css" crossorigin="anonymous">
   <link href="../images/sb-favicon.png" rel="shortcut icon" type="image/x-icon">
@@ -55,6 +65,27 @@
       color: #041020;
     }
 
+    .case-snapshot {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1px;
+      overflow: hidden;
+      border: 1px solid rgba(4, 16, 32, 0.12);
+      border-radius: 12px;
+      background: rgba(4, 16, 32, 0.12);
+      margin-bottom: clamp(2rem, 4vw, 3.5rem);
+    }
+    .case-snapshot__item { min-height: 8.5rem; padding: clamp(1rem, 2vw, 1.5rem); background: #fff; }
+    .case-snapshot__item dt { margin-bottom: 0.65rem; color: rgba(4, 16, 32, 0.55); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    .case-snapshot__item dd { margin: 0; font-weight: 600; line-height: 1.45; }
+    .portfolio-header11_tag-item.case-tag { display: inline-block; cursor: default; }
+
+    .case-toc { position: sticky; top: 4.5rem; z-index: 9998; border-bottom: 1px solid rgba(4, 16, 32, 0.1); background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(12px); }
+    .case-toc__inner { width: min(80rem, calc(100% - 2rem)); margin: 0 auto; display: flex; align-items: center; justify-content: center; gap: clamp(1rem, 3vw, 2.5rem); overflow-x: auto; padding: 0.9rem 0; scrollbar-width: none; }
+    .case-toc__inner::-webkit-scrollbar { display: none; }
+    .case-toc a { color: rgba(4, 16, 32, 0.68); font-size: 0.78rem; font-weight: 700; text-decoration: none; white-space: nowrap; }
+    .case-toc a:hover, .case-toc a:focus-visible { color: #041020; }
+
     .section_portfolio2-content1 .padding-section-large {
       padding-bottom: clamp(1.5rem, 3vw, 2.5rem);
     }
@@ -65,56 +96,6 @@
 
     .template-inline-subsection {
       margin-top: clamp(1.75rem, 3vw, 2.75rem);
-    }
-
-    .outreach-details-before-iframe {
-      position: relative;
-    }
-
-    .outreach-identity-behind-iframe {
-      position: relative;
-      z-index: 3;
-      background: #fff;
-    }
-
-    .template-iframe-section {
-      position: relative;
-      z-index: 2;
-      width: 100%;
-      height: auto;
-      min-height: 0;
-      overflow: visible;
-      background: #fff;
-      padding: 0;
-    }
-
-    .outreach-iframe-overlap {
-      margin-top: calc(-1 * clamp(10rem, 16vw, 15rem));
-    }
-
-    .template-iframe-wrap {
-      position: relative;
-      width: 100%;
-      height: auto;
-      min-height: 0;
-      overflow: visible;
-      background: #fff;
-      line-height: 0;
-    }
-
-    .template-iframe-section iframe {
-      display: block;
-      width: 100%;
-      height: 980px;
-      min-height: 0;
-      border: 0;
-      overflow: hidden;
-      background: #fff;
-      transition: height 180ms ease;
-    }
-
-    iframe[data-sb-embed] {
-      pointer-events: none;
     }
 
     .template-case-hero {
@@ -137,6 +118,10 @@
     }
 
     @media screen and (max-width: 767px) {
+      .case-snapshot { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .case-toc { position: relative; }
+      .case-toc__inner { justify-content: flex-start; }
+
       .template-case-hero .bg-bloc-element {
         opacity: 0.35;
         max-width: 70vw;
@@ -502,7 +487,7 @@
     <div data-collapse="medium" data-animation="default" data-duration="400" data-easing="ease" data-easing2="ease" role="banner" class="navbar2_component w-nav">
       <div class="navbar2_container">
         <a href="../" class="navbar2_logo-link w-nav-brand">
-          <img loading="lazy" src="../images/logo-climanova.svg" alt="" class="navbar2_logo">
+          <img loading="lazy" src="../images/sb-logo.svg" alt="Sb Marketing" class="navbar2_logo">
         </a>
         <nav role="navigation" class="navbar2_menu w-nav-menu"><a href="https://www.sbmarketing.fr/projets/" class="navbar2_link w-nav-link">Nos projets</a><a href="https://www.sbmarketing.fr/blog/" class="navbar2_link w-nav-link">Blog</a><a href="https://www.sbmarketing.fr/pack-presence-digitale-nice/" class="navbar2_link w-nav-link">Offre</a></nav>
         <div class="navbar2_button-wrapper">
@@ -556,7 +541,16 @@
           <img loading="eager" alt="" src="../images/68f12ddb6bfb958dff8fe2c4_BG%20LINE%20PATTERN.svg" class="header30_background-image">
         </div>
       </header>
-      <section class="section_portfolio2-content1 template-details-section portfolio p-mobile">
+      <nav class="case-toc" aria-label="Sommaire de l'étude de cas">
+        <div class="case-toc__inner">
+          <a href="#apercu">Aperçu</a>
+          <a href="#site-web">Site web</a>
+          <a href="#realisations">Réalisations</a>
+          <a href="#resultat">Résultat</a>
+          <a href="#projets-similaires">Projets similaires</a>
+        </div>
+      </nav>
+      <section id="apercu" class="section_portfolio2-content1 template-details-section portfolio p-mobile">
         <div class="padding-global">
           <div class="container-large">
             <div class="portfolio2-content1_component">
@@ -564,32 +558,24 @@
                 <div class="max-width-large align-center">
                   <div class="margin-bottom margin-small">
                     <div class="fx-up">
-                      <div class="w-layout-grid portfolio2-content1_metatag-list">
-                        <div class="portfolio2-content1_metatag-item">
-                          <div class="margin-bottom margin-xxsmall">
-                            <h6>Client</h6>
-                          </div>
-                          <div>Outreach Recruitment</div>
-                        </div>
-                        <div class="portfolio2-content1_metatag-item">
-                          <div class="margin-bottom margin-xxsmall">
-                            <h6>Project goal</h6>
-                          </div>
-                          <div>Créer une présence digitale professionnelle qui présente les services de recrutement, renforce la crédibilité et génère des demandes entrantes.</div>
-                        </div>
-                      </div>
+                      <dl class="case-snapshot" aria-label="Aperçu du projet">
+                        <div class="case-snapshot__item"><dt>Client</dt><dd>Outreach Recruitment</dd></div>
+                        <div class="case-snapshot__item"><dt>Secteur</dt><dd>Recrutement et ressources humaines</dd></div>
+                        <div class="case-snapshot__item"><dt>Services réalisés</dt><dd>Site web, direction artistique, identité de marque, SEO et conversion</dd></div>
+                        <div class="case-snapshot__item"><dt>Durée du projet</dt><dd>Accompagnement continu</dd></div>
+                      </dl>
                     </div>
                   </div>
                   <div class="margin-bottom margin-large">
                     <div class="fx-up">
                       <div class="w-dyn-list">
                         <div role="list" class="portfolio-header11_tag-list w-dyn-items">
-                          <div role="listitem" class="w-dyn-item"><a href="#" class="portfolio-header11_tag-item w-inline-block"><div>Website design</div></a></div>
-                          <div role="listitem" class="w-dyn-item"><a href="#" class="portfolio-header11_tag-item w-inline-block"><div>Art direction</div></a></div>
-                          <div role="listitem" class="w-dyn-item"><a href="#" class="portfolio-header11_tag-item w-inline-block"><div>Brand identity</div></a></div>
-                          <div role="listitem" class="w-dyn-item"><a href="#" class="portfolio-header11_tag-item w-inline-block"><div>Recrutement</div></a></div>
-                          <div role="listitem" class="w-dyn-item"><a href="#" class="portfolio-header11_tag-item w-inline-block"><div>SEO local</div></a></div>
-                          <div role="listitem" class="w-dyn-item"><a href="#" class="portfolio-header11_tag-item w-inline-block"><div>Conversion</div></a></div>
+                          <div role="listitem" class="w-dyn-item"><span class="portfolio-header11_tag-item case-tag">Conception de site web</span></div>
+                          <div role="listitem" class="w-dyn-item"><span class="portfolio-header11_tag-item case-tag">Direction artistique</span></div>
+                          <div role="listitem" class="w-dyn-item"><span class="portfolio-header11_tag-item case-tag">Identité de marque</span></div>
+                          <div role="listitem" class="w-dyn-item"><span class="portfolio-header11_tag-item case-tag">Recrutement</span></div>
+                          <div role="listitem" class="w-dyn-item"><span class="portfolio-header11_tag-item case-tag">SEO local</span></div>
+                          <div role="listitem" class="w-dyn-item"><span class="portfolio-header11_tag-item case-tag">Conversion</span></div>
                         </div>
                       </div>
                     </div>
@@ -606,7 +592,7 @@
           </div>
         </div>
       </section>
-      <section class="section_portfolio2-content2 template-details-section portfolio p-desktop">
+      <section id="site-web" class="section_portfolio2-content2 template-details-section portfolio p-desktop">
         <div class="padding-global">
           <div class="container-large">
             <div class="padding-section-large">
@@ -614,7 +600,7 @@
                 <div class="fx-up">
                   <div class="portfolio2-content2_component">
                     <div class="margin-bottom margin-small">
-                      <h2>Site Web</h2>
+                      <h2>Site web</h2>
                     </div>
                     <div class="text-rich-text w-richtext">
                       <p>Dans le recrutement, la crédibilité se construit avant même le premier entretien. Le site devait rassurer les deux côtés du marché : les entreprises qui confient leurs recrutements et les candidats qui cherchent une opportunité.</p>
@@ -628,11 +614,25 @@
           </div>
         </div>
       </section>
-<iframe src="https://sb-marketing-boost.lovable.app/p2/f" data-sb-embed style="width:100%;border:0;display:block;" scrolling="no" loading="lazy"></iframe>
-<script>(function(){if(window.__sbEmbedInit)return;window.__sbEmbedInit=true;window.addEventListener('message',function(e){var d=e.data;if(!d||d.type!=='sb-marketing:embed-height')return;document.querySelectorAll('iframe[data-sb-embed]').forEach(function(f){if(f.contentWindow===e.source){f.style.height=d.height+'px';}});});})();</script>
-<iframe src="https://sb-marketing-boost.lovable.app/p2/social-media-outreach" data-sb-embed style="width:100%;border:0;display:block;" scrolling="no" loading="lazy"></iframe>
+      <section id="realisations" class="template-showcase-section" aria-label="Aperçus du site Outreach Recruitment">
+        <div class="padding-section-large">
+          <div class="template-showcase-grid">
+            <figure class="template-showcase-frame">
+              <img src="../images/outreachrecruitment/desktop-showcase.webp" loading="lazy" decoding="async" alt="Version ordinateur du site Outreach Recruitment présentant ses services de recrutement">
+            </figure>
+            <figure class="template-showcase-frame template-showcase-mobile">
+              <img src="../images/outreachrecruitment/mobile-showcase.webp" loading="lazy" decoding="async" alt="Version mobile du site Outreach Recruitment avec navigation et appels à l'action">
+            </figure>
+          </div>
+        </div>
+      </section>
+      <section class="template-visual-section" aria-label="Détail de la direction artistique Outreach Recruitment">
+        <div class="template-visual-wrap">
+          <img class="template-visual-image" data-template-visual src="../images/outreachrecruitment/outreach-fullwidth-section.jpg" loading="lazy" decoding="async" alt="Composition visuelle de l'identité de marque et des interfaces créées pour Outreach Recruitment">
+        </div>
+      </section>
 
-      <section class="section_portfolio2-content4 template-details-section portfolio p-desktop">
+      <section id="resultat" class="section_portfolio2-content4 template-details-section portfolio p-desktop">
         <div class="padding-global">
           <div class="container-large">
             <div class="padding-section-large">
@@ -661,37 +661,37 @@
         <div class="banner15_row">
           <div class="banner15_inner banner15_inner--left">
             <div class="banner15_items">
-              <span class="banner15_item">Website Design</span><span class="banner15_sep"></span>
-              <span class="banner15_item">Brand Identity</span><span class="banner15_sep"></span>
-              <span class="banner15_item">Art Direction</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Conception de site web</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Identité de marque</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Direction artistique</span><span class="banner15_sep"></span>
               <span class="banner15_item">SEO Local</span><span class="banner15_sep"></span>
-              <span class="banner15_item">Social Media</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Réseaux sociaux</span><span class="banner15_sep"></span>
               <span class="banner15_item">Marketing Digital</span><span class="banner15_sep"></span>
               <span class="banner15_item">Développement Web</span><span class="banner15_sep"></span>
               <span class="banner15_item">Stratégie de Contenu</span><span class="banner15_sep"></span>
               <span class="banner15_item">Identité Visuelle</span><span class="banner15_sep"></span>
               <span class="banner15_item">Campagnes Ads</span><span class="banner15_sep"></span>
-              <span class="banner15_item">Email Marketing</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Marketing par e-mail</span><span class="banner15_sep"></span>
               <span class="banner15_item">Conversion</span><span class="banner15_sep"></span>
             </div>
             <div class="banner15_items" aria-hidden="true">
-              <span class="banner15_item">Website Design</span><span class="banner15_sep"></span>
-              <span class="banner15_item">Brand Identity</span><span class="banner15_sep"></span>
-              <span class="banner15_item">Art Direction</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Conception de site web</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Identité de marque</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Direction artistique</span><span class="banner15_sep"></span>
               <span class="banner15_item">SEO Local</span><span class="banner15_sep"></span>
-              <span class="banner15_item">Social Media</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Réseaux sociaux</span><span class="banner15_sep"></span>
               <span class="banner15_item">Marketing Digital</span><span class="banner15_sep"></span>
               <span class="banner15_item">Développement Web</span><span class="banner15_sep"></span>
               <span class="banner15_item">Stratégie de Contenu</span><span class="banner15_sep"></span>
               <span class="banner15_item">Identité Visuelle</span><span class="banner15_sep"></span>
               <span class="banner15_item">Campagnes Ads</span><span class="banner15_sep"></span>
-              <span class="banner15_item">Email Marketing</span><span class="banner15_sep"></span>
+              <span class="banner15_item">Marketing par e-mail</span><span class="banner15_sep"></span>
               <span class="banner15_item">Conversion</span><span class="banner15_sep"></span>
             </div>
           </div>
         </div>
       </section>
-      <section class="section_portfolio2-related background-color-secondary">
+      <section id="projets-similaires" class="section_portfolio2-related background-color-secondary">
         <div class="padding-global">
           <div class="container-large">
             <div class="padding-section-large">
@@ -775,7 +775,7 @@
             <div class="padding-bottom padding-xxlarge">
               <div class="footer7_top-wrapper">
                 <a href="../" class="footer7_logo-link w-nav-brand">
-                  <img src="../images/logo-climanova.svg" loading="lazy" alt="" class="footer7_logo-img">
+                  <img src="../images/sb-logo.svg" loading="lazy" alt="Sb Marketing" class="footer7_logo-img">
                 </a>
                 <div class="w-layout-grid footer7_link-list">
                   <a href="https://www.sbmarketing.fr/projets/" class="footer7_link">Nos projets</a>
@@ -848,89 +848,6 @@
       window.addEventListener('scroll', requestTick, { passive: true });
       window.addEventListener('resize', requestTick);
       requestTick();
-    })();
-
-    (function () {
-      var embeds = Array.prototype.slice.call(document.querySelectorAll('iframe[data-sb-embed]'));
-      if (!embeds.length) return;
-
-      var minHeight = 720;
-      var knownHeights = new WeakMap();
-
-      function getIframeForWindow(sourceWindow) {
-        for (var i = 0; i < embeds.length; i += 1) {
-          if (embeds[i].contentWindow === sourceWindow) return embeds[i];
-        }
-        return null;
-      }
-
-      function getMessageHeight(data) {
-        if (typeof data === 'number') return data;
-        if (typeof data === 'string') {
-          var numericHeight = Number(data);
-          if (numericHeight) return numericHeight;
-
-          try {
-            data = JSON.parse(data);
-          } catch (error) {
-            return 0;
-          }
-        }
-        if (!data || typeof data !== 'object') return 0;
-
-        return data.height ||
-          data.iframeHeight ||
-          data.documentHeight ||
-          data.scrollHeight ||
-          data.offsetHeight ||
-          data.clientHeight ||
-          (data.payload && (
-            data.payload.height ||
-            data.payload.iframeHeight ||
-            data.payload.documentHeight ||
-            data.payload.scrollHeight ||
-            data.payload.offsetHeight ||
-            data.payload.clientHeight
-          )) ||
-          0;
-      }
-
-      function resizeEmbed(iframe, height) {
-        var nextHeight = Math.max(Math.ceil(Number(height) || 0), minHeight);
-        var lastHeight = knownHeights.get(iframe) || 0;
-        if (!nextHeight || Math.abs(nextHeight - lastHeight) < 2) return;
-
-        knownHeights.set(iframe, nextHeight);
-        iframe.style.height = nextHeight + 'px';
-      }
-
-      function requestEmbedHeight(iframe) {
-        if (!iframe.contentWindow) return;
-
-        iframe.contentWindow.postMessage({
-          type: 'sb-marketing:request-embed-height'
-        }, '*');
-      }
-
-      embeds.forEach(function (iframe) {
-        resizeEmbed(iframe, Math.max(window.innerHeight || 0, 980));
-        iframe.addEventListener('load', function () {
-          requestEmbedHeight(iframe);
-        });
-        requestEmbedHeight(iframe);
-      });
-
-      window.addEventListener('message', function (event) {
-        var iframe = getIframeForWindow(event.source);
-        if (!iframe) return;
-
-        var height = getMessageHeight(event.data);
-        if (height) resizeEmbed(iframe, height);
-      });
-
-      window.addEventListener('resize', function () {
-        embeds.forEach(requestEmbedHeight);
-      }, { passive: true });
     })();
 
     (function () {
