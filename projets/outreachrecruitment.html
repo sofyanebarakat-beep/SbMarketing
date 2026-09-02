@@ -189,6 +189,7 @@
     @media (prefers-reduced-motion: reduce) {
       .section_banner15 .banner15_inner { animation: none; }
       .mobile-auto-scroll img { animation: none; }
+      .live-device { opacity: 1; transform: none; transition: none; }
     }
 
     .portfolio.p-desktop,
@@ -226,64 +227,70 @@
       will-change: transform;
     }
 
-    .template-showcase-section {
-      background: #fff;
-    }
-
-    .template-showcase-section .padding-section-large {
-      background: #0b0c10;
-      margin-inline: clamp(1rem, 4vw, 3rem);
-      border-radius: 16px;
-      overflow: hidden;
-      padding-inline: clamp(1rem, 3vw, 3rem);
-    }
-
+    .template-showcase-section { position: relative; overflow: hidden; background: #fff; }
+    .template-showcase-section .padding-section-large { position: relative; margin-inline: clamp(1rem, 4vw, 3rem); overflow: hidden; border-radius: 20px; background: #071321; padding-inline: clamp(1rem, 3vw, 3rem); }
+    .template-showcase-section .padding-section-large::before { position: absolute; content: ''; inset: 0; opacity: .16; pointer-events: none; background-image: radial-gradient(circle, #fff 1px, transparent 1.5px); background-size: 22px 22px; mask-image: linear-gradient(135deg, #000, transparent 70%); }
+    .template-showcase-section .padding-section-large::after { position: absolute; content: ''; width: 42rem; height: 42rem; top: 20%; left: 8%; border-radius: 50%; background: rgba(255,229,0,.13); filter: blur(110px); pointer-events: none; }
+    .live-showcase-heading, .template-showcase-grid, .showcase-testimonial { position: relative; z-index: 1; }
     .live-showcase-heading { width: min(94rem, 100%); margin: 0 auto clamp(1.5rem, 3vw, 2.5rem); display: flex; align-items: end; justify-content: space-between; gap: 1.5rem; color: #fff; }
-    .live-showcase-heading h2 { margin: 0 0 0.5rem; color: #fff; }
-    .live-showcase-heading p { max-width: 42rem; margin: 0; color: rgba(255,255,255,.65); }
-    .live-showcase-link { flex: 0 0 auto; color: #041020; background: #ffe500; border-radius: 999px; padding: 0.8rem 1.1rem; font-size: 0.8rem; font-weight: 800; text-decoration: none; }
-
-    .template-showcase-grid {
-      width: min(94rem, 100%);
-      margin-right: auto;
-      margin-left: auto;
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(14rem, 0.27fr);
-      gap: clamp(1rem, 3vw, 2.5rem);
-      align-items: start;
-    }
-
-    .live-device {
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,.14);
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.05);
-      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.24);
-    }
-    .live-device__bar { min-height: 2.7rem; padding: 0 0.9rem; display: flex; align-items: center; gap: 0.45rem; border-bottom: 1px solid rgba(255,255,255,.1); background: #17191f; }
-    .live-device__dot { width: 0.55rem; height: 0.55rem; border-radius: 50%; background: rgba(255,255,255,.24); }
-    .live-device__address { min-width: 0; margin-left: 0.45rem; padding: 0.36rem 0.7rem; overflow: hidden; border-radius: 999px; background: rgba(255,255,255,.07); color: rgba(255,255,255,.55); font-size: 0.66rem; text-overflow: ellipsis; white-space: nowrap; }
-    .live-device__status { margin-left: auto; display: flex; align-items: center; gap: 0.35rem; color: rgba(255,255,255,.58); font-size: 0.64rem; text-transform: uppercase; letter-spacing: .06em; }
-    .live-device__status::before { content: ''; width: 0.42rem; height: 0.42rem; border-radius: 50%; background: #42d77d; box-shadow: 0 0 0 3px rgba(66,215,125,.13); }
-    .live-device--desktop iframe { display: block; width: 100%; height: clamp(34rem, 52vw, 54rem); border: 0; background: #fff; }
-    .live-device--mobile { width: 100%; max-width: 18rem; justify-self: center; border: 7px solid #252832; border-radius: 28px; }
-    .live-device--mobile .live-device__bar { justify-content: center; min-height: 2rem; padding: 0; }
-    .live-device--mobile .live-device__bar::before { content: ''; width: 34%; height: 0.36rem; border-radius: 999px; background: rgba(255,255,255,.18); }
-    .mobile-auto-scroll { position: relative; height: clamp(34rem, 52vw, 54rem); overflow: hidden; background: #fff; }
-    .mobile-auto-scroll img {
-      display: block;
-      width: 100%;
-      height: auto;
-      animation: mobile-page-scroll 34s ease-in-out infinite alternate;
-      will-change: transform;
-    }
-    .mobile-auto-scroll:hover img { animation-play-state: paused; }
-    .mobile-auto-scroll__label { position: absolute; right: 0.65rem; bottom: 0.65rem; z-index: 2; padding: 0.4rem 0.6rem; border-radius: 999px; background: rgba(4,16,32,.88); color: #fff; font-size: 0.62rem; font-weight: 700; }
-
-    @keyframes mobile-page-scroll {
-      0%, 8% { transform: translateY(0); }
-      92%, 100% { transform: translateY(calc(-100% + clamp(34rem, 52vw, 54rem))); }
-    }
+    .live-showcase-heading h2 { margin: .65rem 0 .5rem; color: #fff; }
+    .live-showcase-heading p { max-width: 42rem; margin: 0; color: rgba(255,255,255,.68); }
+    .live-result { display: inline-flex; align-items: center; gap: .45rem; color: #ffe500; font-size: .72rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+    .live-result::before { content: ''; width: .5rem; height: .5rem; background: #ffe500; transform: rotate(45deg); }
+    .live-showcase-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .65rem; }
+    .live-showcase-link { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; min-height: 2.75rem; border: 1px solid rgba(255,255,255,.22); border-radius: 999px; padding: .75rem 1rem; color: #fff; background: transparent; font-size: .78rem; font-weight: 800; text-decoration: none; }
+    .live-showcase-link.is-primary { border-color: #ffe500; color: #041020; background: #ffe500; }
+    .template-showcase-grid { width: min(94rem, 100%); margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr) minmax(15rem, .28fr); gap: clamp(1rem, 3vw, 2.5rem); align-items: start; }
+    .device-column { min-width: 0; }
+    .device-label { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: .7rem; color: rgba(255,255,255,.72); font-size: .7rem; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; }
+    .viewport-controls { display: flex; gap: .35rem; }
+    .viewport-button, .showcase-icon-button, .mobile-scroll-toggle { appearance: none; border: 1px solid rgba(255,255,255,.17); background: rgba(255,255,255,.06); color: rgba(255,255,255,.72); cursor: pointer; font: inherit; }
+    .viewport-button { border-radius: 999px; padding: .35rem .58rem; font-size: .62rem; font-weight: 750; }
+    .viewport-button[aria-pressed="true"] { border-color: #ffe500; background: #ffe500; color: #041020; }
+    .live-device { position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,.16); border-radius: 13px; background: #111720; box-shadow: 0 30px 80px rgba(0,0,0,.42), 0 0 75px rgba(255,229,0,.07); }
+    .template-showcase-section.has-reveal .live-device { opacity: 0; transform: translateY(24px) scale(.985); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.8,.2,1); }
+    .template-showcase-section.has-reveal .live-device.is-visible { opacity: 1; transform: none; }
+    .live-device::after { position: absolute; content: ''; right: 8%; bottom: -2.4rem; left: 8%; height: 2.8rem; border-radius: 50%; background: rgba(0,0,0,.45); filter: blur(18px); pointer-events: none; }
+    .live-device__bar { min-height: 2.8rem; padding: 0 .9rem; display: flex; align-items: center; gap: .45rem; border-bottom: 1px solid rgba(255,255,255,.1); background: #171d27; }
+    .live-device__dot { width: .62rem; height: .62rem; border-radius: 50%; }
+    .live-device__dot.is-red { background: #ff5f57; }.live-device__dot.is-yellow { background: #febc2e; }.live-device__dot.is-green { background: #28c840; }
+    .live-device__address { min-width: 0; flex: 1; margin-left: .45rem; padding: .38rem .7rem; overflow: hidden; border-radius: 999px; background: rgba(255,255,255,.07); color: rgba(255,255,255,.56); font-size: .66rem; text-overflow: ellipsis; white-space: nowrap; }
+    .live-device__status { display: flex; align-items: center; gap: .35rem; color: rgba(255,255,255,.62); font-size: .62rem; letter-spacing: .06em; text-transform: uppercase; }
+    .live-device__status::before { content: ''; width: .42rem; height: .42rem; border-radius: 50%; background: #42d77d; box-shadow: 0 0 0 3px rgba(66,215,125,.13); }
+    .showcase-icon-button { width: 2rem; height: 2rem; border-radius: 50%; font-size: .9rem; }
+    .iframe-stage { position: relative; min-height: clamp(34rem,52vw,54rem); display: flex; justify-content: center; overflow: hidden; background: #fff; transition: padding .35s ease; }
+    .iframe-viewport { width: 100%; height: clamp(34rem,52vw,54rem); background: #fff; transition: width .35s ease; }
+    .iframe-viewport[data-viewport="tablet"] { width: min(100%, 768px); }.iframe-viewport[data-viewport="mobile"] { width: min(100%, 390px); }
+    .iframe-viewport iframe { display: block; width: 100%; height: 100%; border: 0; background: #fff; }
+    .iframe-poster, .iframe-loading, .iframe-fallback { position: absolute; inset: 0; z-index: 3; display: grid; place-items: center; overflow: hidden; background: #071321; }
+    .iframe-poster[hidden] { display: none; }
+    .iframe-poster img, .iframe-fallback img { width: 100%; height: 100%; object-fit: cover; object-position: top; opacity: .55; filter: saturate(.75); }
+    .iframe-poster__content, .iframe-fallback__content { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: .75rem; padding: 2rem; text-align: center; color: #fff; background: linear-gradient(rgba(4,16,32,.15),rgba(4,16,32,.78)); }
+    .iframe-launch { appearance: none; border: 0; border-radius: 999px; padding: .9rem 1.25rem; background: #ffe500; color: #041020; cursor: pointer; font: inherit; font-size: .84rem; font-weight: 850; }
+    .iframe-loading { display: none; background: #f5f6f7; }
+    .iframe-loading.is-active { display: grid; }
+    .iframe-loading__card { width: min(75%, 36rem); display: grid; gap: .75rem; }
+    .iframe-loading__line { height: .8rem; border-radius: 999px; background: linear-gradient(90deg,#e4e7ea 25%,#fff 50%,#e4e7ea 75%); background-size: 200% 100%; animation: showcase-shimmer 1.25s linear infinite; }
+    .iframe-loading__line:nth-child(2) { width: 72%; }.iframe-loading__line:nth-child(3) { width: 48%; height: 8rem; border-radius: .8rem; }
+    .iframe-fallback { display: none; }.iframe-fallback.is-active { display: grid; }
+    .interaction-hint { display: none; position: absolute; z-index: 2; top: .75rem; left: 50%; transform: translateX(-50%); padding: .5rem .75rem; border-radius: 999px; color: #fff; background: rgba(4,16,32,.88); font-size: .67rem; font-weight: 750; white-space: nowrap; pointer-events: none; }.interaction-hint.is-visible { display: block; }
+    .iframe-stage:fullscreen { width: 100vw; height: 100vh; min-height: 100vh; background: #071321; }.iframe-stage:fullscreen .iframe-viewport { width: 100%; height: 100vh; }
+    .design-callouts { position: absolute; z-index: 2; inset: auto 1rem 1rem; display: flex; flex-wrap: wrap; gap: .45rem; pointer-events: none; }
+    .design-callout { padding: .45rem .65rem; border: 1px solid rgba(255,255,255,.22); border-radius: 999px; color: #fff; background: rgba(4,16,32,.82); backdrop-filter: blur(8px); font-size: .64rem; font-weight: 700; }
+    .live-device--mobile { width: 100%; max-width: 19rem; justify-self: center; border: 7px solid #252d38; border-radius: 30px; }
+    .live-device--mobile .live-device__bar { position: relative; justify-content: center; min-height: 2.15rem; padding: 0; }
+    .phone-speaker { width: 34%; height: .36rem; border-radius: 999px; background: rgba(255,255,255,.2); }
+    .mobile-auto-scroll { position: relative; height: clamp(34rem,52vw,54rem); overflow: hidden; background: #fff; touch-action: none; cursor: grab; }.mobile-auto-scroll.is-dragging { cursor: grabbing; }
+    .mobile-auto-scroll img { display: block; width: 100%; height: auto; animation: mobile-page-scroll 34s ease-in-out infinite alternate; will-change: transform; user-select: none; -webkit-user-drag: none; }
+    .mobile-auto-scroll:hover img, .mobile-auto-scroll.is-paused img, .mobile-auto-scroll.is-outside img { animation-play-state: paused; }
+    .mobile-auto-scroll__label { position: absolute; right: .65rem; bottom: 1.1rem; z-index: 2; padding: .4rem .6rem; border-radius: 999px; background: rgba(4,16,32,.88); color: #fff; font-size: .6rem; font-weight: 700; pointer-events: none; }
+    .mobile-scroll-toggle { position: absolute; z-index: 3; left: .65rem; bottom: 1.05rem; border-radius: 999px; padding: .4rem .62rem; font-size: .62rem; font-weight: 800; }
+    .mobile-progress { position: absolute; z-index: 3; top: .8rem; right: .5rem; bottom: 2.8rem; width: 3px; overflow: hidden; border-radius: 999px; background: rgba(4,16,32,.15); pointer-events: none; }.mobile-progress span { display: block; width: 100%; height: 0; border-radius: inherit; background: #ffe500; }
+    .phone-home { height: 1.45rem; display: grid; place-items: center; background: #171d27; }.phone-home::before { content: ''; width: 34%; height: .28rem; border-radius: 999px; background: rgba(255,255,255,.28); }
+    .device-note { margin: 1rem .25rem 0; color: rgba(255,255,255,.64); font-size: .78rem; line-height: 1.55; }.device-note strong { color: #fff; }
+    .showcase-testimonial { width: min(58rem,100%); margin: clamp(2rem,4vw,3.5rem) auto 0; padding: clamp(1.25rem,3vw,2rem); border: 1px solid rgba(255,229,0,.25); border-radius: 16px; color: #fff; background: rgba(255,255,255,.055); text-align: center; }.showcase-testimonial blockquote { margin: 0 0 .75rem; font-size: clamp(1.05rem,2vw,1.35rem); font-weight: 650; line-height: 1.45; }.showcase-testimonial p { margin: 0; color: rgba(255,255,255,.58); font-size: .75rem; }
+    @keyframes mobile-page-scroll { 0%,8% { transform: translateY(0); } 92%,100% { transform: translateY(calc(-100% + clamp(34rem,52vw,54rem))); } }
+    @keyframes showcase-shimmer { to { background-position: -200% 0; } }
 
     .outreach-fullwidth-section {
       background: #fff;
@@ -368,9 +375,12 @@
       }
 
       .live-showcase-heading { align-items: flex-start; flex-direction: column; }
-      .live-device--desktop iframe { height: 34rem; }
+      .live-showcase-actions { justify-content: flex-start; }
+      .iframe-stage, .iframe-viewport { height: 34rem; min-height: 34rem; }
       .live-device--mobile { max-width: 20rem; }
       .mobile-auto-scroll { height: 38rem; }
+      .viewport-controls { display: none; }
+      .design-callouts { display: none; }
       @keyframes mobile-page-scroll {
         0%, 8% { transform: translateY(0); }
         92%, 100% { transform: translateY(calc(-100% + 38rem)); }
@@ -383,6 +393,11 @@
       .template-single-portfolio-wrap:hover .template-single-portfolio-image {
         transform: scale(1.008);
       }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .mobile-auto-scroll img { animation: none; }
+      .live-device { opacity: 1; transform: none; transition: none; }
     }
 
     .template-pink-showcase {
@@ -638,28 +653,78 @@
         <div class="padding-section-large">
           <div class="live-showcase-heading">
             <div>
+              <span class="live-result">Conçu pour générer des mandats</span>
               <h2>Explorez le site en direct</h2>
-              <p>Naviguez dans l'expérience desktop, puis observez le parcours mobile défiler automatiquement dans son format natif.</p>
+              <p>Découvrez une expérience pensée pour rassurer les entreprises, orienter les candidats et transformer chaque visite en prise de contact.</p>
             </div>
-            <a class="live-showcase-link" href="https://outreachrecruitment.net/" target="_blank" rel="noopener noreferrer">Ouvrir le site ↗</a>
+            <div class="live-showcase-actions">
+              <a class="live-showcase-link" href="../contact/" data-analytics-event="showcase_similar_project">Créer un site similaire</a>
+              <a class="live-showcase-link is-primary" href="https://outreachrecruitment.net/" target="_blank" rel="noopener noreferrer" data-analytics-event="showcase_open_live_site">Ouvrir le site ↗</a>
+            </div>
           </div>
           <div class="template-showcase-grid">
-            <div class="live-device live-device--desktop">
-              <div class="live-device__bar" aria-hidden="true">
-                <span class="live-device__dot"></span><span class="live-device__dot"></span><span class="live-device__dot"></span>
-                <span class="live-device__address">outreachrecruitment.net</span>
-                <span class="live-device__status">Site en direct</span>
+            <div class="device-column">
+              <div class="device-label">
+                <span>Desktop — aperçu interactif</span>
+                <div class="viewport-controls" aria-label="Taille de l'aperçu">
+                  <button class="viewport-button" type="button" data-viewport="desktop" aria-pressed="true">Desktop</button>
+                  <button class="viewport-button" type="button" data-viewport="tablet" aria-pressed="false">Tablette</button>
+                  <button class="viewport-button" type="button" data-viewport="mobile" aria-pressed="false">Mobile</button>
+                </div>
               </div>
-              <iframe src="https://outreachrecruitment.net/" title="Site web interactif d'Outreach Recruitment" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+              <div class="live-device live-device--desktop" data-live-device>
+                <div class="live-device__bar">
+                  <span class="live-device__dot is-red" aria-hidden="true"></span><span class="live-device__dot is-yellow" aria-hidden="true"></span><span class="live-device__dot is-green" aria-hidden="true"></span>
+                  <span class="live-device__address">https://outreachrecruitment.net</span>
+                  <span class="live-device__status">Site en direct</span>
+                  <button class="showcase-icon-button" type="button" data-showcase-fullscreen aria-label="Afficher le site en plein écran" title="Plein écran">⛶</button>
+                </div>
+                <div class="iframe-stage" data-iframe-stage>
+                  <div class="iframe-viewport" data-iframe-viewport data-viewport="desktop"></div>
+                  <div class="iframe-poster" data-iframe-poster>
+                    <img src="../images/outreachrecruitment/desktop-showcase.webp" loading="lazy" decoding="async" alt="Aperçu du site Outreach Recruitment avant son activation">
+                    <div class="iframe-poster__content">
+                      <strong>Une expérience conçue pour deux audiences</strong>
+                      <span>Chargez le site uniquement lorsque vous souhaitez l'explorer.</span>
+                      <button class="iframe-launch" type="button" data-iframe-launch>Explorer le site</button>
+                    </div>
+                  </div>
+                  <div class="iframe-loading" data-iframe-loading role="status" aria-live="polite" aria-label="Chargement du site en direct">
+                    <div class="iframe-loading__card"><span class="iframe-loading__line"></span><span class="iframe-loading__line"></span><span class="iframe-loading__line"></span></div>
+                  </div>
+                  <div class="iframe-fallback" data-iframe-fallback>
+                    <img src="../images/outreachrecruitment/desktop-showcase.webp" loading="lazy" decoding="async" alt="Capture du site Outreach Recruitment">
+                    <div class="iframe-fallback__content">
+                      <strong>L'aperçu interactif n'a pas pu être chargé.</strong>
+                      <span>La capture reste disponible et le site peut être ouvert dans un nouvel onglet.</span>
+                      <a class="live-showcase-link is-primary" href="https://outreachrecruitment.net/" target="_blank" rel="noopener noreferrer" data-analytics-event="showcase_fallback_open">Ouvrir le site ↗</a>
+                    </div>
+                  </div>
+                  <span class="interaction-hint" data-interaction-hint>Vous pouvez naviguer dans le site</span>
+                  <div class="design-callouts" aria-label="Décisions de conception"><span class="design-callout">Double parcours candidat / entreprise</span><span class="design-callout">Preuves de confiance visibles</span><span class="design-callout">CTA à chaque étape</span></div>
+                </div>
+              </div>
+              <p class="device-note"><strong>Stratégie desktop.</strong> Une hiérarchie claire présente les expertises, les secteurs couverts et les preuves de confiance avant de guider le visiteur vers la prise de contact.</p>
             </div>
-            <div class="live-device live-device--mobile" aria-label="Aperçu mobile automatique du site Outreach Recruitment">
-              <div class="live-device__bar" aria-hidden="true"></div>
-              <div class="mobile-auto-scroll">
-                <img src="../images/outreachrecruitment/mobile-showcase.webp" loading="lazy" decoding="async" alt="Version mobile complète du site Outreach Recruitment">
-                <span class="mobile-auto-scroll__label">Défilement automatique</span>
+            <div class="device-column">
+              <div class="device-label"><span>Mobile — parcours complet</span></div>
+              <div class="live-device live-device--mobile" data-live-device aria-label="Aperçu mobile automatique et déplaçable du site Outreach Recruitment">
+                <div class="live-device__bar" aria-hidden="true"><span class="phone-speaker"></span></div>
+                <div class="mobile-auto-scroll" data-mobile-scroll tabindex="0" aria-label="Aperçu mobile. Faites glisser verticalement pour explorer la page.">
+                  <img data-mobile-scroll-image src="../images/outreachrecruitment/mobile-showcase.webp" loading="lazy" decoding="async" draggable="false" alt="Version mobile complète du site Outreach Recruitment">
+                  <button class="mobile-scroll-toggle" type="button" data-mobile-scroll-toggle aria-pressed="false">Pause</button>
+                  <span class="mobile-auto-scroll__label">Glissez pour explorer</span>
+                  <span class="mobile-progress" aria-hidden="true"><span data-mobile-progress></span></span>
+                </div>
+                <div class="phone-home" aria-hidden="true"></div>
               </div>
+              <p class="device-note"><strong>Stratégie mobile.</strong> Le contenu prioritaire, les appels à l'action et les points de contact restent immédiatement accessibles, même pendant une consultation rapide.</p>
             </div>
           </div>
+          <aside class="showcase-testimonial" aria-label="Résultat du projet">
+            <blockquote>Une présence digitale plus claire, plus crédible et pensée pour transformer l'intérêt en conversations qualifiées.</blockquote>
+            <p>Résultat recherché pour Outreach Recruitment</p>
+          </aside>
         </div>
       </section>
       <section class="template-visual-section" aria-label="Détail de la direction artistique Outreach Recruitment">
@@ -884,6 +949,195 @@
       window.addEventListener('scroll', requestTick, { passive: true });
       window.addEventListener('resize', requestTick);
       requestTick();
+    })();
+
+    (function () {
+      var section = document.getElementById('realisations');
+      if (!section) return;
+
+      function track(eventName, details) {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push(Object.assign({ event: eventName, project: 'outreach_recruitment' }, details || {}));
+      }
+
+      section.querySelectorAll('[data-analytics-event]').forEach(function (link) {
+        link.addEventListener('click', function () { track(link.getAttribute('data-analytics-event')); });
+      });
+
+      var stage = section.querySelector('[data-iframe-stage]');
+      var viewport = section.querySelector('[data-iframe-viewport]');
+      var poster = section.querySelector('[data-iframe-poster]');
+      var loading = section.querySelector('[data-iframe-loading]');
+      var fallback = section.querySelector('[data-iframe-fallback]');
+      var launch = section.querySelector('[data-iframe-launch]');
+      var hint = section.querySelector('[data-interaction-hint]');
+      var iframeLoaded = false;
+      var failureTimer;
+
+      function showFallback() {
+        if (iframeLoaded) return;
+        loading.classList.remove('is-active');
+        fallback.classList.add('is-active');
+        track('showcase_iframe_failed');
+      }
+
+      launch.addEventListener('click', function () {
+        if (viewport.querySelector('iframe')) return;
+        poster.hidden = true;
+        loading.classList.add('is-active');
+        var frame = document.createElement('iframe');
+        frame.src = 'https://outreachrecruitment.net/';
+        frame.title = "Site web interactif d'Outreach Recruitment";
+        frame.loading = 'lazy';
+        frame.referrerPolicy = 'strict-origin-when-cross-origin';
+        frame.addEventListener('load', function () {
+          iframeLoaded = true;
+          window.clearTimeout(failureTimer);
+          loading.classList.remove('is-active');
+          fallback.classList.remove('is-active');
+          hint.classList.add('is-visible');
+          window.setTimeout(function () { hint.classList.remove('is-visible'); }, 4200);
+          track('showcase_iframe_loaded');
+        });
+        frame.addEventListener('error', showFallback);
+        viewport.appendChild(frame);
+        failureTimer = window.setTimeout(showFallback, 12000);
+        track('showcase_iframe_activated');
+      });
+
+      section.querySelectorAll('[data-viewport]').forEach(function (button) {
+        if (!button.classList.contains('viewport-button')) return;
+        button.addEventListener('click', function () {
+          var selected = button.getAttribute('data-viewport');
+          viewport.setAttribute('data-viewport', selected);
+          section.querySelectorAll('.viewport-button').forEach(function (item) {
+            item.setAttribute('aria-pressed', String(item === button));
+          });
+          track('showcase_viewport_changed', { viewport: selected });
+        });
+      });
+
+      var fullscreenButton = section.querySelector('[data-showcase-fullscreen]');
+      fullscreenButton.addEventListener('click', function () {
+        if (document.fullscreenElement) {
+          document.exitFullscreen();
+        } else if (stage.requestFullscreen) {
+          stage.requestFullscreen();
+          track('showcase_fullscreen_opened');
+        }
+      });
+
+      var mobile = section.querySelector('[data-mobile-scroll]');
+      var mobileImage = section.querySelector('[data-mobile-scroll-image]');
+      var toggle = section.querySelector('[data-mobile-scroll-toggle]');
+      var progress = section.querySelector('[data-mobile-progress]');
+      var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var preferenceKey = 'sb-outreach-mobile-preview-paused';
+      var userPaused = reduceMotion;
+      try { userPaused = reduceMotion || window.sessionStorage.getItem(preferenceKey) === 'true'; } catch (error) {}
+
+      function updateToggle() {
+        mobile.classList.toggle('is-paused', userPaused);
+        toggle.textContent = userPaused ? 'Lecture' : 'Pause';
+        toggle.setAttribute('aria-pressed', String(userPaused));
+      }
+
+      function savePreference() {
+        try { window.sessionStorage.setItem(preferenceKey, String(userPaused)); } catch (error) {}
+      }
+
+      toggle.addEventListener('click', function () {
+        userPaused = !userPaused;
+        if (!userPaused) {
+          mobileImage.style.animation = '';
+          mobileImage.style.transform = '';
+        }
+        updateToggle();
+        savePreference();
+        track(userPaused ? 'showcase_mobile_paused' : 'showcase_mobile_played');
+      });
+      updateToggle();
+
+      var dragStartY = 0;
+      var dragStartOffset = 0;
+      var dragOffset = 0;
+      function maxMobileOffset() { return Math.max(0, mobileImage.scrollHeight - mobile.clientHeight); }
+      function currentOffset() {
+        var matrix = window.getComputedStyle(mobileImage).transform;
+        if (!matrix || matrix === 'none') return 0;
+        var values = matrix.match(/matrix.*\((.+)\)/);
+        return values ? Math.abs(Number(values[1].split(',')[5]) || 0) : 0;
+      }
+
+      mobile.addEventListener('pointerdown', function (event) {
+        if (event.target.closest('button')) return;
+        dragStartY = event.clientY;
+        dragStartOffset = currentOffset();
+        dragOffset = dragStartOffset;
+        userPaused = true;
+        mobile.classList.add('is-dragging', 'is-paused');
+        mobileImage.style.animation = 'none';
+        mobile.setPointerCapture(event.pointerId);
+        updateToggle();
+        savePreference();
+      });
+      mobile.addEventListener('pointermove', function (event) {
+        if (!mobile.classList.contains('is-dragging')) return;
+        dragOffset = Math.min(maxMobileOffset(), Math.max(0, dragStartOffset + dragStartY - event.clientY));
+        mobileImage.style.transform = 'translateY(-' + dragOffset + 'px)';
+      });
+      function endDrag(event) {
+        if (!mobile.classList.contains('is-dragging')) return;
+        mobile.classList.remove('is-dragging');
+        if (mobile.hasPointerCapture(event.pointerId)) mobile.releasePointerCapture(event.pointerId);
+        track('showcase_mobile_dragged', { progress: Math.round((dragOffset / Math.max(1, maxMobileOffset())) * 100) });
+      }
+      mobile.addEventListener('pointerup', endDrag);
+      mobile.addEventListener('pointercancel', endDrag);
+      mobile.addEventListener('keydown', function (event) {
+        var maxOffset = maxMobileOffset();
+        var nextOffset = currentOffset();
+        if (event.key === 'ArrowDown' || event.key === 'PageDown') nextOffset += mobile.clientHeight * .6;
+        else if (event.key === 'ArrowUp' || event.key === 'PageUp') nextOffset -= mobile.clientHeight * .6;
+        else if (event.key === 'Home') nextOffset = 0;
+        else if (event.key === 'End') nextOffset = maxOffset;
+        else return;
+        event.preventDefault();
+        userPaused = true;
+        mobileImage.style.animation = 'none';
+        mobileImage.style.transform = 'translateY(-' + Math.min(maxOffset, Math.max(0, nextOffset)) + 'px)';
+        updateToggle();
+        savePreference();
+      });
+
+      function updateProgress() {
+        var percent = Math.min(100, (currentOffset() / Math.max(1, maxMobileOffset())) * 100);
+        progress.style.height = percent + '%';
+        window.requestAnimationFrame(updateProgress);
+      }
+      window.requestAnimationFrame(updateProgress);
+
+      if ('IntersectionObserver' in window) {
+        if (!reduceMotion) section.classList.add('has-reveal');
+        var revealObserver = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) { if (entry.isIntersecting) entry.target.classList.add('is-visible'); });
+        }, { threshold: .16 });
+        section.querySelectorAll('[data-live-device]').forEach(function (device) { revealObserver.observe(device); });
+
+        var mobileObserver = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            mobile.classList.toggle('is-outside', !entry.isIntersecting);
+            if (entry.isIntersecting && !userPaused && !reduceMotion) {
+              mobileImage.style.animation = 'none';
+              void mobileImage.offsetWidth;
+              mobileImage.style.animation = '';
+            }
+          });
+        }, { threshold: .15 });
+        mobileObserver.observe(mobile);
+      } else {
+        section.querySelectorAll('[data-live-device]').forEach(function (device) { device.classList.add('is-visible'); });
+      }
     })();
 
     (function () {
