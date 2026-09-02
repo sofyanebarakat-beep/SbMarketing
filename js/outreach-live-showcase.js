@@ -61,6 +61,7 @@
   var mobile = section.querySelector('[data-ors-mobile]');
   var mobileImage = section.querySelector('[data-ors-mobile-image]');
   var toggle = section.querySelector('[data-ors-toggle]');
+  var zoom = section.querySelector('[data-ors-zoom]');
   var progress = section.querySelector('[data-ors-progress]');
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var preferenceKey = 'sb-outreach-mobile-preview-paused';
@@ -77,6 +78,17 @@
     if (!userPaused) { mobileImage.style.animation = ''; mobileImage.style.transform = ''; }
     updateToggle(); savePreference();
     track(userPaused ? 'showcase_mobile_paused' : 'showcase_mobile_played');
+  });
+  zoom.addEventListener('click', function () {
+    var readable = !mobile.classList.contains('readable');
+    mobile.classList.toggle('readable', readable);
+    zoom.setAttribute('aria-pressed', String(readable));
+    zoom.textContent = readable ? 'Fit page' : 'Readable zoom';
+    mobileImage.style.animation = 'none';
+    mobileImage.style.transform = '';
+    void mobileImage.offsetWidth;
+    if (!userPaused && !reduceMotion) mobileImage.style.animation = '';
+    track('showcase_mobile_zoom_changed', { mode: readable ? 'readable' : 'fit' });
   });
   updateToggle();
   var startY = 0;
