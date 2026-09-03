@@ -175,7 +175,7 @@
       display: inline-block;
       width: 0.45rem;
       height: 0.45rem;
-      background: #FFE500;
+      background: #FABB32;
       border-radius: 1px;
       flex-shrink: 0;
       vertical-align: middle;
@@ -230,24 +230,24 @@
     .template-showcase-section { position: relative; overflow: hidden; background: #fff; }
     .template-showcase-section .padding-section-large { position: relative; margin-inline: clamp(1rem, 4vw, 3rem); overflow: hidden; border-radius: 20px; background: #071321; padding-inline: clamp(1rem, 3vw, 3rem); }
     .template-showcase-section .padding-section-large::before { position: absolute; content: ''; inset: 0; opacity: .16; pointer-events: none; background-image: radial-gradient(circle, #fff 1px, transparent 1.5px); background-size: 22px 22px; mask-image: linear-gradient(135deg, #000, transparent 70%); }
-    .template-showcase-section .padding-section-large::after { position: absolute; content: ''; width: 42rem; height: 42rem; top: 20%; left: 8%; border-radius: 50%; background: rgba(255,229,0,.13); filter: blur(110px); pointer-events: none; }
+    .template-showcase-section .padding-section-large::after { position: absolute; content: ''; width: 42rem; height: 42rem; top: 20%; left: 8%; border-radius: 50%; background: rgba(250,187,50,.13); filter: blur(110px); pointer-events: none; }
     .live-showcase-heading, .template-showcase-grid, .showcase-testimonial { position: relative; z-index: 1; }
     .live-showcase-heading { width: min(94rem, 100%); margin: 0 auto clamp(1.5rem, 3vw, 2.5rem); display: flex; align-items: end; justify-content: space-between; gap: 1.5rem; color: #fff; }
     .live-showcase-heading h2 { margin: .65rem 0 .5rem; color: #fff; }
     .live-showcase-heading p { max-width: 42rem; margin: 0; color: rgba(255,255,255,.68); }
-    .live-result { display: inline-flex; align-items: center; gap: .45rem; color: #ffe500; font-size: .72rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
-    .live-result::before { content: ''; width: .5rem; height: .5rem; background: #ffe500; transform: rotate(45deg); }
+    .live-result { display: inline-flex; align-items: center; gap: .45rem; color: #FABB32; font-size: .72rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+    .live-result::before { content: ''; width: .5rem; height: .5rem; background: #FABB32; transform: rotate(45deg); }
     .live-showcase-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .65rem; }
     .live-showcase-link { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; min-height: 2.75rem; border: 1px solid rgba(255,255,255,.22); border-radius: 999px; padding: .75rem 1rem; color: #fff; background: transparent; font-size: .78rem; font-weight: 800; text-decoration: none; }
-    .live-showcase-link.is-primary { border-color: #ffe500; color: #041020; background: #ffe500; }
+    .live-showcase-link.is-primary { border-color: #FABB32; color: #041020; background: #FABB32; }
     .template-showcase-grid { width: min(94rem, 100%); margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr) minmax(15rem, .28fr); gap: clamp(1rem, 3vw, 2.5rem); align-items: start; }
     .device-column { min-width: 0; }
     .device-label { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: .7rem; color: rgba(255,255,255,.72); font-size: .7rem; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; }
     .viewport-controls { display: flex; gap: .35rem; }
     .viewport-button, .showcase-icon-button, .mobile-scroll-toggle { appearance: none; border: 1px solid rgba(255,255,255,.17); background: rgba(255,255,255,.06); color: rgba(255,255,255,.72); cursor: pointer; font: inherit; }
     .viewport-button { border-radius: 999px; padding: .35rem .58rem; font-size: .62rem; font-weight: 750; }
-    .viewport-button[aria-pressed="true"] { border-color: #ffe500; background: #ffe500; color: #041020; }
-    .live-device { position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,.16); border-radius: 13px; background: #111720; box-shadow: 0 30px 80px rgba(0,0,0,.42), 0 0 75px rgba(255,229,0,.07); }
+    .viewport-button[aria-pressed="true"] { border-color: #FABB32; background: #FABB32; color: #041020; }
+    .live-device { position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,.16); border-radius: 13px; background: #111720; box-shadow: 0 30px 80px rgba(0,0,0,.42), 0 0 75px rgba(250,187,50,.07); }
     .template-showcase-section.has-reveal .live-device { opacity: 0; transform: translateY(24px) scale(.985); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.8,.2,1); }
     .template-showcase-section.has-reveal .live-device.is-visible { opacity: 1; transform: none; }
     .live-device::after { position: absolute; content: ''; right: 8%; bottom: -2.4rem; left: 8%; height: 2.8rem; border-radius: 50%; background: rgba(0,0,0,.45); filter: blur(18px); pointer-events: none; }
@@ -266,7 +266,7 @@
     .iframe-poster[hidden] { display: none; }
     .iframe-poster img, .iframe-fallback img { width: 100%; height: 100%; object-fit: cover; object-position: top; opacity: .55; filter: saturate(.75); }
     .iframe-poster__content, .iframe-fallback__content { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: .75rem; padding: 2rem; text-align: center; color: #fff; background: linear-gradient(rgba(4,16,32,.15),rgba(4,16,32,.78)); }
-    .iframe-launch { appearance: none; border: 0; border-radius: 999px; padding: .9rem 1.25rem; background: #ffe500; color: #041020; cursor: pointer; font: inherit; font-size: .84rem; font-weight: 850; }
+    .iframe-launch { appearance: none; border: 0; border-radius: 999px; padding: .9rem 1.25rem; background: #FABB32; color: #041020; cursor: pointer; font: inherit; font-size: .84rem; font-weight: 850; }
     .iframe-loading { display: none; background: #f5f6f7; }
     .iframe-loading.is-active { display: grid; }
     .iframe-loading__card { width: min(75%, 36rem); display: grid; gap: .75rem; }
@@ -285,10 +285,10 @@
     .mobile-auto-scroll:hover img, .mobile-auto-scroll.is-paused img, .mobile-auto-scroll.is-outside img { animation-play-state: paused; }
     .mobile-auto-scroll__label { position: absolute; right: .65rem; bottom: 1.1rem; z-index: 2; padding: .4rem .6rem; border-radius: 999px; background: rgba(4,16,32,.88); color: #fff; font-size: .6rem; font-weight: 700; pointer-events: none; }
     .mobile-scroll-toggle { position: absolute; z-index: 3; left: .65rem; bottom: 1.05rem; border-radius: 999px; padding: .4rem .62rem; font-size: .62rem; font-weight: 800; }
-    .mobile-progress { position: absolute; z-index: 3; top: .8rem; right: .5rem; bottom: 2.8rem; width: 3px; overflow: hidden; border-radius: 999px; background: rgba(4,16,32,.15); pointer-events: none; }.mobile-progress span { display: block; width: 100%; height: 0; border-radius: inherit; background: #ffe500; }
+    .mobile-progress { position: absolute; z-index: 3; top: .8rem; right: .5rem; bottom: 2.8rem; width: 3px; overflow: hidden; border-radius: 999px; background: rgba(4,16,32,.15); pointer-events: none; }.mobile-progress span { display: block; width: 100%; height: 0; border-radius: inherit; background: #FABB32; }
     .phone-home { height: 1.45rem; display: grid; place-items: center; background: #171d27; }.phone-home::before { content: ''; width: 34%; height: .28rem; border-radius: 999px; background: rgba(255,255,255,.28); }
     .device-note { margin: 1rem .25rem 0; color: rgba(255,255,255,.64); font-size: .78rem; line-height: 1.55; }.device-note strong { color: #fff; }
-    .showcase-testimonial { width: min(58rem,100%); margin: clamp(2rem,4vw,3.5rem) auto 0; padding: clamp(1.25rem,3vw,2rem); border: 1px solid rgba(255,229,0,.25); border-radius: 16px; color: #fff; background: rgba(255,255,255,.055); text-align: center; }.showcase-testimonial blockquote { margin: 0 0 .75rem; font-size: clamp(1.05rem,2vw,1.35rem); font-weight: 650; line-height: 1.45; }.showcase-testimonial p { margin: 0; color: rgba(255,255,255,.58); font-size: .75rem; }
+    .showcase-testimonial { width: min(58rem,100%); margin: clamp(2rem,4vw,3.5rem) auto 0; padding: clamp(1.25rem,3vw,2rem); border: 1px solid rgba(250,187,50,.25); border-radius: 16px; color: #fff; background: rgba(255,255,255,.055); text-align: center; }.showcase-testimonial blockquote { margin: 0 0 .75rem; font-size: clamp(1.05rem,2vw,1.35rem); font-weight: 650; line-height: 1.45; }.showcase-testimonial p { margin: 0; color: rgba(255,255,255,.58); font-size: .75rem; }
     @keyframes mobile-page-scroll { 0%,8% { transform: translateY(0); } 92%,100% { transform: translateY(calc(-100% + clamp(34rem,52vw,54rem))); } }
     @keyframes showcase-shimmer { to { background-position: -200% 0; } }
 
@@ -741,51 +741,141 @@
         </div>
         <p class="sps-subtitle">Publications sur les réseaux sociaux</p>
         <div class="sps-grid">
-          <article class="sps-post">
-            <header class="sps-post__head">
-              <img class="sps-post__avatar" src="/images/outreach-mark.svg" alt="">
-              <span class="sps-post__meta">
-                <span class="sps-post__name">Outreach Recruitment Ltd</span>
-                <span class="sps-post__tag">Sponsorisé</span>
-              </span>
-            </header>
-            <img class="sps-post__media" src="/images/outreach-social-media-recruitment-ads.png" alt="Publication de campagne de recrutement — Sous Chef, Malte" style="object-position:0% 20%">
-            <footer class="sps-post__actions">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-10-9.2C.7 9.1 2 5.5 5.4 5.1c2-.2 3.6.9 4.6 2.3 1-1.4 2.6-2.5 4.6-2.3C18 5.5 19.3 9.1 22 11.8 19.5 16.4 12 21 12 21Z"/></svg>
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-12.3 7.6L3 20.5l1.4-5.2A8.5 8.5 0 1 1 21 11.5Z"/></svg>
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M16 6l-4-4-4 4M12 2v13"/></svg>
-            </footer>
-          </article>
-          <article class="sps-post">
-            <header class="sps-post__head">
-              <img class="sps-post__avatar" src="/images/outreach-mark.svg" alt="">
-              <span class="sps-post__meta">
-                <span class="sps-post__name">Outreach Recruitment Ltd</span>
-                <span class="sps-post__tag">Sponsorisé</span>
-              </span>
-            </header>
-            <img class="sps-post__media" src="/images/outreach-social-media-recruitment-ads.png" alt="Publication de campagne de recrutement — Ingénieur structure, Malte" style="object-position:50% 20%">
-            <footer class="sps-post__actions">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-10-9.2C.7 9.1 2 5.5 5.4 5.1c2-.2 3.6.9 4.6 2.3 1-1.4 2.6-2.5 4.6-2.3C18 5.5 19.3 9.1 22 11.8 19.5 16.4 12 21 12 21Z"/></svg>
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-12.3 7.6L3 20.5l1.4-5.2A8.5 8.5 0 1 1 21 11.5Z"/></svg>
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M16 6l-4-4-4 4M12 2v13"/></svg>
-            </footer>
-          </article>
-          <article class="sps-post">
-            <header class="sps-post__head">
-              <img class="sps-post__avatar" src="/images/outreach-mark.svg" alt="">
-              <span class="sps-post__meta">
-                <span class="sps-post__name">Outreach Recruitment Ltd</span>
-                <span class="sps-post__tag">Sponsorisé</span>
-              </span>
-            </header>
-            <img class="sps-post__media" src="/images/outreach-social-media-recruitment-ads.png" alt="Publication de campagne de recrutement — Barmans, Malte" style="object-position:100% 20%">
-            <footer class="sps-post__actions">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-10-9.2C.7 9.1 2 5.5 5.4 5.1c2-.2 3.6.9 4.6 2.3 1-1.4 2.6-2.5 4.6-2.3C18 5.5 19.3 9.1 22 11.8 19.5 16.4 12 21 12 21Z"/></svg>
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-12.3 7.6L3 20.5l1.4-5.2A8.5 8.5 0 1 1 21 11.5Z"/></svg>
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M16 6l-4-4-4 4M12 2v13"/></svg>
-            </footer>
-          </article>
+        <article class="sps-post">
+        <header class="sps-post__head">
+        <img class="sps-post__avatar" src="/images/outreach-mark.svg" alt="">
+        <span class="sps-post__meta">
+        <span class="sps-post__name">Outreach Recruitment Ltd</span>
+        <span class="sps-post__tag">Sponsorisé</span>
+        </span>
+        </header>
+        <img class="sps-post__media" src="/images/outreach-social-media-recruitment-ads.png" alt="Publication réseaux sociaux — campagne Outreach Recruitment 1" style="object-position:0% 20%">
+        <footer class="sps-post__actions">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+        </footer>
+        </article>
+        <article class="sps-post">
+        <header class="sps-post__head">
+        <img class="sps-post__avatar" src="/images/outreach-mark.svg" alt="">
+        <span class="sps-post__meta">
+        <span class="sps-post__name">Outreach Recruitment Ltd</span>
+        <span class="sps-post__tag">Sponsorisé</span>
+        </span>
+        </header>
+        <img class="sps-post__media" src="/images/outreach-social-media-recruitment-ads.png" alt="Publication réseaux sociaux — campagne Outreach Recruitment 2" style="object-position:12% 80%">
+        <footer class="sps-post__actions">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+        </footer>
+        </article>
+        <article class="sps-post">
+        <header class="sps-post__head">
+        <img class="sps-post__avatar" src="/images/outreach-mark.svg" alt="">
+        <span class="sps-post__meta">
+        <span class="sps-post__name">Outreach Recruitment Ltd</span>
+        <span class="sps-post__tag">Sponsorisé</span>
+        </span>
+        </header>
+        <img class="sps-post__media" src="/images/outreach-social-media-recruitment-ads.png" alt="Publication réseaux sociaux — campagne Outreach Recruitment 3" style="object-position:25% 30%">
+        <footer class="sps-post__actions">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+        </footer>
+        </article>
+        <article class="sps-post">
+        <header class="sps-post__head">
+        <img class="sps-post__avatar" src="/images/outreach-mark.svg" alt="">
+        <span class="sps-post__meta">
+        <span class="sps-post__name">Outreach Recruitment Ltd</span>
+        <span class="sps-post__tag">Sponsorisé</span>
+        </span>
+        </header>
+        <img class="sps-post__media" src="/images/outreach-social-media-recruitment-ads.png" alt="Publication réseaux sociaux — campagne Outreach Recruitment 4" style="object-position:38% 75%">
+        <footer class="sps-post__actions">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+        </footer>
+        </article>
+        <article class="sps-post">
+        <header class="sps-post__head">
+        <img class="sps-post__avatar" src="/images/outreach-mark.svg" alt="">
+        <span class="sps-post__meta">
+        <span class="sps-post__name">Outreach Recruitment Ltd</span>
+        <span class="sps-post__tag">Sponsorisé</span>
+        </span>
+        </header>
+        <img class="sps-post__media" src="/images/outreach-social-media-recruitment-ads.png" alt="Publication réseaux sociaux — campagne Outreach Recruitment 5" style="object-position:50% 25%">
+        <footer class="sps-post__actions">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+        </footer>
+        </article>
+        <article class="sps-post">
+        <header class="sps-post__head">
+        <img class="sps-post__avatar" src="/images/outreach-mark.svg" alt="">
+        <span class="sps-post__meta">
+        <span class="sps-post__name">Outreach Recruitment Ltd</span>
+        <span class="sps-post__tag">Sponsorisé</span>
+        </span>
+        </header>
+        <img class="sps-post__media" src="/images/outreach-social-media-recruitment-ads.png" alt="Publication réseaux sociaux — campagne Outreach Recruitment 6" style="object-position:62% 78%">
+        <footer class="sps-post__actions">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+        </footer>
+        </article>
+        <article class="sps-post">
+        <header class="sps-post__head">
+        <img class="sps-post__avatar" src="/images/outreach-mark.svg" alt="">
+        <span class="sps-post__meta">
+        <span class="sps-post__name">Outreach Recruitment Ltd</span>
+        <span class="sps-post__tag">Sponsorisé</span>
+        </span>
+        </header>
+        <img class="sps-post__media" src="/images/outreach-social-media-recruitment-ads.png" alt="Publication réseaux sociaux — campagne Outreach Recruitment 7" style="object-position:75% 32%">
+        <footer class="sps-post__actions">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+        </footer>
+        </article>
+        <article class="sps-post">
+        <header class="sps-post__head">
+        <img class="sps-post__avatar" src="/images/outreach-mark.svg" alt="">
+        <span class="sps-post__meta">
+        <span class="sps-post__name">Outreach Recruitment Ltd</span>
+        <span class="sps-post__tag">Sponsorisé</span>
+        </span>
+        </header>
+        <img class="sps-post__media" src="/images/outreach-social-media-recruitment-ads.png" alt="Publication réseaux sociaux — campagne Outreach Recruitment 8" style="object-position:88% 72%">
+        <footer class="sps-post__actions">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+        </footer>
+        </article>
+        <article class="sps-post">
+        <header class="sps-post__head">
+        <img class="sps-post__avatar" src="/images/outreach-mark.svg" alt="">
+        <span class="sps-post__meta">
+        <span class="sps-post__name">Outreach Recruitment Ltd</span>
+        <span class="sps-post__tag">Sponsorisé</span>
+        </span>
+        </header>
+        <img class="sps-post__media" src="/images/outreach-social-media-recruitment-ads.png" alt="Publication réseaux sociaux — campagne Outreach Recruitment 9" style="object-position:100% 22%">
+        <footer class="sps-post__actions">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+        </footer>
+        </article>
         </div>
       </section>
 

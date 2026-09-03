@@ -134,11 +134,13 @@
 }
 
 .sps-post__actions svg {
-  width: 1.4rem;
-  height: 1.4rem;
+  width: 1.5rem;
+  height: 1.5rem;
   stroke: var(--sps-ink);
   fill: none;
-  stroke-width: 1.8;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 @media (prefers-reduced-motion: no-preference) {
