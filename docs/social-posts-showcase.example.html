@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Social Posts Showcase — reference markup</title>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="noindex, nofollow" name="robots"/>
+<link href="/css/social-posts-showcase.css" rel="stylesheet"/>
+<style>body{margin:0;background:#041020;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}</style>
+</head>
+<body>
+
+<!--
+  ==========================================================================
+  SOCIAL POSTS SHOWCASE — reusable section
+  --------------------------------------------------------------------------
+  Copy the <section class="sps-showcase"> block into any project page and
+  load /css/social-posts-showcase.css in the <head>.
+
+  Per client:
+    - swap the brand name (.sps-brand__name) and the two logo <img> tags
+      (.sps-brand__badge img and .sps-post__avatar)
+    - change the accent with an inline style, e.g.
+      <section class="sps-showcase" style="--sps-bg:#0b3d2e">
+    - duplicate one <article class="sps-post"> per post and point
+      .sps-post__media at the real post image (square works best)
+  ==========================================================================
+-->
+
+<section class="sps-showcase" style="--sps-bg:#3f3ae6" aria-label="Social media posts">
+
+  <div class="sps-brand">
+    <span class="sps-brand__badge">
+      <img src="/images/outreach-mark.svg" alt=""/>
+    </span>
+    <h2 class="sps-brand__name">Outreach Recruitment Ltd</h2>
+  </div>
+
+  <p class="sps-subtitle">Social Media Posts</p>
+
+  <div class="sps-grid">
+
+    <!-- post -->
+    <article class="sps-post">
+      <header class="sps-post__head">
+        <img class="sps-post__avatar" src="/images/outreach-mark.svg" alt=""/>
+        <span class="sps-post__meta">
+          <span class="sps-post__name">Outreach Recruitment Ltd</span>
+          <span class="sps-post__tag">Sponsored</span>
+        </span>
+      </header>
+      <img class="sps-post__media" src="/images/outreach-social-media-recruitment-ads.png" alt="Hiring campaign post — Sous Chef, Malta" style="object-position:0% 20%"/>
+      <footer class="sps-post__actions">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-10-9.2C.7 9.1 2 5.5 5.4 5.1c2-.2 3.6.9 4.6 2.3 1-1.4 2.6-2.5 4.6-2.3C18 5.5 19.3 9.1 22 11.8 19.5 16.4 12 21 12 21Z"/></svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-12.3 7.6L3 20.5l1.4-5.2A8.5 8.5 0 1 1 21 11.5Z"/></svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M16 6l-4-4-4 4M12 2v13"/></svg>
+      </footer>
+    </article>
+
+    <!-- post -->
+    <article class="sps-post">
+      <header class="sps-post__head">
+        <img class="sps-post__avatar" src="/images/outreach-mark.svg" alt=""/>
+        <span class="sps-post__meta">
+          <span class="sps-post__name">Outreach Recruitment Ltd</span>
+          <span class="sps-post__tag">Sponsored</span>
+        </span>
+      </header>
+      <img class="sps-post__media" src="/images/outreach-social-media-recruitment-ads.png" alt="Hiring campaign post — Structural Engineer, Malta" style="object-position:50% 20%"/>
+      <footer class="sps-post__actions">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-10-9.2C.7 9.1 2 5.5 5.4 5.1c2-.2 3.6.9 4.6 2.3 1-1.4 2.6-2.5 4.6-2.3C18 5.5 19.3 9.1 22 11.8 19.5 16.4 12 21 12 21Z"/></svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-12.3 7.6L3 20.5l1.4-5.2A8.5 8.5 0 1 1 21 11.5Z"/></svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M16 6l-4-4-4 4M12 2v13"/></svg>
+      </footer>
+    </article>
+
+    <!-- post -->
+    <article class="sps-post">
+      <header class="sps-post__head">
+        <img class="sps-post__avatar" src="/images/outreach-mark.svg" alt=""/>
+        <span class="sps-post__meta">
+          <span class="sps-post__name">Outreach Recruitment Ltd</span>
+          <span class="sps-post__tag">Sponsored</span>
+        </span>
+      </header>
+      <img class="sps-post__media" src="/images/outreach-social-media-recruitment-ads.png" alt="Hiring campaign post — Bartenders, Malta" style="object-position:100% 20%"/>
+      <footer class="sps-post__actions">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-10-9.2C.7 9.1 2 5.5 5.4 5.1c2-.2 3.6.9 4.6 2.3 1-1.4 2.6-2.5 4.6-2.3C18 5.5 19.3 9.1 22 11.8 19.5 16.4 12 21 12 21Z"/></svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-12.3 7.6L3 20.5l1.4-5.2A8.5 8.5 0 1 1 21 11.5Z"/></svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M16 6l-4-4-4 4M12 2v13"/></svg>
+      </footer>
+    </article>
+
+  </div>
+
+</section>
+
+</body>
+</html>

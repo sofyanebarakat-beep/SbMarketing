@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <g fill="#E4322B">
+    <!-- top arrow pointing left -->
+    <path d="M12 24 L24 15 L24 21 L52 21 L52 27 L24 27 L24 33 Z"/>
+    <!-- bottom arrow pointing right -->
+    <path d="M52 40 L40 49 L40 43 L12 43 L12 37 L40 37 L40 31 Z"/>
+  </g>
+</svg>
