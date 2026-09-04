@@ -288,6 +288,54 @@
       text-decoration: underline;
     }
 
+    .outreach-seo-section {
+      background: #fff;
+      color: #041020;
+    }
+
+    .outreach-seo-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: clamp(1.75rem, 4vw, 3.5rem);
+    }
+
+    @media screen and (max-width: 767px) {
+      .outreach-seo-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .outreach-seo-grid h3 {
+      margin-bottom: 0.75rem;
+    }
+
+    .outreach-seo-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      color: rgba(4, 16, 32, 0.72);
+    }
+
+    .outreach-seo-list li {
+      position: relative;
+      padding-left: 1.25rem;
+      line-height: 1.5;
+    }
+
+    .outreach-seo-list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.5em;
+      width: 0.45rem;
+      height: 0.45rem;
+      background: #3f3ae6;
+      border-radius: 1px;
+    }
+
     .template-case-hero {
       position: relative;
       overflow: hidden;
@@ -644,6 +692,8 @@
     }
 </style>
 <style>    .navbar2_link.w-nav-link { padding-top: 0.4rem !important; padding-bottom: 0.4rem !important; padding-left: 0.875rem !important; padding-right: 0.875rem !important; }
+    html { scroll-behavior: smooth; }
+    #project-details, #site-live { scroll-margin-top: 6rem; }
 </style>
 
 <link href="https://www.sbmarketing.fr/projets/outreachrecruitment.html" hreflang="fr" rel="alternate"/><link href="https://www.sbmarketing.fr/en/projets/outreachrecruitment.html" hreflang="en" rel="alternate"/><link href="https://www.sbmarketing.fr/projets/outreachrecruitment.html" hreflang="x-default" rel="alternate"/>
@@ -714,7 +764,7 @@
 <h1 class="heading-style-hero">Outreach Recruitment<br/><span style="opacity:.55">A site that attracts good candidates and customers.</span></h1>
 <div class="spacer-medium"></div>
 <div class="button-group is-center">
-<a class="button is-secondary is-alternate w-button" href="/en/contact/">Start a project</a>
+<a class="button is-secondary is-alternate w-button" href="#site-live">Explore the site</a>
 </div>
 </div>
 </div>
@@ -728,7 +778,7 @@
 <img alt="" class="header30_background-image" loading="eager" src="/images/68f12ddb6bfb958dff8fe2c4_BG%20LINE%20PATTERN.svg"/>
 </div>
 </header>
-<section class="section_portfolio2-content1 template-details-section portfolio p-mobile">
+<section id="project-details" class="section_portfolio2-content1 template-details-section portfolio p-mobile">
 <div class="padding-global">
 <div class="container-large">
 <div class="portfolio2-content1_component">
@@ -808,7 +858,7 @@
 </div>
 <div class="ors-grid">
 <div class="ors-column">
-<div class="ors-label"><span>Desktop — interactive preview</span><div class="ors-viewports" aria-label="Preview size"><button class="ors-viewport" type="button" data-viewport="desktop" aria-pressed="true">Desktop</button><button class="ors-viewport" type="button" data-viewport="tablet" aria-pressed="false">Tablet</button><button class="ors-viewport" type="button" data-viewport="mobile" aria-pressed="false">Mobile</button></div></div>
+<div class="ors-label"><span>Interactive preview — <span class="ors-dims" data-ors-dims>1280 × 800</span></span><div class="ors-viewports" aria-label="Preview size"><button class="ors-viewport" type="button" data-viewport="desktop" aria-pressed="true">Desktop</button><button class="ors-viewport" type="button" data-viewport="tablet" aria-pressed="false">Tablet</button><button class="ors-viewport" type="button" data-viewport="mobile" aria-pressed="false">Mobile</button></div></div>
 <div class="ors-device" data-ors-device>
 <div class="ors-bar"><span class="ors-dot red" aria-hidden="true"></span><span class="ors-dot yellow" aria-hidden="true"></span><span class="ors-dot green" aria-hidden="true"></span><span class="ors-address">https://outreachrecruitment.net</span><span class="ors-status">Live website</span><button class="ors-fullscreen" type="button" data-ors-fullscreen aria-label="Show website in fullscreen" title="Fullscreen">⛶</button></div>
 <div class="ors-iframe-stage" data-ors-iframe-stage>
@@ -967,6 +1017,48 @@
 </article>
 </div>
 </section>
+<section class="section_portfolio2-content3 template-details-section outreach-seo-section portfolio p-desktop">
+<div class="padding-global">
+<div class="container-large">
+<div class="padding-section-large">
+<div class="max-width-large align-center">
+<div class="fx-up">
+<div class="margin-bottom margin-small">
+<h2>Built to be found — and to convert</h2>
+</div>
+<div class="text-rich-text w-richtext">
+<p>Reaching the right candidates and employers starts before the first visit: the site has to appear when they search, then guide them to contact without friction.</p>
+</div>
+</div>
+<div class="margin-top margin-medium">
+<div class="fx-up">
+<div class="outreach-seo-grid">
+<div>
+<h3>Local SEO</h3>
+<ul class="outreach-seo-list">
+<li>Pages structured around sector and location searches — the way employers and candidates actually look for a recruiter.</li>
+<li>Google Business Profile set up and kept consistent with the site: same name, address and contact details everywhere.</li>
+<li>Clean heading structure, meta titles and descriptions, and business schema so search engines read each page correctly.</li>
+<li>Fast, mobile-first pages that hold up on Core Web Vitals, which keeps rankings stable over time.</li>
+</ul>
+</div>
+<div>
+<h3>Conversion</h3>
+<ul class="outreach-seo-list">
+<li>Separate, clearly signposted paths for employers looking for talent and for candidates seeking a role.</li>
+<li>Contact points repeated at every scroll depth, so the next step is never more than one click away.</li>
+<li>Short, qualifying forms instead of a generic "contact us" — better leads and less back-and-forth.</li>
+<li>Trust signals — process, sectors covered, guarantees — placed right before each call to action.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
 <section class="section_portfolio2-content4 template-details-section portfolio p-desktop">
 <div class="padding-global">
 <div class="container-large">
@@ -984,7 +1076,7 @@
 </div>
 <div class="margin-top margin-xlarge">
 <div class="fx-up">
-<div class="button-group"><a class="button is-secondary w-button" href="/en/contact/">Start a project</a></div>
+<div class="button-group"><a class="button is-secondary w-button" href="#project-details">View project</a></div>
 </div>
 </div>
 </div>
