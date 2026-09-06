@@ -3,7 +3,7 @@
   if (!section) return;
   function track(name, details) {
     window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push(Object.assign({ event: name, project: 'outreach_recruitment' }, details || {}));
+    window.dataLayer.push(Object.assign({ event: name, project: section.getAttribute('data-project') || 'outreach_recruitment' }, details || {}));
   }
   section.querySelectorAll('[data-event]').forEach(function (link) {
     link.addEventListener('click', function () { track(link.getAttribute('data-event')); });
