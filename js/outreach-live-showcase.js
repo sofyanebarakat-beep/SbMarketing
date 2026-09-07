@@ -19,6 +19,8 @@
   var loaded = false;
   var activated = false;
   var failureTimer;
+  var siteUrl = section.getAttribute('data-site-url') || 'https://outreachrecruitment.net/';
+  var siteTitle = section.getAttribute('data-site-title') || 'Interactive Outreach Recruitment website';
   function showFallback() {
     if (loaded) return;
     loading.classList.remove('active');
@@ -31,8 +33,8 @@
     poster.hidden = true;
     loading.classList.add('active');
     var frame = document.createElement('iframe');
-    frame.src = 'https://outreachrecruitment.net/';
-    frame.title = 'Interactive Outreach Recruitment website';
+    frame.src = siteUrl;
+    frame.title = siteTitle;
     frame.loading = 'lazy';
     frame.referrerPolicy = 'strict-origin-when-cross-origin';
     frame.addEventListener('load', function () {

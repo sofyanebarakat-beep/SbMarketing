@@ -23,6 +23,14 @@
       background: #041020;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
+    #site-live {
+      scroll-margin-top: 6rem;
+    }
+
     .navbar2_component {
       position: fixed !important;
       top: 0 !important;
@@ -112,10 +120,6 @@
       overflow: hidden;
       background: #fff;
       transition: height 180ms ease;
-    }
-
-    iframe[data-sb-embed] {
-      pointer-events: none;
     }
 
     .template-case-hero {
@@ -478,6 +482,8 @@
 
 <link href="https://www.sbmarketing.fr/projets/edmondgarage.html" hreflang="fr" rel="alternate"/><link href="https://www.sbmarketing.fr/en/projets/edmondgarage.html" hreflang="en" rel="alternate"/><link href="https://www.sbmarketing.fr/projets/edmondgarage.html" hreflang="x-default" rel="alternate"/>
 <script defer src="/js/site-header.js"></script><script defer src="/js/language-switcher.js"></script>
+<link rel="stylesheet" href="/css/outreach-live-showcase.css"/>
+<script defer src="/js/outreach-live-showcase.js"></script>
 <link rel="stylesheet" href="/css/site-header.css"><link rel="stylesheet" href="/css/language-switcher.css">
 </head>
 <body>
@@ -541,7 +547,7 @@
 <h1 class="heading-style-hero">Edmond Garage<br/><span style="opacity:.55">A premium site to book private transport in Malta and Gozo.</span></h1>
 <div class="spacer-medium"></div>
 <div class="button-group is-center">
-<a class="button is-secondary is-alternate w-button" href="/en/contact/">Start a project</a>
+<a class="button is-secondary is-alternate w-button" href="#site-live">View project</a>
 </div>
 </div>
 </div>
@@ -628,8 +634,29 @@
 </div>
 </div>
 </section>
-<iframe data-sb-embed="" loading="lazy" scrolling="no" src="https://sb-marketing-boost.lovable.app/p2/edmonf-garage-hero" style="width:100%;border:0;display:block;"></iframe>
-<script>(function(){if(window.__sbEmbedInit)return;window.__sbEmbedInit=true;window.addEventListener('message',function(e){var d=e.data;if(!d||d.type!=='sb-marketing:embed-height')return;document.querySelectorAll('iframe[data-sb-embed]').forEach(function(f){if(f.contentWindow===e.source){f.style.height=d.height+'px';}});});})();</script>
+<section id="site-live" class="ors-showcase" style="--ors-bg:#34CCFF" data-ors-showcase data-project="edmond_garage" data-site-url="https://edmondgarage.com/" data-site-title="Interactive Edmond Garage website" aria-label="Interactive preview of the Edmond Garage website">
+<div class="ors-stage">
+<div class="ors-heading">
+<div><h2>Explore the website live</h2></div>
+<div class="ors-actions"><a class="ors-link" href="/en/contact/" data-event="showcase_similar_project">Create a similar website</a><a class="ors-link primary" href="https://edmondgarage.com/" target="_blank" rel="noopener noreferrer" data-event="showcase_open_live_site">Open live site ↗</a></div>
+</div>
+<div class="ors-grid">
+<div class="ors-column">
+<div class="ors-label"><span>Interactive preview — <span class="ors-dims" data-ors-dims>1280 × 800</span></span><div class="ors-viewports" aria-label="Preview size"><button class="ors-viewport" type="button" data-viewport="desktop" aria-pressed="true">Desktop</button><button class="ors-viewport" type="button" data-viewport="tablet" aria-pressed="false">Tablet</button><button class="ors-viewport" type="button" data-viewport="mobile" aria-pressed="false">Mobile</button></div></div>
+<div class="ors-device" data-ors-device>
+<div class="ors-bar"><span class="ors-dot red" aria-hidden="true"></span><span class="ors-dot yellow" aria-hidden="true"></span><span class="ors-dot green" aria-hidden="true"></span><span class="ors-address">https://edmondgarage.com</span><span class="ors-status">Live website</span><button class="ors-fullscreen" type="button" data-ors-fullscreen aria-label="Show website in fullscreen" title="Fullscreen">⛶</button></div>
+<div class="ors-iframe-stage" data-ors-iframe-stage>
+<div class="ors-iframe-viewport" data-ors-iframe-viewport data-viewport="desktop"></div>
+<div class="ors-poster" data-ors-poster><img src="/images/edmondgarage-project-cover.svg" loading="lazy" decoding="async" alt="Preview of the Edmond Garage website before activation"><div class="ors-overlay"><strong>Premium transport, presented with clarity</strong><span>Load the website when you are ready to explore it.</span><button class="ors-launch" type="button" data-ors-launch>Explore the website</button></div></div>
+<div class="ors-loading" data-ors-loading role="status" aria-live="polite" aria-label="Loading the live website"><div class="ors-skeleton"><span></span><span></span><span></span></div></div>
+<div class="ors-fallback" data-ors-fallback><img src="/images/edmondgarage-project-cover.svg" loading="lazy" decoding="async" alt="Preview of the Edmond Garage website"><div class="ors-overlay"><strong>The interactive preview could not be loaded.</strong><span>The preview remains available, and the live site can be opened in a new tab.</span><a class="ors-link primary" href="https://edmondgarage.com/" target="_blank" rel="noopener noreferrer" data-event="showcase_fallback_open">Open live site ↗</a></div></div>
+<span class="ors-hint" data-ors-hint>You can navigate inside the website</span><div class="ors-callouts" aria-label="Design decisions"><span>Premium positioning</span><span>Clear transport services</span><span>Booking calls to action</span></div>
+</div>
+</div></div>
+</div>
+<aside class="ors-result" aria-label="Project outcome"><strong>A premium digital presence designed to build trust and turn travel plans into booking requests.</strong><span>Project outcome for Edmond Garage</span></aside>
+</div>
+</section>
 <section class="section_portfolio2-content4 template-details-section portfolio p-desktop">
 <div class="padding-global">
 <div class="container-large">
@@ -647,7 +674,7 @@
 </div>
 <div class="margin-top margin-xlarge">
 <div class="fx-up">
-<div class="button-group"><a class="button is-secondary w-button" href="/en/contact/">Start a project</a></div>
+<div class="button-group"><a class="button is-secondary w-button" href="#site-live">View project</a></div>
 </div>
 </div>
 </div>
@@ -846,88 +873,6 @@
       requestTick();
     })();
 
-    (function () {
-      var embeds = Array.prototype.slice.call(document.querySelectorAll('iframe[data-sb-embed]'));
-      if (!embeds.length) return;
-
-      var minHeight = 720;
-      var knownHeights = new WeakMap();
-
-      function getIframeForWindow(sourceWindow) {
-        for (var i = 0; i < embeds.length; i += 1) {
-          if (embeds[i].contentWindow === sourceWindow) return embeds[i];
-        }
-        return null;
-      }
-
-      function getMessageHeight(data) {
-        if (typeof data === 'number') return data;
-        if (typeof data === 'string') {
-          var numericHeight = Number(data);
-          if (numericHeight) return numericHeight;
-
-          try {
-            data = JSON.parse(data);
-          } catch (error) {
-            return 0;
-          }
-        }
-        if (!data || typeof data !== 'object') return 0;
-
-        return data.height ||
-          data.iframeHeight ||
-          data.documentHeight ||
-          data.scrollHeight ||
-          data.offsetHeight ||
-          data.clientHeight ||
-          (data.payload && (
-            data.payload.height ||
-            data.payload.iframeHeight ||
-            data.payload.documentHeight ||
-            data.payload.scrollHeight ||
-            data.payload.offsetHeight ||
-            data.payload.clientHeight
-          )) ||
-          0;
-      }
-
-      function resizeEmbed(iframe, height) {
-        var nextHeight = Math.max(Math.ceil(Number(height) || 0), minHeight);
-        var lastHeight = knownHeights.get(iframe) || 0;
-        if (!nextHeight || Math.abs(nextHeight - lastHeight) < 2) return;
-
-        knownHeights.set(iframe, nextHeight);
-        iframe.style.height = nextHeight + 'px';
-      }
-
-      function requestEmbedHeight(iframe) {
-        if (!iframe.contentWindow) return;
-
-        iframe.contentWindow.postMessage({
-          type: 'sb-marketing:request-embed-height'
-        }, '*');
-      }
-
-      embeds.forEach(function (iframe) {
-        resizeEmbed(iframe, Math.max(window.innerHeight || 0, 980));
-        iframe.addEventListener('load', function () {
-          requestEmbedHeight(iframe);
-        });
-        requestEmbedHeight(iframe);
-      });
-
-      window.addEventListener('message', function (event) {
-        var iframe = getIframeForWindow(event.source);
-        if (!iframe) return;
-
-        var height = getMessageHeight(event.data);
-        if (height) resizeEmbed(iframe, height);
-      });
-
-      window.addEventListener('resize', function () {
-        embeds.forEach(requestEmbedHeight);
-      }, { passive: true });
-    })();
   </script>
 
 </body>
