@@ -321,6 +321,16 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.sbmarketing.fr/projets/boucheriedounia.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.sbmarketing.fr/en/projets/boucheriedounia.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.sbmarketing.fr/projets/outreachrecruitmentapp.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
