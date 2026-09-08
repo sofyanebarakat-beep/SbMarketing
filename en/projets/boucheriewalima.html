@@ -4,7 +4,8 @@
 <head>
 <meta charset="utf-8"/>
 <title>Boucherie Walima | Sb Marketing</title>
-<meta content="noindex, follow" name="robots"/>
+<meta content="index, follow" name="robots"/>
+<meta content="Website and social media case study for Boucherie Walima, an artisan halal butcher in Le Mans." name="description"/>
 <meta content="Sb Marketing" name="author"/>
 <link href="https://www.sbmarketing.fr/en/projets/boucheriewalima.html" rel="canonical"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
@@ -34,20 +35,6 @@
 
     .navbar2_component.is-scrolled {
       background-color: #041020 !important;
-    }
-
-    @media screen and (min-width: 769px) {
-      .navbar2_menu {
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-      }
-    }
-
-    .navbar2_link {
-      font-weight: 700 !important;
-      color: #fff !important;
-      letter-spacing: 0.02em;
     }
 
     .template-empty {
@@ -128,8 +115,226 @@
       transition: height 180ms ease;
     }
 
-    iframe[data-sb-embed] {
+    /* Live site showcase — desktop + auto-scrolling mobile preview */
+    .template-live-showcase-section {
+      background: #fff;
+      padding: clamp(2rem, 5vw, 4rem) 0;
+    }
+
+    .live-showcase-grid {
+      width: min(80rem, calc(100% - 2rem));
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr);
+      gap: clamp(1.75rem, 4vw, 3rem);
+      align-items: start;
+    }
+
+    @media screen and (max-width: 900px) {
+      .live-showcase-grid {
+        grid-template-columns: 1fr;
+        justify-items: center;
+      }
+    }
+
+    .live-frame {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      width: 100%;
+    }
+
+    .live-frame--mobile {
+      max-width: 300px;
+    }
+
+    .live-frame__label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(4, 16, 32, 0.55);
+    }
+
+    .browser-chrome {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.6rem 0.9rem;
+      background: #e9edf2;
+      border: 1px solid rgba(4, 16, 32, 0.12);
+      border-bottom: 0;
+      border-radius: 14px 14px 0 0;
+    }
+
+    .browser-chrome__dots {
+      display: flex;
+      gap: 0.35rem;
+      flex-shrink: 0;
+    }
+
+    .browser-chrome__dots span {
+      width: 0.6rem;
+      height: 0.6rem;
+      border-radius: 50%;
+      background: rgba(4, 16, 32, 0.18);
+    }
+
+    .browser-chrome__url {
+      flex: 1;
+      background: #fff;
+      border-radius: 999px;
+      padding: 0.3rem 0.9rem;
+      font-size: 0.78rem;
+      color: rgba(4, 16, 32, 0.55);
+      text-align: center;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .live-frame__viewport {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1440 / 900;
+      overflow: hidden;
+      background: #fff;
+      border: 1px solid rgba(4, 16, 32, 0.12);
+      border-radius: 0 0 14px 14px;
+    }
+
+    .live-frame__viewport iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1440px;
+      height: 900px;
+      border: 0;
+      transform-origin: top left;
+      transform: scale(var(--live-scale, 0.3));
+    }
+
+    .phone-frame {
+      position: relative;
+      width: min(100%, 300px);
+      aspect-ratio: 390 / 844;
+      margin: 0 auto;
+      background: #041020;
+      border: 10px solid #041020;
+      border-radius: 2.4rem;
+      overflow: hidden;
+      box-shadow: 0 20px 45px rgba(4, 16, 32, 0.25);
+    }
+
+    .phone-frame::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 38%;
+      height: 1.1rem;
+      background: #041020;
+      border-radius: 0 0 1rem 1rem;
+      z-index: 3;
+    }
+
+    .phone-frame__viewport {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .phone-frame__scroller {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 390px;
+      will-change: transform, opacity;
+      animation: phoneAutoScroll 42s ease-in-out infinite;
+    }
+
+    .phone-frame__scroller iframe {
+      display: block;
+      width: 390px;
+      height: var(--mobile-total-height, 6200px);
+      border: 0;
       pointer-events: none;
+    }
+
+    @keyframes phoneAutoScroll {
+      0%   { transform: translateY(0); opacity: 1; }
+      6%   { transform: translateY(0); opacity: 1; }
+      88%  { transform: translateY(calc(-1 * (var(--mobile-total-height, 6200px) - var(--mobile-viewport-height, 844px)))); opacity: 1; }
+      92%  { opacity: 0; }
+      94%  { transform: translateY(0); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .phone-frame__scroller {
+        animation: none;
+      }
+    }
+
+    .live-frame__cta {
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .live-frame__cta a {
+      color: #041020;
+      text-decoration: underline;
+    }
+
+    .outreach-seo-section {
+      background: #fff;
+      color: #041020;
+    }
+
+    .outreach-seo-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: clamp(1.75rem, 4vw, 3.5rem);
+    }
+
+    @media screen and (max-width: 767px) {
+      .outreach-seo-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .outreach-seo-grid h3 {
+      margin-bottom: 0.75rem;
+    }
+
+    .outreach-seo-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      color: rgba(4, 16, 32, 0.72);
+    }
+
+    .outreach-seo-list li {
+      position: relative;
+      padding-left: 1.25rem;
+      line-height: 1.5;
+    }
+
+    .outreach-seo-list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.5em;
+      width: 0.45rem;
+      height: 0.45rem;
+      background: #EC181F;
+      border-radius: 1px;
     }
 
     .template-case-hero {
@@ -488,11 +693,16 @@
     }
 </style>
 <style>    .navbar2_link.w-nav-link { padding-top: 0.4rem !important; padding-bottom: 0.4rem !important; padding-left: 0.875rem !important; padding-right: 0.875rem !important; }
+    html { scroll-behavior: smooth; }
+    #project-details, #site-live { scroll-margin-top: 6rem; }
 </style>
 
 <link href="https://www.sbmarketing.fr/projets/boucheriewalima.html" hreflang="fr" rel="alternate"/><link href="https://www.sbmarketing.fr/en/projets/boucheriewalima.html" hreflang="en" rel="alternate"/><link href="https://www.sbmarketing.fr/projets/boucheriewalima.html" hreflang="x-default" rel="alternate"/>
 <script defer src="/js/site-header.js"></script><script defer src="/js/language-switcher.js"></script>
 <link rel="stylesheet" href="/css/site-header.css"><link rel="stylesheet" href="/css/language-switcher.css">
+<link rel="stylesheet" href="/css/outreach-live-showcase.css">
+<link rel="stylesheet" href="/css/social-posts-showcase.css">
+<script defer src="/js/outreach-live-showcase.js"></script>
 </head>
 <body>
 <div class="page-wrapper">
@@ -549,13 +759,13 @@
 <div class="max-width-hero">
 <div class="hero-tagline">
 <div class="tagline-cube is-green"></div>
-<div class="text-style-tagline">Case study - Boucherie Walima</div>
+<div class="text-style-tagline">Case Study - Boucherie Walima</div>
 </div>
 <div class="spacer-small"></div>
-<h1 class="heading-style-hero">Boucherie Walima<br/><span style="opacity:.55">A modern butcher shop that values quality, tradition and craftsmanship.</span></h1>
+<h1 class="heading-style-hero">Boucherie Walima<br/><span style="opacity:.55">French meat, artisan expertise and local trust.</span></h1>
 <div class="spacer-medium"></div>
 <div class="button-group is-center">
-<a class="button is-secondary is-alternate w-button" href="/en/contact/">Start a project</a>
+<a class="button is-secondary is-alternate w-button" href="#site-live">View project</a>
 </div>
 </div>
 </div>
@@ -569,7 +779,7 @@
 <img alt="" class="header30_background-image" loading="eager" src="/images/68f12ddb6bfb958dff8fe2c4_BG%20LINE%20PATTERN.svg"/>
 </div>
 </header>
-<section class="section_portfolio2-content1 template-details-section portfolio p-mobile">
+<section id="project-details" class="section_portfolio2-content1 template-details-section portfolio p-mobile">
 <div class="padding-global">
 <div class="container-large">
 <div class="portfolio2-content1_component">
@@ -588,7 +798,7 @@
 <div class="margin-bottom margin-xxsmall">
 <h6>Project goal</h6>
 </div>
-<div>Create a professional digital presence to showcase products, build customer confidence and develop local visibility of the butcher shop.</div>
+<div>Creating a modern digital presence that showcases quality French meat, artisan expertise and practical store information.</div>
 </div>
 </div>
 </div>
@@ -598,30 +808,19 @@
 <div class="w-dyn-list">
 <div class="portfolio-header11_tag-list w-dyn-items" role="list">
 <div class="w-dyn-item" role="listitem"><a class="portfolio-header11_tag-item w-inline-block" href="#"><div>Website design</div></a></div>
-<div class="w-dyn-item" role="listitem"><a class="portfolio-header11_tag-item w-inline-block" href="#"><div>Food business</div></a></div>
-<div class="w-dyn-item" role="listitem"><a class="portfolio-header11_tag-item w-inline-block" href="#"><div>Local commerce</div></a></div>
-<div class="w-dyn-item" role="listitem"><a class="portfolio-header11_tag-item w-inline-block" href="#"><div>Brand identity</div></a></div>
-<div class="w-dyn-item" role="listitem"><a class="portfolio-header11_tag-item w-inline-block" href="#"><div>Boucherie</div></a></div>
-<div class="w-dyn-item" role="listitem"><a class="portfolio-header11_tag-item w-inline-block" href="#"><div>Local SEO</div></a></div>
-<div class="w-dyn-item" role="listitem"><a class="portfolio-header11_tag-item w-inline-block" href="#"><div>Artisanat</div></a></div>
-<div class="w-dyn-item" role="listitem"><a class="portfolio-header11_tag-item w-inline-block" href="#"><div>Conversion</div></a></div>
+<div class="w-dyn-item" role="listitem"><a class="portfolio-header11_tag-item w-inline-block" href="#"><div>Web development</div></a></div><div class="w-dyn-item" role="listitem"><a class="portfolio-header11_tag-item w-inline-block" href="#"><div>Social media</div></a></div>
 </div>
 </div>
 </div>
 </div>
-<div class="fx-up">
-<div class="text-rich-text w-richtext">
-<p>Boucherie Walima offers a selection of quality meats, prepared with care and craftsmanship. The site had to transmit an authentic, professional and modern image in order to reassure customers about the quality of the products and to enhance the identity of the butcher shop.</p>
-<p>We have designed a clear experience highlighting products, company values, fresh meat and essential information for local customers.</p>
-</div>
-</div>
+<div class="fx-up"><div class="text-rich-text w-richtext"><p>A refined local website that presents Boucherie Walima’s products, craftsmanship and practical information with clarity.</p></div></div>
 </div>
 </div>
 </div>
 </div>
 </div>
 </section>
-<section class="section_portfolio2-content2 template-details-section portfolio p-desktop outreach-details-before-iframe">
+<section class="section_portfolio2-content2 template-details-section portfolio p-desktop">
 <div class="padding-global">
 <div class="container-large">
 <div class="padding-section-large">
@@ -631,11 +830,7 @@
 <div class="margin-bottom margin-small">
 <h2>Website</h2>
 </div>
-<div class="text-rich-text w-richtext">
-<p>In the food sector, trust and visual quality are essential. The site had to highlight the freshness of the products, the professionalism of the butcher shop and the simplicity of access to important information.</p>
-<p>We have structured content around products, quality commitments, schedules, location and calls to action in order to enhance local visibility and encourage contact.</p>
-<p>The result: a modern and professional digital showcase that positions Boucherie Walima as a trusted butcher shop and enhances her craftsmanship among local customers.</p>
-</div>
+<div class="text-rich-text w-richtext"><p>We designed a responsive showcase that combines an elegant butcher-shop identity with simple navigation and direct contact on every screen.</p></div>
 </div>
 </div>
 </div>
@@ -643,32 +838,171 @@
 </div>
 </div>
 </section>
-<iframe data-sb-embed="" loading="lazy" scrolling="no" src="https://sb-marketing-boost.lovable.app/p2/boucheriewalima" style="width:100%;border:0;display:block;"></iframe>
-<div style="height:2rem;background:#fff;"></div>
-<iframe data-sb-embed="" loading="lazy" scrolling="no" src="https://sb-marketing-boost.lovable.app/p2/publication-sur-les-r-seaux-sociaux" style="width:100%;border:0;display:block;"></iframe>
-<section class="section_portfolio2-content4 template-details-section portfolio p-desktop">
-<div class="padding-global">
-<div class="container-large">
-<div class="padding-section-large">
-<div class="max-width-large align-center">
-<div class="fx-up">
-<div class="portfolio2-content4_component">
-<div class="margin-bottom margin-small">
-<h2>A site designed to build confidence</h2>
+<section id="site-live" class="ors-showcase" data-ors-showcase data-project="boucherie_walima" data-site-url="https://boucheriewalima.fr/" data-site-title="Boucherie Walima live website" style="--ors-bg:#EC181F" aria-label="Interactive preview of the Boucherie Walima website">
+<div class="ors-stage">
+<div class="ors-heading">
+<div><h2>Explore the website live</h2></div>
+<div class="ors-actions"><a class="ors-link" href="/en/contact/" data-event="showcase_similar_project">Create a similar website</a><a class="ors-link primary" href="https://boucheriewalima.fr/" target="_blank" rel="noopener noreferrer" data-event="showcase_open_live_site">Open live site ↗</a></div>
 </div>
-<div class="text-rich-text w-richtext">
-<p>Each section of the site naturally accompanies visitors to a contact or a visit in store. Experience values products, craft expertise and useful information to create a relationship of trust with customers.</p>
+<div class="ors-grid">
+<div class="ors-column">
+<div class="ors-label"><span>Interactive preview — <span class="ors-dims" data-ors-dims>1280 × 800</span></span><div class="ors-viewports" aria-label="Preview size"><button class="ors-viewport" type="button" data-viewport="desktop" aria-pressed="true">Desktop</button><button class="ors-viewport" type="button" data-viewport="tablet" aria-pressed="false">Tablet</button><button class="ors-viewport" type="button" data-viewport="mobile" aria-pressed="false">Mobile</button></div></div>
+<div class="ors-device" data-ors-device>
+<div class="ors-bar"><span class="ors-dot red" aria-hidden="true"></span><span class="ors-dot yellow" aria-hidden="true"></span><span class="ors-dot green" aria-hidden="true"></span><span class="ors-address">https://boucheriewalima.fr/</span><span class="ors-status">Live website</span><button class="ors-fullscreen" type="button" data-ors-fullscreen aria-label="Show website in fullscreen" title="Fullscreen">⛶</button></div>
+<div class="ors-iframe-stage" data-ors-iframe-stage>
+<div class="ors-iframe-viewport" data-ors-iframe-viewport data-viewport="desktop"></div>
+<div class="ors-poster" data-ors-poster><img src="/images/boucheriewalima/social-media.jpg" loading="lazy" decoding="async" alt="Preview of the Boucherie Walima website before activation"><div class="ors-overlay"><strong>Quality, tradition and craftsmanship</strong><span>Explore the live Boucherie Walima website.</span><button class="ors-launch" type="button" data-ors-launch>Explore the website</button></div></div>
+<div class="ors-loading" data-ors-loading role="status" aria-live="polite" aria-label="Loading the live website"><div class="ors-skeleton"><span></span><span></span><span></span></div></div>
+<div class="ors-fallback" data-ors-fallback><img src="/images/boucheriewalima/social-media.jpg" loading="lazy" decoding="async" alt="Screenshot of the Boucherie Walima website"><div class="ors-overlay"><strong>The interactive preview could not be loaded.</strong><span>The screenshot remains available, and the live site can be opened in a new tab.</span><a class="ors-link primary" href="https://boucheriewalima.fr/" target="_blank" rel="noopener noreferrer" data-event="showcase_fallback_open">Open live site ↗</a></div></div>
+<span class="ors-hint" data-ors-hint>You can navigate inside the website</span><div class="ors-callouts" aria-label="Design decisions"><span>Artisan positioning</span><span>Product quality</span><span>Direct local contact</span></div>
 </div>
+</div></div>
 </div>
+
 </div>
-<div class="margin-top margin-xlarge">
-<div class="fx-up">
-<div class="button-group"><a class="button is-secondary w-button" href="/en/contact/">Start a project</a></div>
+</section>
+<section class="sps-showcase" style="--sps-bg:#EC181F" aria-label="Social media posts">
+<div class="sps-brand">
+<span class="sps-brand__badge"><img src="/images/boucheriewalima/logo.png" alt=""/></span>
+<h2 class="sps-brand__name">Boucherie Walima</h2>
 </div>
-</div>
-</div>
-</div>
-</div>
+<p class="sps-subtitle">Social Media Posts</p>
+<div class="sps-grid">
+<article class="sps-post">
+<header class="sps-post__head">
+<img class="sps-post__avatar" src="/images/boucheriewalima/logo.png" alt=""/>
+<span class="sps-post__meta">
+<span class="sps-post__name">Boucherie Walima</span>
+<span class="sps-post__tag">Sponsored</span>
+</span>
+</header>
+<img class="sps-post__media" src="/images/boucheriewalima/social-media.jpg" alt="Social media post — Boucherie Walima campaign 1" style="object-position:0% 20%"/>
+<footer class="sps-post__actions">
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+</footer>
+</article>
+<article class="sps-post">
+<header class="sps-post__head">
+<img class="sps-post__avatar" src="/images/boucheriewalima/logo.png" alt=""/>
+<span class="sps-post__meta">
+<span class="sps-post__name">Boucherie Walima</span>
+<span class="sps-post__tag">Sponsored</span>
+</span>
+</header>
+<img class="sps-post__media" src="/images/boucheriewalima/social-media.jpg" alt="Social media post — Boucherie Walima campaign 2" style="object-position:12% 80%"/>
+<footer class="sps-post__actions">
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+</footer>
+</article>
+<article class="sps-post">
+<header class="sps-post__head">
+<img class="sps-post__avatar" src="/images/boucheriewalima/logo.png" alt=""/>
+<span class="sps-post__meta">
+<span class="sps-post__name">Boucherie Walima</span>
+<span class="sps-post__tag">Sponsored</span>
+</span>
+</header>
+<img class="sps-post__media" src="/images/boucheriewalima/social-media.jpg" alt="Social media post — Boucherie Walima campaign 3" style="object-position:25% 30%"/>
+<footer class="sps-post__actions">
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+</footer>
+</article>
+<article class="sps-post">
+<header class="sps-post__head">
+<img class="sps-post__avatar" src="/images/boucheriewalima/logo.png" alt=""/>
+<span class="sps-post__meta">
+<span class="sps-post__name">Boucherie Walima</span>
+<span class="sps-post__tag">Sponsored</span>
+</span>
+</header>
+<img class="sps-post__media" src="/images/boucheriewalima/social-media.jpg" alt="Social media post — Boucherie Walima campaign 4" style="object-position:38% 75%"/>
+<footer class="sps-post__actions">
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+</footer>
+</article>
+<article class="sps-post">
+<header class="sps-post__head">
+<img class="sps-post__avatar" src="/images/boucheriewalima/logo.png" alt=""/>
+<span class="sps-post__meta">
+<span class="sps-post__name">Boucherie Walima</span>
+<span class="sps-post__tag">Sponsored</span>
+</span>
+</header>
+<img class="sps-post__media" src="/images/boucheriewalima/social-media.jpg" alt="Social media post — Boucherie Walima campaign 5" style="object-position:50% 25%"/>
+<footer class="sps-post__actions">
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+</footer>
+</article>
+<article class="sps-post">
+<header class="sps-post__head">
+<img class="sps-post__avatar" src="/images/boucheriewalima/logo.png" alt=""/>
+<span class="sps-post__meta">
+<span class="sps-post__name">Boucherie Walima</span>
+<span class="sps-post__tag">Sponsored</span>
+</span>
+</header>
+<img class="sps-post__media" src="/images/boucheriewalima/social-media.jpg" alt="Social media post — Boucherie Walima campaign 6" style="object-position:62% 78%"/>
+<footer class="sps-post__actions">
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+</footer>
+</article>
+<article class="sps-post">
+<header class="sps-post__head">
+<img class="sps-post__avatar" src="/images/boucheriewalima/logo.png" alt=""/>
+<span class="sps-post__meta">
+<span class="sps-post__name">Boucherie Walima</span>
+<span class="sps-post__tag">Sponsored</span>
+</span>
+</header>
+<img class="sps-post__media" src="/images/boucheriewalima/social-media.jpg" alt="Social media post — Boucherie Walima campaign 7" style="object-position:75% 32%"/>
+<footer class="sps-post__actions">
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+</footer>
+</article>
+<article class="sps-post">
+<header class="sps-post__head">
+<img class="sps-post__avatar" src="/images/boucheriewalima/logo.png" alt=""/>
+<span class="sps-post__meta">
+<span class="sps-post__name">Boucherie Walima</span>
+<span class="sps-post__tag">Sponsored</span>
+</span>
+</header>
+<img class="sps-post__media" src="/images/boucheriewalima/social-media.jpg" alt="Social media post — Boucherie Walima campaign 8" style="object-position:88% 72%"/>
+<footer class="sps-post__actions">
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+</footer>
+</article>
+<article class="sps-post">
+<header class="sps-post__head">
+<img class="sps-post__avatar" src="/images/boucheriewalima/logo.png" alt=""/>
+<span class="sps-post__meta">
+<span class="sps-post__name">Boucherie Walima</span>
+<span class="sps-post__tag">Sponsored</span>
+</span>
+</header>
+<img class="sps-post__media" src="/images/boucheriewalima/social-media.jpg" alt="Social media post — Boucherie Walima campaign 9" style="object-position:100% 22%"/>
+<footer class="sps-post__actions">
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+</footer>
+</article>
 </div>
 </section>
 <section class="section_banner15">
@@ -732,14 +1066,14 @@
 <div class="portfolio8_list-wrapper w-dyn-list">
 <div class="portfolio8_list w-dyn-items" role="list">
 <div class="w-dyn-item" role="listitem">
-<div class="portfolio8_item"><a class="portfolio8_item-link w-inline-block" href="/en/projets/edmondgarage.html">
-<div class="portfolio8_image-wrapper"><img alt="Edmond Garage" class="portfolio8_image" loading="lazy" src="/images/edmondgarage-project-cover.svg"/></div>
+<div class="portfolio8_item"><a class="portfolio8_item-link w-inline-block" href="/en/projets/handsonsystems.html">
+<div class="portfolio8_image-wrapper"><img alt="HandsOn Systems" class="portfolio8_image" loading="lazy" src="/images/handsonsystems-project-cover.png"/></div>
 <div class="portfolio8_title-wrapper">
 <div class="portfolio8_item-content-top">
 <div class="margin-bottom margin-xxsmall">
-<h3 class="heading-style-h5">EDMOND GARAGE</h3>
+<h3 class="heading-style-h5">HandsOn Systems</h3>
 </div>
-<div class="text-size-regular">Website &amp; Digital Presence</div>
+<div class="text-size-regular">Website and digital strategy B2B</div>
 </div>
 <div class="portfolio8_button-wrapper">
 <div class="button is-link is-icon">
@@ -751,14 +1085,14 @@
 </a></div>
 </div>
 <div class="w-dyn-item" role="listitem">
-<div class="portfolio8_item"><a class="portfolio8_item-link w-inline-block" href="/en/projets/angymakeupartist.html">
-<div class="portfolio8_image-wrapper"><img alt="Angy Makeup Artist" class="portfolio8_image" loading="lazy" src="/images/angymakeupartist-project-cover.svg"/></div>
+<div class="portfolio8_item"><a class="portfolio8_item-link w-inline-block" href="/en/projets/climanovaenergie.html">
+<div class="portfolio8_image-wrapper"><img alt="Climanova Energie" class="portfolio8_image" loading="lazy" src="/images/climanovaenergie-project-cover.svg"/></div>
 <div class="portfolio8_title-wrapper">
 <div class="portfolio8_item-content-top">
 <div class="margin-bottom margin-xxsmall">
-<h3 class="heading-style-h5">ANGY MAKEUP ARTIST</h3>
+<h3 class="heading-style-h5">CLIMANOVA ENERGIE</h3>
 </div>
-<div class="text-size-regular">Website beauty and personal branding</div>
+<div class="text-size-regular">Digital Presence &amp; Brand Identity</div>
 </div>
 <div class="portfolio8_button-wrapper">
 <div class="button is-link is-icon">
@@ -863,86 +1197,24 @@
     })();
 
     (function () {
-      var embeds = Array.prototype.slice.call(document.querySelectorAll('iframe[data-sb-embed]'));
-      if (!embeds.length) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var wrapper = document.querySelector('.section_banner15 .banner15_inner-wrapper');
+      if (!wrapper) return;
 
-      var minHeight = 720;
-      var knownHeights = new WeakMap();
+      var duration = 28000;
+      var startTime = null;
+      var halfWidth = 0;
 
-      function getIframeForWindow(sourceWindow) {
-        for (var i = 0; i < embeds.length; i += 1) {
-          if (embeds[i].contentWindow === sourceWindow) return embeds[i];
-        }
-        return null;
+      function tick(ts) {
+        if (!halfWidth) halfWidth = wrapper.scrollWidth / 2;
+        if (!halfWidth) { requestAnimationFrame(tick); return; }
+        if (!startTime) startTime = ts;
+        var x = -halfWidth * (((ts - startTime) % duration) / duration);
+        wrapper.style.transform = 'translateX(' + x + 'px)';
+        requestAnimationFrame(tick);
       }
 
-      function getMessageHeight(data) {
-        if (typeof data === 'number') return data;
-        if (typeof data === 'string') {
-          var numericHeight = Number(data);
-          if (numericHeight) return numericHeight;
-
-          try {
-            data = JSON.parse(data);
-          } catch (error) {
-            return 0;
-          }
-        }
-        if (!data || typeof data !== 'object') return 0;
-
-        return data.height ||
-          data.iframeHeight ||
-          data.documentHeight ||
-          data.scrollHeight ||
-          data.offsetHeight ||
-          data.clientHeight ||
-          (data.payload && (
-            data.payload.height ||
-            data.payload.iframeHeight ||
-            data.payload.documentHeight ||
-            data.payload.scrollHeight ||
-            data.payload.offsetHeight ||
-            data.payload.clientHeight
-          )) ||
-          0;
-      }
-
-      function resizeEmbed(iframe, height) {
-        var nextHeight = Math.max(Math.ceil(Number(height) || 0), minHeight);
-        var lastHeight = knownHeights.get(iframe) || 0;
-        if (!nextHeight || Math.abs(nextHeight - lastHeight) < 2) return;
-
-        knownHeights.set(iframe, nextHeight);
-        iframe.style.height = nextHeight + 'px';
-      }
-
-      function requestEmbedHeight(iframe) {
-        if (!iframe.contentWindow) return;
-
-        iframe.contentWindow.postMessage({
-          type: 'sb-marketing:request-embed-height'
-        }, '*');
-      }
-
-      embeds.forEach(function (iframe) {
-        resizeEmbed(iframe, Math.max(window.innerHeight || 0, 980));
-        iframe.addEventListener('load', function () {
-          requestEmbedHeight(iframe);
-        });
-        requestEmbedHeight(iframe);
-      });
-
-      window.addEventListener('message', function (event) {
-        var iframe = getIframeForWindow(event.source);
-        if (!iframe) return;
-
-        var height = getMessageHeight(event.data);
-        if (height) resizeEmbed(iframe, height);
-      });
-
-      window.addEventListener('resize', function () {
-        embeds.forEach(requestEmbedHeight);
-      }, { passive: true });
+      requestAnimationFrame(tick);
     })();
   </script>
 
