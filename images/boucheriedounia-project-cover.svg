@@ -1,6 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000" role="img" aria-labelledby="title desc">
   <title id="title">Boucherie Dounia</title>
   <desc id="desc">Boucherie Dounia white logo on a gold background</desc>
+  <defs>
+    <filter id="pure-white" color-interpolation-filters="sRGB">
+      <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1 0"/>
+    </filter>
+  </defs>
   <rect width="1600" height="1000" fill="#D3A23C"/>
-  <image href="boucheriedounia/logo-white.png" x="550" y="407" width="500" height="186" preserveAspectRatio="xMidYMid meet"/>
+  <image href="boucheriedounia/logo-white.png" x="550" y="407" width="500" height="186" preserveAspectRatio="xMidYMid meet" filter="url(#pure-white)"/>
 </svg>
