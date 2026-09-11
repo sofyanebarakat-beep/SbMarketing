@@ -221,16 +221,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.sbmarketing.fr/projets/cimatti.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.sbmarketing.fr/en/projets/cimatti.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://www.sbmarketing.fr/projets/climanovaenergie.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

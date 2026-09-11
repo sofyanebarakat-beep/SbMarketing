@@ -27,9 +27,8 @@
     "Hands On RFID": { c: ["websites", "branding"], industry: ["SaaS", "SaaS"], d: ["Solutions RFID pour les entreprises", "RFID solutions for businesses"] },
     "Hands On Taskmaster": { c: ["webapps", "branding"], industry: ["SaaS", "SaaS"], d: ["Plateforme de gestion des tâches", "Task management platform"] },
     "Boucherie Walima": { c: ["websites", "branding", "seo"], industry: ["Commerce local", "Local business"], d: ["Boucherie et commerce alimentaire local", "Local butcher and food retailer"] },
-    "Cimatti": { c: ["websites", "branding", "seo"], industry: ["Industrie", "Industrial"], d: ["Solutions techniques pour professionnels", "Technical solutions for businesses"] },
     "Find Forsa": { c: ["websites", "branding"], industry: ["Recrutement", "Recruitment"], d: ["Plateforme d’opportunités professionnelles", "Career opportunities platform"] },
-    "Outreach Study": { c: ["websites", "branding"], industry: ["Éducation", "Education"], d: ["Accompagnement des études à l’international", "International study support"] },
+    "Outreach Study": { c: ["webapps", "branding"], industry: ["EdTech", "EdTech"], d: ["Plateforme de gestion du parcours étudiant", "Student journey management platform"] },
     "Angy Makeup Artist": { c: ["websites", "branding", "seo"], industry: ["Beauté", "Beauty"], d: ["Maquillage professionnel et beauté", "Professional makeup and beauty"] },
     "Odds & More": { c: ["websites", "branding"], industry: ["Média", "Media"], d: ["Plateforme de contenu sportif", "Sports content platform"] },
     "247Pay Shop": { c: ["websites", "webapps"], industry: ["Fintech", "Fintech"], d: ["Expérience e-commerce et paiement", "E-commerce and payment experience"] },
@@ -39,7 +38,7 @@
   };
   var featured = ["Outreach Recruitment", "247Pay", "Edmond Garage"];
   var categoryOrder = ["all", "websites", "branding", "webapps", "seo", "leads"];
-  var categoryCounts = { all: 16, websites: 14, branding: 12, webapps: 4, seo: 7, leads: 2 };
+  var categoryCounts = { all: 15, websites: 12, branding: 11, webapps: 5, seo: 6, leads: 2 };
   var items = Array.prototype.slice.call(list.querySelectorAll(":scope > .w-dyn-item"));
 
   function saveReturnLocation() {
