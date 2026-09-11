@@ -89,13 +89,19 @@
 }
 
 .os-app-feature p {
-  color: rgba(255,255,255,.65);
+  color: #fff;
   font-size: .76rem;
+  font-weight: 700;
   line-height: 1.5;
   margin: 0;
 }
 
-.os-app-features__visual { margin: 0; min-width: 0; }
+.os-app-features__visual {
+  display: grid;
+  gap: clamp(1rem, 2vw, 1.75rem);
+  min-width: 0;
+  padding: 1rem 0;
+}
 
 .os-app-features__browser {
   background: #fff;
@@ -103,8 +109,16 @@
   border-radius: 1.15rem;
   box-shadow: 0 2rem 5rem rgba(20,10,100,.34);
   overflow: hidden;
-  transform: rotate(1deg);
+  margin: 0;
+  position: relative;
+  transform: rotate(-1.5deg);
+  transition: transform .3s ease;
 }
+
+.os-app-features__browser:nth-child(even) { transform: rotate(1.5deg); }
+.os-app-features__browser:nth-child(3) { transform: rotate(-.75deg); }
+.os-app-features__browser:nth-child(4) { transform: rotate(1deg); }
+.os-app-features__browser:hover { transform: rotate(0) translateY(-4px); z-index: 2; }
 
 .os-app-features__bar {
   align-items: center;
@@ -128,4 +142,5 @@
   .os-app-features { padding: .75rem; }
   .os-app-features__panel { padding: 3.25rem 1.25rem; }
   .os-app-features__browser { border-radius: .75rem; transform: none; }
+  .os-app-features__browser:nth-child(n) { transform: none; }
 }
