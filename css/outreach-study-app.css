@@ -97,8 +97,6 @@
 }
 
 .os-app-features__visual {
-  display: grid;
-  gap: clamp(1rem, 2vw, 1.75rem);
   min-width: 0;
   padding: 1rem 0;
 }
@@ -111,13 +109,10 @@
   overflow: hidden;
   margin: 0;
   position: relative;
-  transform: rotate(-1.5deg);
+  transform: rotate(1deg);
   transition: transform .3s ease;
 }
 
-.os-app-features__browser:nth-child(even) { transform: rotate(1.5deg); }
-.os-app-features__browser:nth-child(3) { transform: rotate(-.75deg); }
-.os-app-features__browser:nth-child(4) { transform: rotate(1deg); }
 .os-app-features__browser:hover { transform: rotate(0) translateY(-4px); z-index: 2; }
 
 .os-app-features__bar {
@@ -142,5 +137,4 @@
   .os-app-features { padding: .75rem; }
   .os-app-features__panel { padding: 3.25rem 1.25rem; }
   .os-app-features__browser { border-radius: .75rem; transform: none; }
-  .os-app-features__browser:nth-child(n) { transform: none; }
 }

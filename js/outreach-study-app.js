@@ -6,7 +6,7 @@
     eyebrow: "Outreach Study platform",
     title: "The entire student journey, in one application.",
     intro: "A purpose-built workspace that helps the team move every student from first enquiry to enrolment with clarity.",
-    imageAlts: ["Student application dashboard", "Student document management", "School and visa workflow", "Application analytics and communication"],
+    imageAlt: "Student application dashboard",
     features: [
       ["01", "Applications", "Capture new enquiries, create student profiles and manage every application from one structured workspace."],
       ["02", "Smart workflow", "Move candidates through contacted, booked, interviewed, school and visa stages with visible status controls."],
@@ -19,7 +19,7 @@
     eyebrow: "Plateforme Outreach Study",
     title: "Tout le parcours étudiant, dans une seule application.",
     intro: "Un espace conçu sur mesure pour aider l’équipe à accompagner chaque étudiant, de la première demande jusqu’à l’inscription.",
-    imageAlts: ["Tableau de bord des candidatures", "Gestion des documents étudiants", "Parcours école et visa", "Analyse et communication des candidatures"],
+    imageAlt: "Tableau de bord des candidatures",
     features: [
       ["01", "Candidatures", "Capturer les demandes, créer les profils étudiants et gérer chaque candidature dans un espace structuré."],
       ["02", "Parcours intelligent", "Faire avancer les candidats entre contact, rendez-vous, entretien, école et visa avec des statuts visibles."],
@@ -35,8 +35,6 @@
     section.setAttribute("aria-labelledby", "os-app-features-title");
     section.innerHTML = '<div class="os-app-features__panel"><div class="os-app-features__layout"><div class="os-app-features__content"><div class="os-app-features__eyebrow">' + copy.eyebrow + '</div><h2 id="os-app-features-title">' + copy.title + '</h2><p class="os-app-features__intro">' + copy.intro + '</p><div class="os-app-features__list">' + copy.features.map(function (feature) {
       return '<article class="os-app-feature"><span class="os-app-feature__number">' + feature[0] + '</span><div><h3>' + feature[1] + '</h3><p>' + feature[2] + '</p></div></article>';
-    }).join("") + '</div></div><div class="os-app-features__visual">' + ["dashboard", "documents", "workflow", "analytics"].map(function (image, index) {
-      return '<figure class="os-app-features__browser"><div class="os-app-features__bar" aria-hidden="true"><span></span><span></span><span></span></div><img src="/images/outreach-study-app-' + image + '.png" alt="' + copy.imageAlts[index] + '" loading="lazy" width="1586" height="992"></figure>';
-    }).join("") + '</div></div></div>';
+    }).join("") + '</div></div><div class="os-app-features__visual"><figure class="os-app-features__browser"><div class="os-app-features__bar" aria-hidden="true"><span></span><span></span><span></span></div><img src="/images/outreach-study-app-dashboard.png" alt="' + copy.imageAlt + '" loading="lazy" width="1586" height="992"></figure></div></div></div>';
   });
 })();
