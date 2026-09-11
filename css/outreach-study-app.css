@@ -12,33 +12,34 @@
   margin: 0 auto;
   max-width: 100rem;
   overflow: hidden;
-  padding: clamp(4rem, 8vw, 8rem) clamp(1.5rem, 6vw, 7rem);
+  padding: clamp(3.5rem, 6vw, 6.5rem) clamp(1.5rem, 5vw, 5.5rem);
   position: relative;
 }
 
-.os-app-features__panel::before,
 .os-app-features__panel::after {
-  border: 1px solid rgba(255,255,255,.16);
+  border: 1px solid rgba(255,255,255,.15);
   border-radius: 50%;
   content: "";
+  height: 32rem;
   pointer-events: none;
   position: absolute;
+  right: -17rem;
+  top: -20rem;
+  width: 32rem;
 }
 
-.os-app-features__panel::before { height: 28rem; right: -12rem; top: -18rem; width: 28rem; }
-.os-app-features__panel::after { bottom: -18rem; height: 34rem; left: -20rem; width: 34rem; }
-
-.os-app-features__header {
-  margin: 0 auto clamp(3rem, 6vw, 6rem);
-  max-width: 62rem;
+.os-app-features__layout {
+  align-items: center;
+  display: grid;
+  gap: clamp(2.5rem, 5vw, 6rem);
+  grid-template-columns: minmax(20rem, .85fr) minmax(0, 1.15fr);
   position: relative;
-  text-align: center;
   z-index: 1;
 }
 
 .os-app-features__eyebrow {
-  color: rgba(255,255,255,.72);
-  font-size: .75rem;
+  color: rgba(255,255,255,.68);
+  font-size: .72rem;
   font-weight: 800;
   letter-spacing: .14em;
   text-transform: uppercase;
@@ -46,68 +47,85 @@
 
 .os-app-features h2 {
   color: #fff;
-  font-size: clamp(2.7rem, 6vw, 6rem);
-  letter-spacing: -.06em;
-  line-height: .95;
-  margin: 1rem 0 1.4rem;
+  font-size: clamp(2.35rem, 4.2vw, 4.5rem);
+  letter-spacing: -.055em;
+  line-height: .98;
+  margin: .9rem 0 1.15rem;
 }
 
 .os-app-features__intro {
-  color: rgba(255,255,255,.76);
-  font-size: clamp(1rem, 1.5vw, 1.25rem);
-  line-height: 1.65;
-  margin: 0 auto;
-  max-width: 48rem;
+  color: rgba(255,255,255,.72);
+  font-size: clamp(.95rem, 1.3vw, 1.12rem);
+  line-height: 1.6;
+  margin: 0;
+  max-width: 38rem;
 }
 
-.os-app-features__grid {
-  display: grid;
-  gap: 0 clamp(2rem, 6vw, 7rem);
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  position: relative;
-  z-index: 1;
-}
-
-.os-app-features__column { display: grid; }
+.os-app-features__list { margin-top: clamp(2rem, 4vw, 3.5rem); }
 
 .os-app-feature {
-  align-items: flex-start;
-  border-top: 1px solid rgba(255,255,255,.22);
+  align-items: start;
+  border-top: 1px solid rgba(255,255,255,.2);
   display: grid;
-  gap: 1rem;
-  grid-template-columns: 2.25rem minmax(0,1fr);
-  padding: 1.4rem 0;
+  gap: .9rem;
+  grid-template-columns: 2rem minmax(0,1fr);
+  padding: 1rem 0;
 }
 
-.os-app-feature__icon {
-  align-items: center;
-  background: rgba(255,255,255,.14);
-  border: 1px solid rgba(255,255,255,.18);
-  border-radius: .65rem;
-  display: flex;
-  font-size: .9rem;
-  height: 2.25rem;
-  justify-content: center;
-  width: 2.25rem;
+.os-app-feature__number {
+  color: rgba(255,255,255,.5);
+  font-size: .66rem;
+  font-weight: 850;
+  letter-spacing: .08em;
+  padding-top: .25rem;
 }
 
 .os-app-feature h3 {
   color: #fff;
-  font-size: clamp(1rem, 1.35vw, 1.22rem);
+  font-size: 1rem;
   letter-spacing: -.02em;
   line-height: 1.25;
-  margin: 0 0 .35rem;
+  margin: 0 0 .25rem;
 }
 
 .os-app-feature p {
-  color: rgba(255,255,255,.68);
-  font-size: .82rem;
-  line-height: 1.55;
+  color: rgba(255,255,255,.65);
+  font-size: .76rem;
+  line-height: 1.5;
   margin: 0;
 }
 
-@media (max-width: 767px) {
+.os-app-features__visual { margin: 0; min-width: 0; }
+
+.os-app-features__browser {
+  background: #fff;
+  border: 1px solid rgba(255,255,255,.34);
+  border-radius: 1.15rem;
+  box-shadow: 0 2rem 5rem rgba(20,10,100,.34);
+  overflow: hidden;
+  transform: rotate(1deg);
+}
+
+.os-app-features__bar {
+  align-items: center;
+  background: #f6f7fb;
+  border-bottom: 1px solid #e5e8f0;
+  display: flex;
+  gap: .35rem;
+  height: 2rem;
+  padding: 0 .8rem;
+}
+
+.os-app-features__bar span { background: #cfd4df; border-radius: 50%; height: .42rem; width: .42rem; }
+.os-app-features__browser img { display: block; height: auto; width: 100%; }
+
+@media (max-width: 900px) {
+  .os-app-features__layout { grid-template-columns: 1fr; }
+  .os-app-features__visual { margin: 0 auto; max-width: 48rem; width: 100%; }
+}
+
+@media (max-width: 600px) {
   .os-app-features { padding: .75rem; }
-  .os-app-features__grid { grid-template-columns: 1fr; }
-  .os-app-features__column + .os-app-features__column .os-app-feature:first-child { border-top: 1px solid rgba(255,255,255,.22); }
+  .os-app-features__panel { padding: 3.25rem 1.25rem; }
+  .os-app-features__browser { border-radius: .75rem; transform: none; }
 }

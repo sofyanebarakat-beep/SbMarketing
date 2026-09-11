@@ -3,76 +3,38 @@
 
   var english = document.documentElement.lang.toLowerCase().indexOf("en") === 0;
   var copy = english ? {
-    eyebrow: "Outreach Study web application",
-    title: "Built Around the Entire Student Journey",
-    intro: "A complete workspace for managing enquiries, applications, documents, communication and every operational step—from first contact to school and visa processing.",
+    eyebrow: "Outreach Study platform",
+    title: "The entire student journey, in one application.",
+    intro: "A purpose-built workspace that helps the team move every student from first enquiry to enrolment with clarity.",
+    imageAlt: "Privacy-safe mockup of the Outreach Study student application dashboard",
     features: [
-      ["Dashboard", "A clear overview of applications, priorities and daily activity."],
-      ["Lead management", "Capture, organise and convert new student enquiries."],
-      ["Application management", "Manage every candidate and application in one place."],
-      ["Student profiles", "Keep essential student information structured and accessible."],
-      ["Programme documents", "Centralise programme information and required files."],
-      ["Document management", "Upload, review, approve and request replacement documents."],
-      ["Workflow stages", "Move students through a clear, step-by-step process."],
-      ["Status tracking", "Track new, contacted, booked, interviewed and active applications."],
-      ["School & visa process", "Follow progress after applications are sent to institutions."],
-      ["Appointments", "Coordinate bookings and important student sessions."],
-      ["Interview management", "Plan and monitor interviews within the same workspace."],
-      ["Message templates", "Create consistent communications for recurring situations."],
-      ["Automated notifications", "Keep students and teams informed about important updates."],
-      ["Internal notes", "Share application context and next actions with the team."],
-      ["Comments & updates", "Record decisions and maintain a visible activity history."],
-      ["Agents", "Assign applications and coordinate counsellor workloads."],
-      ["Role permissions", "Give each user the appropriate level of access."],
-      ["Priority marking", "Highlight important applications for faster follow-up."],
-      ["Not-interested management", "Organise unresponsive, inactive and older enquiries."],
-      ["Search & filters", "Find students quickly by name, email, stage or status."],
-      ["Quick actions", "Update records and move applications without unnecessary steps."],
-      ["Data analytics", "Understand volumes, progress and operational performance."],
-      ["CSV export", "Export structured application data for reporting and operations."],
-      ["Application history", "Keep a traceable timeline of progress and changes."]
+      ["01", "Applications", "Capture new enquiries, create student profiles and manage every application from one structured workspace."],
+      ["02", "Smart workflow", "Move candidates through contacted, booked, interviewed, school and visa stages with visible status controls."],
+      ["03", "Documents", "Organise programme files and student documents, identify missing items and follow every review."],
+      ["04", "Team coordination", "Assign agents, add internal notes, save comments and keep the complete application history visible."],
+      ["05", "Communication", "Use message templates and notifications to send consistent updates at the right moment."],
+      ["06", "Analytics & export", "Monitor application volumes and team progress, search records quickly and export structured CSV data."]
     ]
   } : {
-    eyebrow: "Application web Outreach Study",
-    title: "Conçue autour de tout le parcours étudiant",
-    intro: "Un espace complet pour gérer les demandes, les candidatures, les documents, la communication et chaque étape opérationnelle — du premier contact jusqu’au traitement école et visa.",
+    eyebrow: "Plateforme Outreach Study",
+    title: "Tout le parcours étudiant, dans une seule application.",
+    intro: "Un espace conçu sur mesure pour aider l’équipe à accompagner chaque étudiant, de la première demande jusqu’à l’inscription.",
+    imageAlt: "Maquette anonymisée du tableau de bord de candidatures Outreach Study",
     features: [
-      ["Tableau de bord", "Une vue claire des candidatures, priorités et activités quotidiennes."],
-      ["Gestion des prospects", "Capturer, organiser et convertir les nouvelles demandes étudiantes."],
-      ["Gestion des candidatures", "Piloter chaque candidat et chaque dossier au même endroit."],
-      ["Profils étudiants", "Centraliser les informations essentielles de chaque étudiant."],
-      ["Documents programmes", "Regrouper les informations et fichiers requis par programme."],
-      ["Gestion documentaire", "Importer, vérifier, approuver ou demander un remplacement."],
-      ["Étapes du parcours", "Faire avancer les étudiants dans un processus clair et structuré."],
-      ["Suivi des statuts", "Suivre les nouveaux contacts, réservations, entretiens et dossiers actifs."],
-      ["Processus école & visa", "Suivre les dossiers envoyés aux établissements et leur avancement."],
-      ["Rendez-vous", "Coordonner les réservations et sessions importantes des étudiants."],
-      ["Gestion des entretiens", "Planifier et suivre les entretiens depuis le même espace."],
-      ["Modèles de messages", "Créer des communications cohérentes pour les situations récurrentes."],
-      ["Notifications automatiques", "Informer les étudiants et l’équipe des mises à jour importantes."],
-      ["Notes internes", "Partager le contexte du dossier et les prochaines actions avec l’équipe."],
-      ["Commentaires & mises à jour", "Conserver les décisions et un historique visible de l’activité."],
-      ["Gestion des agents", "Attribuer les dossiers et coordonner la charge des conseillers."],
-      ["Permissions par rôle", "Donner à chaque utilisateur le niveau d’accès approprié."],
-      ["Marquage prioritaire", "Mettre en avant les candidatures qui exigent un suivi rapide."],
-      ["Gestion des non-intéressés", "Classer les demandes sans réponse, inactives ou anciennes."],
-      ["Recherche & filtres", "Retrouver rapidement un étudiant par nom, e-mail, étape ou statut."],
-      ["Actions rapides", "Mettre à jour et déplacer les dossiers sans étapes inutiles."],
-      ["Analyse des données", "Comprendre les volumes, la progression et les performances."],
-      ["Export CSV", "Exporter les candidatures structurées pour le reporting et les opérations."],
-      ["Historique des candidatures", "Conserver une chronologie traçable des progrès et changements."]
+      ["01", "Candidatures", "Capturer les demandes, créer les profils étudiants et gérer chaque candidature dans un espace structuré."],
+      ["02", "Parcours intelligent", "Faire avancer les candidats entre contact, rendez-vous, entretien, école et visa avec des statuts visibles."],
+      ["03", "Documents", "Organiser les fichiers programmes et étudiants, identifier les pièces manquantes et suivre chaque vérification."],
+      ["04", "Coordination d’équipe", "Attribuer les agents, ajouter des notes internes, enregistrer les commentaires et conserver l’historique."],
+      ["05", "Communication", "Utiliser des modèles de messages et des notifications pour informer au bon moment."],
+      ["06", "Analyses & export", "Suivre les volumes et la progression, retrouver rapidement un dossier et exporter les données en CSV."]
     ]
   };
 
   document.querySelectorAll("[data-os-app-showcase]").forEach(function (section) {
-    var midpoint = Math.ceil(copy.features.length / 2);
-    var columns = [copy.features.slice(0, midpoint), copy.features.slice(midpoint)];
     section.className = "os-app-features";
     section.setAttribute("aria-labelledby", "os-app-features-title");
-    section.innerHTML = '<div class="os-app-features__panel"><header class="os-app-features__header"><div class="os-app-features__eyebrow">' + copy.eyebrow + '</div><h2 id="os-app-features-title">' + copy.title + '</h2><p class="os-app-features__intro">' + copy.intro + '</p></header><div class="os-app-features__grid">' + columns.map(function (column) {
-      return '<div class="os-app-features__column">' + column.map(function (feature) {
-        return '<article class="os-app-feature"><span class="os-app-feature__icon" aria-hidden="true">✓</span><div><h3>' + feature[0] + '</h3><p>' + feature[1] + '</p></div></article>';
-      }).join("") + '</div>';
-    }).join("") + '</div></div>';
+    section.innerHTML = '<div class="os-app-features__panel"><div class="os-app-features__layout"><div class="os-app-features__content"><div class="os-app-features__eyebrow">' + copy.eyebrow + '</div><h2 id="os-app-features-title">' + copy.title + '</h2><p class="os-app-features__intro">' + copy.intro + '</p><div class="os-app-features__list">' + copy.features.map(function (feature) {
+      return '<article class="os-app-feature"><span class="os-app-feature__number">' + feature[0] + '</span><div><h3>' + feature[1] + '</h3><p>' + feature[2] + '</p></div></article>';
+    }).join("") + '</div></div><figure class="os-app-features__visual"><div class="os-app-features__browser"><div class="os-app-features__bar" aria-hidden="true"><span></span><span></span><span></span></div><img src="/images/outreach-study-app-dashboard.png" alt="' + copy.imageAlt + '" loading="lazy" width="1586" height="992"></div></figure></div></div>';
   });
 })();
