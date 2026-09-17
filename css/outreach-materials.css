@@ -53,6 +53,7 @@
 .outreach-materials .mms-arrow { top: 38%; }
 .outreach-materials__portal-link { display: inline-block; margin-top: 1.25rem; color: #ffe500; font-size: .9rem; font-weight: 700; text-decoration: underline; text-underline-offset: .2em; }
 .outreach-materials__portal-link:focus-visible { outline: 2px solid #ffe500; outline-offset: 4px; }
+.outreach-solutions__links { display: flex; flex-wrap: wrap; gap: .75rem 1.5rem; }
 
 @media (max-width: 900px) {
   .outreach-materials__grid { grid-template-columns: 1fr; }

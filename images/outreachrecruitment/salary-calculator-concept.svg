@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title">
+  <title id="title">Concept illustration of the Outreach Recruitment Malta salary calculator</title>
+  <rect width="1200" height="760" fill="#e9eaf3"/>
+  <rect x="95" y="76" width="1010" height="608" rx="22" fill="#fff"/>
+  <rect x="95" y="76" width="1010" height="74" rx="22" fill="#25236e"/>
+  <path d="M95 128h1010v22H95z" fill="#25236e"/>
+  <text x="133" y="122" fill="#fff" font-family="Arial,sans-serif" font-size="22" font-weight="700">OUTREACH</text>
+  <text x="281" y="122" fill="#cbcafd" font-family="Arial,sans-serif" font-size="16">Career tools</text>
+  <text x="137" y="220" fill="#20204b" font-family="Arial,sans-serif" font-size="35" font-weight="700">Malta Salary Calculator</text>
+  <text x="138" y="253" fill="#74748b" font-family="Arial,sans-serif" font-size="16">Estimate your take-home pay from your gross salary</text>
+  <rect x="137" y="297" width="430" height="311" rx="16" fill="#f4f4fb"/>
+  <text x="163" y="336" fill="#25236e" font-family="Arial,sans-serif" font-size="20" font-weight="700">Enter your details</text>
+  <text x="163" y="385" fill="#555570" font-family="Arial,sans-serif" font-size="14">Gross annual salary</text>
+  <rect x="163" y="398" width="378" height="49" rx="8" fill="#fff" stroke="#d9d9e7"/>
+  <text x="181" y="430" fill="#25236e" font-family="Arial,sans-serif" font-size="20" font-weight="700">€ 35,000</text>
+  <text x="163" y="481" fill="#555570" font-family="Arial,sans-serif" font-size="14">Tax status</text>
+  <rect x="163" y="494" width="378" height="44" rx="8" fill="#fff" stroke="#d9d9e7"/>
+  <text x="181" y="522" fill="#25236e" font-family="Arial,sans-serif" font-size="16">Single</text>
+  <text x="508" y="522" fill="#77778c" font-family="Arial,sans-serif" font-size="17">⌄</text>
+  <text x="163" y="577" fill="#696983" font-family="Arial,sans-serif" font-size="14">Children · Student status · Age</text>
+  <rect x="595" y="297" width="471" height="311" rx="16" fill="#25236e"/>
+  <text x="625" y="336" fill="#fff" font-family="Arial,sans-serif" font-size="20" font-weight="700">Your estimated salary</text>
+  <text x="625" y="381" fill="#cecdf2" font-family="Arial,sans-serif" font-size="14">WEEKLY</text>
+  <text x="767" y="381" fill="#cecdf2" font-family="Arial,sans-serif" font-size="14">MONTHLY</text>
+  <text x="923" y="381" fill="#cecdf2" font-family="Arial,sans-serif" font-size="14">YEARLY</text>
+  <path d="M625 398h410M625 451h410M625 504h410" stroke="#4d4b8d"/>
+  <text x="625" y="432" fill="#fff" font-family="Arial,sans-serif" font-size="17">Gross salary</text>
+  <text x="625" y="485" fill="#fff" font-family="Arial,sans-serif" font-size="17">Income tax + SSC</text>
+  <text x="625" y="546" fill="#ffe500" font-family="Arial,sans-serif" font-size="21" font-weight="700">Net salary</text>
+  <rect x="853" y="524" width="179" height="38" rx="8" fill="#ffe500"/>
+  <text x="883" y="549" fill="#25236e" font-family="Arial,sans-serif" font-size="14" font-weight="700">Your estimate</text>
+</svg>
