@@ -1,0 +1,65 @@
+.outreach-materials {
+  background: #fff;
+  padding: 0 clamp(1rem, 4vw, 3rem) clamp(2rem, 5vw, 5rem);
+}
+
+.outreach-materials__grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  align-items: center;
+  gap: clamp(2rem, 4vw, 4rem);
+  width: 100%;
+  max-width: 94rem;
+  overflow: hidden;
+  border-radius: 20px;
+  background: #3a38da;
+  padding: clamp(2rem, 5vw, 5rem) clamp(1rem, 3vw, 3rem);
+}
+
+.outreach-materials__grid::before {
+  position: absolute;
+  inset: 0;
+  content: "";
+  opacity: .16;
+  pointer-events: none;
+  background-image: radial-gradient(circle, #fff 1px, transparent 1.5px);
+  background-size: 22px 22px;
+  mask-image: linear-gradient(135deg, #000, transparent 70%);
+}
+
+.outreach-materials__intro,
+.outreach-materials .mms-slider {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+}
+
+.outreach-materials__intro {
+  max-width: 30rem;
+  margin: 0;
+  text-align: left;
+}
+
+.outreach-materials .mms-kicker,
+.outreach-materials .mms-count { color: #ffe500; }
+.outreach-materials .mms-heading h2 { font-size: clamp(2rem, 3.8vw, 3.5rem); }
+.outreach-materials .mms-viewport { border: 1px solid rgba(255,255,255,.18); }
+.outreach-materials .mms-figure { display: flex; flex-direction: column; min-height: 0; }
+.outreach-materials .mms-media { height: clamp(20rem, 35vw, 30rem); padding: 0; }
+.outreach-materials .mms-media img { width: 100%; height: 100%; object-fit: contain; }
+.outreach-materials .mms-caption { min-height: 10rem; padding: clamp(1.25rem, 2.5vw, 2rem); gap: .45rem; }
+.outreach-materials .mms-caption strong { font-size: clamp(1.2rem, 2vw, 1.6rem); }
+.outreach-materials .mms-arrow { top: 38%; }
+
+@media (max-width: 900px) {
+  .outreach-materials__grid { grid-template-columns: 1fr; }
+  .outreach-materials__intro { max-width: 42rem; }
+  .outreach-materials .mms-media { height: clamp(18rem, 55vw, 30rem); }
+}
+
+@media (max-width: 767px) {
+  .outreach-materials { padding-inline: .65rem; }
+  .outreach-materials__grid { padding-inline: .85rem; }
+  .outreach-materials .mms-caption { min-height: 11rem; }
+}

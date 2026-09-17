@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title">
+  <title id="title">Outreach Recruitment event roll-up concept</title>
+  <rect width="1200" height="760" fill="#e9eaf0"/>
+  <ellipse cx="600" cy="687" rx="315" ry="37" fill="#c9cbd5"/>
+  <rect x="441" y="60" width="318" height="612" rx="5" fill="#172044"/>
+  <rect x="452" y="70" width="296" height="585" fill="#25236e"/>
+  <path d="M452 445C560 365 645 400 748 310v345H452Z" fill="#3937a9"/>
+  <path d="M452 565c118-85 195-74 296-151v241H452Z" fill="#4846c6"/>
+  <g fill="#ee2e24"><path d="m492 126 29-26 33 16v16h-62Z"/><path d="m555 141-29 26-33-16v-16h62Z"/></g>
+  <text x="575" y="130" fill="#fff" font-family="Arial,sans-serif" font-size="23" font-weight="700">OUTREACH</text>
+  <text x="575" y="155" fill="#d8d8f7" font-family="Arial,sans-serif" font-size="12" letter-spacing="4">RECRUITMENT</text>
+  <text x="489" y="269" fill="#fff" font-family="Arial,sans-serif" font-size="37" font-weight="700">People first.</text>
+  <text x="489" y="314" fill="#fff" font-family="Arial,sans-serif" font-size="37" font-weight="700">Possibilities</text>
+  <text x="489" y="359" fill="#fff" font-family="Arial,sans-serif" font-size="37" font-weight="700">everywhere.</text>
+  <rect x="490" y="407" width="130" height="4" fill="#ee2e24"/>
+  <text x="489" y="483" fill="#fff" font-family="Arial,sans-serif" font-size="18">Connecting talent</text>
+  <text x="489" y="509" fill="#fff" font-family="Arial,sans-serif" font-size="18">with opportunity.</text>
+  <text x="489" y="613" fill="#fff" font-family="Arial,sans-serif" font-size="15">outreachrecruitment.net</text>
+  <rect x="424" y="656" width="352" height="17" rx="5" fill="#12182d"/>
+  <rect x="558" y="673" width="84" height="19" fill="#252a3d"/>
+  <rect x="487" y="692" width="226" height="11" rx="5" fill="#202437"/>
+</svg>

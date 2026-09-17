@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title">
+  <title id="title">Outreach Recruitment flyer concept</title>
+  <rect width="1200" height="760" fill="#e9eaf0"/>
+  <g transform="rotate(-9 460 388)">
+    <rect x="263" y="78" width="370" height="590" rx="5" fill="#c9cbd5"/>
+    <rect x="253" y="68" width="370" height="590" rx="5" fill="#fff"/>
+    <rect x="253" y="68" width="370" height="285" fill="#262477"/>
+    <text x="288" y="135" fill="#fff" font-family="Arial,sans-serif" font-size="21" font-weight="700">OUTREACH</text>
+    <text x="288" y="159" fill="#dad9ff" font-family="Arial,sans-serif" font-size="12" letter-spacing="3">RECRUITMENT</text>
+    <text x="288" y="252" fill="#fff" font-family="Arial,sans-serif" font-size="37" font-weight="700">Your next</text>
+    <text x="288" y="300" fill="#fff" font-family="Arial,sans-serif" font-size="37" font-weight="700">move starts here.</text>
+    <rect x="288" y="395" width="72" height="5" fill="#ee2e24"/>
+    <text x="288" y="446" fill="#20234f" font-family="Arial,sans-serif" font-size="22" font-weight="700">For candidates</text>
+    <text x="288" y="479" fill="#545770" font-family="Arial,sans-serif" font-size="16">Explore your next opportunity.</text>
+    <text x="288" y="533" fill="#20234f" font-family="Arial,sans-serif" font-size="22" font-weight="700">For employers</text>
+    <text x="288" y="566" fill="#545770" font-family="Arial,sans-serif" font-size="16">Find the right people.</text>
+    <text x="288" y="625" fill="#3937a9" font-family="Arial,sans-serif" font-size="15" font-weight="700">outreachrecruitment.net</text>
+  </g>
+  <g transform="rotate(9 764 386)">
+    <rect x="586" y="97" width="360" height="570" rx="5" fill="#c9cbd5"/>
+    <rect x="577" y="87" width="360" height="570" rx="5" fill="#fff"/>
+    <rect x="577" y="87" width="360" height="218" fill="#3b39b4"/>
+    <text x="610" y="149" fill="#fff" font-family="Arial,sans-serif" font-size="21" font-weight="700">OUTREACH</text>
+    <text x="610" y="173" fill="#dad9ff" font-family="Arial,sans-serif" font-size="12" letter-spacing="3">RECRUITMENT</text>
+    <text x="610" y="252" fill="#fff" font-family="Arial,sans-serif" font-size="33" font-weight="700">Build your team</text>
+    <text x="610" y="291" fill="#fff" font-family="Arial,sans-serif" font-size="33" font-weight="700">with confidence.</text>
+    <circle cx="655" cy="377" r="31" fill="#ee2e24"/>
+    <circle cx="758" cy="377" r="31" fill="#3b39b4"/>
+    <circle cx="861" cy="377" r="31" fill="#ee2e24"/>
+    <text x="611" y="471" fill="#20234f" font-family="Arial,sans-serif" font-size="25" font-weight="700">Recruitment that</text>
+    <text x="611" y="504" fill="#20234f" font-family="Arial,sans-serif" font-size="25" font-weight="700">moves you forward.</text>
+    <rect x="611" y="555" width="254" height="51" rx="6" fill="#3b39b4"/>
+    <text x="636" y="588" fill="#fff" font-family="Arial,sans-serif" font-size="16" font-weight="700">Start a conversation →</text>
+  </g>
+</svg>

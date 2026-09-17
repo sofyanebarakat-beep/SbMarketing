@@ -288,54 +288,6 @@
       text-decoration: underline;
     }
 
-    .outreach-seo-section {
-      background: #fff;
-      color: #041020;
-    }
-
-    .outreach-seo-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: clamp(1.75rem, 4vw, 3.5rem);
-    }
-
-    @media screen and (max-width: 767px) {
-      .outreach-seo-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .outreach-seo-grid h3 {
-      margin-bottom: 0.75rem;
-    }
-
-    .outreach-seo-list {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 0.65rem;
-      color: rgba(4, 16, 32, 0.72);
-    }
-
-    .outreach-seo-list li {
-      position: relative;
-      padding-left: 1.25rem;
-      line-height: 1.5;
-    }
-
-    .outreach-seo-list li::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 0.5em;
-      width: 0.45rem;
-      height: 0.45rem;
-      background: #3f3ae6;
-      border-radius: 1px;
-    }
-
     .template-case-hero {
       position: relative;
       overflow: hidden;
@@ -700,8 +652,11 @@
 <script defer src="/js/site-header.js"></script><script defer src="/js/language-switcher.js"></script>
 <link rel="stylesheet" href="/css/site-header.css"><link rel="stylesheet" href="/css/language-switcher.css">
 <link rel="stylesheet" href="/css/outreach-live-showcase.css">
+<link rel="stylesheet" href="/css/marketing-materials-slider.css">
+<link rel="stylesheet" href="/css/outreach-materials.css">
 <link rel="stylesheet" href="/css/social-posts-showcase.css">
 <script defer src="/js/outreach-live-showcase.js"></script>
+<script defer src="/js/marketing-materials-slider.js"></script>
 </head>
 <body>
 <div class="page-wrapper">
@@ -873,6 +828,24 @@
 <aside class="ors-result" aria-label="Project outcome"><strong>A clearer and more credible digital presence, designed to transform interest into qualified conversations.</strong><span>Target outcome for Outreach Recruitment</span></aside>
 </div>
 </section>
+<section class="mms-showcase outreach-materials" style="--mms-bg:#3A38DA" aria-labelledby="outreach-materials-title">
+<div class="mms-shell outreach-materials__grid">
+<div class="mms-heading outreach-materials__intro">
+<span class="mms-kicker">Beyond the website</span>
+<h2 id="outreach-materials-title">A brand that works wherever people meet it</h2>
+<p>We also support Outreach Recruitment with communication materials and a candidate management solution. From events and printed handouts to day-to-day recruitment, each touchpoint carries the same clear identity.</p>
+</div>
+<div class="mms-slider" data-mms-slider data-label="Outreach Recruitment materials and solutions" role="region" aria-roledescription="carousel" aria-label="Outreach Recruitment materials and solutions">
+<div class="mms-viewport"><div class="mms-track" data-mms-track>
+<div class="mms-slide" data-mms-slide role="group" aria-label="1 of 3"><figure class="mms-figure"><div class="mms-media"><img src="/images/outreachrecruitment/roll-up-concept.svg" loading="lazy" decoding="async" alt="Concept mockup of an Outreach Recruitment event roll-up"></div><figcaption class="mms-caption"><span class="mms-count">Material 01</span><strong>Event roll-up</strong><span>A clear, large-format brand presence for events and face-to-face conversations.</span></figcaption></figure></div>
+<div class="mms-slide" data-mms-slide role="group" aria-label="2 of 3"><figure class="mms-figure"><div class="mms-media"><img src="/images/outreach-study-app-dashboard.png" loading="lazy" decoding="async" alt="Outreach candidate management application dashboard"></div><figcaption class="mms-caption"><span class="mms-count">Solution 02</span><strong>Candidate management</strong><span>A dedicated application to organize profiles, follow progress and support the recruitment workflow.</span></figcaption></figure></div>
+<div class="mms-slide" data-mms-slide role="group" aria-label="3 of 3"><figure class="mms-figure"><div class="mms-media"><img src="/images/outreachrecruitment/flyer-concept.svg" loading="lazy" decoding="async" alt="Concept mockups of Outreach Recruitment flyers for candidates and employers"></div><figcaption class="mms-caption"><span class="mms-count">Material 03</span><strong>Recruitment flyers</strong><span>Compact print pieces that introduce the offer to candidates and employers and point them toward the next step.</span></figcaption></figure></div>
+</div></div>
+<button class="mms-arrow mms-arrow--prev" type="button" data-mms-prev aria-label="Previous material">←</button><button class="mms-arrow mms-arrow--next" type="button" data-mms-next aria-label="Next material">→</button>
+<div class="mms-dots" aria-label="Choose a material"><button class="mms-dot" type="button" data-mms-dot aria-label="Show material 1" aria-current="true"></button><button class="mms-dot" type="button" data-mms-dot aria-label="Show material 2" aria-current="false"></button><button class="mms-dot" type="button" data-mms-dot aria-label="Show material 3" aria-current="false"></button></div>
+</div>
+</div>
+</section>
 <section class="sps-showcase" style="--sps-bg:#3f3ae6" aria-label="Social media posts">
 <div class="sps-brand">
 <span class="sps-brand__badge"><img src="/images/outreach-mark.svg" alt=""/></span>
@@ -1015,48 +988,6 @@
 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
 </footer>
 </article>
-</div>
-</section>
-<section class="section_portfolio2-content3 template-details-section outreach-seo-section portfolio p-desktop">
-<div class="padding-global">
-<div class="container-large">
-<div class="padding-section-large">
-<div class="max-width-large align-center">
-<div class="fx-up">
-<div class="margin-bottom margin-small">
-<h2>Built to be found — and to convert</h2>
-</div>
-<div class="text-rich-text w-richtext">
-<p>Reaching the right candidates and employers starts before the first visit: the site has to appear when they search, then guide them to contact without friction.</p>
-</div>
-</div>
-<div class="margin-top margin-medium">
-<div class="fx-up">
-<div class="outreach-seo-grid">
-<div>
-<h3>Local SEO</h3>
-<ul class="outreach-seo-list">
-<li>Pages structured around sector and location searches — the way employers and candidates actually look for a recruiter.</li>
-<li>Google Business Profile set up and kept consistent with the site: same name, address and contact details everywhere.</li>
-<li>Clean heading structure, meta titles and descriptions, and business schema so search engines read each page correctly.</li>
-<li>Fast, mobile-first pages that hold up on Core Web Vitals, which keeps rankings stable over time.</li>
-</ul>
-</div>
-<div>
-<h3>Conversion</h3>
-<ul class="outreach-seo-list">
-<li>Separate, clearly signposted paths for employers looking for talent and for candidates seeking a role.</li>
-<li>Contact points repeated at every scroll depth, so the next step is never more than one click away.</li>
-<li>Short, qualifying forms instead of a generic "contact us" — better leads and less back-and-forth.</li>
-<li>Trust signals — process, sectors covered, guarantees — placed right before each call to action.</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
 </div>
 </section>
 <section class="section_portfolio2-content4 template-details-section portfolio p-desktop">
