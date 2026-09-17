@@ -6,25 +6,3 @@
 .outreach-materials .mms-viewport {
   border: 1px solid rgba(255, 255, 255, .18);
 }
-
-.outreach-materials__portal-link {
-  display: inline-block;
-  color: #ffe500;
-  font-size: .9rem;
-  font-weight: 700;
-  text-decoration: underline;
-  text-underline-offset: .2em;
-}
-
-.outreach-materials__portal-link:focus-visible {
-  outline: 2px solid #ffe500;
-  outline-offset: 4px;
-}
-
-.outreach-solutions__links {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: .75rem 1.5rem;
-  margin-top: 1.25rem;
-}
