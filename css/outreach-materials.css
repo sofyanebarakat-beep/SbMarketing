@@ -6,3 +6,23 @@
 .outreach-materials .mms-viewport {
   border: 1px solid rgba(255, 255, 255, .18);
 }
+
+.outreach-materials .outreach-materials__combined-media {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.outreach-materials .outreach-materials__combined-media img {
+  min-width: 0;
+  height: clamp(17rem, 35vw, 32rem);
+}
+
+@media (max-width: 760px) {
+  .outreach-materials .outreach-materials__combined-media {
+    grid-template-columns: 1fr;
+  }
+
+  .outreach-materials .outreach-materials__combined-media img {
+    height: min(55vw, 16rem);
+  }
+}
