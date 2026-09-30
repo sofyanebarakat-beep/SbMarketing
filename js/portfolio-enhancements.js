@@ -111,6 +111,15 @@
   });
   items = Array.prototype.slice.call(list.querySelectorAll(":scope > .w-dyn-item"));
 
+  // Keep the enhanced project cards, but do not inject the filtering toolbar,
+  // project count, or editorial testimonial into either language version.
+  document.body.classList.add("sb-portfolio-page");
+  list.addEventListener("click", function (event) {
+    var projectLink = event.target.closest('a[href*="/projets/"]');
+    if (projectLink) saveReturnLocation();
+  });
+  return;
+
   var toolbar = document.createElement("div");
   toolbar.className = "sb-portfolio-toolbar";
   toolbar.setAttribute("aria-label", english ? "Filter projects" : "Filtrer les projets");
