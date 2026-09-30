@@ -13,6 +13,8 @@ Disallow: /media/
 
 # Block legal pages from being crawled with query params
 Disallow: /*?*
+Disallow: /test/
+Disallow: /en/test/
 
 # ── Google ───────────────────────────────────────────────────────────
 User-agent: Googlebot
