@@ -68,6 +68,8 @@
 
   function localizedPath(language) {
     var path = window.location.pathname || "/";
+    if (language === "en" && path.indexOf("/marketing-boucherie/") === 0) return "/butcher-marketing/";
+    if (language === "fr" && path.indexOf("/butcher-marketing/") === 0) return "/marketing-boucherie/";
     if (language === "en") return path.indexOf("/en/") === 0 || path === "/en" ? path : "/en" + (path === "/" ? "/" : path);
     if (path === "/en" || path === "/en/") return "/";
     return path.indexOf("/en/") === 0 ? path.slice(3) || "/" : path;
