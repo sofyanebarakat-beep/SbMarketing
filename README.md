@@ -40,6 +40,15 @@ The build command validates local asset references across HTML, CSS, JS, and XML
 - Deploy the repository root as the public web root.
 - Do not move `css/`, `js/`, `images/`, `media/`, or `fonts/` without updating every relative reference in the exported pages.
 
+## Leads Admin Setup
+
+The private leads dashboard is available at `/admin/`. Before first use:
+
+1. Open the Supabase SQL Editor and run `supabase/schema.sql` once.
+2. In Supabase Authentication, create a user for `sofyanebarakat@gmail.com` with a unique strong password.
+
+The publishable browser key in `js/supabase-config.js` is intentionally public. Never add the database password or Supabase service-role key to this repository. Row Level Security limits lead access to the configured admin email.
+
 ## Folder Structure
 
 ```text
