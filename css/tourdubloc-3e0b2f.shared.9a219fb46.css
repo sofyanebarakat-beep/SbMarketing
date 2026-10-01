@@ -4514,6 +4514,55 @@ figcaption {
   font-size: .875rem;
 }
 
+/* Footer contact row — phone + social links, added site-wide next to the
+   credit line so every page carries real NAP/trust signals. */
+.sb-footer-contact {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+}
+
+.sb-footer-contact__phone {
+  font-size: .875rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: inherit;
+}
+
+.sb-footer-contact__phone:hover {
+  text-decoration: underline;
+}
+
+.sb-footer-contact__social {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+}
+
+.sb-footer-contact__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: 1px solid currentColor;
+  opacity: .75;
+  transition: opacity .18s, transform .18s;
+}
+
+.sb-footer-contact__icon:hover {
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+.sb-footer-contact__icon svg {
+  width: 1rem;
+  height: 1rem;
+  fill: currentColor;
+}
+
 .footer7_legal-link {
   font-size: .875rem;
   text-decoration: underline;
@@ -10755,6 +10804,11 @@ figcaption {
   }
 
   .footer7_credit-text {
+    margin-top: 2rem;
+  }
+
+  .sb-footer-contact {
+    flex-direction: column;
     margin-top: 2rem;
   }
 
