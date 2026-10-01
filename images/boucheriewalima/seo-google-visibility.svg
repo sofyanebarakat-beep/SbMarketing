@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="820" viewBox="0 0 1200 820" role="img" aria-labelledby="title desc">
+  <title id="title">Visibilité Google de Boucherie Walima</title>
+  <desc id="desc">Maquette éditoriale montrant un résultat de recherche et les mots-clés locaux travaillés.</desc>
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="18" stdDeviation="24" flood-color="#351416" flood-opacity=".15"/></filter>
+  </defs>
+  <rect width="1200" height="820" rx="36" fill="#f7f5f2"/>
+  <circle cx="1060" cy="95" r="145" fill="#ec181f" opacity=".08"/>
+  <circle cx="135" cy="725" r="190" fill="#ec181f" opacity=".06"/>
+  <g filter="url(#shadow)">
+    <rect x="90" y="92" width="1020" height="602" rx="28" fill="#fff"/>
+    <rect x="90" y="92" width="1020" height="78" rx="28" fill="#18090a"/>
+    <circle cx="132" cy="131" r="8" fill="#ec181f"/><circle cx="158" cy="131" r="8" fill="#ffca3a"/><circle cx="184" cy="131" r="8" fill="#62c370"/>
+    <rect x="230" y="112" width="620" height="38" rx="19" fill="#fff" opacity=".12"/>
+    <text x="258" y="138" fill="#fff" font-family="Arial, sans-serif" font-size="16">boucherie halal le mans</text>
+    <text x="142" y="229" fill="#202124" font-family="Arial, sans-serif" font-size="34" font-weight="700">Résultats locaux ciblés</text>
+    <text x="142" y="268" fill="#5f6368" font-family="Arial, sans-serif" font-size="18">Une présence optimisée pour les recherches de proximité.</text>
+    <rect x="142" y="310" width="650" height="224" rx="18" fill="#fff" stroke="#e2e4e8" stroke-width="2"/>
+    <circle cx="184" cy="353" r="22" fill="#ec181f"/>
+    <text x="184" y="360" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif" font-size="20" font-weight="700">W</text>
+    <text x="222" y="349" fill="#202124" font-family="Arial, sans-serif" font-size="18">Boucherie Walima</text>
+    <text x="222" y="373" fill="#5f6368" font-family="Arial, sans-serif" font-size="14">https://boucheriewalima.fr</text>
+    <text x="174" y="424" fill="#1a0dab" font-family="Arial, sans-serif" font-size="25">Boucherie Walima | Boucherie halal au Mans</text>
+    <text x="174" y="462" fill="#4d5156" font-family="Arial, sans-serif" font-size="17">Viandes françaises, sélection artisanale et conseils en boutique.</text>
+    <text x="174" y="489" fill="#4d5156" font-family="Arial, sans-serif" font-size="17">Découvrez nos produits et toutes les informations pratiques.</text>
+    <rect x="832" y="310" width="218" height="224" rx="18" fill="#fff5f5"/>
+    <path d="M941 350c-41 0-74 32-74 72 0 53 74 102 74 102s74-49 74-102c0-40-33-72-74-72z" fill="#ec181f"/>
+    <circle cx="941" cy="421" r="27" fill="#fff"/>
+    <text x="941" y="570" text-anchor="middle" fill="#18090a" font-family="Arial, sans-serif" font-size="18" font-weight="700">Le Mans</text>
+    <g font-family="Arial, sans-serif" font-size="16" font-weight="700">
+      <rect x="142" y="578" width="222" height="48" rx="24" fill="#18090a"/><text x="253" y="608" text-anchor="middle" fill="#fff">boucherie halal Le Mans</text>
+      <rect x="378" y="578" width="184" height="48" rx="24" fill="#f0f1f3"/><text x="470" y="608" text-anchor="middle" fill="#351416">boucherie Le Mans</text>
+      <rect x="576" y="578" width="210" height="48" rx="24" fill="#f0f1f3"/><text x="681" y="608" text-anchor="middle" fill="#351416">viande halal Le Mans</text>
+    </g>
+  </g>
+</svg>

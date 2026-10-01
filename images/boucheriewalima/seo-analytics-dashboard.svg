@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="820" viewBox="0 0 1200 820" role="img" aria-labelledby="title desc">
+  <title id="title">SEO analytics and keyword ranking dashboard</title>
+  <desc id="desc">Editorial dashboard showing organic traffic, tracked keywords and ranking trends.</desc>
+  <defs><filter id="shadow" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="18" stdDeviation="24" flood-color="#351416" flood-opacity=".15"/></filter></defs>
+  <rect width="1200" height="820" rx="36" fill="#f7f5f2"/>
+  <circle cx="1100" cy="78" r="170" fill="#ec181f" opacity=".07"/>
+  <g filter="url(#shadow)">
+    <rect x="80" y="78" width="1040" height="664" rx="30" fill="#fff"/>
+    <rect x="80" y="78" width="230" height="664" rx="30" fill="#18090a"/>
+    <circle cx="136" cy="138" r="28" fill="#ec181f"/><text x="136" y="147" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif" font-size="25" font-weight="700">W</text>
+    <text x="178" y="134" fill="#fff" font-family="Arial, sans-serif" font-size="18" font-weight="700">Walima SEO</text><text x="178" y="157" fill="#fff" opacity=".55" font-family="Arial, sans-serif" font-size="12">PERFORMANCE</text>
+    <g font-family="Arial, sans-serif" font-size="15"><rect x="104" y="205" width="182" height="46" rx="12" fill="#ec181f"/><text x="128" y="234" fill="#fff">Overview</text><text x="128" y="291" fill="#fff" opacity=".58">Rankings</text><text x="128" y="343" fill="#fff" opacity=".58">Keywords</text><text x="128" y="395" fill="#fff" opacity=".58">Organic traffic</text><text x="128" y="447" fill="#fff" opacity=".58">Local visibility</text></g>
+    <text x="354" y="137" fill="#18090a" font-family="Arial, sans-serif" font-size="28" font-weight="700">SEO performance</text>
+    <text x="354" y="168" fill="#777" font-family="Arial, sans-serif" font-size="15">Rankings, keywords and analytics in one place</text>
+    <g font-family="Arial, sans-serif">
+      <rect x="354" y="206" width="218" height="118" rx="18" fill="#fff5f5"/><text x="378" y="238" fill="#777" font-size="14">TRACKED KEYWORDS</text><text x="378" y="286" fill="#18090a" font-size="36" font-weight="700">All</text><text x="444" y="285" fill="#39a96b" font-size="14">live access</text>
+      <rect x="592" y="206" width="218" height="118" rx="18" fill="#f5f7ff"/><text x="616" y="238" fill="#777" font-size="14">GOOGLE POSITIONS</text><text x="616" y="286" fill="#18090a" font-size="36" font-weight="700">24/7</text><text x="705" y="285" fill="#39a96b" font-size="14">tracking</text>
+      <rect x="830" y="206" width="218" height="118" rx="18" fill="#f3faf6"/><text x="854" y="238" fill="#777" font-size="14">ORGANIC TRAFFIC</text><text x="854" y="286" fill="#18090a" font-size="36" font-weight="700">Live</text><text x="928" y="285" fill="#39a96b" font-size="14">analytics</text>
+    </g>
+    <rect x="354" y="352" width="694" height="214" rx="18" fill="#faf9f7"/>
+    <text x="380" y="388" fill="#18090a" font-family="Arial, sans-serif" font-size="17" font-weight="700">Organic visibility trend</text>
+    <path d="M385 520C450 505 470 510 525 470S625 492 680 441 770 465 825 411 925 432 1018 374" fill="none" stroke="#ec181f" stroke-width="6" stroke-linecap="round"/>
+    <path d="M385 520C450 505 470 510 525 470S625 492 680 441 770 465 825 411 925 432 1018 374L1018 540H385Z" fill="#ec181f" opacity=".08"/>
+    <g fill="#ec181f"><circle cx="525" cy="470" r="7"/><circle cx="680" cy="441" r="7"/><circle cx="825" cy="411" r="7"/><circle cx="1018" cy="374" r="7"/></g>
+    <rect x="354" y="594" width="694" height="102" rx="18" fill="#18090a"/>
+    <text x="382" y="629" fill="#fff" opacity=".62" font-family="Arial, sans-serif" font-size="13">TARGET KEYWORDS</text>
+    <g font-family="Arial, sans-serif" font-size="14" font-weight="700"><rect x="382" y="645" width="187" height="34" rx="17" fill="#ec181f"/><text x="476" y="667" text-anchor="middle" fill="#fff">halal butcher Le Mans</text><rect x="581" y="645" width="174" height="34" rx="17" fill="#fff" opacity=".12"/><text x="668" y="667" text-anchor="middle" fill="#fff">butcher Le Mans</text><rect x="767" y="645" width="210" height="34" rx="17" fill="#fff" opacity=".12"/><text x="872" y="667" text-anchor="middle" fill="#fff">halal meat Le Mans</text></g>
+  </g>
+</svg>

@@ -1,0 +1,20 @@
+.walima-seo .mms-kicker,
+.walima-seo .mms-count {
+  color: #ffd9da;
+}
+
+.walima-seo .mms-viewport {
+  border: 1px solid rgba(255, 255, 255, .2);
+}
+
+.walima-seo .mms-media {
+  background: #f7f5f2;
+}
+
+.walima-seo .mms-caption {
+  background: #18090a;
+}
+
+.walima-seo .mms-media img {
+  filter: drop-shadow(0 18px 28px rgba(24, 9, 10, .12));
+}
