@@ -27,5 +27,7 @@
     dots.forEach(function(dot,i){dot.addEventListener('click',function(){show(i);});});
     show(0);
   });
+  var mobileCta=document.querySelector('.bm-mobile-cta');
+  if(mobileCta){var updateMobileCta=function(){mobileCta.classList.toggle('is-visible',window.scrollY>Math.min(420,window.innerHeight*.55));};window.addEventListener('scroll',updateMobileCta,{passive:true});updateMobileCta();}
   [25,50,75,90].forEach(function(depth){var sent=false;window.addEventListener('scroll',function(){if(!sent&&100*(window.scrollY+window.innerHeight)/document.documentElement.scrollHeight>=depth){sent=true;track('scroll_depth',{percent:depth});}},{passive:true});});
 })();
