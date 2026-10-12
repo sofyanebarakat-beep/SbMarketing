@@ -36,6 +36,9 @@
           <a href="#clients" class="sidebar-link" data-tab="clients">
             <span class="sidebar-link__icon" aria-hidden="true">👥</span> Clients
           </a>
+          <a href="#marketing" class="sidebar-link" data-tab="marketing">
+            <span class="sidebar-link__icon" aria-hidden="true">📧</span> Email Marketing
+          </a>
           <a href="#settings" class="sidebar-link" data-tab="settings">
             <span class="sidebar-link__icon" aria-hidden="true">⚙️</span> Settings
           </a>
@@ -87,7 +90,6 @@
           <div class="toolbar toolbar--clients">
             <label class="search"><span class="sr-only">Search clients</span><input type="search" data-client-search placeholder="Search business, contact, email…"></label>
             <select data-client-due-filter aria-label="Filter by report status"><option value="">All clients</option><option value="due">Due now</option><option value="sent">Sent this month</option><option value="paused">Paused</option></select>
-            <button type="button" class="secondary" data-bulk-tip-toggle>Send tip to multiple</button>
             <button type="button" data-add-client-toggle>+ Add client</button>
           </div>
 
@@ -113,6 +115,24 @@
           <p class="dashboard-message" data-clients-message aria-live="polite"></p>
           <div class="table-wrap"><table><thead><tr><th>Business</th><th>Contact</th><th>Activity</th><th>Language</th><th>Status</th><th>Last report</th><th>Next report</th><th>Actions</th></tr></thead><tbody data-clients-body></tbody></table></div>
           <div class="empty" data-clients-empty hidden><h2>No clients yet</h2><p>Add your first client to start sending monthly reports.</p></div>
+        </div>
+
+        <div data-view="marketing" hidden>
+          <div class="toolbar toolbar--marketing">
+            <select data-marketing-client-select aria-label="Pick a client"><option value="">Pick a client…</option></select>
+            <button type="button" data-marketing-compose>✉️ Compose email</button>
+            <button type="button" class="secondary" data-bulk-tip-toggle>Send tip to multiple</button>
+          </div>
+          <p class="dashboard-message" data-marketing-message aria-live="polite"></p>
+
+          <h2 class="settings-section-title">Saved templates</h2>
+          <div class="table-wrap"><table><thead><tr><th>Name</th><th>Type</th><th>Created</th><th>Actions</th></tr></thead><tbody data-templates-body></tbody></table></div>
+          <div class="empty" data-templates-empty hidden><h2>No templates yet</h2><p>Save one from the send dialog to reuse it later.</p></div>
+
+          <h2 class="settings-section-title">Email history</h2>
+          <div class="toolbar"><label class="search"><span class="sr-only">Search email history</span><input type="search" data-marketing-history-search placeholder="Search client, subject…"></label></div>
+          <div class="table-wrap"><table><thead><tr><th>Date</th><th>Client</th><th>Type</th><th>Subject</th></tr></thead><tbody data-marketing-history-body></tbody></table></div>
+          <div class="empty" data-marketing-history-empty hidden><h2>No emails sent yet</h2><p>Compose one above to get started.</p></div>
         </div>
 
         <div data-view="settings" hidden>
@@ -357,17 +377,11 @@
           <button type="submit">Save changes</button>
           <a class="secondary whatsapp-link" data-client-whatsapp href="#" target="_blank" rel="noopener" hidden>💬 WhatsApp</a>
           <button type="button" class="secondary" data-client-send-email>Send email</button>
+          <button type="button" class="secondary" data-client-view-emails>View email history</button>
           <button type="button" class="danger" data-client-delete>Delete client</button>
         </div>
         <p class="form-message" data-client-edit-message aria-live="polite"></p>
       </form>
-
-      <div class="client-dialog__history">
-        <h3>Email history</h3>
-        <p class="dashboard-message" data-client-history-message aria-live="polite"></p>
-        <ul class="history-list" data-client-history-list></ul>
-        <p class="muted-note" data-client-history-empty hidden>No emails sent yet.</p>
-      </div>
     </div>
   </dialog>
 

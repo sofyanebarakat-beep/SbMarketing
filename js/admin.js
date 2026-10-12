@@ -2,18 +2,20 @@
   'use strict';
   var config=window.SB_SUPABASE,sessionKey='sb_admin_session',leads=[],contacts=[],clients=[],appSettings=null;
   var loginView=document.querySelector('[data-login-view]'),dashboard=document.querySelector('[data-dashboard]'),loginForm=document.querySelector('[data-login-form]'),loginMessage=document.querySelector('[data-login-message]'),dashboardMessage=document.querySelector('[data-dashboard-message]'),tbody=document.querySelector('[data-leads-body]'),empty=document.querySelector('[data-empty]'),search=document.querySelector('[data-search]'),filter=document.querySelector('[data-status-filter]');
-  var viewTitle=document.querySelector('[data-view-title]'),tabs=document.querySelectorAll('[data-tab]'),views={leads:document.querySelector('[data-view="leads"]'),contacts:document.querySelector('[data-view="contacts"]'),clients:document.querySelector('[data-view="clients"]'),settings:document.querySelector('[data-view="settings"]')};
+  var viewTitle=document.querySelector('[data-view-title]'),tabs=document.querySelectorAll('[data-tab]'),views={leads:document.querySelector('[data-view="leads"]'),contacts:document.querySelector('[data-view="contacts"]'),clients:document.querySelector('[data-view="clients"]'),marketing:document.querySelector('[data-view="marketing"]'),settings:document.querySelector('[data-view="settings"]')};
   var clientsBody=document.querySelector('[data-clients-body]'),clientsEmpty=document.querySelector('[data-clients-empty]'),clientsMessage=document.querySelector('[data-clients-message]'),clientSearch=document.querySelector('[data-client-search]'),clientDueFilter=document.querySelector('[data-client-due-filter]');
   var addClientToggle=document.querySelector('[data-add-client-toggle]'),addClientForm=document.querySelector('[data-add-client-form]'),addClientCancel=document.querySelector('[data-add-client-cancel]'),addClientMessage=document.querySelector('[data-add-client-message]');
   var sendDialog=document.querySelector('[data-send-dialog]'),sendForm=document.querySelector('[data-send-form]'),sendClientLabel=document.querySelector('[data-send-client]'),sendMessage=document.querySelector('[data-send-message]'),sendCancel=document.querySelector('[data-send-cancel]'),sendTypeSelect=document.querySelector('[data-send-type]'),sendPreviewBtn=document.querySelector('[data-send-preview]'),previewPane=document.querySelector('[data-preview-pane]'),previewFrame=document.querySelector('[data-preview-frame]'),previewClose=document.querySelector('[data-preview-close]');
-  var clientDialog=document.querySelector('[data-client-dialog]'),clientDialogName=document.querySelector('[data-client-dialog-name]'),clientDialogStatus=document.querySelector('[data-client-dialog-status]'),clientDialogClose=document.querySelector('[data-client-dialog-close]'),clientEditForm=document.querySelector('[data-client-edit-form]'),clientEditMessage=document.querySelector('[data-client-edit-message]'),clientDeleteBtn=document.querySelector('[data-client-delete]'),clientDialogSendEmail=document.querySelector('[data-client-send-email]'),clientWhatsappLink=document.querySelector('[data-client-whatsapp]'),clientUnsubscribedNote=document.querySelector('[data-client-unsubscribed]');
-  var clientHistoryList=document.querySelector('[data-client-history-list]'),clientHistoryMessage=document.querySelector('[data-client-history-message]'),clientHistoryEmpty=document.querySelector('[data-client-history-empty]');
+  var clientDialog=document.querySelector('[data-client-dialog]'),clientDialogName=document.querySelector('[data-client-dialog-name]'),clientDialogStatus=document.querySelector('[data-client-dialog-status]'),clientDialogClose=document.querySelector('[data-client-dialog-close]'),clientEditForm=document.querySelector('[data-client-edit-form]'),clientEditMessage=document.querySelector('[data-client-edit-message]'),clientDeleteBtn=document.querySelector('[data-client-delete]'),clientDialogSendEmail=document.querySelector('[data-client-send-email]'),clientDialogViewEmails=document.querySelector('[data-client-view-emails]'),clientWhatsappLink=document.querySelector('[data-client-whatsapp]'),clientUnsubscribedNote=document.querySelector('[data-client-unsubscribed]');
   var settingsForm=document.querySelector('[data-settings-form]'),settingsMessage=document.querySelector('[data-settings-message]');
   var bulkToggle=document.querySelector('[data-bulk-tip-toggle]'),bulkDialog=document.querySelector('[data-bulk-dialog]'),bulkForm=document.querySelector('[data-bulk-form]'),bulkList=document.querySelector('[data-bulk-client-list]'),bulkActivityFilter=document.querySelector('[data-bulk-activity-filter]'),bulkMessage=document.querySelector('[data-bulk-message]'),bulkCancel=document.querySelector('[data-bulk-cancel]');
   var templateSelect=document.querySelector('[data-template-select]'),templateSaveBtn=document.querySelector('[data-template-save]');
   var previewMobileToggle=document.querySelector('[data-preview-mobile-toggle]');
   var assetPicker=document.querySelector('[data-asset-picker]'),assetPickerGrid=document.querySelector('[data-asset-picker-grid]'),assetPickerMessage=document.querySelector('[data-asset-picker-message]'),assetUploadInput=document.querySelector('[data-asset-upload-input]');
-  var sendTarget=null,lastMonthMetrics=null,dialogTarget=null,templates=[],templatesLoaded=false,assetLibrary=null,assetPickerTarget=null;
+  var marketingMessage=document.querySelector('[data-marketing-message]'),marketingClientSelect=document.querySelector('[data-marketing-client-select]'),marketingComposeBtn=document.querySelector('[data-marketing-compose]');
+  var templatesBody=document.querySelector('[data-templates-body]'),templatesEmpty=document.querySelector('[data-templates-empty]');
+  var marketingHistoryBody=document.querySelector('[data-marketing-history-body]'),marketingHistoryEmpty=document.querySelector('[data-marketing-history-empty]'),marketingHistorySearch=document.querySelector('[data-marketing-history-search]');
+  var sendTarget=null,lastMonthMetrics=null,dialogTarget=null,templates=[],templatesLoaded=false,assetLibrary=null,assetPickerTarget=null,marketingHistory=[],marketingHistoryLoaded=false;
   // The full metric catalog, grouped the way both the client "which
   // metrics do they track" checklist and the report email organise them.
   // A client's clients.tracked_metrics is just an array of keys from here.
@@ -196,7 +198,13 @@
   function dueBadgeHtml(client){if(client.status!=='active')return '<span class="due-badge due-badge--paused">Paused</span>';return isSentThisMonth(client)?'<span class="due-badge due-badge--ok">Sent this month</span>':'<span class="due-badge due-badge--due">Due now</span>';}
 
   // ── Clients: list ───────────────────────────────────────────────
-  async function loadClients(){message(clientsMessage,'Loading clients…');try{clients=await request('/rest/v1/clients?select=*&order=created_at.desc');renderClients();refreshActivityFilterOptions();message(clientsMessage,'');}catch(error){message(clientsMessage,error.message.indexOf('clients')>-1?'Database setup required. Run supabase/clients_schema.sql in the Supabase SQL Editor.':error.message);}}
+  async function loadClients(){message(clientsMessage,'Loading clients…');try{clients=await request('/rest/v1/clients?select=*&order=created_at.desc');renderClients();refreshActivityFilterOptions();refreshMarketingClientOptions();message(clientsMessage,'');}catch(error){message(clientsMessage,error.message.indexOf('clients')>-1?'Database setup required. Run supabase/clients_schema.sql in the Supabase SQL Editor.':error.message);}}
+  function refreshMarketingClientOptions(){
+    if(!marketingClientSelect)return;
+    var current=marketingClientSelect.value;
+    marketingClientSelect.innerHTML='<option value="">Pick a client…</option>'+clients.slice().sort(function(a,b){return a.business_name.localeCompare(b.business_name);}).map(function(c){return '<option value="'+escapeHtml(c.id)+'">'+escapeHtml(c.business_name)+'</option>';}).join('');
+    marketingClientSelect.value=current;
+  }
   function refreshActivityFilterOptions(){if(!bulkActivityFilter)return;var activities=Array.from(new Set(clients.map(function(c){return c.activity;}).filter(Boolean))).sort();var current=bulkActivityFilter.value;bulkActivityFilter.innerHTML='<option value="">All activities</option>'+activities.map(function(a){return '<option value="'+escapeHtml(a)+'">'+escapeHtml(a)+'</option>';}).join('');bulkActivityFilter.value=current;}
   function renderClients(){
     var term=(clientSearch?clientSearch.value:'').trim().toLowerCase(),due=(clientDueFilter?clientDueFilter.value:'');
@@ -247,30 +255,9 @@
     try{await request('/rest/v1/clients',{method:'POST',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(payload)});addClientForm.reset();addClientForm.querySelector('[name="whatsapp_country"]').value='33';setTrackedMetricsChecked(addClientForm.querySelector('[data-tracked-metrics="add"]'),DEFAULT_TRACKED_METRICS);addClientForm.hidden=true;await loadClients();}catch(error){message(addClientMessage,error.message);}finally{button.disabled=false;}
   }
 
-  // ── Clients: detail dialog (edit, history, delete, WhatsApp) ────
-  function emailHistorySummary(r){
-    if(r.type==='report'){
-      var catalogChips=Object.keys(r.highlights||{}).map(function(key){var def=METRIC_BY_KEY[key];var label=def?def.label:key;return '<span class="history-chip">'+escapeHtml(label)+': <strong>'+escapeHtml(r.highlights[key])+'</strong></span>';}).join('');
-      var customChips=(r.custom_metrics||[]).filter(function(m){return m.label&&m.value;}).map(function(m){return '<span class="history-chip">'+escapeHtml(m.label)+': <strong>'+escapeHtml(m.value)+'</strong></span>';}).join('');
-      var chips=catalogChips+customChips;
-      return '<strong>'+escapeHtml(r.month_label||'Report')+'</strong>'+(chips?'<div class="history-item__chips">'+chips+'</div>':'');
-    }
-    if(r.type==='tip')return '<strong>Tip: '+escapeHtml(r.headline||r.subject)+'</strong>'+(r.body?'<p class="history-item__summary">'+escapeHtml(r.body).slice(0,160)+'</p>':'');
-    return '<strong>'+escapeHtml(r.subject||'Message')+'</strong>'+(r.body?'<p class="history-item__summary">'+escapeHtml(r.body).slice(0,160)+'</p>':'');
-  }
-  function renderHistoryList(reports){
-    clientHistoryEmpty.hidden=reports.length!==0;
-    clientHistoryList.innerHTML=reports.map(function(r){
-      var sent=new Intl.DateTimeFormat('en-GB',{dateStyle:'medium'}).format(new Date(r.sent_at));
-      var typeLabel={report:'Report',tip:'Tip',custom:'Custom'}[r.type]||r.type;
-      return '<li><div class="history-item__head"><span class="history-type-badge history-type-badge--'+escapeHtml(r.type)+'">'+typeLabel+'</span><span>Sent '+sent+'</span></div>'
-        +'<div class="history-item__body">'+emailHistorySummary(r)+'</div>'
-        +'</li>';
-    }).join('');
-  }
-  async function loadClientHistory(clientId){message(clientHistoryMessage,'Loading history…');try{var rows=await request('/rest/v1/client_emails?client_id=eq.'+encodeURIComponent(clientId)+'&select=*&order=sent_at.desc');renderHistoryList(rows);message(clientHistoryMessage,'');return rows;}catch(error){message(clientHistoryMessage,error.message.indexOf('client_emails')>-1?'Database setup required. Run supabase/clients_schema.sql in the Supabase SQL Editor.':error.message);return [];}}
+  // ── Clients: detail dialog (edit, delete, WhatsApp) ─────────────
   function fillClientEditForm(c){var f=clientEditForm;f.elements.business_name.value=c.business_name||'';f.elements.contact_name.value=c.contact_name||'';f.elements.email.value=c.email||'';f.elements.activity.value=c.activity||'';f.elements.language.value=c.language||'fr';f.elements.status.value=c.status||'active';f.elements.notes.value=c.notes||'';f.elements.marketing_consent.checked=!!c.marketing_consent;fillPhoneField(f,c.whatsapp_number);setTrackedMetricsChecked(f.querySelector('[data-tracked-metrics="edit"]'),c.tracked_metrics&&c.tracked_metrics.length?c.tracked_metrics:DEFAULT_TRACKED_METRICS);clientUnsubscribedNote.hidden=!c.unsubscribed_at;if(c.whatsapp_number){clientWhatsappLink.hidden=false;clientWhatsappLink.href='https://wa.me/'+c.whatsapp_number.replace(/\D/g,'');}else{clientWhatsappLink.hidden=true;}}
-  async function openClientDialog(clientId){var c=clients.find(function(x){return x.id===clientId;});if(!c)return;dialogTarget=c;clientDialogName.textContent=c.business_name;clientDialogStatus.textContent=c.status==='active'?'Active':'Paused';clientDialogStatus.className='status-pill status-pill--'+c.status;fillClientEditForm(c);message(clientEditMessage,'');clientDialog.showModal();await loadClientHistory(c.id);}
+  function openClientDialog(clientId){var c=clients.find(function(x){return x.id===clientId;});if(!c)return;dialogTarget=c;clientDialogName.textContent=c.business_name;clientDialogStatus.textContent=c.status==='active'?'Active':'Paused';clientDialogStatus.className='status-pill status-pill--'+c.status;fillClientEditForm(c);message(clientEditMessage,'');clientDialog.showModal();}
   async function saveClientEdits(event){
     event.preventDefault();if(!dialogTarget)return;
     var button=clientEditForm.querySelector('button[type="submit"]'),data=new FormData(clientEditForm);
@@ -502,7 +489,67 @@
 
   // ── Saved email templates ───────────────────────────────────────
   var TEMPLATE_FIELD_NAMES=['month_label','summary','report_url','headline','tip_body','tip_cta_label','tip_cta_url','subject','custom_body','custom_cta_label','custom_cta_url','extra_banner_url','extra_banner_alt','extra_image_url','extra_image_caption','extra_video_url','extra_video_thumb','extra_video_caption','extra_before_url','extra_after_url','extra_before_label','extra_after_label','extra_testimonial_quote','extra_testimonial_author','extra_testimonial_rating','attachment_url','attachment_filename'];
-  async function loadTemplates(){try{templates=await request('/rest/v1/email_templates?select=*&order=created_at.desc');}catch(error){templates=[];}templatesLoaded=true;templateSelect.innerHTML='<option value="">Start from a template…</option>'+templates.map(function(tpl){return '<option value="'+escapeHtml(tpl.id)+'">'+escapeHtml(tpl.name)+'</option>';}).join('');}
+  async function loadTemplates(){try{templates=await request('/rest/v1/email_templates?select=*&order=created_at.desc');}catch(error){templates=[];}templatesLoaded=true;templateSelect.innerHTML='<option value="">Start from a template…</option>'+templates.map(function(tpl){return '<option value="'+escapeHtml(tpl.id)+'">'+escapeHtml(tpl.name)+'</option>';}).join('');renderTemplatesTable();}
+  function renderTemplatesTable(){
+    if(!templatesBody)return;
+    templatesBody.innerHTML=templates.map(function(tpl){
+      var created=new Intl.DateTimeFormat('en-GB',{dateStyle:'medium'}).format(new Date(tpl.created_at));
+      var typeLabel={report:'Report',tip:'Tip',custom:'Custom'}[tpl.type]||tpl.type;
+      return '<tr><td>'+escapeHtml(tpl.name)+'</td><td><span class="history-type-badge history-type-badge--'+escapeHtml(tpl.type)+'">'+typeLabel+'</span></td><td>'+escapeHtml(created)+'</td>'
+        +'<td><button type="button" class="link-button" data-use-template="'+escapeHtml(tpl.id)+'">Use</button> <button type="button" class="icon-button" data-delete-template="'+escapeHtml(tpl.id)+'" aria-label="Delete template">✕</button></td></tr>';
+    }).join('');
+    if(templatesEmpty)templatesEmpty.hidden=templates.length!==0;
+  }
+  async function useTemplate(tplId){
+    var tpl=templates.find(function(t){return t.id===tplId;});if(!tpl)return;
+    var clientId=marketingClientSelect?marketingClientSelect.value:'';
+    if(!clientId){message(marketingMessage,'Pick a client first, then Use this template.');return;}
+    message(marketingMessage,'');
+    await openSendDialog(clientId);
+    applyTemplatePayload(tpl.payload);
+  }
+  async function deleteTemplate(tplId){
+    if(!confirm('Delete this template? This cannot be undone.'))return;
+    try{await request('/rest/v1/email_templates?id=eq.'+encodeURIComponent(tplId),{method:'DELETE',headers:{Prefer:'return=minimal'}});await loadTemplates();}catch(error){message(marketingMessage,error.message);}
+  }
+
+  // ── Global email history (Email Marketing tab) ─────────────────
+  async function loadMarketingHistory(){
+    message(marketingMessage,'Loading email history…');
+    try{
+      marketingHistory=await request('/rest/v1/client_emails?select=*,clients(business_name)&order=sent_at.desc&limit=100');
+      marketingHistoryLoaded=true;
+      renderMarketingHistory();
+      message(marketingMessage,'');
+    }catch(error){
+      message(marketingMessage,error.message.indexOf('client_emails')>-1?'Database setup required. Run supabase/clients_schema.sql in the Supabase SQL Editor.':error.message);
+    }
+  }
+  function renderMarketingHistory(){
+    if(!marketingHistoryBody)return;
+    var term=(marketingHistorySearch?marketingHistorySearch.value:'').trim().toLowerCase();
+    var filtered=marketingHistory.filter(function(r){
+      var business=(r.clients&&r.clients.business_name)||'';
+      var searchable=[business,r.subject].join(' ').toLowerCase();
+      return!term||searchable.indexOf(term)>-1;
+    });
+    marketingHistoryBody.innerHTML=filtered.map(function(r){
+      var sent=new Intl.DateTimeFormat('en-GB',{dateStyle:'medium',timeStyle:'short'}).format(new Date(r.sent_at));
+      var typeLabel={report:'Report',tip:'Tip',custom:'Custom'}[r.type]||r.type;
+      var business=(r.clients&&r.clients.business_name)||'—';
+      return '<tr><td>'+escapeHtml(sent)+'</td><td>'+escapeHtml(business)+'</td><td><span class="history-type-badge history-type-badge--'+escapeHtml(r.type)+'">'+typeLabel+'</span></td><td>'+escapeHtml(r.subject||'—')+'</td></tr>';
+    }).join('');
+    if(marketingHistoryEmpty)marketingHistoryEmpty.hidden=filtered.length!==0;
+  }
+  // Used by the Clients table/detail dialog's "Send email" to jump to the
+  // Email Marketing tab and open the compose dialog for that client — the
+  // dialog itself works the same regardless of which tab it was opened from.
+  function goToComposeFor(clientId){
+    if(clientDialog.open)clientDialog.close();
+    location.hash='#marketing';
+    if(marketingClientSelect)marketingClientSelect.value=clientId;
+    openSendDialog(clientId);
+  }
   function captureTemplatePayload(){
     var data=new FormData(sendForm),payload={type:sendTypeSelect.value};
     TEMPLATE_FIELD_NAMES.forEach(function(key){var v=data.get(key);if(v)payload[key]=String(v);});
@@ -618,7 +665,8 @@
       await postWithColumnFallback('/rest/v1/client_emails',logEntry,['rendered_html','id']);
       if(type==='report'){await request('/rest/v1/clients?id=eq.'+encodeURIComponent(sendTarget.id),{method:'PATCH',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({last_report_sent_at:sentAt})});var c=clients.find(function(item){return item.id===sendTarget.id;});if(c)c.last_report_sent_at=sentAt;renderClients();}
       sendDialog.close();
-      if(dialogTarget&&dialogTarget.id===sendTarget.id)loadClientHistory(dialogTarget.id);
+      marketingHistoryLoaded=false;
+      if(!views.marketing.hidden)loadMarketingHistory();
     }catch(error){
       message(sendMessage,error.message.indexOf('RESEND_API_KEY')>-1?'Email sending is not configured yet — set RESEND_API_KEY as an Edge Function secret in Supabase.':error.message);
     }finally{button.disabled=false;}
@@ -652,6 +700,7 @@
     }
     message(bulkMessage,'Sent to '+okCount+' client'+(okCount===1?'':'s')+(failCount?', '+failCount+' failed':'')+'.');
     button.disabled=false;
+    if(okCount){marketingHistoryLoaded=false;if(!views.marketing.hidden)loadMarketingHistory();}
     if(!failCount)setTimeout(function(){bulkDialog.close();},1200);
   }
 
@@ -668,7 +717,7 @@
   function exportContactsCsv(){var fields=['created_at','full_name','company','email','phone','country','service','message','language','status','privacy_consent','utm_source','utm_medium','utm_campaign','utm_content','utm_term','landing_page','referrer','source_page'],rows=[fields].concat(contacts.map(function(item){return fields.map(function(field){return item[field]||'';});})),csv=rows.map(function(row){return row.map(function(value){return '"'+String(value).replace(/"/g,'""')+'"';}).join(',');}).join('\n'),blob=new Blob([csv],{type:'text/csv;charset=utf-8'}),link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download='sb-marketing-contact-requests-'+new Date().toISOString().slice(0,10)+'.csv';link.click();URL.revokeObjectURL(link.href);}
 
   // ── Tabs ────────────────────────────────────────────────────
-  function switchTab(name){if(!views[name])name='leads';tabs.forEach(function(tab){tab.classList.toggle('is-active',tab.dataset.tab===name);});Object.keys(views).forEach(function(key){views[key].hidden=key!==name;});var titles={clients:'Clients',settings:'Settings',leads:'Leads',contacts:'Contact requests'};viewTitle.textContent=titles[name];document.title=titles[name]+' | SB Marketing Admin';document.querySelector('[data-export]').hidden=name!=='leads'&&name!=='contacts';if(name==='contacts'&&!contactsLoaded)loadContacts();if(name==='clients'&&clients.length===0)loadClients();if(name==='settings'&&!appSettings)loadSettings();}
+  function switchTab(name){if(!views[name])name='leads';tabs.forEach(function(tab){tab.classList.toggle('is-active',tab.dataset.tab===name);});Object.keys(views).forEach(function(key){views[key].hidden=key!==name;});var titles={clients:'Clients',marketing:'Email Marketing',settings:'Settings',leads:'Leads',contacts:'Contact requests'};viewTitle.textContent=titles[name];document.title=titles[name]+' | SB Marketing Admin';document.querySelector('[data-export]').hidden=name!=='leads'&&name!=='contacts';if(name==='contacts'&&!contactsLoaded)loadContacts();if(name==='clients'&&clients.length===0)loadClients();if(name==='marketing'){if(clients.length===0)loadClients();else refreshMarketingClientOptions();if(!templatesLoaded)loadTemplates();if(!marketingHistoryLoaded)loadMarketingHistory();}if(name==='settings'&&!appSettings)loadSettings();}
   // Each section lives at its own hash slug (#leads, #contacts, #clients, #settings)
   // so it's bookmarkable and supports browser back/forward.
   function applyHash(){switchTab((location.hash||'#leads').replace('#',''));}
@@ -681,7 +730,7 @@
   tbody.addEventListener('change',function(event){var select=event.target.closest('[data-lead-status]');if(select)updateStatus(select.dataset.leadStatus,select.value,select);});
   search.addEventListener('input',render);
   filter.addEventListener('change',render);
-  document.querySelector('[data-refresh]').addEventListener('click',function(){loadLeads();if(!views.contacts.hidden)loadContacts();if(!views.clients.hidden)loadClients();});
+  document.querySelector('[data-refresh]').addEventListener('click',function(){loadLeads();if(!views.contacts.hidden)loadContacts();if(!views.clients.hidden)loadClients();if(!views.marketing.hidden){loadTemplates();loadMarketingHistory();}});
   document.querySelector('[data-export]').addEventListener('click',function(){if(!views.contacts.hidden)exportContactsCsv();else exportCsv();});
   contactsBody.addEventListener('change',function(event){var select=event.target.closest('[data-contact-status]');if(select)updateContactStatus(select.dataset.contactStatus,select.value,select);});
   contactSearch.addEventListener('input',renderContacts);
@@ -691,7 +740,7 @@
 
   clientsBody.addEventListener('change',function(event){var select=event.target.closest('[data-client-status]');if(select)updateClientStatus(select.dataset.clientStatus,select.value,select);});
   clientsBody.addEventListener('click',function(event){
-    var sendBtn=event.target.closest('[data-send-email]');if(sendBtn){openSendDialog(sendBtn.dataset.sendEmail);return;}
+    var sendBtn=event.target.closest('[data-send-email]');if(sendBtn){goToComposeFor(sendBtn.dataset.sendEmail);return;}
     var detailBtn=event.target.closest('[data-client-detail]');if(detailBtn)openClientDialog(detailBtn.dataset.clientDetail);
   });
   if(clientSearch)clientSearch.addEventListener('input',renderClients);
@@ -723,6 +772,19 @@
     try{await request('/rest/v1/email_templates',{method:'POST',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({name:name,type:payload.type,payload:payload})});await loadTemplates();message(sendMessage,'Template saved.');}catch(error){message(sendMessage,error.message);}finally{templateSaveBtn.disabled=false;}
   });
 
+  marketingComposeBtn.addEventListener('click',function(){
+    var clientId=marketingClientSelect.value;
+    if(!clientId){message(marketingMessage,'Pick a client first.');return;}
+    message(marketingMessage,'');
+    openSendDialog(clientId);
+  });
+  marketingClientSelect.addEventListener('change',function(){message(marketingMessage,'');});
+  if(marketingHistorySearch)marketingHistorySearch.addEventListener('input',renderMarketingHistory);
+  templatesBody.addEventListener('click',function(event){
+    var useBtn=event.target.closest('[data-use-template]');if(useBtn){useTemplate(useBtn.dataset.useTemplate);return;}
+    var delBtn=event.target.closest('[data-delete-template]');if(delBtn)deleteTemplate(delBtn.dataset.deleteTemplate);
+  });
+
   document.addEventListener('click',function(event){var pickBtn=event.target.closest('[data-pick-asset]');if(!pickBtn)return;openAssetPicker(pickBtn.closest('form'),pickBtn.dataset.pickAsset);});
   assetPickerGrid.addEventListener('click',function(event){var btn=event.target.closest('[data-asset-pick]');if(!btn||!assetPickerTarget)return;assetPickerTarget.form.elements[assetPickerTarget.name].value=btn.dataset.assetPick;assetPicker.close();});
   document.querySelector('[data-asset-picker-close]').addEventListener('click',function(){assetPicker.close();});
@@ -742,7 +804,15 @@
   clientEditForm.addEventListener('submit',saveClientEdits);
   clientDialogClose.addEventListener('click',function(){clientDialog.close();});
   clientDeleteBtn.addEventListener('click',deleteClient);
-  clientDialogSendEmail.addEventListener('click',function(){if(!dialogTarget)return;var id=dialogTarget.id;clientDialog.close();openSendDialog(id);});
+  clientDialogSendEmail.addEventListener('click',function(){if(!dialogTarget)return;goToComposeFor(dialogTarget.id);});
+  clientDialogViewEmails.addEventListener('click',function(){
+    if(!dialogTarget)return;
+    var business=dialogTarget.business_name;
+    clientDialog.close();
+    location.hash='#marketing';
+    if(marketingHistorySearch)marketingHistorySearch.value=business;
+    if(marketingHistoryLoaded)renderMarketingHistory();
+  });
 
   settingsForm.addEventListener('submit',saveSettings);
 

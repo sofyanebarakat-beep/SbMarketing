@@ -71,6 +71,8 @@ button:disabled{opacity:.55;cursor:wait}
 .toolbar{display:grid;grid-template-columns:minmax(240px,1fr) 200px;gap:12px;margin-bottom:14px}
 .toolbar--clients{grid-template-columns:minmax(220px,1fr) 170px auto auto}
 .toolbar--clients button{white-space:nowrap}
+.toolbar--marketing{grid-template-columns:minmax(220px,1fr) auto auto}
+.toolbar--marketing button{white-space:nowrap}
 
 /* ── Table ───────────────────────────────────────────────────── */
 .table-wrap{overflow:auto;border:1px solid var(--border);border-radius:16px;background:var(--card)}
@@ -175,16 +177,6 @@ tbody tr:hover td{background:#fafbfc}
 .client-dialog__edit .form-actions{display:flex;gap:10px;flex-wrap:wrap}
 .whatsapp-link{text-decoration:none;display:inline-flex;align-items:center}
 .whatsapp-link[hidden]{display:none}
-.client-dialog__history h3{margin:0 0 10px;font-size:15px;color:var(--navy)}
-.history-list{list-style:none;margin:0;padding:0;display:grid;gap:12px;max-height:260px;overflow:auto}
-.history-list li{border:1px solid var(--border);border-radius:14px;padding:14px 16px;background:#fafbfc}
-.history-item__head{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:14px}
-.history-item__head strong{color:var(--navy)}
-.history-item__head span{color:var(--muted);font-size:12px}
-.history-item__body strong{color:var(--navy)}
-.history-item__chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-.history-chip{background:#fff;border:1px solid var(--border);border-radius:99px;padding:4px 10px;font-size:12px;color:var(--navy-soft)}
-.history-item__summary{margin:10px 0 0;font-size:13px;color:var(--muted)}
 .history-type-badge{display:inline-flex;border-radius:99px;padding:3px 9px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
 .history-type-badge--report{background:#e6ebfb;color:#3952c9}
 .history-type-badge--tip{background:#fff3e0;color:#b45309}
@@ -208,7 +200,7 @@ tbody tr:hover td{background:#fafbfc}
   .login-card{padding:26px;margin:6vh auto}
   .admin-header{align-items:flex-start;flex-direction:column}
   .stats{grid-template-columns:repeat(2,1fr)}
-  .toolbar,.toolbar--clients,.field-grid,.metric-grid,.tracked-metrics{grid-template-columns:1fr}
+  .toolbar,.toolbar--clients,.toolbar--marketing,.field-grid,.metric-grid,.tracked-metrics{grid-template-columns:1fr}
   .custom-metric-row{grid-template-columns:1fr}
   .header-actions{width:100%}
   .header-actions button{flex:1}
