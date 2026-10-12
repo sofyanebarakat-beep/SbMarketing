@@ -36,7 +36,9 @@ alter table public.clients
   add column if not exists whatsapp_number text,
   add column if not exists activity text,
   add column if not exists marketing_consent boolean not null default true,
-  add column if not exists unsubscribed_at timestamptz;
+  add column if not exists unsubscribed_at timestamptz,
+  add column if not exists tracked_metrics jsonb not null default
+    '["website_visits","google_impressions","google_clicks","google_avg_position"]'::jsonb;
 
 -- Public, narrowly-scoped unsubscribe: callable by anyone (anon) via
 -- POST /rest/v1/rpc/unsubscribe_client, but it can only ever set
@@ -99,6 +101,9 @@ create table if not exists public.client_emails (
   body text,
   cta_label text,
   cta_url text,
+  -- freeform "add your own metric" rows (report emails only) — anything
+  -- the built-in catalog doesn't cover, logged separately from highlights
+  custom_metrics jsonb,
   sent_at timestamptz not null default now()
 );
 
@@ -115,6 +120,11 @@ with check (lower(auth.jwt() ->> 'email') = 'sofyanebarakat@gmail.com');
 create index if not exists client_emails_client_id_idx on public.client_emails (client_id);
 create index if not exists client_emails_sent_at_idx on public.client_emails (sent_at desc);
 
+-- In case client_emails already existed from an earlier deploy (CREATE
+-- TABLE IF NOT EXISTS above is then a no-op and skips new columns).
+alter table public.client_emails
+  add column if not exists custom_metrics jsonb;
+
 -- ── Brand settings ─────────────────────────────────────────────────
 -- Single-row config the email template reads for header/footer/social
 -- links, so that can be updated from Settings in the admin without a
@@ -122,6 +132,7 @@ create index if not exists client_emails_sent_at_idx on public.client_emails (se
 create table if not exists public.app_settings (
   id text primary key default 'default',
   company_name text not null default 'SB Marketing',
+  logo_url text not null default 'https://www.sbmarketing.fr/images/sb-marketing-email-logo.png',
   logo_part1 text not null default 'SB',
   logo_part2 text not null default 'MARKETING',
   footer_tagline_fr text not null default 'Agence marketing digital à Nice, Côte d''Azur',
@@ -143,9 +154,14 @@ to authenticated
 using (lower(auth.jwt() ->> 'email') = 'sofyanebarakat@gmail.com')
 with check (lower(auth.jwt() ->> 'email') = 'sofyanebarakat@gmail.com');
 
-insert into public.app_settings (id, instagram_url, facebook_url, reply_to_email)
+-- In case app_settings already existed from an earlier deploy.
+alter table public.app_settings
+  add column if not exists logo_url text not null default 'https://www.sbmarketing.fr/images/sb-marketing-email-logo.png';
+
+insert into public.app_settings (id, logo_url, instagram_url, facebook_url, reply_to_email)
 values (
   'default',
+  'https://www.sbmarketing.fr/images/sb-marketing-email-logo.png',
   'https://www.instagram.com/sb.marketing06/',
   'https://www.facebook.com/profile.php?id=61556671255980',
   'admin@partners.sbmarketing.fr'

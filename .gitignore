@@ -20,6 +20,9 @@ wordpress-theme/tourdubloc/assets/uploads/
 node_modules/
 npm-debug.log*
 
+# Supabase CLI local cache (project link info, pooler URL, versions)
+supabase/.temp/
+
 # Editor directories
 .vscode/
 .idea/

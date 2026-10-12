@@ -14,7 +14,8 @@ import {
   renderReportEmail,
   renderTipEmail,
   renderCustomEmail,
-  type Metric,
+  type MetricGroup,
+  type CustomMetric,
   type Branding,
 } from "../_shared/email-template.ts";
 
@@ -42,10 +43,8 @@ interface RequestBody {
   reply_to?: string;
   // report
   month_label?: string;
-  website_visits?: Metric;
-  google_impressions?: Metric;
-  google_clicks?: Metric;
-  google_avg_position?: Metric;
+  groups?: MetricGroup[];
+  custom_metrics?: CustomMetric[];
   summary?: string;
   report_url?: string;
   // tip
@@ -86,10 +85,10 @@ Deno.serve(async (req) => {
     let rendered: { subject: string; html: string };
 
     if (type === "report") {
-      const hasAnyMetric = [body.website_visits, body.google_impressions, body.google_clicks, body.google_avg_position].some(
-        (m) => m?.value
-      );
-      if (!body.month_label || !hasAnyMetric) {
+      const groups = body.groups || [];
+      const hasAnyMetric = groups.some((g) => g.metrics?.some((m) => m.metric?.value));
+      const hasAnyCustom = (body.custom_metrics || []).some((m) => m.label?.trim() && m.value?.trim());
+      if (!body.month_label || (!hasAnyMetric && !hasAnyCustom)) {
         return new Response(
           JSON.stringify({ error: "Report emails need month_label and at least one metric" }),
           { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
@@ -100,10 +99,8 @@ Deno.serve(async (req) => {
         contactName: contact_name,
         language,
         monthLabel: body.month_label,
-        websiteVisits: body.website_visits,
-        googleImpressions: body.google_impressions,
-        googleClicks: body.google_clicks,
-        googleAvgPosition: body.google_avg_position,
+        groups,
+        customMetrics: body.custom_metrics,
         summary: body.summary,
         reportUrl: body.report_url,
         branding,

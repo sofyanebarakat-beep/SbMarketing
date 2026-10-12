@@ -88,6 +88,8 @@
             </div>
             <label>Notes <small>(optional)</small><input name="notes" placeholder="Campaign, package, anything useful"></label>
             <label class="checkbox-field"><input type="checkbox" name="marketing_consent" checked> Can receive marketing tips (not just reports)</label>
+            <p class="field-hint">Which metrics does this client track?</p>
+            <div class="tracked-metrics" data-tracked-metrics="add"></div>
             <div class="form-actions"><button type="submit" data-add-client-submit>Save client</button><button type="button" class="secondary" data-add-client-cancel>Cancel</button></div>
             <p class="form-message" data-add-client-message aria-live="polite"></p>
           </form>
@@ -104,8 +106,9 @@
             <div class="field-grid">
               <label>Company name<input name="company_name" placeholder="SB Marketing"></label>
               <label>Website URL<input name="website_url" type="url" placeholder="https://www.sbmarketing.fr"></label>
-              <label>Logo — part 1 <small>(red)</small><input name="logo_part1" placeholder="SB"></label>
-              <label>Logo — part 2 <small>(blue)</small><input name="logo_part2" placeholder="MARKETING"></label>
+              <label>Logo image URL <small>(used in email headers)</small><input name="logo_url" type="url" placeholder="https://www.sbmarketing.fr/images/sb-marketing-email-logo.png"></label>
+              <label>Logo — part 1 <small>(red, fallback if no image)</small><input name="logo_part1" placeholder="SB"></label>
+              <label>Logo — part 2 <small>(blue, fallback if no image)</small><input name="logo_part2" placeholder="MARKETING"></label>
             </div>
             <h2 class="settings-section-title">Footer</h2>
             <div class="field-grid">
@@ -146,17 +149,16 @@
 
       <div data-send-group="report">
         <label>Month<input name="month_label" placeholder="October 2026"></label>
-        <p class="field-hint">Website traffic</p>
-        <div class="metric-grid metric-grid--single">
-          <label>Visits this month<input name="website_visits" inputmode="numeric" placeholder="e.g. 842"><span class="field-previous" data-previous="website_visits"></span></label>
+
+        <div data-report-metrics></div>
+        <p class="field-note">Fill in what you have — at least one field. Last month's numbers show underneath when available, and the email shows the trend automatically. Set which metrics a client tracks from their profile.</p>
+
+        <div class="field-hint-row">
+          <p class="field-hint">Other metrics</p>
+          <button type="button" class="link-button" data-add-custom-metric>+ Add custom metric</button>
         </div>
-        <p class="field-hint">Google Search performance</p>
-        <div class="metric-grid">
-          <label>Impressions<input name="google_impressions" inputmode="numeric" placeholder="e.g. 12 400"><span class="field-previous" data-previous="google_impressions"></span></label>
-          <label>Clicks<input name="google_clicks" inputmode="numeric" placeholder="e.g. 210"><span class="field-previous" data-previous="google_clicks"></span></label>
-          <label>Avg. position<input name="google_avg_position" inputmode="decimal" placeholder="e.g. 8.4"><span class="field-previous" data-previous="google_avg_position"></span></label>
-        </div>
-        <p class="field-note">Fill in what you have — at least one field. Last month's numbers show under each when available, and the email shows the trend automatically.</p>
+        <div data-custom-metrics-list></div>
+
         <label>Summary <small>(optional)</small><textarea name="summary" rows="3" placeholder="A short paragraph of context for this month"></textarea></label>
         <label>Report link <small>(optional)</small><input name="report_url" type="url" placeholder="https://..."></label>
       </div>
@@ -237,6 +239,8 @@
         <label>Notes<input name="notes"></label>
         <label class="checkbox-field"><input type="checkbox" name="marketing_consent"> Can receive marketing tips (not just reports)</label>
         <p class="muted-note" data-client-unsubscribed hidden>⚠️ This client unsubscribed from marketing tips. They'll still receive monthly reports.</p>
+        <p class="field-hint">Which metrics does this client track?</p>
+        <div class="tracked-metrics" data-tracked-metrics="edit"></div>
         <div class="form-actions">
           <button type="submit">Save changes</button>
           <a class="secondary whatsapp-link" data-client-whatsapp href="#" target="_blank" rel="noopener" hidden>💬 WhatsApp</a>

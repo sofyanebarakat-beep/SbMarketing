@@ -11,12 +11,46 @@
   var settingsForm=document.querySelector('[data-settings-form]'),settingsMessage=document.querySelector('[data-settings-message]');
   var bulkToggle=document.querySelector('[data-bulk-tip-toggle]'),bulkDialog=document.querySelector('[data-bulk-dialog]'),bulkForm=document.querySelector('[data-bulk-form]'),bulkList=document.querySelector('[data-bulk-client-list]'),bulkActivityFilter=document.querySelector('[data-bulk-activity-filter]'),bulkMessage=document.querySelector('[data-bulk-message]'),bulkCancel=document.querySelector('[data-bulk-cancel]');
   var sendTarget=null,lastMonthMetrics=null,dialogTarget=null;
-  var METRICS=[
-    {key:'website_visits',label:'Website visits',lowerIsBetter:false},
-    {key:'google_impressions',label:'Google impressions',lowerIsBetter:false},
-    {key:'google_clicks',label:'Google clicks',lowerIsBetter:false},
-    {key:'google_avg_position',label:'Avg. position',lowerIsBetter:true}
+  // The full metric catalog, grouped the way both the client "which
+  // metrics do they track" checklist and the report email organise them.
+  // A client's clients.tracked_metrics is just an array of keys from here.
+  var METRIC_GROUPS=[
+    {title:'Website traffic',metrics:[
+      {key:'website_visits',label:'Visits this month',lowerIsBetter:false}
+    ]},
+    {title:'Google Search',metrics:[
+      {key:'google_impressions',label:'Impressions',lowerIsBetter:false},
+      {key:'google_clicks',label:'Clicks',lowerIsBetter:false},
+      {key:'google_avg_position',label:'Avg. position',lowerIsBetter:true}
+    ]},
+    {title:'Google Business Profile',metrics:[
+      {key:'gbp_views',label:'Profile views',lowerIsBetter:false},
+      {key:'gbp_calls',label:'Calls',lowerIsBetter:false},
+      {key:'gbp_direction_requests',label:'Direction requests',lowerIsBetter:false},
+      {key:'gbp_review_count',label:'Review count',lowerIsBetter:false},
+      {key:'gbp_rating',label:'Average rating',lowerIsBetter:false}
+    ]},
+    {title:'Social media',metrics:[
+      {key:'social_followers',label:'Followers',lowerIsBetter:false},
+      {key:'social_engagement',label:'Engagement',lowerIsBetter:false},
+      {key:'social_posts',label:'Posts published',lowerIsBetter:false}
+    ]},
+    {title:'Ads',metrics:[
+      {key:'ads_spend',label:'Ad spend',lowerIsBetter:false},
+      {key:'ads_impressions',label:'Impressions',lowerIsBetter:false},
+      {key:'ads_clicks',label:'Clicks',lowerIsBetter:false},
+      {key:'ads_roas',label:'ROAS',lowerIsBetter:false},
+      {key:'ads_conversions',label:'Conversions',lowerIsBetter:false}
+    ]},
+    {title:'Leads & sales',metrics:[
+      {key:'new_leads',label:'New leads',lowerIsBetter:false},
+      {key:'conversion_rate',label:'Conversion rate',lowerIsBetter:false},
+      {key:'revenue',label:'Revenue',lowerIsBetter:false}
+    ]}
   ];
+  var METRIC_BY_KEY={};
+  METRIC_GROUPS.forEach(function(g){g.metrics.forEach(function(m){METRIC_BY_KEY[m.key]=m;});});
+  var DEFAULT_TRACKED_METRICS=['website_visits','google_impressions','google_clicks','google_avg_position'];
   // Curated list, not exhaustive — covers the countries SB Marketing's
   // client base is realistically in. code = dial code digits (no +).
   var COUNTRIES=[
@@ -66,10 +100,25 @@
   function fillPhoneField(form,value){var split=splitE164(value);var countrySelect=form.querySelector('[name="whatsapp_country"]'),localInput=form.querySelector('[name="whatsapp_local"]');if(countrySelect)countrySelect.value=split.code;if(localInput)localInput.value=split.local;}
   function readPhoneField(form){var countrySelect=form.querySelector('[name="whatsapp_country"]'),localInput=form.querySelector('[name="whatsapp_local"]');if(!localInput||!localInput.value.trim())return null;return toE164(countrySelect?countrySelect.value:'33',localInput.value);}
 
+  // ── Tracked-metrics checklist (add-client form + client detail form) ──
+  function populateTrackedMetricsContainers(){
+    document.querySelectorAll('[data-tracked-metrics]').forEach(function(container){
+      if(container.dataset.populated)return;
+      container.innerHTML=METRIC_GROUPS.map(function(g){
+        return '<div class="tracked-metrics__group"><span class="tracked-metrics__group-title">'+escapeHtml(g.title)+'</span>'
+          +g.metrics.map(function(m){return '<label class="checkbox-field checkbox-field--compact"><input type="checkbox" value="'+escapeHtml(m.key)+'"> '+escapeHtml(m.label)+'</label>';}).join('')
+          +'</div>';
+      }).join('');
+      container.dataset.populated='1';
+    });
+  }
+  function getCheckedTrackedMetrics(container){return container?Array.from(container.querySelectorAll('input[type="checkbox"]:checked')).map(function(i){return i.value;}):[];}
+  function setTrackedMetricsChecked(container,keys){if(!container)return;var set={};(keys||[]).forEach(function(k){set[k]=true;});container.querySelectorAll('input[type="checkbox"]').forEach(function(i){i.checked=!!set[i.value];});}
+
   // ── Settings (brand chrome used by the email templates) ───────
   async function loadSettings(){try{var rows=await request('/rest/v1/app_settings?id=eq.default&select=*&limit=1');appSettings=(rows&&rows[0])||null;if(appSettings&&settingsForm){Object.keys(appSettings).forEach(function(key){var field=settingsForm.elements[key];if(field)field.value=appSettings[key]||'';});}}catch(error){message(settingsMessage,error.message.indexOf('app_settings')>-1?'Database setup required. Re-run supabase/clients_schema.sql in the Supabase SQL Editor.':error.message);}}
-  async function saveSettings(event){event.preventDefault();var button=settingsForm.querySelector('button[type="submit"]'),data=new FormData(settingsForm),payload={};['company_name','logo_part1','logo_part2','footer_tagline_fr','footer_tagline_en','website_url','reply_to_email','instagram_url','facebook_url'].forEach(function(key){payload[key]=String(data.get(key)||'').trim()||null;});button.disabled=true;message(settingsMessage,'Saving…');try{await request('/rest/v1/app_settings?id=eq.default',{method:'PATCH',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(payload)});appSettings=Object.assign({},appSettings,payload);message(settingsMessage,'Saved.');}catch(error){message(settingsMessage,error.message);}finally{button.disabled=false;}}
-  function brandingPayload(){if(!appSettings)return undefined;return{companyName:appSettings.company_name||undefined,logoPart1:appSettings.logo_part1||undefined,logoPart2:appSettings.logo_part2||undefined,footerTaglineFr:appSettings.footer_tagline_fr||undefined,footerTaglineEn:appSettings.footer_tagline_en||undefined,websiteUrl:appSettings.website_url||undefined,instagramUrl:appSettings.instagram_url||undefined,facebookUrl:appSettings.facebook_url||undefined};}
+  async function saveSettings(event){event.preventDefault();var button=settingsForm.querySelector('button[type="submit"]'),data=new FormData(settingsForm),payload={};['company_name','logo_url','logo_part1','logo_part2','footer_tagline_fr','footer_tagline_en','website_url','reply_to_email','instagram_url','facebook_url'].forEach(function(key){payload[key]=String(data.get(key)||'').trim()||null;});button.disabled=true;message(settingsMessage,'Saving…');try{await request('/rest/v1/app_settings?id=eq.default',{method:'PATCH',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(payload)});appSettings=Object.assign({},appSettings,payload);message(settingsMessage,'Saved.');}catch(error){message(settingsMessage,error.message);}finally{button.disabled=false;}}
+  function brandingPayload(){if(!appSettings)return undefined;return{companyName:appSettings.company_name||undefined,logoUrl:appSettings.logo_url||undefined,logoPart1:appSettings.logo_part1||undefined,logoPart2:appSettings.logo_part2||undefined,footerTaglineFr:appSettings.footer_tagline_fr||undefined,footerTaglineEn:appSettings.footer_tagline_en||undefined,websiteUrl:appSettings.website_url||undefined,instagramUrl:appSettings.instagram_url||undefined,facebookUrl:appSettings.facebook_url||undefined};}
 
   // ── Clients: due-status helpers ────────────────────────────────
   // "Due" means no report has gone out yet this calendar month — matches
@@ -124,16 +173,19 @@
       activity:String(data.get('activity')||'').trim()||null,
       language:data.get('language')||'fr',
       notes:String(data.get('notes')||'').trim()||null,
-      marketing_consent:data.get('marketing_consent')==='on'
+      marketing_consent:data.get('marketing_consent')==='on',
+      tracked_metrics:getCheckedTrackedMetrics(addClientForm.querySelector('[data-tracked-metrics="add"]'))
     };
     message(addClientMessage,'');button.disabled=true;
-    try{await request('/rest/v1/clients',{method:'POST',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(payload)});addClientForm.reset();addClientForm.querySelector('[name="whatsapp_country"]').value='33';addClientForm.hidden=true;await loadClients();}catch(error){message(addClientMessage,error.message);}finally{button.disabled=false;}
+    try{await request('/rest/v1/clients',{method:'POST',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(payload)});addClientForm.reset();addClientForm.querySelector('[name="whatsapp_country"]').value='33';setTrackedMetricsChecked(addClientForm.querySelector('[data-tracked-metrics="add"]'),DEFAULT_TRACKED_METRICS);addClientForm.hidden=true;await loadClients();}catch(error){message(addClientMessage,error.message);}finally{button.disabled=false;}
   }
 
   // ── Clients: detail dialog (edit, history, delete, WhatsApp) ────
   function emailHistorySummary(r){
     if(r.type==='report'){
-      var chips=METRICS.filter(function(m){return r.highlights&&r.highlights[m.key];}).map(function(m){return '<span class="history-chip">'+escapeHtml(m.label)+': <strong>'+escapeHtml(r.highlights[m.key])+'</strong></span>';}).join('');
+      var catalogChips=Object.keys(r.highlights||{}).map(function(key){var def=METRIC_BY_KEY[key];var label=def?def.label:key;return '<span class="history-chip">'+escapeHtml(label)+': <strong>'+escapeHtml(r.highlights[key])+'</strong></span>';}).join('');
+      var customChips=(r.custom_metrics||[]).filter(function(m){return m.label&&m.value;}).map(function(m){return '<span class="history-chip">'+escapeHtml(m.label)+': <strong>'+escapeHtml(m.value)+'</strong></span>';}).join('');
+      var chips=catalogChips+customChips;
       return '<strong>'+escapeHtml(r.month_label||'Report')+'</strong>'+(chips?'<div class="history-item__chips">'+chips+'</div>':'');
     }
     if(r.type==='tip')return '<strong>Tip: '+escapeHtml(r.headline||r.subject)+'</strong>'+(r.body?'<p class="history-item__summary">'+escapeHtml(r.body).slice(0,160)+'</p>':'');
@@ -150,7 +202,7 @@
     }).join('');
   }
   async function loadClientHistory(clientId){message(clientHistoryMessage,'Loading history…');try{var rows=await request('/rest/v1/client_emails?client_id=eq.'+encodeURIComponent(clientId)+'&select=*&order=sent_at.desc');renderHistoryList(rows);message(clientHistoryMessage,'');return rows;}catch(error){message(clientHistoryMessage,error.message.indexOf('client_emails')>-1?'Database setup required. Run supabase/clients_schema.sql in the Supabase SQL Editor.':error.message);return [];}}
-  function fillClientEditForm(c){var f=clientEditForm;f.elements.business_name.value=c.business_name||'';f.elements.contact_name.value=c.contact_name||'';f.elements.email.value=c.email||'';f.elements.activity.value=c.activity||'';f.elements.language.value=c.language||'fr';f.elements.status.value=c.status||'active';f.elements.notes.value=c.notes||'';f.elements.marketing_consent.checked=!!c.marketing_consent;fillPhoneField(f,c.whatsapp_number);clientUnsubscribedNote.hidden=!c.unsubscribed_at;if(c.whatsapp_number){clientWhatsappLink.hidden=false;clientWhatsappLink.href='https://wa.me/'+c.whatsapp_number.replace(/\D/g,'');}else{clientWhatsappLink.hidden=true;}}
+  function fillClientEditForm(c){var f=clientEditForm;f.elements.business_name.value=c.business_name||'';f.elements.contact_name.value=c.contact_name||'';f.elements.email.value=c.email||'';f.elements.activity.value=c.activity||'';f.elements.language.value=c.language||'fr';f.elements.status.value=c.status||'active';f.elements.notes.value=c.notes||'';f.elements.marketing_consent.checked=!!c.marketing_consent;fillPhoneField(f,c.whatsapp_number);setTrackedMetricsChecked(f.querySelector('[data-tracked-metrics="edit"]'),c.tracked_metrics&&c.tracked_metrics.length?c.tracked_metrics:DEFAULT_TRACKED_METRICS);clientUnsubscribedNote.hidden=!c.unsubscribed_at;if(c.whatsapp_number){clientWhatsappLink.hidden=false;clientWhatsappLink.href='https://wa.me/'+c.whatsapp_number.replace(/\D/g,'');}else{clientWhatsappLink.hidden=true;}}
   async function openClientDialog(clientId){var c=clients.find(function(x){return x.id===clientId;});if(!c)return;dialogTarget=c;clientDialogName.textContent=c.business_name;clientDialogStatus.textContent=c.status==='active'?'Active':'Paused';clientDialogStatus.className='status-pill status-pill--'+c.status;fillClientEditForm(c);message(clientEditMessage,'');clientDialog.showModal();await loadClientHistory(c.id);}
   async function saveClientEdits(event){
     event.preventDefault();if(!dialogTarget)return;
@@ -164,7 +216,8 @@
       language:data.get('language')||'fr',
       status:data.get('status')||'active',
       notes:String(data.get('notes')||'').trim()||null,
-      marketing_consent:data.get('marketing_consent')==='on'
+      marketing_consent:data.get('marketing_consent')==='on',
+      tracked_metrics:getCheckedTrackedMetrics(clientEditForm.querySelector('[data-tracked-metrics="edit"]'))
     };
     button.disabled=true;message(clientEditMessage,'Saving…');
     try{await request('/rest/v1/clients?id=eq.'+encodeURIComponent(dialogTarget.id),{method:'PATCH',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(payload)});Object.assign(dialogTarget,payload);renderClients();clientDialogName.textContent=payload.business_name;clientDialogStatus.textContent=payload.status==='active'?'Active':'Paused';clientDialogStatus.className='status-pill status-pill--'+payload.status;fillClientEditForm(dialogTarget);message(clientEditMessage,'Saved.');}catch(error){message(clientEditMessage,error.message);}finally{button.disabled=false;}
@@ -176,14 +229,41 @@
     sendForm.querySelectorAll('[data-send-group]').forEach(function(group){group.hidden=group.dataset.sendGroup!==type;});
     previewPane.hidden=true;
   }
+  // Only shows fields for metrics this client actually tracks (falls back
+  // to the original core 4 if the client has none configured yet).
+  function renderReportMetricsFields(client){
+    var container=sendForm.querySelector('[data-report-metrics]');
+    var tracked=(client.tracked_metrics&&client.tracked_metrics.length)?client.tracked_metrics:DEFAULT_TRACKED_METRICS;
+    var trackedSet={};tracked.forEach(function(k){trackedSet[k]=true;});
+    var html='';
+    METRIC_GROUPS.forEach(function(g){
+      var groupMetrics=g.metrics.filter(function(m){return trackedSet[m.key];});
+      if(!groupMetrics.length)return;
+      html+='<p class="field-hint">'+escapeHtml(g.title)+'</p>';
+      html+='<div class="metric-grid'+(groupMetrics.length===1?' metric-grid--single':'')+'">';
+      groupMetrics.forEach(function(m){
+        html+='<label>'+escapeHtml(m.label)+'<input type="text" inputmode="'+(m.lowerIsBetter?'decimal':'numeric')+'" data-metric-field="'+escapeHtml(m.key)+'" placeholder="e.g. ..."><span class="field-previous" data-previous="'+escapeHtml(m.key)+'"></span></label>';
+      });
+      html+='</div>';
+    });
+    container.innerHTML=html||'<p class="muted-note">This client has no tracked metrics set yet — add some from their profile, or just use the custom metric rows below.</p>';
+  }
+  function addCustomMetricRow(label,value){
+    var list=sendForm.querySelector('[data-custom-metrics-list]'),row=document.createElement('div');
+    row.className='custom-metric-row';
+    row.innerHTML='<input type="text" class="custom-metric-label" placeholder="Label (e.g. Newsletter signups)" value="'+escapeHtml(label||'')+'"><input type="text" class="custom-metric-value" placeholder="Value" value="'+escapeHtml(value||'')+'"><button type="button" class="icon-button" data-remove-custom-metric aria-label="Remove">✕</button>';
+    list.appendChild(row);
+  }
+  function readCustomMetricRows(){return Array.from(sendForm.querySelectorAll('[data-custom-metrics-list] .custom-metric-row')).map(function(row){return{label:row.querySelector('.custom-metric-label').value.trim(),value:row.querySelector('.custom-metric-value').value.trim()};}).filter(function(m){return m.label&&m.value;});}
   async function openSendDialog(clientId){
     var client=clients.find(function(c){return c.id===clientId;});if(!client)return;
     sendTarget=client;lastMonthMetrics=null;
     sendClientLabel.textContent=client.business_name+' · '+client.email;
     sendForm.reset();
     sendTypeSelect.value='report';
+    renderReportMetricsFields(client);
+    sendForm.querySelector('[data-custom-metrics-list]').innerHTML='';
     setSendType('report');
-    METRICS.forEach(function(m){var span=sendForm.querySelector('[data-previous="'+m.key+'"]');if(span)span.textContent='';});
     var now=new Date(),defaultMonth=new Intl.DateTimeFormat(client.language==='en'?'en-GB':'fr-FR',{month:'long',year:'numeric'}).format(now);
     sendForm.elements.month_label.value=defaultMonth.charAt(0).toUpperCase()+defaultMonth.slice(1);
     message(sendMessage,'');
@@ -192,7 +272,7 @@
       var history=await request('/rest/v1/client_emails?client_id=eq.'+encodeURIComponent(clientId)+'&type=eq.report&select=highlights&order=sent_at.desc&limit=1');
       if(history&&history.length&&history[0].highlights){
         lastMonthMetrics=history[0].highlights;
-        METRICS.forEach(function(m){var value=lastMonthMetrics[m.key];if(!value)return;var span=sendForm.querySelector('[data-previous="'+m.key+'"]');if(span)span.textContent='Last month: '+value;});
+        Object.keys(lastMonthMetrics).forEach(function(key){var value=lastMonthMetrics[key];if(!value)return;var span=sendForm.querySelector('[data-previous="'+key+'"]');if(span)span.textContent='Last month: '+value;});
       }
     }catch(error){/* non-fatal: last-month context is a convenience, not required to send */}
   }
@@ -201,10 +281,28 @@
     var payload={type:type,to:sendTarget.email,business_name:sendTarget.business_name,contact_name:sendTarget.contact_name,language:sendTarget.language||'fr',client_id:sendTarget.id,branding:brandingPayload()};
     if(appSettings&&appSettings.reply_to_email)payload.reply_to=appSettings.reply_to_email;
     if(type==='report'){
-      var metricsPayload={},historyPayload={},hasAny=false;
-      METRICS.forEach(function(m){var value=String(data.get(m.key)||'').trim();if(!value)return;hasAny=true;var previous=lastMonthMetrics&&lastMonthMetrics[m.key]?lastMonthMetrics[m.key]:undefined;metricsPayload[m.key]={value:value,previous:previous};historyPayload[m.key]=value;});
+      var tracked=(sendTarget.tracked_metrics&&sendTarget.tracked_metrics.length)?sendTarget.tracked_metrics:DEFAULT_TRACKED_METRICS;
+      var trackedSet={};tracked.forEach(function(k){trackedSet[k]=true;});
+      var groups=[],historyPayload={},hasAny=false;
+      METRIC_GROUPS.forEach(function(g){
+        var groupMetrics=g.metrics.filter(function(m){return trackedSet[m.key];});
+        if(!groupMetrics.length)return;
+        var metricsOut=[];
+        groupMetrics.forEach(function(m){
+          var input=sendForm.querySelector('[data-metric-field="'+m.key+'"]'),value=input?input.value.trim():'';
+          if(!value)return;
+          hasAny=true;
+          var previous=lastMonthMetrics&&lastMonthMetrics[m.key]?lastMonthMetrics[m.key]:undefined;
+          metricsOut.push({label:m.label,metric:{value:value,previous:previous},lowerIsBetter:!!m.lowerIsBetter});
+          historyPayload[m.key]=value;
+        });
+        if(metricsOut.length)groups.push({title:g.title,metrics:metricsOut});
+      });
+      var customRows=readCustomMetricRows();
+      if(customRows.length)hasAny=true;
       payload.month_label=String(data.get('month_label')||'').trim();
-      payload.website_visits=metricsPayload.website_visits;payload.google_impressions=metricsPayload.google_impressions;payload.google_clicks=metricsPayload.google_clicks;payload.google_avg_position=metricsPayload.google_avg_position;
+      payload.groups=groups;
+      payload.custom_metrics=customRows;
       payload.summary=String(data.get('summary')||'').trim()||undefined;
       payload.report_url=String(data.get('report_url')||'').trim()||undefined;
       payload._hasAny=hasAny;payload._historyPayload=historyPayload;
@@ -239,7 +337,7 @@
       await invokeFunction('send-client-report',payload);
       var sentAt=new Date().toISOString();
       var logEntry={client_id:sendTarget.id,type:type,sent_at:sentAt};
-      if(type==='report'){logEntry.subject=(sendTarget.language==='en'?sendTarget.business_name+' — '+payload.month_label+' report':sendTarget.business_name+' — Rapport '+payload.month_label);logEntry.month_label=payload.month_label;logEntry.highlights=historyPayload;}
+      if(type==='report'){logEntry.subject=(sendTarget.language==='en'?sendTarget.business_name+' — '+payload.month_label+' report':sendTarget.business_name+' — Rapport '+payload.month_label);logEntry.month_label=payload.month_label;logEntry.highlights=historyPayload;logEntry.custom_metrics=(payload.custom_metrics&&payload.custom_metrics.length)?payload.custom_metrics:null;}
       else if(type==='tip'){logEntry.subject=payload.headline;logEntry.headline=payload.headline;logEntry.body=payload.body;logEntry.cta_label=payload.cta_label||null;logEntry.cta_url=payload.cta_url||null;}
       else{logEntry.subject=payload.subject;logEntry.body=payload.body;logEntry.cta_label=payload.cta_label||null;logEntry.cta_url=payload.cta_url||null;}
       await request('/rest/v1/client_emails',{method:'POST',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(logEntry)});
@@ -290,6 +388,8 @@
 
   // ── Wiring ──────────────────────────────────────────────────
   populateCountrySelects();
+  populateTrackedMetricsContainers();
+  setTrackedMetricsChecked(addClientForm.querySelector('[data-tracked-metrics="add"]'),DEFAULT_TRACKED_METRICS);
   loginForm.addEventListener('submit',async function(event){event.preventDefault();var button=loginForm.querySelector('button'),data=new FormData(loginForm),email=String(data.get('email')).trim().toLowerCase();message(loginMessage,'');if(email!==config.adminEmail){message(loginMessage,'This account is not authorised.');return;}button.disabled=true;button.textContent='Signing in…';try{var response=await fetch(config.url+'/auth/v1/token?grant_type=password',{method:'POST',headers:{apikey:config.key,'Content-Type':'application/json'},body:JSON.stringify({email:email,password:data.get('password')})}),session=await response.json();if(!response.ok)throw new Error(session.error_description||session.msg||'Unable to sign in');setSession(session);showDashboard(true);loadLeads();applyHash();}catch(error){message(loginMessage,error.message);}finally{button.disabled=false;button.textContent='Sign in';}});
   tbody.addEventListener('change',function(event){var select=event.target.closest('[data-lead-status]');if(select)updateStatus(select.dataset.leadStatus,select.value,select);});
   search.addEventListener('input',render);
@@ -315,6 +415,8 @@
   sendCancel.addEventListener('click',function(){sendDialog.close();});
   sendPreviewBtn.addEventListener('click',previewSend);
   previewClose.addEventListener('click',function(){previewPane.hidden=true;});
+  sendForm.querySelector('[data-add-custom-metric]').addEventListener('click',function(){addCustomMetricRow();});
+  sendForm.querySelector('[data-custom-metrics-list]').addEventListener('click',function(event){var btn=event.target.closest('[data-remove-custom-metric]');if(btn)btn.closest('.custom-metric-row').remove();});
 
   clientEditForm.addEventListener('submit',saveClientEdits);
   clientDialogClose.addEventListener('click',function(){clientDialog.close();});

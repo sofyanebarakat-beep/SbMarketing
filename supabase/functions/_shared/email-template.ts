@@ -10,8 +10,9 @@ export interface Metric {
 
 export interface Branding {
   companyName?: string;
-  logoPart1?: string; // red half of the wordmark, e.g. "SB"
-  logoPart2?: string; // blue half, e.g. "MARKETING"
+  logoUrl?: string; // real logo image — used in the header when set
+  logoPart1?: string; // red half of the text fallback, e.g. "SB"
+  logoPart2?: string; // blue half of the text fallback, e.g. "MARKETING"
   footerTaglineFr?: string;
   footerTaglineEn?: string;
   websiteUrl?: string;
@@ -21,6 +22,7 @@ export interface Branding {
 
 const DEFAULT_BRANDING: Required<Branding> = {
   companyName: "SB Marketing",
+  logoUrl: "https://www.sbmarketing.fr/images/sb-marketing-email-logo.png",
   logoPart1: "SB",
   logoPart2: "MARKETING",
   footerTaglineFr: "Agence marketing digital à Nice, Côte d'Azur",
@@ -73,6 +75,68 @@ function metricCell(label: string, metric: Metric | undefined, lowerIsBetter: bo
       <div style="margin-top:6px;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:#9aa7c2;">${escapeHtml(label)}</div>
       <div style="margin-top:6px;min-height:14px;">${badge}</div>
     </td>`;
+}
+
+export interface MetricGroup {
+  title: string;
+  metrics: { label: string; metric?: Metric; lowerIsBetter?: boolean }[];
+}
+
+export interface CustomMetric {
+  label: string;
+  value: string;
+}
+
+// Renders one dark card per group — up to 3 metric cells per row, wrapping
+// to further rows for groups with more than 3 (e.g. Google Business
+// Profile). A group with no filled-in metrics renders nothing at all,
+// rather than an empty card.
+function metricGroupHtml(group: MetricGroup, lang: "fr" | "en"): string {
+  const present = group.metrics.filter((m) => m.metric?.value);
+  if (!present.length) return "";
+  const rowsHtml: string[] = [];
+  for (let i = 0; i < present.length; i += 3) {
+    const cells = present
+      .slice(i, i + 3)
+      .map((m) => metricCell(m.label, m.metric, !!m.lowerIsBetter, lang))
+      .join("");
+    rowsHtml.push(`<tr>${cells}</tr>`);
+  }
+  return `
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#111c2b;border-radius:14px;margin:12px 0 4px;">
+      <tr><td colspan="3" style="padding:14px 20px 0;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#f2c94c;font-weight:700;">${escapeHtml(
+        group.title
+      )}</td></tr>
+      ${rowsHtml.join("")}
+    </table>`;
+}
+
+// Freeform rows the admin typed by hand — no trend badge (no tracked
+// "previous" value for these), just label: value.
+function customMetricsHtml(items: CustomMetric[] | undefined, lang: "fr" | "en"): string {
+  const present = (items || []).filter((i) => i.label?.trim() && i.value?.trim());
+  if (!present.length) return "";
+  const title = lang === "en" ? "Other" : "Autres indicateurs";
+  const rows = present
+    .map(
+      (i) => `
+      <tr>
+        <td style="padding:10px 20px;border-bottom:1px solid #26314a;">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
+            <td style="font-size:13px;color:#9aa7c2;">${escapeHtml(i.label)}</td>
+            <td align="right" style="font-size:14px;font-weight:700;color:#fff;">${escapeHtml(i.value)}</td>
+          </tr></table>
+        </td>
+      </tr>`
+    )
+    .join("");
+  return `
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#111c2b;border-radius:14px;margin:12px 0 4px;">
+      <tr><td style="padding:14px 20px 10px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#f2c94c;font-weight:700;">${escapeHtml(
+        title
+      )}</td></tr>
+      ${rows}
+    </table>`;
 }
 
 function ctaHtml(label: string | undefined, url: string | undefined): string {
@@ -142,12 +206,18 @@ function renderShell(opts: {
           <!-- Header -->
           <tr>
             <td style="background:#041021;padding:28px 32px;">
-              <span style="font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;">
+              ${
+                b.logoUrl
+                  ? `<img src="${escapeHtml(b.logoUrl)}" height="28" alt="${escapeHtml(
+                      b.companyName
+                    )}" style="display:block;height:28px;width:auto;border:0;">`
+                  : `<span style="font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;">
                 <span style="color:#ff5a4e;">${escapeHtml(b.logoPart1)}</span><span style="color:#5c6cff;">${escapeHtml(
-    b.logoPart2
-  )}</span>
-              </span>
-              <div style="margin-top:6px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#f2c94c;font-weight:700;">${escapeHtml(
+                      b.logoPart2
+                    )}</span>
+              </span>`
+              }
+              <div style="margin-top:10px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#f2c94c;font-weight:700;">${escapeHtml(
                 opts.eyebrow
               )}</div>
             </td>
@@ -188,10 +258,8 @@ export interface ReportEmailInput {
   contactName?: string;
   language: "fr" | "en";
   monthLabel: string;
-  websiteVisits?: Metric;
-  googleImpressions?: Metric;
-  googleClicks?: Metric;
-  googleAvgPosition?: Metric; // lower is better
+  groups: MetricGroup[]; // whatever metric categories the client tracks
+  customMetrics?: CustomMetric[]; // freeform "add your own metric" rows
   summary?: string;
   reportUrl?: string;
   branding?: Branding;
@@ -201,24 +269,12 @@ const REPORT_COPY = {
   fr: {
     greeting: (name: string) => `Bonjour ${name},`,
     intro: (month: string, business: string) => `Voici le récapitulatif de ${month} pour <strong>${escapeHtml(business)}</strong>.`,
-    trafficTitle: "Trafic du site",
-    visits: "Visites",
-    searchTitle: "Performance sur Google",
-    impressions: "Impressions",
-    clicks: "Clics",
-    avgPosition: "Position moyenne",
     cta: "Voir le rapport complet",
     closing: "Des questions sur ces chiffres ou sur la suite ? Répondez simplement à cet email, on vous lit.",
   },
   en: {
     greeting: (name: string) => `Hi ${name},`,
     intro: (month: string, business: string) => `Here's the recap for ${month} for <strong>${escapeHtml(business)}</strong>.`,
-    trafficTitle: "Website traffic",
-    visits: "Visits",
-    searchTitle: "Google Search performance",
-    impressions: "Impressions",
-    clicks: "Clicks",
-    avgPosition: "Avg. position",
     cta: "View the full report",
     closing: "Questions about these numbers or what's next? Just reply to this email.",
   },
@@ -235,40 +291,15 @@ export function renderReportEmail(input: ReportEmailInput): { subject: string; h
     ? `<p style="font-size:15px;line-height:1.65;color:#374151;margin:0 0 24px;">${escapeHtml(input.summary)}</p>`
     : "";
 
-  const trafficHtml = input.websiteVisits?.value
-    ? `
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#111c2b;border-radius:14px;margin:4px 0;">
-        <tr><td style="padding:14px 20px 0;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#f2c94c;font-weight:700;">${escapeHtml(
-          t.trafficTitle
-        )}</td></tr>
-        <tr>${metricCell(t.visits, input.websiteVisits, false, lang)}</tr>
-      </table>`
-    : "";
-
-  const searchCells = [
-    metricCell(t.impressions, input.googleImpressions, false, lang),
-    metricCell(t.clicks, input.googleClicks, false, lang),
-    metricCell(t.avgPosition, input.googleAvgPosition, true, lang),
-  ]
-    .filter(Boolean)
-    .join("");
-
-  const searchHtml = searchCells
-    ? `
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#111c2b;border-radius:14px;margin:12px 0 4px;">
-        <tr><td colspan="3" style="padding:14px 20px 0;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#f2c94c;font-weight:700;">${escapeHtml(
-          t.searchTitle
-        )}</td></tr>
-        <tr>${searchCells}</tr>
-      </table>`
-    : "";
+  const groupsHtml = (input.groups || []).map((g) => metricGroupHtml(g, lang)).join("");
+  const customHtml = customMetricsHtml(input.customMetrics, lang);
 
   const bodyHtml = `
     <h1 style="margin:0 0 16px;font-size:22px;color:#111c2b;">${escapeHtml(t.greeting(greetName))}</h1>
     <p style="font-size:15px;line-height:1.65;color:#374151;margin:0 0 20px;">${t.intro(input.monthLabel, input.businessName)}</p>
     ${summaryHtml}
-    ${trafficHtml}
-    ${searchHtml}
+    ${groupsHtml}
+    ${customHtml}
     ${ctaHtml(t.cta, input.reportUrl)}
     <p style="font-size:14px;line-height:1.6;color:#6b7280;margin:28px 0 0;">${t.closing}</p>`;
 

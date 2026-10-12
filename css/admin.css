@@ -126,10 +126,21 @@ tbody tr:hover td{background:#fafbfc}
 .send-dialog__head select{width:auto;min-width:9.5rem;padding:9px 12px;font-size:13px;font-weight:700}
 .send-dialog__client{margin:0;color:var(--gold-soft);font-weight:800;font-size:14px}
 .field-hint{margin:0;color:var(--navy);font-size:12px;text-transform:uppercase;letter-spacing:.06em;font-weight:800}
+.field-hint-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.field-hint-row .link-button{font-size:12px;font-weight:700}
 .field-note{margin:-6px 0 0;color:var(--muted);font-size:12px;line-height:1.5}
-.metric-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.metric-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
 .metric-grid--single{grid-template-columns:1fr}
 .metric-grid label{position:relative}
+
+/* ── Tracked-metrics checklist ──────────────────────────────── */
+.tracked-metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;background:#fafbfc;border:1px solid var(--border);border-radius:12px;padding:16px}
+.tracked-metrics__group{display:grid;gap:6px}
+.tracked-metrics__group-title{display:block;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--navy-soft);margin-bottom:2px}
+.checkbox-field--compact{font-size:12px;font-weight:500;gap:6px}
+
+/* ── Custom metric rows (freeform "add your own") ───────────── */
+.custom-metric-row{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;margin-bottom:8px;align-items:center}
 .field-previous{display:block;margin-top:5px;font-size:11px;font-weight:600;color:var(--muted)}
 .send-dialog textarea,.bulk-dialog textarea{width:100%;border:1px solid var(--border);border-radius:10px;background:#fff;color:var(--text);padding:12px 14px;font:inherit;resize:vertical}
 .send-dialog label small,.bulk-dialog label small,.client-dialog label small{color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0}
@@ -196,7 +207,8 @@ tbody tr:hover td{background:#fafbfc}
   .login-card{padding:26px;margin:6vh auto}
   .admin-header{align-items:flex-start;flex-direction:column}
   .stats{grid-template-columns:repeat(2,1fr)}
-  .toolbar,.toolbar--clients,.field-grid,.metric-grid{grid-template-columns:1fr}
+  .toolbar,.toolbar--clients,.field-grid,.metric-grid,.tracked-metrics{grid-template-columns:1fr}
+  .custom-metric-row{grid-template-columns:1fr}
   .header-actions{width:100%}
   .header-actions button{flex:1}
   .client-dialog__inner{padding:20px}
