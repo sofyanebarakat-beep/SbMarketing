@@ -1,0 +1,68 @@
+/* ── Devis tab (/admin/#devis) — loaded after admin.css, reuses its tokens ── */
+.toolbar--devis{grid-template-columns:minmax(220px,1fr) 160px auto auto auto}
+.toolbar--devis button{white-space:nowrap}
+
+.devis-row-actions{display:flex;gap:6px;flex-wrap:wrap}
+.devis-row-actions button{padding:7px 11px;font-size:12px}
+.devis-total{font-weight:800;color:var(--navy);white-space:nowrap}
+.devis-number-cell{font-weight:800;color:var(--navy);white-space:nowrap}
+.devis-badge{display:inline-flex;margin-top:6px;border-radius:99px;padding:3px 9px;font-size:11px;font-weight:700;background:#fff3e0;color:#b45309}
+
+/* Dialogs */
+.devis-dialog{border:1px solid var(--border);border-radius:20px;background:#fff;color:var(--text);padding:0;width:min(100%,820px);max-height:92vh}
+.devis-dialog--wide{width:min(100%,1100px)}
+.devis-dialog::backdrop{background:rgba(4,16,33,.45)}
+.devis-dialog form,.devis-dialog__inner{display:grid;gap:14px;padding:28px;max-height:92vh;overflow:auto}
+.devis-dialog h2{margin:0;font-size:22px;color:var(--navy)}
+.devis-dialog__head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.devis-dialog__head .field-note{margin:6px 0 0}
+.devis-number{display:inline-block;margin-top:6px;color:var(--gold-soft);font-weight:800;font-size:14px}
+.devis-dialog textarea{width:100%;border:1px solid var(--border);border-radius:10px;background:#fff;color:var(--text);padding:12px 14px;font:inherit;resize:vertical}
+.devis-dialog textarea:focus{border-color:var(--gold-soft);box-shadow:0 0 0 3px rgba(242,201,76,.28);outline:none}
+.devis-dialog label small{color:var(--muted);font-weight:400}
+.devis-dialog .form-actions{display:flex;gap:10px;flex-wrap:wrap}
+.devis-dialog .field-note{margin:-4px 0 0}
+
+/* Service picker + lines */
+.devis-picker{display:grid;grid-template-columns:1fr auto;gap:10px}
+.devis-lines{display:grid;gap:10px}
+.devis-lines:empty{display:none}
+.devis-line{border:1px solid var(--border);border-radius:14px;padding:12px;display:grid;gap:8px;background:#fcfcfd}
+.devis-line__main{display:grid;grid-template-columns:minmax(0,1fr) 78px 112px 112px 104px 32px;gap:8px;align-items:end}
+.devis-line__main label{font-size:11px;gap:4px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.devis-line input,.devis-line select{padding:9px 10px;font-size:14px}
+.devis-line textarea{padding:9px 10px;font-size:13px}
+.devis-line__total{display:grid;gap:4px;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;font-weight:700}
+.devis-line__total strong{font-size:14px;color:var(--navy);padding:9px 0;text-transform:none;letter-spacing:0;white-space:nowrap}
+.devis-line__tools{display:flex;flex-direction:column;gap:4px}
+.devis-line__tools .icon-button{width:28px;height:28px;font-size:11px}
+
+/* Totals */
+.devis-totals-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.devis-summary{margin:0;display:grid;grid-template-columns:1fr auto;gap:6px 24px;background:var(--navy);color:#fff;border-radius:14px;padding:16px 20px;font-size:14px}
+.devis-summary dt{color:rgba(255,255,255,.7)}
+.devis-summary dd{margin:0;text-align:right;font-weight:700;white-space:nowrap}
+.devis-summary .is-total{font-size:17px;color:var(--gold);font-weight:800;padding-top:8px;border-top:1px solid rgba(255,255,255,.14)}
+
+.devis-pdf-pane iframe{height:620px}
+.devis-actions [data-devis-send]{min-width:220px}
+
+/* Service catalog table */
+.devis-services-table{min-width:980px}
+.devis-services-table td{padding:8px 10px;vertical-align:middle}
+.devis-services-table input,.devis-services-table select,.devis-services-table textarea{padding:8px 10px;font-size:13px}
+.devis-services-table textarea{min-height:38px;border:1px solid var(--border);border-radius:10px;width:100%;font:inherit;font-size:13px;resize:vertical}
+.devis-services-table td:nth-child(1){width:150px}
+.devis-services-table td:nth-child(2){width:200px}
+.devis-services-table td:nth-child(4){width:110px}
+.devis-services-table td:nth-child(5){width:110px}
+.devis-services-table td:nth-child(6){width:60px;text-align:center}
+.devis-services-table td:nth-child(6) input{width:auto}
+.devis-services-table tr.is-dirty td{background:#fffaf2}
+
+@media (max-width:900px){
+  .toolbar--devis,.devis-totals-grid,.devis-picker{grid-template-columns:1fr}
+  .devis-line__main{grid-template-columns:1fr 1fr}
+  .devis-line__main > label:first-child{grid-column:1/-1}
+  .devis-dialog form,.devis-dialog__inner{padding:20px}
+}

@@ -7,6 +7,7 @@
   <title>Admin | SB Marketing</title>
   <link rel="icon" href="/images/sb-favicon.png">
   <link rel="stylesheet" href="/css/admin.css">
+  <link rel="stylesheet" href="/css/admin-devis.css">
 </head>
 <body>
   <main class="admin-page">
@@ -38,6 +39,9 @@
           </a>
           <a href="#marketing" class="sidebar-link" data-tab="marketing">
             <span class="sidebar-link__icon" aria-hidden="true">📧</span> Email Marketing
+          </a>
+          <a href="#devis" class="sidebar-link" data-tab="devis">
+            <span class="sidebar-link__icon" aria-hidden="true">🧾</span> Devis
           </a>
           <a href="#settings" class="sidebar-link" data-tab="settings">
             <span class="sidebar-link__icon" aria-hidden="true">⚙️</span> Settings
@@ -133,6 +137,25 @@
           <div class="toolbar"><label class="search"><span class="sr-only">Search email history</span><input type="search" data-marketing-history-search placeholder="Search client, subject…"></label></div>
           <div class="table-wrap"><table><thead><tr><th>Date</th><th>Client</th><th>Type</th><th>Subject</th></tr></thead><tbody data-marketing-history-body></tbody></table></div>
           <div class="empty" data-marketing-history-empty hidden><h2>No emails sent yet</h2><p>Compose one above to get started.</p></div>
+        </div>
+
+        <div data-view="devis" hidden>
+          <div class="stats" aria-label="Devis summary">
+            <article><span>Total devis</span><strong data-devis-stat-total>0</strong></article>
+            <article class="stat-due"><span>Awaiting reply</span><strong data-devis-stat-pending>0</strong></article>
+            <article><span>Accepted</span><strong data-devis-stat-accepted>0</strong></article>
+            <article><span>Accepted (HT)</span><strong data-devis-stat-amount>0 €</strong></article>
+          </div>
+          <div class="toolbar toolbar--devis">
+            <label class="search"><span class="sr-only">Search devis</span><input type="search" data-devis-search placeholder="Search number, client, object…"></label>
+            <select data-devis-status-filter aria-label="Filter by status"><option value="">All statuses</option><option value="draft">Draft</option><option value="sent">Sent</option><option value="accepted">Accepted</option><option value="refused">Refused</option><option value="expired">Expired</option></select>
+            <button type="button" class="secondary" data-devis-services-open>🗂 Services</button>
+            <button type="button" class="secondary" data-devis-settings-open>⚙️ Devis settings</button>
+            <button type="button" data-devis-new>+ New devis</button>
+          </div>
+          <p class="dashboard-message" data-devis-message aria-live="polite"></p>
+          <div class="table-wrap"><table><thead><tr><th>Number</th><th>Date</th><th>Client</th><th>Object</th><th>Total TTC</th><th>Status</th><th>Actions</th></tr></thead><tbody data-devis-body></tbody></table></div>
+          <div class="empty" data-devis-empty hidden><h2>No devis yet</h2><p>Create your first quote — it's emailed to the client as a PDF.</p></div>
         </div>
 
         <div data-view="settings" hidden>
@@ -385,6 +408,132 @@
     </div>
   </dialog>
 
+  <!-- Devis editor ───────────────────────────────────────────────── -->
+  <dialog class="devis-dialog" data-devis-dialog>
+    <form data-devis-form novalidate>
+      <div class="devis-dialog__head">
+        <div><h2 data-devis-dialog-title>New devis</h2><span class="devis-number" data-devis-number></span></div>
+        <button type="button" class="icon-button" data-devis-close aria-label="Close">✕</button>
+      </div>
+
+      <p class="send-dialog__section-title send-dialog__section-title--first">👤 Client</p>
+      <label>Fill from an existing client or contact request <small>(optional)</small><select data-devis-source><option value="">Enter details manually…</option></select></label>
+      <div class="field-grid">
+        <label>Contact name<input name="client_name" placeholder="Karim Haddad"></label>
+        <label>Company<input name="client_company" placeholder="Boucherie de la Gare"></label>
+        <label>Email<input name="client_email" type="email" placeholder="client@example.com"></label>
+        <label>Phone <small>(optional)</small><input name="client_phone" type="tel" placeholder="+33 6 12 34 56 78"></label>
+        <label>SIRET <small>(optional)</small><input name="client_siret" placeholder="123 456 789 00012"></label>
+        <label>VAT number <small>(optional)</small><input name="client_vat" placeholder="FR12345678901"></label>
+      </div>
+      <div class="field-grid">
+        <label>Address <small>(optional)</small><textarea name="client_address" rows="2" placeholder="12 avenue Jean Médecin&#10;06000 Nice"></textarea></label>
+        <label>Devis language<select name="language"><option value="fr">French</option><option value="en">English</option></select></label>
+      </div>
+
+      <p class="send-dialog__section-title">📄 Devis</p>
+      <label>Object<input name="title" placeholder="Création de site internet et gestion des réseaux sociaux"></label>
+      <div class="field-grid">
+        <label>Date<input name="issue_date" type="date"></label>
+        <label>Valid until<input name="valid_until" type="date"></label>
+      </div>
+      <label>Introduction <small>(optional — shown above the services)</small><textarea name="intro" rows="2" placeholder="Suite à notre échange, voici notre proposition…"></textarea></label>
+
+      <p class="send-dialog__section-title">🧾 Services</p>
+      <div class="devis-picker">
+        <select data-devis-service-pick aria-label="Add a service from the catalog"><option value="">Add a service from the catalog…</option></select>
+        <button type="button" class="secondary" data-devis-add-line>+ Custom line</button>
+      </div>
+      <div class="devis-lines" data-devis-lines></div>
+      <p class="field-note" data-devis-lines-empty>No services yet — pick one from the catalog or add a custom line.</p>
+
+      <p class="send-dialog__section-title">💶 Totals</p>
+      <div class="devis-totals-grid">
+        <label>Discount %<input name="discount_percent" type="number" min="0" max="100" step="0.5" value="0"></label>
+        <label>VAT<select name="vat_mode"><option value="20">20 %</option><option value="10">10 %</option><option value="5.5">5,5 %</option><option value="0">0 %</option><option value="exempt">Not applicable (art. 293 B)</option></select></label>
+        <label>Deposit %<input name="deposit_percent" type="number" min="0" max="100" step="5" value="0"></label>
+      </div>
+      <dl class="devis-summary" data-devis-summary></dl>
+
+      <p class="send-dialog__section-title">📌 Conditions</p>
+      <label>Payment terms<textarea name="payment_terms" rows="2"></textarea></label>
+      <label>Notes / conditions <small>(optional)</small><textarea name="notes" rows="3"></textarea></label>
+
+      <p class="send-dialog__section-title">✉️ Email to the client</p>
+      <label>Subject<input name="email_subject"></label>
+      <label>Message<textarea name="email_message" rows="7"></textarea></label>
+      <p class="field-note">Written for you from the devis details until you edit it. The PDF is attached, and the email has an “Accept the quote” button that opens a pre-filled reply.</p>
+
+      <div class="preview-pane devis-pdf-pane" data-devis-pdf-pane hidden>
+        <div class="preview-pane__head"><span>PDF preview</span><div class="preview-pane__actions"><button type="button" class="icon-button" data-devis-pdf-close aria-label="Close preview">✕</button></div></div>
+        <iframe data-devis-pdf-frame title="Devis PDF preview"></iframe>
+      </div>
+
+      <div class="form-actions devis-actions">
+        <button type="submit" data-devis-send>📨 Save &amp; send to client</button>
+        <button type="button" class="secondary" data-devis-save>Save draft</button>
+        <button type="button" class="secondary" data-devis-preview>Preview PDF</button>
+        <button type="button" class="secondary" data-devis-download>⬇ Download PDF</button>
+      </div>
+      <p class="form-message" data-devis-form-message aria-live="polite"></p>
+    </form>
+  </dialog>
+
+  <!-- Devis service catalog ─────────────────────────────────────────── -->
+  <dialog class="devis-dialog devis-dialog--wide" data-devis-services-dialog>
+    <div class="devis-dialog__inner">
+      <div class="devis-dialog__head">
+        <div><h2>Service catalog</h2><p class="field-note">Prices are HT starting points — every line stays editable on each devis.</p></div>
+        <button type="button" class="icon-button" data-devis-services-close aria-label="Close">✕</button>
+      </div>
+      <div class="table-wrap"><table class="devis-services-table"><thead><tr><th>Category</th><th>Service</th><th>Description</th><th>Unit</th><th>Price HT</th><th>Active</th><th></th></tr></thead><tbody data-devis-services-body></tbody></table></div>
+      <div class="form-actions">
+        <button type="button" data-devis-services-save>Save catalog</button>
+        <button type="button" class="secondary" data-devis-services-add>+ Add service</button>
+      </div>
+      <p class="form-message" data-devis-services-message aria-live="polite"></p>
+    </div>
+  </dialog>
+
+  <!-- Devis settings (legal details printed on the PDF) ─────────────── -->
+  <dialog class="devis-dialog" data-devis-settings-dialog>
+    <form data-devis-settings-form>
+      <div class="devis-dialog__head">
+        <h2>Devis settings</h2>
+        <button type="button" class="icon-button" data-devis-settings-close aria-label="Close">✕</button>
+      </div>
+      <p class="send-dialog__section-title send-dialog__section-title--first">🏢 Your company (printed on every devis)</p>
+      <div class="field-grid">
+        <label>Legal name<input name="legal_name" placeholder="SB Marketing"></label>
+        <label>Legal form <small>(optional)</small><input name="legal_form" placeholder="SAS au capital de 1 000 € / Entrepreneur individuel"></label>
+        <label>SIRET<input name="siret" placeholder="123 456 789 00012"></label>
+        <label>VAT number <small>(optional)</small><input name="vat_number" placeholder="FR12345678901"></label>
+        <label>Email<input name="email" type="email" placeholder="contact@sbmarketing.fr"></label>
+        <label>Phone<input name="phone" type="tel" placeholder="+33 6 00 00 00 00"></label>
+        <label>Website<input name="website" placeholder="www.sbmarketing.fr"></label>
+        <label>Address<textarea name="address" rows="2" placeholder="Adresse&#10;06000 Nice"></textarea></label>
+      </div>
+      <p class="send-dialog__section-title">🏦 Bank details <small>(shown under payment terms)</small></p>
+      <div class="field-grid">
+        <label>IBAN<input name="iban" placeholder="FR76 …"></label>
+        <label>BIC<input name="bic" placeholder="…"></label>
+      </div>
+      <p class="send-dialog__section-title">🧮 Defaults for new devis</p>
+      <div class="field-grid">
+        <label>Number prefix<input name="number_prefix" placeholder="DEV"></label>
+        <label>Validity (days)<input name="validity_days" type="number" min="1" step="1"></label>
+        <label>Default VAT rate %<input name="default_vat_rate" type="number" min="0" step="0.1"></label>
+        <label>Default deposit %<input name="default_deposit_percent" type="number" min="0" max="100" step="5"></label>
+      </div>
+      <label class="checkbox-field"><input type="checkbox" name="vat_exempt"> VAT not applicable (micro-entreprise / franchise en base)</label>
+      <label>VAT exemption mention<input name="vat_exempt_mention" placeholder="TVA non applicable, art. 293 B du CGI"></label>
+      <label>Default payment terms<textarea name="default_payment_terms" rows="2"></textarea></label>
+      <label>Default notes / conditions<textarea name="default_notes" rows="3"></textarea></label>
+      <div class="form-actions"><button type="submit">Save settings</button></div>
+      <p class="form-message" data-devis-settings-message aria-live="polite"></p>
+    </form>
+  </dialog>
+
   <!-- Image library (Storage-backed) ──────────────────────────────── -->
   <dialog class="asset-picker" data-asset-picker>
     <div class="asset-picker__head">
@@ -398,5 +547,6 @@
 
   <script src="/js/supabase-config.js"></script>
   <script src="/js/admin.js"></script>
+  <script src="/js/admin-devis.js"></script>
 </body>
 </html>
