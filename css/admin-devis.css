@@ -24,11 +24,11 @@
 .devis-dialog .field-note{margin:-4px 0 0}
 
 /* Service picker + lines */
-.devis-picker{display:grid;grid-template-columns:1fr auto;gap:10px}
+.devis-picker{display:grid;grid-template-columns:auto 1fr;gap:10px}
 .devis-lines{display:grid;gap:10px}
 .devis-lines:empty{display:none}
 .devis-line{border:1px solid var(--border);border-radius:14px;padding:12px;display:grid;gap:8px;background:#fcfcfd}
-.devis-line__main{display:grid;grid-template-columns:minmax(0,1fr) 78px 112px 112px 104px 32px;gap:8px;align-items:end}
+.devis-line__main{display:grid;grid-template-columns:minmax(0,1fr) 72px 104px 112px 112px 32px;gap:8px;align-items:end}
 .devis-line__main label{font-size:11px;gap:4px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
 .devis-line input,.devis-line select{padding:9px 10px;font-size:14px}
 .devis-line textarea{padding:9px 10px;font-size:13px}

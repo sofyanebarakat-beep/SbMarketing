@@ -142,8 +142,12 @@
   }
 
   // ── Totals ──────────────────────────────────────────────────────
+  // A line's total is qty × unit price unless the admin typed their own
+  // (item.total); a blank quantity counts as 1.
+  function autoLineTotal(item){return round2((item.quantity==null||item.quantity===''?1:num(item.quantity))*num(item.unit_price));}
+  function lineTotal(item){return item.total!=null&&item.total!==''?round2(num(item.total)):autoLineTotal(item);}
   function computeTotals(d){
-    var subtotal=round2((d.items||[]).reduce(function(sum,item){return sum+round2(num(item.quantity)*num(item.unit_price));},0));
+    var subtotal=round2((d.items||[]).reduce(function(sum,item){return sum+lineTotal(item);},0));
     var discount=round2(subtotal*num(d.discount_percent)/100),totalHt=round2(subtotal-discount);
     var vat=d.vat_exempt?0:round2(totalHt*num(d.vat_rate)/100),ttc=round2(totalHt+vat);
     return{subtotal:subtotal,discount:discount,totalHt:totalHt,vat:vat,ttc:ttc,deposit:round2(ttc*num(d.deposit_percent)/100)};
@@ -157,12 +161,14 @@
   function addLine(item){
     item=item||{};
     var row=document.createElement('div');row.className='devis-line';
+    var manual=item.total!=null&&item.total!==''&&Math.abs(num(item.total)-autoLineTotal(item))>0.004;
+    row.dataset.manual=manual?'1':'';
     row.innerHTML='<div class="devis-line__main">'
-      +'<label>Service<input data-f="name" value="'+escapeHtml(item.name||'')+'" placeholder="Service name"></label>'
-      +'<label>Qty<input data-f="quantity" type="number" min="0" step="any" value="'+escapeHtml(item.quantity==null?1:item.quantity)+'"></label>'
+      +'<label>Désignation<input data-f="name" value="'+escapeHtml(item.name||'')+'" placeholder="Ex. Création du site vitrine"></label>'
+      +'<label>Qty<input data-f="quantity" type="number" min="0" step="any" value="'+escapeHtml(item.quantity==null?'':item.quantity)+'" placeholder="1"></label>'
       +'<label>Unit<select data-f="unit">'+unitOptions(item.unit||'forfait')+'</select></label>'
-      +'<label>Unit price HT<input data-f="unit_price" type="number" step="0.01" value="'+escapeHtml(item.unit_price==null?'':item.unit_price)+'"></label>'
-      +'<div class="devis-line__total"><span>Total HT</span><strong data-line-total></strong></div>'
+      +'<label>Unit price HT<input data-f="unit_price" type="number" step="0.01" value="'+escapeHtml(item.unit_price==null?'':item.unit_price)+'" placeholder="0,00"></label>'
+      +'<label>Total HT<input data-f="total" type="number" step="0.01" value="'+escapeHtml(manual?item.total:'')+'" placeholder="0,00" title="Filled from qty × price — type to set your own"></label>'
       +'<div class="devis-line__tools"><button type="button" class="icon-button" data-line-up aria-label="Move up">↑</button><button type="button" class="icon-button" data-line-remove aria-label="Remove line">✕</button></div>'
       +'</div>'
       +'<textarea data-f="description" rows="2" placeholder="Description shown under the service (optional)">'+escapeHtml(item.description||'')+'</textarea>';
@@ -172,8 +178,10 @@
   function readLines(){
     return Array.from(linesBox.querySelectorAll('.devis-line')).map(function(row){
       function f(name){return row.querySelector('[data-f="'+name+'"]').value;}
-      return{name:f('name').trim(),description:f('description').trim(),quantity:num(f('quantity')),unit:f('unit'),unit_price:round2(num(f('unit_price')))};
-    }).filter(function(item){return item.name||item.description||item.unit_price;});
+      var item={name:f('name').trim(),description:f('description').trim(),quantity:f('quantity')===''?null:num(f('quantity')),unit:f('unit'),unit_price:f('unit_price')===''?null:round2(num(f('unit_price')))};
+      item.total=row.dataset.manual&&f('total')!==''?round2(num(f('total'))):autoLineTotal(item);
+      return item;
+    }).filter(function(item){return item.name||item.description||item.unit_price||item.total;});
   }
   function renderServicePicker(){
     var groups={};
@@ -266,7 +274,11 @@
 
   function refreshEditor(){
     var d=readForm(),t=computeTotals(d),lang=d.language;
-    linesBox.querySelectorAll('.devis-line').forEach(function(row){row.querySelector('[data-line-total]').textContent=money(round2(num(row.querySelector('[data-f="quantity"]').value)*num(row.querySelector('[data-f="unit_price"]').value)),lang);});
+    linesBox.querySelectorAll('.devis-line').forEach(function(row){
+      if(row.dataset.manual)return;
+      var q=row.querySelector('[data-f="quantity"]').value,pu=row.querySelector('[data-f="unit_price"]').value;
+      row.querySelector('[data-f="total"]').value=pu===''?'':autoLineTotal({quantity:q,unit_price:pu}).toFixed(2);
+    });
     linesEmpty.hidden=linesBox.children.length>0;
     var rows=[['Subtotal HT',money(t.subtotal,lang)]];
     if(t.discount)rows.push(['Discount ('+percent(d.discount_percent,lang)+')','− '+money(t.discount,lang)],['Total HT',money(t.totalHt,lang)]);
@@ -321,7 +333,7 @@
   }
   function validateForPdf(d){
     if(!d.items.length)return 'Add at least one service.';
-    if(d.items.some(function(i){return !i.name;}))return 'Every line needs a service name.';
+    if(d.items.some(function(i){return !i.name;}))return 'Every line needs a désignation.';
     return '';
   }
   function acceptUrl(d){
@@ -408,8 +420,8 @@
   function pdfFilename(d){return(d.language==='en'?'Quote-':'Devis-')+d.number+(clientLabel(d)!=='—'?'-'+slug(clientLabel(d)):'')+'.pdf';}
 
   var PDF_COPY={
-    fr:{doc:'DEVIS',no:'N°',date:'Date du devis',valid:'Valable jusqu’au',ref:'Référence',from:'ÉMETTEUR',to:'CLIENT',object:'Objet',desc:'Désignation',qty:'Qté',unit:'Unité',pu:'P.U. HT',total:'Total HT',subtotal:'Sous-total HT',discount:'Remise',totalHt:'Total HT',vat:'TVA',ttc:'Total TTC',net:'Net à payer',deposit:'Acompte à la signature',payment:'Conditions de paiement',bank:'Coordonnées bancaires',notes:'Conditions',sign:'Bon pour accord',signHint:'Date, signature et cachet du client, précédés de la mention « Bon pour accord »',page:'Page',siret:'SIRET',vatNo:'TVA intracom.'},
-    en:{doc:'QUOTE',no:'No.',date:'Quote date',valid:'Valid until',ref:'Reference',from:'FROM',to:'CLIENT',object:'Subject',desc:'Description',qty:'Qty',unit:'Unit',pu:'Unit price',total:'Amount',subtotal:'Subtotal (excl. VAT)',discount:'Discount',totalHt:'Total excl. VAT',vat:'VAT',ttc:'Total incl. VAT',net:'Total due',deposit:'Deposit due on signature',payment:'Payment terms',bank:'Bank details',notes:'Terms & conditions',sign:'Approval',signHint:'Date, signature and company stamp, preceded by “Approved”',page:'Page',siret:'SIRET',vatNo:'VAT no.'}
+    fr:{doc:'DEVIS',no:'N°',date:'Date du devis',valid:'Valable jusqu’au',ref:'Référence',to:'CLIENT',object:'Objet',desc:'Désignation',qty:'Qté',unit:'Unité',pu:'P.U. HT',total:'Total HT',subtotal:'Sous-total HT',discount:'Remise',totalHt:'Total HT',vat:'TVA',ttc:'Total TTC',net:'Net à payer',deposit:'Acompte à la signature',payment:'Conditions de paiement',bank:'Coordonnées bancaires',notes:'Conditions',sign:'Bon pour accord',signHint:'Date, signature et cachet du client, précédés de la mention « Bon pour accord »',page:'Page',siret:'SIRET',vatNo:'TVA intracom.'},
+    en:{doc:'QUOTE',no:'No.',date:'Quote date',valid:'Valid until',ref:'Reference',to:'CLIENT',object:'Subject',desc:'Description',qty:'Qty',unit:'Unit',pu:'Unit price',total:'Amount',subtotal:'Subtotal (excl. VAT)',discount:'Discount',totalHt:'Total excl. VAT',vat:'VAT',ttc:'Total incl. VAT',net:'Total due',deposit:'Deposit due on signature',payment:'Payment terms',bank:'Bank details',notes:'Terms & conditions',sign:'Approval',signHint:'Date, signature and company stamp, preceded by “Approved”',page:'Page',siret:'SIRET',vatNo:'VAT no.'}
   };
 
   async function buildPdf(d){
@@ -424,21 +436,31 @@
     function ensure(height){if(y+height>bottomLimit){doc.addPage();y=20;}}
     function lines(value,maxWidth){return doc.splitTextToSize(txt(value),maxWidth);}
 
-    // Header band (the logo artwork is gold on navy, so it sits on navy)
-    doc.setFillColor.apply(doc,NAVY);doc.rect(0,0,210,36,'F');
-    if(logo){try{doc.addImage(logo,'PNG',left,11,56,56*164/740);}catch(error){}}
-    else{font(18,'bold',GOLD);doc.text(txt(companyName()),left,21);}
+    // Header band: logo, website, contact, address and legal numbers on
+    // navy (the logo artwork is gold on navy).
+    var website=String(s.website||appSettings.website_url||'').replace(/^https?:\/\//,'').replace(/\/$/,'');
+    var headerLines=[
+      String(s.address||'').replace(/\s*\n\s*/g,', '),
+      [s.phone||appSettings.phone,s.email].filter(Boolean).join('   ·   '),
+      [s.legal_form,s.siret?L.siret+' '+s.siret:'',s.vat_number?L.vatNo+' '+s.vat_number:''].filter(Boolean).join('   ·   ')
+    ].filter(Boolean);
+    var bandH=Math.max(38,(website?33:28)+headerLines.length*4.4+3);
+    doc.setFillColor.apply(doc,NAVY);doc.rect(0,0,210,bandH,'F');
+    if(logo){try{doc.addImage(logo,'PNG',left,10,52,52*164/740);}catch(error){}}
+    else{font(18,'bold',GOLD);doc.text(txt(s.legal_name||companyName()),left,20);}
+    var hy=28;
+    if(website){font(9.5,'bold',GOLD);doc.text(txt(website),left,hy);hy+=5;}
+    font(8,'normal',[205,211,222]);
+    headerLines.forEach(function(line){doc.text(lines(line,128)[0],left,hy);hy+=4.4;});
     font(24,'bold',GOLD);doc.text(L.doc,right,19,{align:'right'});
     font(10,'normal',[255,255,255]);doc.text(L.no+' '+txt(d.number),right,26.5,{align:'right'});
-    doc.setFillColor.apply(doc,GOLD);doc.rect(0,36,210,1.2,'F');
+    doc.setFillColor.apply(doc,GOLD);doc.rect(0,bandH,210,1.2,'F');
 
-    // Issuer (left) and client box (right)
-    y=48;
-    var issuer=[s.legal_form,s.address,s.siret?L.siret+' '+s.siret:'',s.vat_number?L.vatNo+' '+s.vat_number:'',[s.email,s.phone].filter(Boolean).join(' · '),s.website].filter(Boolean).join('\n');
-    font(7.5,'bold',MUTED);doc.text(L.from,left,y);
-    font(11,'bold');doc.text(txt(s.legal_name||companyName()),left,y+6);
-    font(9,'normal',MUTED);var issuerLines=lines(issuer,84);doc.text(issuerLines,left,y+11.5,{lineHeightFactor:1.35});
-    var issuerBottom=y+11.5+issuerLines.length*4.3;
+    // Quote details (left) and client box (right)
+    y=bandH+13;
+    var details=[[L.date,formatDate(d.issue_date,lang)],[L.valid,formatDate(d.valid_until,lang)||'—'],[L.ref,d.number]];
+    details.forEach(function(cell,i){font(7.5,'bold',MUTED);doc.text(txt(cell[0]).toUpperCase(),left,y+i*10);font(10.5,'bold');doc.text(txt(cell[1]),left,y+i*10+5);});
+    var detailsBottom=y+(details.length-1)*10+6;
 
     var boxX=110,boxW=right-boxX;
     var clientDetail=[d.client_company?d.client_name:'',d.client_address,d.client_email,d.client_phone,d.client_siret?L.siret+' '+d.client_siret:'',d.client_vat?L.vatNo+' '+d.client_vat:''].filter(Boolean).join('\n');
@@ -448,14 +470,7 @@
     font(7.5,'bold',MUTED);doc.text(L.to,boxX+5,y);
     font(11,'bold');doc.text(lines(d.client_company||d.client_name||'',boxW-10)[0]||'',boxX+5,y+6);
     font(9,'normal',TEXT);doc.text(clientLines,boxX+5,y+11.5,{lineHeightFactor:1.35});
-    y=Math.max(issuerBottom,y-5+boxH)+8;
-
-    // Date strip
-    doc.setDrawColor.apply(doc,LINE);doc.setLineWidth(.3);doc.roundedRect(left,y,width,14,2,2,'S');
-    [[L.date,formatDate(d.issue_date,lang)],[L.valid,formatDate(d.valid_until,lang)||'—'],[L.ref,d.number]].forEach(function(cell,i){
-      var x=left+5+i*(width/3);font(7.5,'bold',MUTED);doc.text(txt(cell[0]).toUpperCase(),x,y+5.5);font(10,'bold');doc.text(txt(cell[1]),x,y+10.8);
-    });
-    y+=22;
+    y=Math.max(detailsBottom,y-5+boxH)+9;
 
     // Object + intro
     if(d.title){font(11,'bold');var titleLines=lines(L.object+' : '+d.title,width);doc.text(titleLines,left,y);y+=titleLines.length*5+1.5;}
@@ -467,7 +482,7 @@
     d.items.forEach(function(item,index){
       var fill=index%2?[250,250,251]:[255,255,255];
       var unit=lang==='en'?(UNIT_EN[item.unit]||item.unit):item.unit;
-      bodyRows.push([{content:txt(item.name),styles:{fontStyle:'bold',fillColor:fill,cellPadding:{top:3.2,bottom:item.description?1:3.2,left:3,right:3}}},{content:qty(item.quantity,lang),styles:{fillColor:fill}},{content:txt(unit),styles:{fillColor:fill}},{content:money(item.unit_price,lang),styles:{fillColor:fill}},{content:money(round2(num(item.quantity)*num(item.unit_price)),lang),styles:{fillColor:fill,fontStyle:'bold'}}]);
+      bodyRows.push([{content:txt(item.name),styles:{fontStyle:'bold',fillColor:fill,cellPadding:{top:3.2,bottom:item.description?1:3.2,left:3,right:3}}},{content:item.quantity==null?'':qty(item.quantity,lang),styles:{fillColor:fill}},{content:txt(unit),styles:{fillColor:fill}},{content:item.unit_price==null?'':money(item.unit_price,lang),styles:{fillColor:fill}},{content:money(lineTotal(item),lang),styles:{fillColor:fill,fontStyle:'bold'}}]);
       if(item.description)bodyRows.push([{content:txt(item.description),colSpan:5,styles:{fillColor:fill,textColor:MUTED,fontSize:8.5,cellPadding:{top:0,bottom:3.2,left:3,right:60}}}]);
     });
     doc.autoTable({
@@ -641,6 +656,10 @@
   form.addEventListener('submit',onSubmitSend);
   form.addEventListener('input',function(event){
     if(event.target.name==='email_message'||event.target.name==='email_subject'){event.target.dataset.edited=event.target.value.trim()?'1':'';return;}
+    // Typing a line total keeps it; changing qty or price recalculates it.
+    var line=event.target.closest('.devis-line'),field=event.target.dataset.f;
+    if(line&&field==='total')line.dataset.manual=event.target.value.trim()?'1':'';
+    else if(line&&(field==='quantity'||field==='unit_price'))line.dataset.manual='';
     refreshEditor();
   });
   form.addEventListener('change',function(event){if(event.target.name==='language'||event.target.name==='vat_mode'||event.target.dataset.f==='unit')refreshEditor();});
@@ -649,7 +668,7 @@
     var s=services.find(function(x){return x.id===servicePick.value;});servicePick.value='';if(!s)return;
     addLine({name:s.name,description:s.description,quantity:1,unit:s.unit,unit_price:s.unit_price});refreshEditor();
   });
-  $('[data-devis-add-line]').addEventListener('click',function(){var row=addLine({quantity:1,unit:'forfait'});refreshEditor();row.querySelector('[data-f="name"]').focus();});
+  $('[data-devis-add-line]').addEventListener('click',function(){var row=addLine({unit:'forfait'});refreshEditor();row.querySelector('[data-f="name"]').focus();});
   linesBox.addEventListener('click',function(event){
     var row=event.target.closest('.devis-line');if(!row)return;
     if(event.target.closest('[data-line-remove]')){row.remove();refreshEditor();}

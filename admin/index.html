@@ -441,11 +441,12 @@
 
       <p class="send-dialog__section-title">🧾 Services</p>
       <div class="devis-picker">
-        <select data-devis-service-pick aria-label="Add a service from the catalog"><option value="">Add a service from the catalog…</option></select>
-        <button type="button" class="secondary" data-devis-add-line>+ Custom line</button>
+        <button type="button" data-devis-add-line>+ Add désignation</button>
+        <select data-devis-service-pick aria-label="Or pick a service from the catalog"><option value="">…or pick from the catalog</option></select>
       </div>
       <div class="devis-lines" data-devis-lines></div>
-      <p class="field-note" data-devis-lines-empty>No services yet — pick one from the catalog or add a custom line.</p>
+      <p class="field-note" data-devis-lines-empty>No lines yet — click “+ Add désignation” and type the service, quantity and price.</p>
+      <p class="field-note">Each line’s Total HT fills in from qty × price — type over it to set your own amount. The totals below always add up the lines.</p>
 
       <p class="send-dialog__section-title">💶 Totals</p>
       <div class="devis-totals-grid">
