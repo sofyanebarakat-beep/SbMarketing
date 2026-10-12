@@ -119,6 +119,7 @@ tbody tr:hover td{background:#fafbfc}
 
 /* ── Send dialog (report / tip / custom) ────────────────────── */
 .send-dialog,.client-dialog,.bulk-dialog{border:1px solid var(--border);border-radius:20px;background:#fff;color:var(--text);padding:0;width:min(100%,560px);max-height:88vh}
+.send-dialog{width:min(100%,680px)}
 .send-dialog::backdrop,.client-dialog::backdrop,.bulk-dialog::backdrop{background:rgba(4,16,33,.45)}
 .send-dialog form,.bulk-dialog form{display:grid;gap:14px;padding:28px;max-height:88vh;overflow:auto}
 .send-dialog h2,.bulk-dialog h2{margin:0;font-size:22px;color:var(--navy)}
@@ -237,17 +238,23 @@ tbody tr:hover td{background:#fafbfc}
 .referral-tag{display:block;margin-top:4px;color:#178a4a;font-size:12px;font-weight:700}
 
 /* ── Saved templates row (send dialog) ──────────────────────── */
-.template-row{display:flex;gap:10px}
-.template-row select{flex:1}
-.template-row button{white-space:nowrap}
+.template-row{display:flex;align-items:center;gap:8px;background:#fafbfc;border:1px solid var(--border);border-radius:10px;padding:8px 10px}
+.template-row__label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--navy-soft);white-space:nowrap}
+.template-row select{flex:1;padding:8px 10px;font-size:13px}
+.template-row button{white-space:nowrap;padding:8px 12px;font-size:13px}
+
+/* ── Section headers (send dialog) ───────────────────────────── */
+.send-dialog__section-title{display:flex;align-items:center;gap:8px;margin:4px 0 0;padding-top:16px;border-top:1px solid var(--border);font-size:13px;font-weight:800;color:var(--navy);text-transform:uppercase;letter-spacing:.04em}
+.send-dialog__section-title--first{border-top:0;padding-top:0}
+.send-dialog__section-title small{text-transform:none;letter-spacing:0;font-weight:500;color:var(--muted);font-size:12px}
 
 /* ── Rich content extras (banner, image, video, before/after, testimonial, links, PDF) ── */
-.extras-details{border:1px solid var(--border);border-radius:12px;padding:4px 16px;background:#fafbfc}
-.extras-details summary{cursor:pointer;padding:12px 0;font-weight:800;font-size:13px;color:var(--navy);list-style:none}
+.extras-details{border:0;padding:0;background:none}
+.extras-details summary{cursor:pointer;list-style:none;margin:0}
 .extras-details summary::-webkit-details-marker{display:none}
-.extras-details summary::before{content:'';}
-.extras-grid{display:grid;gap:16px;padding-bottom:16px}
-.extras-grid fieldset{border:1px solid var(--border);border-radius:10px;padding:14px;display:grid;gap:10px;background:#fff}
+.extras-details[open] summary{margin-bottom:10px}
+.extras-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;padding-bottom:4px}
+.extras-grid fieldset{border:1px solid var(--border);border-radius:10px;padding:14px;display:grid;gap:10px;background:#fafbfc;align-content:start}
 .extras-grid legend{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--navy-soft);padding:0 4px}
 .url-field-row{display:flex;gap:8px}
 .url-field-row input{flex:1;min-width:0}
@@ -270,5 +277,5 @@ tbody tr:hover td{background:#fafbfc}
 
 @media(max-width:760px){
   .extras-grid{grid-template-columns:1fr}
-  .template-row{flex-direction:column}
+  .template-row{flex-direction:column;align-items:stretch}
 }

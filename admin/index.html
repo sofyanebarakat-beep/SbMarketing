@@ -166,10 +166,12 @@
       <p class="send-dialog__client" data-send-client></p>
 
       <div class="template-row">
-        <select data-template-select aria-label="Load a saved template"><option value="">Start from a template…</option></select>
-        <button type="button" class="secondary" data-template-save>💾 Save as template</button>
+        <span class="template-row__label">Template</span>
+        <select data-template-select aria-label="Load a saved template"><option value="">Start from scratch…</option></select>
+        <button type="button" class="secondary" data-template-save>💾 Save</button>
       </div>
 
+      <p class="send-dialog__section-title send-dialog__section-title--first">📝 Content</p>
       <div data-send-group="report">
         <label>Month<input name="month_label" placeholder="October 2026"></label>
 
@@ -205,7 +207,7 @@
       </div>
 
       <details class="extras-details">
-        <summary>+ Add banner, images, video, links &amp; more</summary>
+        <summary class="send-dialog__section-title">🖼 Rich content <small>(optional — banner, images, video, links…)</small></summary>
         <div class="extras-grid">
           <fieldset>
             <legend>Hero banner</legend>
