@@ -12,10 +12,11 @@ const corsHeaders = {
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 
-// Reuses the sending domain already verified in Resend for SB Marketing
-// (partners.sbmarketing.fr). Switch to reports@sbmarketing.fr once the root
-// domain is verified in Resend if you'd rather send from there.
-const FROM = "SB Marketing <reports@partners.sbmarketing.fr>";
+// Requires sbmarketing.fr to be a verified sending domain in Resend
+// (Resend dashboard > Domains > add sbmarketing.fr > add the SPF/DKIM
+// records it gives you to your DNS). Sends will fail with a "domain not
+// verified" error from Resend until that's done.
+const FROM = "SB Marketing <admin@sbmarketing.fr>";
 
 interface RequestBody {
   to: string;
