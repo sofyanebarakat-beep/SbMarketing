@@ -70,3 +70,6 @@ textarea.cf-input{resize:none;min-height:130px}
   .cf-row,.cf-phone{grid-template-columns:minmax(0,1fr)}
   .cf-points li{font-size:16px}
 }
+.cf-consent{display:flex;align-items:flex-start;gap:10px;font-size:13px;line-height:1.5;color:rgba(4,16,32,.6);cursor:pointer}
+.cf-consent input{width:18px;height:18px;margin:1px 0 0;flex-shrink:0;accent-color:#FABB32;cursor:pointer}
+.cf-consent a{color:#041020}

@@ -279,3 +279,4 @@ tbody tr:hover td{background:#fafbfc}
   .extras-grid{grid-template-columns:1fr}
   .template-row{flex-direction:column;align-items:stretch}
 }
+.source-tag{display:block;margin-top:4px;color:#5c6cff;font-size:12px;font-weight:700}

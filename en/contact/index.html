@@ -132,6 +132,7 @@ body {
 <link rel="stylesheet" href="/css/contact-form.css">
 <script defer src="/js/supabase-config.js"></script>
 <script defer src="/js/contact-form.js"></script>
+<script defer src="/js/utm-capture.js"></script>
 </head>
 <style>
     @media screen and (min-width: 769px) { .navbar2_menu { position: absolute; left: 50%; transform: translateX(-50%); } }
@@ -387,9 +388,10 @@ margin: 0rem !important;
           </div>
           <div class="cf-field"><label for="cf-message">Message</label><textarea class="cf-input" id="cf-message" name="message" rows="5" placeholder="Describe your project or needs..." maxlength="5000" required></textarea></div>
           <div class="cf-hp" aria-hidden="true"><label>Website<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+          <label class="cf-consent"><input type="checkbox" name="privacy_consent" required> <span>I accept the <a href="/en/politique-de-confidentialite/" target="_blank" rel="noopener">privacy policy</a> and agree that SB Marketing may use this information to contact me.</span></label>
           <button type="submit" class="cf-submit">Send message</button>
           <p class="cf-status" data-form-status aria-live="polite"></p>
-          <p class="cf-legal">By submitting this form, you agree to our <a href="/en/politique-de-confidentialite/">privacy policy</a>.</p>
+          
         </div>
         <div class="cf-success" data-form-success hidden aria-live="polite">
           <div class="cf-success__icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#FABB32" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg></div>

@@ -45,13 +45,15 @@
   form.addEventListener('submit',async function(event){
     event.preventDefault();
     var button=form.querySelector('[type="submit"]'),status=form.querySelector('[data-form-status]'),data=new FormData(form),phone=String(data.get('phone')||'').trim();
-    var payload={language:lang,name:data.get('name'),company:data.get('company'),email:data.get('email'),country:selected.name,phone:phone?selected.code+' '+phone:'',service:data.get('service'),message:data.get('message'),website:data.get('website'),source_page:(location.pathname+location.search).slice(0,200)};
+    // Where the lead came from — remembered across pages by /js/utm-capture.js.
+    var attribution=typeof window.sbAttribution==='function'?window.sbAttribution():{};
+    var payload=Object.assign({language:lang,name:data.get('name'),company:data.get('company'),email:data.get('email'),country:selected.name,phone:phone?selected.code+' '+phone:'',service:data.get('service'),message:data.get('message'),website:data.get('website'),privacy_consent:data.get('privacy_consent')==='on',source_page:(location.pathname+location.search).slice(0,200)},attribution);
     button.disabled=true;button.textContent=lang==='en'?'Sending…':'Envoi en cours...';status.textContent='';
     var saved=false;
     if(config){
       try{var response=await fetch(config.url+'/functions/v1/submit-contact',{method:'POST',headers:{apikey:config.key,'Content-Type':'application/json'},body:JSON.stringify(payload)});saved=response.ok;}catch(error){}
       if(!saved){
-        try{var fallback=await fetch(config.url+'/rest/v1/contact_submissions',{method:'POST',headers:{apikey:config.key,Authorization:'Bearer '+config.key,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({language:lang,full_name:payload.name,company:payload.company||null,email:payload.email,country:payload.country,phone:payload.phone||null,service:payload.service,message:payload.message,source_page:payload.source_page})});saved=fallback.ok;}catch(error){}
+        try{var fallback=await fetch(config.url+'/rest/v1/contact_submissions',{method:'POST',headers:{apikey:config.key,Authorization:'Bearer '+config.key,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({language:lang,full_name:payload.name,company:payload.company||null,email:payload.email,country:payload.country,phone:payload.phone||null,service:payload.service,message:payload.message,privacy_consent:payload.privacy_consent,source_page:payload.source_page,utm_source:attribution.utm_source||null,utm_medium:attribution.utm_medium||null,utm_campaign:attribution.utm_campaign||null,utm_content:attribution.utm_content||null,utm_term:attribution.utm_term||null,landing_page:attribution.landing_page||null,referrer:attribution.referrer||null})});saved=fallback.ok;}catch(error){}
       }
     }
     if(!saved){
@@ -60,7 +62,7 @@
       status.textContent=lang==='en'?'Something went wrong. Please try again or call us on +33 7 45 11 53 91.':'Une erreur est survenue. Réessayez ou appelez-nous au 07 45 11 53 91.';
       return;
     }
-    track('contact_form_submit',{service:payload.service});
+    track('contact_form_submit',{service:payload.service,lead_source:attribution.utm_source||'direct'});
     track('generate_lead',{form_name:'contact'});
     form.querySelector('[data-form-fields]').hidden=true;
     form.querySelector('[data-form-success]').hidden=false;
