@@ -30,6 +30,9 @@
           <a href="#leads" class="sidebar-link is-active" data-tab="leads">
             <span class="sidebar-link__icon" aria-hidden="true">📥</span> Leads
           </a>
+          <a href="#contacts" class="sidebar-link" data-tab="contacts">
+            <span class="sidebar-link__icon" aria-hidden="true">✉️</span> Contact
+          </a>
           <a href="#clients" class="sidebar-link" data-tab="clients">
             <span class="sidebar-link__icon" aria-hidden="true">👥</span> Clients
           </a>
@@ -59,6 +62,19 @@
           <p class="dashboard-message" data-dashboard-message aria-live="polite"></p>
           <div class="table-wrap"><table><thead><tr><th>Date</th><th>Contact</th><th>Butcher shop</th><th>Location</th><th>Website</th><th>Language</th><th>Status</th></tr></thead><tbody data-leads-body></tbody></table></div>
           <div class="empty" data-empty hidden><h2>No leads found</h2><p>New form submissions will appear here.</p></div>
+        </div>
+
+        <div data-view="contacts" hidden>
+          <div class="stats" aria-label="Contact request summary">
+            <article><span>Total requests</span><strong data-contact-stat-total>0</strong></article>
+            <article><span>New</span><strong data-contact-stat-new>0</strong></article>
+            <article><span>Contacted</span><strong data-contact-stat-contacted>0</strong></article>
+            <article><span>Customers</span><strong data-contact-stat-customer>0</strong></article>
+          </div>
+          <div class="toolbar"><label class="search"><span class="sr-only">Search contact requests</span><input type="search" data-contact-search placeholder="Search name, company, email, message…"></label><select data-contact-status-filter aria-label="Filter by status"><option value="">All statuses</option><option value="new">New</option><option value="contacted">Contacted</option><option value="qualified">Qualified</option><option value="customer">Customer</option><option value="closed">Closed</option></select></div>
+          <p class="dashboard-message" data-contact-message aria-live="polite"></p>
+          <div class="table-wrap"><table><thead><tr><th>Date</th><th>Contact</th><th>Company</th><th>Service</th><th>Message</th><th>Language</th><th>Status</th></tr></thead><tbody data-contacts-body></tbody></table></div>
+          <div class="empty" data-contacts-empty hidden><h2>No contact requests found</h2><p>Submissions from the contact page will appear here.</p></div>
         </div>
 
         <div data-view="clients" hidden>
@@ -181,6 +197,22 @@
         </div>
       </div>
 
+      <div class="share-banner" data-share-banner data-single="1">
+        <div class="share-banner__head">
+          <p class="field-hint">🤝 “Recommend us on WhatsApp” banner</p>
+          <select data-share-mode aria-label="When to include the banner"><option value="auto">Only when results are up</option><option value="always">Always</option><option value="off">Off</option></select>
+        </div>
+        <p class="share-banner__status" data-share-status aria-live="polite"></p>
+        <div class="share-banner__fields" data-share-fields>
+          <div class="field-hint-row"><p class="field-hint">Message the client shares</p><button type="button" class="link-button" data-share-suggest>✨ Suggest another</button></div>
+          <textarea rows="4" data-share-message aria-label="WhatsApp message"></textarea>
+          <div class="field-grid">
+            <label>Offer for the friend <small>(optional)</small><input data-share-offer placeholder="-20 % sur le premier mois"></label>
+            <label>Reward for your client <small>(optional)</small><input data-share-reward placeholder="on vous offre 1 mois de gestion Instagram"></label>
+          </div>
+          <p class="field-note">Picked for this client: their best result this month first, then a message for their type of business. The email adds a WhatsApp button, a “copy / send another way” button, the offer and reward, and a link to your contact page tagged with this client’s name. Offer and reward are remembered — write them in the client’s language.</p>
+        </div>
+      </div>
       <div class="preview-pane" data-preview-pane hidden>
         <div class="preview-pane__head"><span>Preview</span><button type="button" class="icon-button" data-preview-close aria-label="Close preview">✕</button></div>
         <iframe data-preview-frame title="Email preview"></iframe>
@@ -207,6 +239,22 @@
       <div class="field-grid">
         <label>Button label <small>(optional)</small><input name="cta_label" placeholder="Learn more"></label>
         <label>Button link <small>(optional)</small><input name="cta_url" type="url" placeholder="https://..."></label>
+      </div>
+      <div class="share-banner" data-share-banner>
+        <div class="share-banner__head">
+          <p class="field-hint">🤝 “Recommend us on WhatsApp” banner</p>
+          <select data-share-mode aria-label="When to include the banner"><option value="auto">Only when results are up</option><option value="always">Always</option><option value="off">Off</option></select>
+        </div>
+        <p class="share-banner__status" data-share-status aria-live="polite"></p>
+        <div class="share-banner__fields" data-share-fields>
+          <div class="field-hint-row"><p class="field-hint">Message the client shares</p><button type="button" class="link-button" data-share-suggest>✨ Suggest another</button></div>
+          <textarea rows="4" data-share-message aria-label="WhatsApp message"></textarea>
+          <div class="field-grid">
+            <label>Offer for the friend <small>(optional)</small><input data-share-offer placeholder="-20 % sur le premier mois"></label>
+            <label>Reward for your client <small>(optional)</small><input data-share-reward placeholder="on vous offre 1 mois de gestion Instagram"></label>
+          </div>
+          <p class="field-note">Each client gets the message that fits their language and type of business, unless you edit or pick one here (then French clients get yours). Offer and reward are remembered.</p>
+        </div>
       </div>
       <div class="form-actions">
         <button type="submit" data-bulk-send>Send to selected</button>

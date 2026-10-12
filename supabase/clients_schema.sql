@@ -158,6 +158,11 @@ with check (lower(auth.jwt() ->> 'email') = 'sofyanebarakat@gmail.com');
 alter table public.app_settings
   add column if not exists logo_url text not null default 'https://www.sbmarketing.fr/images/sb-marketing-email-logo.png';
 
+-- phone / whatsapp shown in the email footer's contact block, when set.
+alter table public.app_settings
+  add column if not exists phone text,
+  add column if not exists whatsapp_number text;
+
 insert into public.app_settings (id, logo_url, instagram_url, facebook_url, reply_to_email)
 values (
   'default',
@@ -167,3 +172,68 @@ values (
   'admin@partners.sbmarketing.fr'
 )
 on conflict (id) do nothing;
+
+-- ── View-in-browser ──────────────────────────────────────────────
+-- Every sent email can carry a "view in browser" link. The admin logs the
+-- rendered HTML here right after a successful send; the public /view-email/
+-- page reads it back through the narrow RPC below (by id only — a UUID
+-- isn't guessable, and the function returns nothing else from the row).
+alter table public.client_emails
+  add column if not exists rendered_html text;
+
+create or replace function public.get_email_html(target_id uuid)
+returns text
+language sql
+security definer
+set search_path = public
+as $$
+  select rendered_html from public.client_emails where id = target_id;
+$$;
+
+grant execute on function public.get_email_html(uuid) to anon, authenticated;
+
+-- ── Saved email templates ──────────────────────────────────────────
+-- Lets the admin save the current send-dialog form (whatever type) as a
+-- named, reusable starting point instead of retyping rich content each time.
+create table if not exists public.email_templates (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  name text not null,
+  type text not null check (type in ('report','tip','custom')),
+  payload jsonb not null default '{}'::jsonb
+);
+
+alter table public.email_templates enable row level security;
+grant select, insert, update, delete on table public.email_templates to authenticated;
+
+drop policy if exists "Admin can manage email templates" on public.email_templates;
+create policy "Admin can manage email templates"
+on public.email_templates for all
+to authenticated
+using (lower(auth.jwt() ->> 'email') = 'sofyanebarakat@gmail.com')
+with check (lower(auth.jwt() ->> 'email') = 'sofyanebarakat@gmail.com');
+
+create index if not exists email_templates_created_at_idx on public.email_templates (created_at desc);
+
+-- ── Image library (Storage-backed) ──────────────────────────────────
+-- A public bucket the admin uploads banner/inline/before-after images into
+-- from the send dialog, so a picture used once can be reused on later
+-- emails without re-uploading. Publicly readable (the images are embedded
+-- in emails that go out to third parties anyway); only the admin can
+-- upload, replace or delete.
+insert into storage.buckets (id, name, public)
+values ('email-assets', 'email-assets', true)
+on conflict (id) do nothing;
+
+drop policy if exists "Email assets are publicly readable" on storage.objects;
+create policy "Email assets are publicly readable"
+on storage.objects for select
+to public
+using (bucket_id = 'email-assets');
+
+drop policy if exists "Admin can manage email assets" on storage.objects;
+create policy "Admin can manage email assets"
+on storage.objects for all
+to authenticated
+using (bucket_id = 'email-assets' and lower(auth.jwt() ->> 'email') = 'sofyanebarakat@gmail.com')
+with check (bucket_id = 'email-assets' and lower(auth.jwt() ->> 'email') = 'sofyanebarakat@gmail.com');

@@ -1,8 +1,8 @@
 (function(){
   'use strict';
-  var config=window.SB_SUPABASE,sessionKey='sb_admin_session',leads=[],clients=[],appSettings=null;
+  var config=window.SB_SUPABASE,sessionKey='sb_admin_session',leads=[],contacts=[],clients=[],appSettings=null;
   var loginView=document.querySelector('[data-login-view]'),dashboard=document.querySelector('[data-dashboard]'),loginForm=document.querySelector('[data-login-form]'),loginMessage=document.querySelector('[data-login-message]'),dashboardMessage=document.querySelector('[data-dashboard-message]'),tbody=document.querySelector('[data-leads-body]'),empty=document.querySelector('[data-empty]'),search=document.querySelector('[data-search]'),filter=document.querySelector('[data-status-filter]');
-  var viewTitle=document.querySelector('[data-view-title]'),tabs=document.querySelectorAll('[data-tab]'),views={leads:document.querySelector('[data-view="leads"]'),clients:document.querySelector('[data-view="clients"]'),settings:document.querySelector('[data-view="settings"]')};
+  var viewTitle=document.querySelector('[data-view-title]'),tabs=document.querySelectorAll('[data-tab]'),views={leads:document.querySelector('[data-view="leads"]'),contacts:document.querySelector('[data-view="contacts"]'),clients:document.querySelector('[data-view="clients"]'),settings:document.querySelector('[data-view="settings"]')};
   var clientsBody=document.querySelector('[data-clients-body]'),clientsEmpty=document.querySelector('[data-clients-empty]'),clientsMessage=document.querySelector('[data-clients-message]'),clientSearch=document.querySelector('[data-client-search]'),clientDueFilter=document.querySelector('[data-client-due-filter]');
   var addClientToggle=document.querySelector('[data-add-client-toggle]'),addClientForm=document.querySelector('[data-add-client-form]'),addClientCancel=document.querySelector('[data-add-client-cancel]'),addClientMessage=document.querySelector('[data-add-client-message]');
   var sendDialog=document.querySelector('[data-send-dialog]'),sendForm=document.querySelector('[data-send-form]'),sendClientLabel=document.querySelector('[data-send-client]'),sendMessage=document.querySelector('[data-send-message]'),sendCancel=document.querySelector('[data-send-cancel]'),sendTypeSelect=document.querySelector('[data-send-type]'),sendPreviewBtn=document.querySelector('[data-send-preview]'),previewPane=document.querySelector('[data-preview-pane]'),previewFrame=document.querySelector('[data-preview-frame]'),previewClose=document.querySelector('[data-preview-close]');
@@ -224,9 +224,158 @@
   }
   async function deleteClient(){if(!dialogTarget)return;if(!confirm('Delete '+dialogTarget.business_name+'? This also removes its email history. This cannot be undone.'))return;clientDeleteBtn.disabled=true;try{await request('/rest/v1/clients?id=eq.'+encodeURIComponent(dialogTarget.id),{method:'DELETE',headers:{Prefer:'return=minimal'}});clients=clients.filter(function(c){return c.id!==dialogTarget.id;});clientDialog.close();renderClients();refreshActivityFilterOptions();}catch(error){message(clientEditMessage,error.message);}finally{clientDeleteBtn.disabled=false;}}
 
+  // ── "Recommend us on WhatsApp" banner ─────────────────────────
+  // Ready-made messages the client can forward to someone with a business.
+  // The edge function appends the offer line and the tagged contact-page
+  // link itself. Message choice, best first: the client's own result this
+  // month (reports), then one aimed at businesses like theirs (from
+  // clients.activity), then general ones.
+  var SHARE_MESSAGES={
+    fr:{
+      result:"Salut ! Je travaille avec SB Marketing et ce mois-ci j'ai eu {r} 📈 Si tu veux les mêmes résultats pour ton entreprise, ils proposent un audit gratuit 👇",
+      general:[
+        "Salut ! Je travaille avec SB Marketing pour la communication de mon entreprise et les résultats sont vraiment au rendez-vous. Ils offrent un audit gratuit de tes réseaux sociaux et de ton site, je te le conseille !",
+        "J'ai pensé à toi ! SB Marketing gère ma pub en ligne et ça marche vraiment. Ils font un audit gratuit, ça ne coûte rien de regarder 👇",
+        "Depuis que je travaille avec SB Marketing, j'ai plus d'appels de clients chaque mois. Si tu veux la même chose pour ton entreprise, leur audit est gratuit 👇",
+        "Tu cherches plus de clients en ce moment ? Moi j'ai trouvé la bonne agence : SB Marketing. Audit gratuit ici 👇",
+        "Hello ! L'agence SB Marketing à Nice s'occupe de mes réseaux sociaux et de ma visibilité sur Google, je recommande vivement. Leur audit est gratuit 👇",
+        "Bonjour, je vous recommande SB Marketing, notre agence de marketing digital à Nice. Ils proposent un audit gratuit et sans engagement de votre présence en ligne."
+      ],
+      cats:{
+        food:["Salut ! Toi qui as un commerce de bouche, je te conseille SB Marketing : grâce à eux, plus de clients me trouvent sur Google et Instagram et passent en boutique. Leur audit est gratuit 👇","Tu as un resto ou une boutique ? SB Marketing m'aide à être mieux trouvé sur Google et Instagram. Je te conseille leur audit gratuit !"],
+        beauty:["Coucou ! Pour ton salon, je te recommande SB Marketing : ils gèrent mon Instagram et ma fiche Google, et mon agenda se remplit beaucoup mieux. Audit gratuit ici 👇","Hello ! Si tu veux plus de rendez-vous dans ton salon, regarde SB Marketing, ils font des merveilles pour le mien. Leur audit est offert 👇"],
+        health:["Bonjour, je vous recommande SB Marketing pour la visibilité de votre cabinet : plus de patients nous trouvent sur Google depuis qu'ils s'en occupent. Leur audit est gratuit 👇"],
+        realestate:["Salut ! Pour ton agence, je te recommande SB Marketing : ils gèrent notre visibilité en ligne et on reçoit plus de demandes de vendeurs et d'acheteurs. Audit gratuit 👇"],
+        trades:["Salut ! Toi qui es artisan, je te conseille SB Marketing : depuis qu'ils s'occupent de ma fiche Google et de mon site, j'ai plus de demandes de devis. Leur audit est gratuit 👇","Hello ! Si tu veux plus de chantiers, regarde SB Marketing, ils m'apportent des demandes de devis chaque mois. Audit gratuit et sans engagement 👇"],
+        retail:["Coucou ! Pour ta boutique, je te recommande SB Marketing : ils boostent ma visibilité sur Instagram et Google et j'ai plus de passage. Leur audit est gratuit 👇"]
+      }
+    },
+    en:{
+      result:"Hi! I work with SB Marketing and this month I got {r} 📈 If you want the same results for your business, they offer a free audit 👇",
+      general:[
+        "Hi! I work with SB Marketing for my business's marketing and the results have been great. They offer a free audit of your social media and website, I really recommend them!",
+        "Hey! Looking for more customers? SB Marketing in Nice handles my social media and Google visibility, highly recommended. Their audit is free 👇",
+        "Hello, I'd like to recommend SB Marketing, the agency running our digital marketing. Professional and responsive, and they offer a free audit to see what could be improved for you."
+      ],
+      cats:{
+        food:["Hi! Since you run a food business, I recommend SB Marketing: thanks to them more customers find me on Google and Instagram and come into the shop. Their audit is free 👇"],
+        beauty:["Hey! For your salon, I recommend SB Marketing: they run my Instagram and Google profile and my bookings have really picked up. Free audit here 👇"],
+        health:["Hello, I recommend SB Marketing for your practice's visibility: more patients find us on Google since they took over. Their audit is free 👇"],
+        realestate:["Hi! For your agency, I recommend SB Marketing: they handle our online visibility and we get more seller and buyer enquiries. Free audit 👇"],
+        trades:["Hi! As a tradesperson, you should check out SB Marketing: since they took over my Google profile and website, I get more quote requests. Free audit 👇"],
+        retail:["Hey! For your shop, I recommend SB Marketing: they boost my visibility on Instagram and Google and I get more foot traffic. Their audit is free 👇"]
+      }
+    }
+  };
+  // How each metric reads in "this month I got …". Metrics that aren't
+  // something to boast about (ad spend, posts, rating, position) are left out.
+  var SHARE_RESULT_PHRASES={
+    website_visits:{fr:'+{p} % de visites sur mon site',en:'{p}% more website visits'},
+    google_impressions:{fr:'+{p} % de vues sur Google',en:'{p}% more views on Google'},
+    google_clicks:{fr:'+{p} % de clics depuis Google',en:'{p}% more clicks from Google'},
+    gbp_views:{fr:'+{p} % de vues sur ma fiche Google',en:'{p}% more views on my Google profile'},
+    gbp_calls:{fr:'+{p} % d’appels depuis Google',en:'{p}% more calls from Google'},
+    gbp_direction_requests:{fr:'+{p} % de demandes d’itinéraire vers chez moi',en:'{p}% more direction requests'},
+    gbp_review_count:{fr:'+{p} % d’avis Google',en:'{p}% more Google reviews'},
+    social_followers:{fr:'+{p} % d’abonnés',en:'{p}% more followers'},
+    social_engagement:{fr:'+{p} % d’engagement sur mes réseaux',en:'{p}% more engagement on social media'},
+    ads_impressions:{fr:'+{p} % de vues sur mes pubs',en:'{p}% more views on my ads'},
+    ads_clicks:{fr:'+{p} % de clics sur mes pubs',en:'{p}% more clicks on my ads'},
+    ads_conversions:{fr:'+{p} % de conversions grâce aux pubs',en:'{p}% more conversions from ads'},
+    new_leads:{fr:'+{p} % de nouveaux prospects',en:'{p}% more new leads'},
+    revenue:{fr:'+{p} % de chiffre d’affaires',en:'{p}% more revenue'}
+  };
+  var SHARE_CATEGORIES=[
+    ['food',/bouch|butch|boulang|baker|patiss|pâtiss|resto|restaurant|traiteur|cater|caf[eé]|[eé]pic|grocer|food|pizz|snack|fromag|primeur/],
+    ['beauty',/coiff|hair|barb|beaut|esth[eé]t|salon|spa\b|ongl|nail|make ?up|maquill|institut/],
+    ['health',/m[eé]dec|dent|kin[eé]|ost[eé]o|clini|sant[eé]|health|pharm|psy|doctor|cabinet/],
+    ['realestate',/immo|real estate/],
+    ['trades',/artisan|plomb|plumb|[eé]lectric|btp|r[eé]nov|clim|chauff|menuis|ma[cç]on|construct|peint|paint|trade/],
+    ['retail',/boutique|magasin|shop|retail|store|commerce|v[eê]tement|fleur|florist/]
+  ];
+  var SHARE_STORAGE_KEY='sb_share_banner';
+  function readShareStore(){try{return JSON.parse(localStorage.getItem(SHARE_STORAGE_KEY))||{};}catch(error){return{};}}
+  function writeShareStore(patch){try{localStorage.setItem(SHARE_STORAGE_KEY,JSON.stringify(Object.assign(readShareStore(),patch)));}catch(error){}}
+  function shareCategory(activity){var text=String(activity||'').toLowerCase();for(var i=0;i<SHARE_CATEGORIES.length;i++){if(SHARE_CATEGORIES[i][1].test(text))return SHARE_CATEGORIES[i][0];}return null;}
+  function parseMetricNumber(value){if(!value)return null;var n=parseFloat(String(value).replace(/[^\d.,-]/g,'').replace(',','.'));return isFinite(n)?n:null;}
+  // Compares what's typed in the report form with last month's numbers,
+  // the same way the email's trend badges do.
+  function reportGrowth(){
+    var growth={up:0,down:0,best:null};
+    if(!sendTarget||sendTypeSelect.value!=='report'||!lastMonthMetrics)return growth;
+    sendForm.querySelectorAll('[data-metric-field]').forEach(function(input){
+      var key=input.dataset.metricField,meta=METRIC_BY_KEY[key],cur=parseMetricNumber(input.value),prev=parseMetricNumber(lastMonthMetrics[key]);
+      if(!meta||cur===null||prev===null||prev===0)return;
+      var pct=(cur-prev)/Math.abs(prev)*100;if(Math.abs(pct)<1)return;
+      var improved=meta.lowerIsBetter?pct<0:pct>0;
+      if(key==='ads_spend')return;
+      if(improved)growth.up++;else growth.down++;
+      if(improved&&SHARE_RESULT_PHRASES[key]&&(!growth.best||pct>growth.best.pct))growth.best={key:key,pct:pct};
+    });
+    return growth;
+  }
+  function shareSuggestions(lang,activity,growth){
+    var set=SHARE_MESSAGES[lang==='en'?'en':'fr'],list=[];
+    if(growth&&growth.best)list.push(set.result.replace('{r}',SHARE_RESULT_PHRASES[growth.best.key][lang==='en'?'en':'fr'].replace('{p}',String(Math.round(growth.best.pct)))));
+    var cat=shareCategory(activity);if(cat)list=list.concat(set.cats[cat]);
+    return list.concat(set.general);
+  }
+  // A block's context: the language and activity it writes for, and
+  // whether it's the single-send dialog (where report results apply).
+  function shareContext(block){return{lang:block.dataset.lang||'fr',activity:block.dataset.activity||'',single:block.dataset.single==='1'};}
+  function shareGrowth(block){var ctx=shareContext(block);return ctx.single?reportGrowth():null;}
+  function shareIncluded(block,growth){
+    var mode=block.querySelector('[data-share-mode]').value;
+    if(mode==='off')return false;if(mode==='always')return true;
+    return !growth||growth.up+growth.down===0||growth.up>growth.down;
+  }
+  function refreshShare(block){
+    var ctx=shareContext(block),growth=shareGrowth(block),list=shareSuggestions(ctx.lang,ctx.activity,growth),textarea=block.querySelector('[data-share-message]'),status=block.querySelector('[data-share-status]'),mode=block.querySelector('[data-share-mode]').value;
+    if(block.dataset.edited!=='1')textarea.value=list[Number(block.dataset.idx||0)%list.length];
+    block.querySelector('[data-share-fields]').hidden=mode==='off';
+    var included=shareIncluded(block,growth),isReport=ctx.single&&sendTypeSelect.value==='report';
+    status.className='share-banner__status '+(included?'is-on':'is-off');
+    if(mode==='off')status.textContent='Not included in this email.';
+    else if(mode==='always')status.textContent='✅ Included in this email.';
+    else if(!isReport)status.textContent='✅ Included'+(ctx.single?' in this email.':' in every email.');
+    else if(!growth.up&&!growth.down)status.textContent='✅ Included (nothing to compare with last month yet).';
+    else if(included)status.textContent='✅ Included: '+growth.up+' metric'+(growth.up>1?'s':'')+' up this month'+(growth.best?' — the message quotes the best one.':'.');
+    else status.textContent='⏸ Hidden this month: results are down ('+growth.down+' down, '+growth.up+' up). Choose “Always” to include it anyway.';
+  }
+  function initShareBlock(block,lang,activity){
+    var stored=readShareStore();
+    block.dataset.lang=lang==='en'?'en':'fr';block.dataset.activity=activity||'';block.dataset.idx='0';block.dataset.edited='0';
+    block.querySelector('[data-share-mode]').value=stored.mode||'auto';
+    block.querySelector('[data-share-offer]').value=stored.offer||'';
+    block.querySelector('[data-share-reward]').value=stored.reward||'';
+    refreshShare(block);
+  }
+  function wireShareBlock(block){
+    var textarea=block.querySelector('[data-share-message]');
+    block.querySelector('[data-share-mode]').addEventListener('change',function(event){writeShareStore({mode:event.target.value});refreshShare(block);});
+    block.querySelector('[data-share-offer]').addEventListener('change',function(event){writeShareStore({offer:event.target.value.trim()});});
+    block.querySelector('[data-share-reward]').addEventListener('change',function(event){writeShareStore({reward:event.target.value.trim()});});
+    textarea.addEventListener('input',function(){block.dataset.edited='1';});
+    block.querySelector('[data-share-suggest]').addEventListener('click',function(){block.dataset.edited='0';block.dataset.idx=String(Number(block.dataset.idx||0)+1);refreshShare(block);});
+  }
+  // Single send: whatever is in the box. Bulk: the box is used as-is only
+  // if it was edited or picked; otherwise each client gets the best message
+  // for their own language and business type.
+  function readShare(block,lang,activity,businessName){
+    var ctx=shareContext(block),growth=shareGrowth(block);
+    if(!shareIncluded(block,growth))return undefined;
+    lang=lang==='en'?'en':'fr';
+    var custom=block.dataset.edited==='1'||block.dataset.idx!=='0',message;
+    if(ctx.single||(custom&&lang===ctx.lang))message=block.querySelector('[data-share-message]').value.trim();
+    else message=shareSuggestions(lang,activity,null)[0];
+    if(!message)return undefined;
+    return{message:message,ref:businessName,offer:block.querySelector('[data-share-offer]').value.trim()||undefined,reward:block.querySelector('[data-share-reward]').value.trim()||undefined};
+  }
+
   // ── Send dialog (report / tip / custom) ────────────────────────
   function setSendType(type){
     sendForm.querySelectorAll('[data-send-group]').forEach(function(group){group.hidden=group.dataset.sendGroup!==type;});
+    var shareBlock=sendForm.querySelector('[data-share-banner]');if(shareBlock.dataset.lang)refreshShare(shareBlock);
     previewPane.hidden=true;
   }
   // Only shows fields for metrics this client actually tracks (falls back
@@ -264,6 +413,7 @@
     renderReportMetricsFields(client);
     sendForm.querySelector('[data-custom-metrics-list]').innerHTML='';
     setSendType('report');
+    initShareBlock(sendForm.querySelector('[data-share-banner]'),client.language,client.activity);
     var now=new Date(),defaultMonth=new Intl.DateTimeFormat(client.language==='en'?'en-GB':'fr-FR',{month:'long',year:'numeric'}).format(now);
     sendForm.elements.month_label.value=defaultMonth.charAt(0).toUpperCase()+defaultMonth.slice(1);
     message(sendMessage,'');
@@ -273,6 +423,7 @@
       if(history&&history.length&&history[0].highlights){
         lastMonthMetrics=history[0].highlights;
         Object.keys(lastMonthMetrics).forEach(function(key){var value=lastMonthMetrics[key];if(!value)return;var span=sendForm.querySelector('[data-previous="'+key+'"]');if(span)span.textContent='Last month: '+value;});
+        refreshShare(sendForm.querySelector('[data-share-banner]'));
       }
     }catch(error){/* non-fatal: last-month context is a convenience, not required to send */}
   }
@@ -280,6 +431,7 @@
     var data=new FormData(sendForm),type=sendTypeSelect.value;
     var payload={type:type,to:sendTarget.email,business_name:sendTarget.business_name,contact_name:sendTarget.contact_name,language:sendTarget.language||'fr',client_id:sendTarget.id,branding:brandingPayload()};
     if(appSettings&&appSettings.reply_to_email)payload.reply_to=appSettings.reply_to_email;
+    payload.referral=readShare(sendForm.querySelector('[data-share-banner]'),payload.language,sendTarget.activity,sendTarget.business_name);
     if(type==='report'){
       var tracked=(sendTarget.tracked_metrics&&sendTarget.tracked_metrics.length)?sendTarget.tracked_metrics:DEFAULT_TRACKED_METRICS;
       var trackedSet={};tracked.forEach(function(k){trackedSet[k]=true;});
@@ -355,7 +507,7 @@
     var candidates=clients.filter(function(c){return c.status==='active'&&c.marketing_consent&&!c.unsubscribed_at&&(!activity||c.activity===activity);});
     bulkList.innerHTML=candidates.length?candidates.map(function(c){return '<label class="bulk-client-row"><input type="checkbox" value="'+escapeHtml(c.id)+'" checked> '+escapeHtml(c.business_name)+' <span class="muted-note">'+escapeHtml(c.email)+(c.activity?' · '+escapeHtml(c.activity):'')+'</span></label>';}).join(''):'<p class="muted-note">No active, subscribed clients match this filter.</p>';
   }
-  function openBulkDialog(){bulkForm.reset();refreshActivityFilterOptions();renderBulkList();message(bulkMessage,'');bulkDialog.showModal();}
+  function openBulkDialog(){bulkForm.reset();refreshActivityFilterOptions();initShareBlock(bulkForm.querySelector('[data-share-banner]'),'fr','');renderBulkList();message(bulkMessage,'');bulkDialog.showModal();}
   async function sendBulkTip(event){
     event.preventDefault();
     var data=new FormData(bulkForm),headline=String(data.get('headline')||'').trim(),body=String(data.get('body')||'').trim(),ctaLabel=String(data.get('cta_label')||'').trim()||undefined,ctaUrl=String(data.get('cta_url')||'').trim()||undefined;
@@ -367,7 +519,7 @@
     for(var i=0;i<checked.length;i++){
       var client=clients.find(function(c){return c.id===checked[i];});if(!client)continue;
       message(bulkMessage,'Sending '+(i+1)+' / '+checked.length+'…');
-      var payload={type:'tip',to:client.email,business_name:client.business_name,contact_name:client.contact_name,language:client.language||'fr',client_id:client.id,headline:headline,body:body,cta_label:ctaLabel,cta_url:ctaUrl,branding:brandingPayload()};
+      var payload={type:'tip',to:client.email,business_name:client.business_name,contact_name:client.contact_name,language:client.language||'fr',client_id:client.id,headline:headline,body:body,cta_label:ctaLabel,cta_url:ctaUrl,branding:brandingPayload(),referral:readShare(bulkForm.querySelector('[data-share-banner]'),client.language,client.activity,client.business_name)};
       if(appSettings&&appSettings.reply_to_email)payload.reply_to=appSettings.reply_to_email;
       try{
         await invokeFunction('send-client-report',payload);
@@ -380,9 +532,18 @@
     if(!failCount)setTimeout(function(){bulkDialog.close();},1200);
   }
 
+  // ── Contact requests (native form on /contact/ and /en/contact/) ──
+  var contactsBody=document.querySelector('[data-contacts-body]'),contactsEmpty=document.querySelector('[data-contacts-empty]'),contactSearch=document.querySelector('[data-contact-search]'),contactFilter=document.querySelector('[data-contact-status-filter]'),contactMessage=document.querySelector('[data-contact-message]'),contactsLoaded=false;
+  async function loadContacts(){message(contactMessage,'Loading contact requests…');try{contacts=await request('/rest/v1/contact_submissions?select=*&order=created_at.desc');contactsLoaded=true;renderContacts();message(contactMessage,'');}catch(error){message(contactMessage,error.message.indexOf('contact_submissions')>-1?'Database setup required. Run supabase/contact_schema.sql in the Supabase SQL Editor.':error.message);}}
+  function renderContacts(){var term=contactSearch.value.trim().toLowerCase(),status=contactFilter.value,filtered=contacts.filter(function(item){var searchable=[item.full_name,item.company,item.email,item.phone,item.service,item.message,item.country].join(' ').toLowerCase();return(!term||searchable.indexOf(term)>-1)&&(!status||item.status===status);});contactsBody.innerHTML=filtered.map(function(item){var text=item.message||'',preview=text.length>90?text.slice(0,90)+'…':text;return'<tr><td>'+escapeHtml(new Intl.DateTimeFormat('en-GB',{dateStyle:'medium',timeStyle:'short'}).format(new Date(item.created_at)))+'</td><td class="contact"><strong>'+escapeHtml(item.full_name)+'</strong><a href="mailto:'+escapeHtml(item.email)+'">'+escapeHtml(item.email)+'</a>'+(item.phone?'<a href="tel:'+escapeHtml(item.phone.replace(/[^+\d]/g,''))+'">'+escapeHtml(item.phone)+'</a>':'')+'</td><td class="shop"><strong>'+escapeHtml(item.company||'—')+'</strong><span>'+escapeHtml(item.country||'')+'</span>'+(referredBy(item.source_page)?'<span class="referral-tag">🤝 Referred by '+escapeHtml(referredBy(item.source_page))+'</span>':'')+'</td><td>'+escapeHtml(item.service)+'</td><td class="message-cell">'+(text.length>90?'<details><summary>'+escapeHtml(preview)+'</summary><p>'+escapeHtml(text)+'</p></details>':escapeHtml(text))+'</td><td><span class="lang">'+escapeHtml(item.language)+'</span></td><td><select class="status-select" data-contact-status="'+escapeHtml(item.id)+'"><option value="new">New</option><option value="contacted">Contacted</option><option value="qualified">Qualified</option><option value="customer">Customer</option><option value="closed">Closed</option></select></td></tr>';}).join('');filtered.forEach(function(item,index){contactsBody.querySelectorAll('[data-contact-status]')[index].value=item.status||'new';});contactsEmpty.hidden=filtered.length!==0;document.querySelector('[data-contact-stat-total]').textContent=contacts.length;['new','contacted','customer'].forEach(function(key){document.querySelector('[data-contact-stat-'+key+']').textContent=contacts.filter(function(x){return x.status===key;}).length;});}
+  // ref=<client-slug> comes from the WhatsApp share banner in client emails.
+  function referredBy(sourcePage){try{return new URL(sourcePage||'','https://www.sbmarketing.fr').searchParams.get('ref');}catch(error){return null;}}
+  async function updateContactStatus(id,status,select){select.disabled=true;try{await request('/rest/v1/contact_submissions?id=eq.'+encodeURIComponent(id),{method:'PATCH',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({status:status})});var item=contacts.find(function(x){return x.id===id;});if(item)item.status=status;renderContacts();}catch(error){message(contactMessage,error.message);}finally{select.disabled=false;}}
+  function exportContactsCsv(){var fields=['created_at','full_name','company','email','phone','country','service','message','language','status','source_page'],rows=[fields].concat(contacts.map(function(item){return fields.map(function(field){return item[field]||'';});})),csv=rows.map(function(row){return row.map(function(value){return '"'+String(value).replace(/"/g,'""')+'"';}).join(',');}).join('\n'),blob=new Blob([csv],{type:'text/csv;charset=utf-8'}),link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download='sb-marketing-contact-requests-'+new Date().toISOString().slice(0,10)+'.csv';link.click();URL.revokeObjectURL(link.href);}
+
   // ── Tabs ────────────────────────────────────────────────────
-  function switchTab(name){if(!views[name])name='leads';tabs.forEach(function(tab){tab.classList.toggle('is-active',tab.dataset.tab===name);});Object.keys(views).forEach(function(key){views[key].hidden=key!==name;});var titles={clients:'Clients',settings:'Settings',leads:'Leads'};viewTitle.textContent=titles[name];document.title=titles[name]+' | SB Marketing Admin';document.querySelector('[data-export]').hidden=name!=='leads';if(name==='clients'&&clients.length===0)loadClients();if(name==='settings'&&!appSettings)loadSettings();}
-  // Each section lives at its own hash slug (#leads, #clients, #settings)
+  function switchTab(name){if(!views[name])name='leads';tabs.forEach(function(tab){tab.classList.toggle('is-active',tab.dataset.tab===name);});Object.keys(views).forEach(function(key){views[key].hidden=key!==name;});var titles={clients:'Clients',settings:'Settings',leads:'Leads',contacts:'Contact requests'};viewTitle.textContent=titles[name];document.title=titles[name]+' | SB Marketing Admin';document.querySelector('[data-export]').hidden=name!=='leads'&&name!=='contacts';if(name==='contacts'&&!contactsLoaded)loadContacts();if(name==='clients'&&clients.length===0)loadClients();if(name==='settings'&&!appSettings)loadSettings();}
+  // Each section lives at its own hash slug (#leads, #contacts, #clients, #settings)
   // so it's bookmarkable and supports browser back/forward.
   function applyHash(){switchTab((location.hash||'#leads').replace('#',''));}
 
@@ -394,9 +555,12 @@
   tbody.addEventListener('change',function(event){var select=event.target.closest('[data-lead-status]');if(select)updateStatus(select.dataset.leadStatus,select.value,select);});
   search.addEventListener('input',render);
   filter.addEventListener('change',render);
-  document.querySelector('[data-refresh]').addEventListener('click',function(){loadLeads();if(!views.clients.hidden)loadClients();});
-  document.querySelector('[data-export]').addEventListener('click',exportCsv);
-  document.querySelector('[data-logout]').addEventListener('click',function(){setSession(null);leads=[];clients=[];showDashboard(false);loginForm.reset();});
+  document.querySelector('[data-refresh]').addEventListener('click',function(){loadLeads();if(!views.contacts.hidden)loadContacts();if(!views.clients.hidden)loadClients();});
+  document.querySelector('[data-export]').addEventListener('click',function(){if(!views.contacts.hidden)exportContactsCsv();else exportCsv();});
+  contactsBody.addEventListener('change',function(event){var select=event.target.closest('[data-contact-status]');if(select)updateContactStatus(select.dataset.contactStatus,select.value,select);});
+  contactSearch.addEventListener('input',renderContacts);
+  contactFilter.addEventListener('change',renderContacts);
+  document.querySelector('[data-logout]').addEventListener('click',function(){setSession(null);leads=[];contacts=[];contactsLoaded=false;clients=[];showDashboard(false);loginForm.reset();});
   window.addEventListener('hashchange',applyHash);
 
   clientsBody.addEventListener('change',function(event){var select=event.target.closest('[data-client-status]');if(select)updateClientStatus(select.dataset.clientStatus,select.value,select);});
@@ -410,6 +574,10 @@
   addClientCancel.addEventListener('click',function(){addClientForm.hidden=true;addClientForm.reset();});
   addClientForm.addEventListener('submit',addClient);
 
+  wireShareBlock(sendForm.querySelector('[data-share-banner]'));
+  wireShareBlock(bulkForm.querySelector('[data-share-banner]'));
+  sendForm.addEventListener('input',function(event){if(event.target.matches('[data-metric-field]'))refreshShare(sendForm.querySelector('[data-share-banner]'));});
+  bulkActivityFilter.addEventListener('change',function(){var block=bulkForm.querySelector('[data-share-banner]');block.dataset.activity=bulkActivityFilter.value;if(block.dataset.edited!=='1')block.dataset.idx='0';refreshShare(block);});
   sendTypeSelect.addEventListener('change',function(){setSendType(sendTypeSelect.value);});
   sendForm.addEventListener('submit',sendEmail);
   sendCancel.addEventListener('click',function(){sendDialog.close();});

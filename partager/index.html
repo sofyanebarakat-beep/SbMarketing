@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Partager SB Marketing</title>
+<link rel="icon" href="/images/sb-favicon.png">
+<!-- Opened from the "Copier le message" button in client emails
+     (?l=fr|en&t=<message + tagged link>). Emails can't run scripts, so this
+     page does the copying and offers every other way to send the message. -->
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#041021;color:#041021;font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;padding:24px 16px}
+  .card{width:min(100%,480px);background:#fff;border-radius:24px;padding:32px 28px;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+  .brand{display:block;margin:0 auto 20px;height:28px;width:auto}
+  h1{font-size:22px;margin:0 0 8px;text-align:center}
+  .lead{color:#6b7280;line-height:1.55;margin:0 0 18px;text-align:center;font-size:15px}
+  .message{background:#f5f6f8;border-left:3px solid #25d366;border-radius:12px;padding:14px 16px;font-size:15px;line-height:1.6;white-space:pre-wrap;word-break:break-word;margin:0 0 18px}
+  .actions{display:grid;gap:10px}
+  .btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;border:0;border-radius:999px;padding:15px 20px;font:inherit;font-size:16px;font-weight:800;text-decoration:none;cursor:pointer}
+  .btn-copy{background:#f2c94c;color:#041021}
+  .btn-copy.is-done{background:#d1fadf;color:#05603a}
+  .btn-wa{background:#25d366;color:#fff}
+  .row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .btn-small{background:#fff;color:#041021;border:1px solid #e4e7ec;font-size:14px;font-weight:700;padding:12px 10px}
+  .btn-small[hidden]{display:none}
+  .thanks{margin:20px 0 0;text-align:center;color:#6b7280;font-size:14px}
+  .home{display:block;margin-top:10px;text-align:center;color:#b45309;font-weight:700;text-decoration:none;font-size:13px}
+</style>
+</head>
+<body>
+  <img class="brand" src="/images/logo-climanova.svg" alt="SB Marketing">
+  <main class="card">
+    <h1 data-i18n="title">Votre message est prêt</h1>
+    <p class="lead" data-i18n="lead">Copiez-le ou envoyez-le directement à un proche qui a une entreprise.</p>
+    <p class="message" id="message"></p>
+    <div class="actions">
+      <button type="button" class="btn btn-copy" id="copy" data-i18n="copy">📋 Copier le message</button>
+      <a class="btn btn-wa" id="wa" href="#" data-i18n="wa">Envoyer sur WhatsApp</a>
+      <div class="row">
+        <a class="btn btn-small" id="sms" href="#">💬 SMS</a>
+        <a class="btn btn-small" id="mail" href="#">✉️ Email</a>
+        <button type="button" class="btn btn-small" id="more" hidden data-i18n="more">↗ Autres</button>
+      </div>
+    </div>
+    <p class="thanks" data-i18n="thanks">Merci, c'est grâce à vos recommandations qu'on grandit 🙏</p>
+    <a class="home" href="https://www.sbmarketing.fr">sbmarketing.fr</a>
+  </main>
+<script>
+(function(){
+  var params=new URLSearchParams(location.search),lang=params.get('l')==='en'?'en':'fr';
+  var text=(params.get('t')||'').slice(0,1500).trim();
+  var copy={
+    fr:{title:'Votre message est prêt',lead:'Copiez-le ou envoyez-le directement à un proche qui a une entreprise.',copy:'📋 Copier le message',copied:'✅ Message copié !',wa:'Envoyer sur WhatsApp',more:'↗ Autres',thanks:"Merci, c'est grâce à vos recommandations qu'on grandit 🙏",subject:'Je te recommande SB Marketing',fallback:'Je te recommande SB Marketing, l’agence marketing digital à Nice. Leur audit est gratuit 👉 https://www.sbmarketing.fr/contact/'},
+    en:{title:'Your message is ready',lead:'Copy it or send it straight to someone you know who has a business.',copy:'📋 Copy the message',copied:'✅ Message copied!',wa:'Send on WhatsApp',more:'↗ More',thanks:'Thank you, your recommendations are how we grow 🙏',subject:'I recommend SB Marketing',fallback:'I recommend SB Marketing, the digital marketing agency in Nice. Their audit is free 👉 https://www.sbmarketing.fr/en/contact/'}
+  }[lang];
+  if(!text)text=copy.fallback;
+  document.documentElement.lang=lang;
+  document.title=lang==='en'?'Share SB Marketing':'Partager SB Marketing';
+  document.querySelectorAll('[data-i18n]').forEach(function(el){el.textContent=copy[el.dataset.i18n];});
+  document.getElementById('message').textContent=text;
+  var encoded=encodeURIComponent(text);
+  document.getElementById('wa').href='https://wa.me/?text='+encoded;
+  // iOS uses "&body=", Android accepts "?body="; "sms:?&body=" works on both.
+  document.getElementById('sms').href='sms:?&body='+encoded;
+  document.getElementById('mail').href='mailto:?subject='+encodeURIComponent(copy.subject)+'&body='+encoded;
+  var copyBtn=document.getElementById('copy');
+  function fallbackCopy(){var area=document.createElement('textarea');area.value=text;area.setAttribute('readonly','');area.style.position='fixed';area.style.opacity='0';document.body.appendChild(area);area.select();var ok=false;try{ok=document.execCommand('copy');}catch(e){}document.body.removeChild(area);return ok;}
+  copyBtn.addEventListener('click',function(){
+    function done(){copyBtn.textContent=copy.copied;copyBtn.classList.add('is-done');setTimeout(function(){copyBtn.textContent=copy.copy;copyBtn.classList.remove('is-done');},2500);}
+    if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(text).then(done,function(){if(fallbackCopy())done();});}
+    else if(fallbackCopy())done();
+  });
+  var more=document.getElementById('more');
+  if(navigator.share){more.hidden=false;more.addEventListener('click',function(){navigator.share({text:text}).catch(function(){});});}
+  else{document.querySelector('.row').style.gridTemplateColumns='repeat(2,1fr)';}
+})();
+</script>
+</body>
+</html>

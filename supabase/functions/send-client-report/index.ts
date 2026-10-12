@@ -17,6 +17,8 @@ import {
   type MetricGroup,
   type CustomMetric,
   type Branding,
+  type Referral,
+  type EmailExtras,
 } from "../_shared/email-template.ts";
 
 const corsHeaders = {
@@ -41,6 +43,13 @@ interface RequestBody {
   client_id?: string; // used to build the unsubscribe link for tip/custom
   branding?: Branding;
   reply_to?: string;
+  // optional "recommend us on WhatsApp" banner (any type)
+  referral?: Referral;
+  // optional rich content blocks (banner, image, video, before/after,
+  // testimonial, link list, view-online link) — any type
+  extras?: EmailExtras;
+  // optional PDF attached via Resend — fetched server-side and base64-encoded
+  attachment?: { filename: string; url: string };
   // report
   month_label?: string;
   groups?: MetricGroup[];
@@ -104,6 +113,8 @@ Deno.serve(async (req) => {
         summary: body.summary,
         reportUrl: body.report_url,
         branding,
+        referral: body.referral,
+        extras: body.extras,
       });
     } else if (type === "tip") {
       if (!body.headline || !body.body) {
@@ -122,6 +133,8 @@ Deno.serve(async (req) => {
         ctaUrl: body.cta_url,
         branding,
         unsubscribeUrl,
+        referral: body.referral,
+        extras: body.extras,
       });
     } else {
       if (!body.subject || !body.body) {
@@ -140,6 +153,8 @@ Deno.serve(async (req) => {
         ctaUrl: body.cta_url,
         branding,
         unsubscribeUrl,
+        referral: body.referral,
+        extras: body.extras,
       });
     }
 
@@ -153,6 +168,16 @@ Deno.serve(async (req) => {
     const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
     if (!RESEND_API_KEY) throw new Error("RESEND_API_KEY not configured");
 
+    let attachments: { filename: string; content: string }[] | undefined;
+    if (body.attachment?.url && body.attachment?.filename) {
+      const fileRes = await fetch(body.attachment.url);
+      if (!fileRes.ok) throw new Error(`Could not fetch attachment (${fileRes.status})`);
+      const bytes = new Uint8Array(await fileRes.arrayBuffer());
+      let binary = "";
+      for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+      attachments = [{ filename: body.attachment.filename, content: btoa(binary) }];
+    }
+
     const resendRes = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
@@ -165,6 +190,7 @@ Deno.serve(async (req) => {
         subject: rendered.subject,
         html: rendered.html,
         ...(body.reply_to ? { reply_to: body.reply_to } : {}),
+        ...(attachments ? { attachments } : {}),
       }),
     });
 
@@ -173,7 +199,7 @@ Deno.serve(async (req) => {
       throw new Error(resendBody?.message || `Resend request failed (${resendRes.status})`);
     }
 
-    return new Response(JSON.stringify({ ok: true, id: resendBody?.id }), {
+    return new Response(JSON.stringify({ ok: true, id: resendBody?.id, html: rendered.html }), {
       status: 200,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });

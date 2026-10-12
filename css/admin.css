@@ -217,3 +217,21 @@ tbody tr:hover td{background:#fafbfc}
   .phone-row{flex-direction:column}
   .phone-row .country-select{max-width:100%}
 }
+
+/* Contact requests (from /contact/ and /en/contact/) */
+.message-cell{max-width:340px;font-size:13px;color:var(--muted)}
+.message-cell details summary{cursor:pointer;color:var(--navy);list-style:none}
+.message-cell details summary::-webkit-details-marker{display:none}
+.message-cell details p{margin:8px 0 0;white-space:pre-wrap;color:var(--navy)}
+
+/* "Recommend us on WhatsApp" banner controls (send + bulk dialogs) */
+.share-banner{display:grid;gap:10px;border:1px solid var(--border);border-left:4px solid #25d366;border-radius:12px;padding:14px 16px;background:#f6fdf8}
+.share-banner__fields{display:grid;gap:10px}
+.share-banner__fields[hidden]{display:none}
+.share-banner__head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.share-banner__head .field-hint{margin:0}
+.share-banner__head select{width:auto;padding:7px 10px;font-size:13px;font-weight:700}
+.share-banner__status{margin:0;font-size:13px;font-weight:700}
+.share-banner__status.is-on{color:#178a4a}
+.share-banner__status.is-off{color:var(--muted)}
+.referral-tag{display:block;margin-top:4px;color:#178a4a;font-size:12px;font-weight:700}
