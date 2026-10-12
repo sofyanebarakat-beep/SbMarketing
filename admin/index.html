@@ -14,7 +14,7 @@
       <a href="/" class="admin-brand" aria-label="SB Marketing home"><img src="/images/logo-climanova.svg" alt="SB Marketing"></a>
       <span class="admin-kicker">Private area</span>
       <h1>Admin sign in</h1>
-      <p>Sign in to review leads and manage client reports.</p>
+      <p>Sign in to review leads and manage clients.</p>
       <form data-login-form>
         <label>Email<input name="email" type="email" autocomplete="username" required value="sofyanebarakat@gmail.com"></label>
         <label>Password<input name="password" type="password" autocomplete="current-password" required></label>
@@ -32,6 +32,9 @@
           </a>
           <a href="#clients" class="sidebar-link" data-tab="clients">
             <span class="sidebar-link__icon" aria-hidden="true">👥</span> Clients
+          </a>
+          <a href="#settings" class="sidebar-link" data-tab="settings">
+            <span class="sidebar-link__icon" aria-hidden="true">⚙️</span> Settings
           </a>
         </nav>
         <div class="sidebar-footer">
@@ -68,58 +71,150 @@
           <div class="toolbar toolbar--clients">
             <label class="search"><span class="sr-only">Search clients</span><input type="search" data-client-search placeholder="Search business, contact, email…"></label>
             <select data-client-due-filter aria-label="Filter by report status"><option value="">All clients</option><option value="due">Due now</option><option value="sent">Sent this month</option><option value="paused">Paused</option></select>
+            <button type="button" class="secondary" data-bulk-tip-toggle>Send tip to multiple</button>
             <button type="button" data-add-client-toggle>+ Add client</button>
           </div>
 
           <form class="add-client-form" data-add-client-form hidden>
             <div class="field-grid">
-              <label>Business name<input name="business_name" required placeholder="Boucherie de la Gare"></label>
-              <label>Contact name<input name="contact_name" placeholder="Optional"></label>
+              <label>Full name<input name="contact_name" required placeholder="Karim Haddad"></label>
               <label>Email<input name="email" type="email" required placeholder="client@example.com"></label>
+              <label class="phone-field">WhatsApp number <small>(optional)</small>
+                <span class="phone-row"><select class="country-select" name="whatsapp_country" aria-label="Country code"></select><input name="whatsapp_local" inputmode="tel" placeholder="6 12 34 56 78"></span>
+              </label>
+              <label>Business name<input name="business_name" required placeholder="Boucherie de la Gare"></label>
+              <label>Activity <small>(optional)</small><input name="activity" list="activity-options" placeholder="e.g. Butcher"></label>
               <label>Language<select name="language"><option value="fr">French</option><option value="en">English</option></select></label>
             </div>
-            <label>Notes<input name="notes" placeholder="Optional — campaign, package, anything useful"></label>
+            <label>Notes <small>(optional)</small><input name="notes" placeholder="Campaign, package, anything useful"></label>
+            <label class="checkbox-field"><input type="checkbox" name="marketing_consent" checked> Can receive marketing tips (not just reports)</label>
             <div class="form-actions"><button type="submit" data-add-client-submit>Save client</button><button type="button" class="secondary" data-add-client-cancel>Cancel</button></div>
             <p class="form-message" data-add-client-message aria-live="polite"></p>
           </form>
 
           <p class="dashboard-message" data-clients-message aria-live="polite"></p>
-          <div class="table-wrap"><table><thead><tr><th>Business</th><th>Contact</th><th>Language</th><th>Status</th><th>Last report</th><th>Next report</th><th>Actions</th></tr></thead><tbody data-clients-body></tbody></table></div>
+          <div class="table-wrap"><table><thead><tr><th>Business</th><th>Contact</th><th>Activity</th><th>Language</th><th>Status</th><th>Last report</th><th>Next report</th><th>Actions</th></tr></thead><tbody data-clients-body></tbody></table></div>
           <div class="empty" data-clients-empty hidden><h2>No clients yet</h2><p>Add your first client to start sending monthly reports.</p></div>
+        </div>
+
+        <div data-view="settings" hidden>
+          <p class="dashboard-message" data-settings-message aria-live="polite"></p>
+          <form class="settings-form" data-settings-form>
+            <h2 class="settings-section-title">Brand</h2>
+            <div class="field-grid">
+              <label>Company name<input name="company_name" placeholder="SB Marketing"></label>
+              <label>Website URL<input name="website_url" type="url" placeholder="https://www.sbmarketing.fr"></label>
+              <label>Logo — part 1 <small>(red)</small><input name="logo_part1" placeholder="SB"></label>
+              <label>Logo — part 2 <small>(blue)</small><input name="logo_part2" placeholder="MARKETING"></label>
+            </div>
+            <h2 class="settings-section-title">Footer</h2>
+            <div class="field-grid">
+              <label>Tagline (French)<input name="footer_tagline_fr" placeholder="Agence marketing digital à Nice, Côte d'Azur"></label>
+              <label>Tagline (English)<input name="footer_tagline_en" placeholder="Digital marketing agency in Nice, French Riviera"></label>
+              <label>Instagram URL <small>(optional)</small><input name="instagram_url" type="url" placeholder="https://instagram.com/..."></label>
+              <label>Facebook URL <small>(optional)</small><input name="facebook_url" type="url" placeholder="https://facebook.com/..."></label>
+            </div>
+            <h2 class="settings-section-title">Sending</h2>
+            <div class="field-grid">
+              <label>Reply-to email <small>(optional)</small><input name="reply_to_email" type="email" placeholder="admin@partners.sbmarketing.fr"></label>
+            </div>
+            <div class="form-actions"><button type="submit">Save settings</button></div>
+          </form>
         </div>
       </div>
     </div>
   </main>
 
-  <dialog class="report-dialog" data-report-dialog>
-    <form method="dialog" data-report-form>
-      <h2>Send monthly report</h2>
-      <p class="report-dialog__client" data-report-client></p>
-      <label>Month<input name="month_label" required placeholder="October 2026"></label>
+  <datalist id="activity-options">
+    <option value="Butcher"><option value="Bakery"><option value="Restaurant">
+    <option value="Grocery store"><option value="Hairdresser"><option value="Beauty salon">
+    <option value="Retail shop"><option value="Real estate agency"><option value="Other">
+  </datalist>
 
-      <p class="field-hint">Website traffic</p>
-      <div class="metric-grid metric-grid--single">
-        <label>Visits this month<input name="website_visits" inputmode="numeric" data-metric-field="website_visits" placeholder="e.g. 842"><span class="field-previous" data-previous="website_visits"></span></label>
+  <!-- Send email (report / tip / custom) ─────────────────────────── -->
+  <dialog class="send-dialog" data-send-dialog>
+    <form method="dialog" data-send-form>
+      <div class="send-dialog__head">
+        <h2>Send email</h2>
+        <select name="type" data-send-type aria-label="Email type">
+          <option value="report">Monthly report</option>
+          <option value="tip">Marketing tip</option>
+          <option value="custom">Custom message</option>
+        </select>
+      </div>
+      <p class="send-dialog__client" data-send-client></p>
+
+      <div data-send-group="report">
+        <label>Month<input name="month_label" placeholder="October 2026"></label>
+        <p class="field-hint">Website traffic</p>
+        <div class="metric-grid metric-grid--single">
+          <label>Visits this month<input name="website_visits" inputmode="numeric" placeholder="e.g. 842"><span class="field-previous" data-previous="website_visits"></span></label>
+        </div>
+        <p class="field-hint">Google Search performance</p>
+        <div class="metric-grid">
+          <label>Impressions<input name="google_impressions" inputmode="numeric" placeholder="e.g. 12 400"><span class="field-previous" data-previous="google_impressions"></span></label>
+          <label>Clicks<input name="google_clicks" inputmode="numeric" placeholder="e.g. 210"><span class="field-previous" data-previous="google_clicks"></span></label>
+          <label>Avg. position<input name="google_avg_position" inputmode="decimal" placeholder="e.g. 8.4"><span class="field-previous" data-previous="google_avg_position"></span></label>
+        </div>
+        <p class="field-note">Fill in what you have — at least one field. Last month's numbers show under each when available, and the email shows the trend automatically.</p>
+        <label>Summary <small>(optional)</small><textarea name="summary" rows="3" placeholder="A short paragraph of context for this month"></textarea></label>
+        <label>Report link <small>(optional)</small><input name="report_url" type="url" placeholder="https://..."></label>
       </div>
 
-      <p class="field-hint">Google Search performance</p>
-      <div class="metric-grid">
-        <label>Impressions<input name="google_impressions" inputmode="numeric" data-metric-field="google_impressions" placeholder="e.g. 12 400"><span class="field-previous" data-previous="google_impressions"></span></label>
-        <label>Clicks<input name="google_clicks" inputmode="numeric" data-metric-field="google_clicks" placeholder="e.g. 210"><span class="field-previous" data-previous="google_clicks"></span></label>
-        <label>Avg. position<input name="google_avg_position" inputmode="decimal" data-metric-field="google_avg_position" placeholder="e.g. 8.4"><span class="field-previous" data-previous="google_avg_position"></span></label>
+      <div data-send-group="tip" hidden>
+        <label>Headline<input name="headline" placeholder="3 ways to get more Google reviews this week"></label>
+        <label>Body<textarea name="tip_body" rows="5" placeholder="Write the tip here — separate paragraphs with a blank line."></textarea></label>
+        <div class="field-grid">
+          <label>Button label <small>(optional)</small><input name="tip_cta_label" placeholder="Learn more"></label>
+          <label>Button link <small>(optional)</small><input name="tip_cta_url" type="url" placeholder="https://..."></label>
+        </div>
       </div>
-      <p class="field-note">Fill in what you have for this client — at least one field. Last month's numbers show under each field when available, and the email will show the trend automatically.</p>
 
-      <label>Summary <small>(optional)</small><textarea name="summary" rows="3" placeholder="A short paragraph of context for this month"></textarea></label>
-      <label>Report link <small>(optional)</small><input name="report_url" type="url" placeholder="https://..."></label>
+      <div data-send-group="custom" hidden>
+        <label>Subject<input name="subject" placeholder="Email subject"></label>
+        <label>Body<textarea name="custom_body" rows="6" placeholder="Write the message here — separate paragraphs with a blank line."></textarea></label>
+        <div class="field-grid">
+          <label>Button label <small>(optional)</small><input name="custom_cta_label" placeholder="Learn more"></label>
+          <label>Button link <small>(optional)</small><input name="custom_cta_url" type="url" placeholder="https://..."></label>
+        </div>
+      </div>
+
+      <div class="preview-pane" data-preview-pane hidden>
+        <div class="preview-pane__head"><span>Preview</span><button type="button" class="icon-button" data-preview-close aria-label="Close preview">✕</button></div>
+        <iframe data-preview-frame title="Email preview"></iframe>
+      </div>
+
       <div class="form-actions">
-        <button type="submit" data-report-send>Send email</button>
-        <button type="button" class="secondary" data-report-cancel>Cancel</button>
+        <button type="submit" data-send-submit>Send email</button>
+        <button type="button" class="secondary" data-send-preview>Preview</button>
+        <button type="button" class="secondary" data-send-cancel>Cancel</button>
       </div>
-      <p class="form-message" data-report-message aria-live="polite"></p>
+      <p class="form-message" data-send-message aria-live="polite"></p>
     </form>
   </dialog>
 
+  <!-- Bulk tip send ─────────────────────────────────────────────── -->
+  <dialog class="bulk-dialog" data-bulk-dialog>
+    <form data-bulk-form>
+      <h2>Send a tip to multiple clients</h2>
+      <label>Filter by activity <small>(optional)</small><select name="activity_filter" data-bulk-activity-filter><option value="">All activities</option></select></label>
+      <p class="field-hint">Recipients (active, not unsubscribed)</p>
+      <div class="bulk-client-list" data-bulk-client-list></div>
+      <label>Headline<input name="headline" required placeholder="3 ways to get more Google reviews this week"></label>
+      <label>Body<textarea name="body" rows="5" required placeholder="Write the tip here — separate paragraphs with a blank line."></textarea></label>
+      <div class="field-grid">
+        <label>Button label <small>(optional)</small><input name="cta_label" placeholder="Learn more"></label>
+        <label>Button link <small>(optional)</small><input name="cta_url" type="url" placeholder="https://..."></label>
+      </div>
+      <div class="form-actions">
+        <button type="submit" data-bulk-send>Send to selected</button>
+        <button type="button" class="secondary" data-bulk-cancel>Cancel</button>
+      </div>
+      <p class="form-message" data-bulk-message aria-live="polite"></p>
+    </form>
+  </dialog>
+
+  <!-- Client detail ─────────────────────────────────────────────── -->
   <dialog class="client-dialog" data-client-dialog>
     <div class="client-dialog__inner">
       <header class="client-dialog__head">
@@ -129,26 +224,33 @@
 
       <form data-client-edit-form class="client-dialog__edit">
         <div class="field-grid">
-          <label>Business name<input name="business_name" required></label>
-          <label>Contact name<input name="contact_name"></label>
+          <label>Full name<input name="contact_name" required></label>
           <label>Email<input name="email" type="email" required></label>
+          <label class="phone-field">WhatsApp number <small>(optional)</small>
+            <span class="phone-row"><select class="country-select" name="whatsapp_country" aria-label="Country code"></select><input name="whatsapp_local" inputmode="tel" placeholder="6 12 34 56 78"></span>
+          </label>
+          <label>Business name<input name="business_name" required></label>
+          <label>Activity <small>(optional)</small><input name="activity" list="activity-options"></label>
           <label>Language<select name="language"><option value="fr">French</option><option value="en">English</option></select></label>
           <label>Status<select name="status"><option value="active">Active</option><option value="paused">Paused</option></select></label>
         </div>
         <label>Notes<input name="notes"></label>
+        <label class="checkbox-field"><input type="checkbox" name="marketing_consent"> Can receive marketing tips (not just reports)</label>
+        <p class="muted-note" data-client-unsubscribed hidden>⚠️ This client unsubscribed from marketing tips. They'll still receive monthly reports.</p>
         <div class="form-actions">
           <button type="submit">Save changes</button>
-          <button type="button" class="secondary" data-client-send-report>Send report</button>
+          <a class="secondary whatsapp-link" data-client-whatsapp href="#" target="_blank" rel="noopener" hidden>💬 WhatsApp</a>
+          <button type="button" class="secondary" data-client-send-email>Send email</button>
           <button type="button" class="danger" data-client-delete>Delete client</button>
         </div>
         <p class="form-message" data-client-edit-message aria-live="polite"></p>
       </form>
 
       <div class="client-dialog__history">
-        <h3>Report history</h3>
+        <h3>Email history</h3>
         <p class="dashboard-message" data-client-history-message aria-live="polite"></p>
         <ul class="history-list" data-client-history-list></ul>
-        <p class="muted-note" data-client-history-empty hidden>No reports sent yet.</p>
+        <p class="muted-note" data-client-history-empty hidden>No emails sent yet.</p>
       </div>
     </div>
   </dialog>

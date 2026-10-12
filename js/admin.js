@@ -1,21 +1,43 @@
 (function(){
   'use strict';
-  var config=window.SB_SUPABASE,sessionKey='sb_admin_session',leads=[],clients=[];
+  var config=window.SB_SUPABASE,sessionKey='sb_admin_session',leads=[],clients=[],appSettings=null;
   var loginView=document.querySelector('[data-login-view]'),dashboard=document.querySelector('[data-dashboard]'),loginForm=document.querySelector('[data-login-form]'),loginMessage=document.querySelector('[data-login-message]'),dashboardMessage=document.querySelector('[data-dashboard-message]'),tbody=document.querySelector('[data-leads-body]'),empty=document.querySelector('[data-empty]'),search=document.querySelector('[data-search]'),filter=document.querySelector('[data-status-filter]');
-  var viewTitle=document.querySelector('[data-view-title]'),tabs=document.querySelectorAll('[data-tab]'),views={leads:document.querySelector('[data-view="leads"]'),clients:document.querySelector('[data-view="clients"]')};
+  var viewTitle=document.querySelector('[data-view-title]'),tabs=document.querySelectorAll('[data-tab]'),views={leads:document.querySelector('[data-view="leads"]'),clients:document.querySelector('[data-view="clients"]'),settings:document.querySelector('[data-view="settings"]')};
   var clientsBody=document.querySelector('[data-clients-body]'),clientsEmpty=document.querySelector('[data-clients-empty]'),clientsMessage=document.querySelector('[data-clients-message]'),clientSearch=document.querySelector('[data-client-search]'),clientDueFilter=document.querySelector('[data-client-due-filter]');
   var addClientToggle=document.querySelector('[data-add-client-toggle]'),addClientForm=document.querySelector('[data-add-client-form]'),addClientCancel=document.querySelector('[data-add-client-cancel]'),addClientMessage=document.querySelector('[data-add-client-message]');
-  var reportDialog=document.querySelector('[data-report-dialog]'),reportForm=document.querySelector('[data-report-form]'),reportClientLabel=document.querySelector('[data-report-client]'),reportMessage=document.querySelector('[data-report-message]'),reportCancel=document.querySelector('[data-report-cancel]');
-  var clientDialog=document.querySelector('[data-client-dialog]'),clientDialogName=document.querySelector('[data-client-dialog-name]'),clientDialogStatus=document.querySelector('[data-client-dialog-status]'),clientDialogClose=document.querySelector('[data-client-dialog-close]'),clientEditForm=document.querySelector('[data-client-edit-form]'),clientEditMessage=document.querySelector('[data-client-edit-message]'),clientDeleteBtn=document.querySelector('[data-client-delete]'),clientDialogSendReport=document.querySelector('[data-client-send-report]');
+  var sendDialog=document.querySelector('[data-send-dialog]'),sendForm=document.querySelector('[data-send-form]'),sendClientLabel=document.querySelector('[data-send-client]'),sendMessage=document.querySelector('[data-send-message]'),sendCancel=document.querySelector('[data-send-cancel]'),sendTypeSelect=document.querySelector('[data-send-type]'),sendPreviewBtn=document.querySelector('[data-send-preview]'),previewPane=document.querySelector('[data-preview-pane]'),previewFrame=document.querySelector('[data-preview-frame]'),previewClose=document.querySelector('[data-preview-close]');
+  var clientDialog=document.querySelector('[data-client-dialog]'),clientDialogName=document.querySelector('[data-client-dialog-name]'),clientDialogStatus=document.querySelector('[data-client-dialog-status]'),clientDialogClose=document.querySelector('[data-client-dialog-close]'),clientEditForm=document.querySelector('[data-client-edit-form]'),clientEditMessage=document.querySelector('[data-client-edit-message]'),clientDeleteBtn=document.querySelector('[data-client-delete]'),clientDialogSendEmail=document.querySelector('[data-client-send-email]'),clientWhatsappLink=document.querySelector('[data-client-whatsapp]'),clientUnsubscribedNote=document.querySelector('[data-client-unsubscribed]');
   var clientHistoryList=document.querySelector('[data-client-history-list]'),clientHistoryMessage=document.querySelector('[data-client-history-message]'),clientHistoryEmpty=document.querySelector('[data-client-history-empty]');
-  var reportTarget=null,lastMonthMetrics=null,dialogTarget=null;
-  // The fixed set of metrics every report is built around — website traffic
-  // and Google Search visibility, which is what these reports exist to show.
+  var settingsForm=document.querySelector('[data-settings-form]'),settingsMessage=document.querySelector('[data-settings-message]');
+  var bulkToggle=document.querySelector('[data-bulk-tip-toggle]'),bulkDialog=document.querySelector('[data-bulk-dialog]'),bulkForm=document.querySelector('[data-bulk-form]'),bulkList=document.querySelector('[data-bulk-client-list]'),bulkActivityFilter=document.querySelector('[data-bulk-activity-filter]'),bulkMessage=document.querySelector('[data-bulk-message]'),bulkCancel=document.querySelector('[data-bulk-cancel]');
+  var sendTarget=null,lastMonthMetrics=null,dialogTarget=null;
   var METRICS=[
     {key:'website_visits',label:'Website visits',lowerIsBetter:false},
     {key:'google_impressions',label:'Google impressions',lowerIsBetter:false},
     {key:'google_clicks',label:'Google clicks',lowerIsBetter:false},
     {key:'google_avg_position',label:'Avg. position',lowerIsBetter:true}
+  ];
+  // Curated list, not exhaustive — covers the countries SB Marketing's
+  // client base is realistically in. code = dial code digits (no +).
+  var COUNTRIES=[
+    {flag:'🇫🇷',name:'France',code:'33'},
+    {flag:'🇧🇪',name:'Belgium',code:'32'},
+    {flag:'🇨🇭',name:'Switzerland',code:'41'},
+    {flag:'🇲🇨',name:'Monaco',code:'377'},
+    {flag:'🇱🇺',name:'Luxembourg',code:'352'},
+    {flag:'🇮🇹',name:'Italy',code:'39'},
+    {flag:'🇪🇸',name:'Spain',code:'34'},
+    {flag:'🇵🇹',name:'Portugal',code:'351'},
+    {flag:'🇩🇪',name:'Germany',code:'49'},
+    {flag:'🇬🇧',name:'United Kingdom',code:'44'},
+    {flag:'🇳🇱',name:'Netherlands',code:'31'},
+    {flag:'🇲🇦',name:'Morocco',code:'212'},
+    {flag:'🇩🇿',name:'Algeria',code:'213'},
+    {flag:'🇹🇳',name:'Tunisia',code:'216'},
+    {flag:'🇨🇦',name:'Canada',code:'1'},
+    {flag:'🇺🇸',name:'United States',code:'1'},
+    {flag:'🇦🇪',name:'United Arab Emirates',code:'971'},
+    {flag:'🇸🇦',name:'Saudi Arabia',code:'966'}
   ];
 
   function message(element,text){if(element)element.textContent=text||'';}
@@ -37,6 +59,18 @@
   async function updateStatus(id,status,select){select.disabled=true;try{await request('/rest/v1/butcher_leads?id=eq.'+encodeURIComponent(id),{method:'PATCH',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({status:status})});var lead=leads.find(function(item){return item.id===id;});if(lead)lead.status=status;render();}catch(error){message(dashboardMessage,error.message);}finally{select.disabled=false;}}
   function exportCsv(){var fields=['created_at','full_name','butcher_shop','phone','email','city_country','website','has_website','language','status','source_page'],rows=[fields].concat(leads.map(function(lead){return fields.map(function(field){return lead[field]||'';});})),csv=rows.map(function(row){return row.map(function(value){return '"'+String(value).replace(/"/g,'""')+'"';}).join(',');}).join('\n'),blob=new Blob([csv],{type:'text/csv;charset=utf-8'}),link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download='sb-marketing-leads-'+new Date().toISOString().slice(0,10)+'.csv';link.click();URL.revokeObjectURL(link.href);}
 
+  // ── Phone helpers (WhatsApp, E.164) ────────────────────────────
+  function populateCountrySelects(){document.querySelectorAll('.country-select').forEach(function(select){if(select.dataset.populated)return;select.innerHTML=COUNTRIES.map(function(c){return '<option value="'+c.code+'">'+c.flag+' +'+c.code+' '+c.name+'</option>';}).join('');select.dataset.populated='1';});}
+  function toE164(countryCode,local){var digits=String(local||'').replace(/\D/g,'').replace(/^0+/,'');if(!digits)return null;return '+'+countryCode+digits;}
+  function splitE164(value){if(!value)return{code:'33',local:''};var digits=value.replace(/^\+/,'');var sorted=COUNTRIES.slice().sort(function(a,b){return b.code.length-a.code.length;});for(var i=0;i<sorted.length;i++){if(digits.indexOf(sorted[i].code)===0)return{code:sorted[i].code,local:digits.slice(sorted[i].code.length)};}return{code:'33',local:digits};}
+  function fillPhoneField(form,value){var split=splitE164(value);var countrySelect=form.querySelector('[name="whatsapp_country"]'),localInput=form.querySelector('[name="whatsapp_local"]');if(countrySelect)countrySelect.value=split.code;if(localInput)localInput.value=split.local;}
+  function readPhoneField(form){var countrySelect=form.querySelector('[name="whatsapp_country"]'),localInput=form.querySelector('[name="whatsapp_local"]');if(!localInput||!localInput.value.trim())return null;return toE164(countrySelect?countrySelect.value:'33',localInput.value);}
+
+  // ── Settings (brand chrome used by the email templates) ───────
+  async function loadSettings(){try{var rows=await request('/rest/v1/app_settings?id=eq.default&select=*&limit=1');appSettings=(rows&&rows[0])||null;if(appSettings&&settingsForm){Object.keys(appSettings).forEach(function(key){var field=settingsForm.elements[key];if(field)field.value=appSettings[key]||'';});}}catch(error){message(settingsMessage,error.message.indexOf('app_settings')>-1?'Database setup required. Re-run supabase/clients_schema.sql in the Supabase SQL Editor.':error.message);}}
+  async function saveSettings(event){event.preventDefault();var button=settingsForm.querySelector('button[type="submit"]'),data=new FormData(settingsForm),payload={};['company_name','logo_part1','logo_part2','footer_tagline_fr','footer_tagline_en','website_url','reply_to_email','instagram_url','facebook_url'].forEach(function(key){payload[key]=String(data.get(key)||'').trim()||null;});button.disabled=true;message(settingsMessage,'Saving…');try{await request('/rest/v1/app_settings?id=eq.default',{method:'PATCH',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(payload)});appSettings=Object.assign({},appSettings,payload);message(settingsMessage,'Saved.');}catch(error){message(settingsMessage,error.message);}finally{button.disabled=false;}}
+  function brandingPayload(){if(!appSettings)return undefined;return{companyName:appSettings.company_name||undefined,logoPart1:appSettings.logo_part1||undefined,logoPart2:appSettings.logo_part2||undefined,footerTaglineFr:appSettings.footer_tagline_fr||undefined,footerTaglineEn:appSettings.footer_tagline_en||undefined,websiteUrl:appSettings.website_url||undefined,instagramUrl:appSettings.instagram_url||undefined,facebookUrl:appSettings.facebook_url||undefined};}
+
   // ── Clients: due-status helpers ────────────────────────────────
   // "Due" means no report has gone out yet this calendar month — matches
   // the monthly cadence the whole feature is built around, rather than a
@@ -46,11 +80,12 @@
   function dueBadgeHtml(client){if(client.status!=='active')return '<span class="due-badge due-badge--paused">Paused</span>';return isSentThisMonth(client)?'<span class="due-badge due-badge--ok">Sent this month</span>':'<span class="due-badge due-badge--due">Due now</span>';}
 
   // ── Clients: list ───────────────────────────────────────────────
-  async function loadClients(){message(clientsMessage,'Loading clients…');try{clients=await request('/rest/v1/clients?select=*&order=created_at.desc');renderClients();message(clientsMessage,'');}catch(error){message(clientsMessage,error.message.indexOf('clients')>-1?'Database setup required. Run supabase/clients_schema.sql in the Supabase SQL Editor.':error.message);}}
+  async function loadClients(){message(clientsMessage,'Loading clients…');try{clients=await request('/rest/v1/clients?select=*&order=created_at.desc');renderClients();refreshActivityFilterOptions();message(clientsMessage,'');}catch(error){message(clientsMessage,error.message.indexOf('clients')>-1?'Database setup required. Run supabase/clients_schema.sql in the Supabase SQL Editor.':error.message);}}
+  function refreshActivityFilterOptions(){if(!bulkActivityFilter)return;var activities=Array.from(new Set(clients.map(function(c){return c.activity;}).filter(Boolean))).sort();var current=bulkActivityFilter.value;bulkActivityFilter.innerHTML='<option value="">All activities</option>'+activities.map(function(a){return '<option value="'+escapeHtml(a)+'">'+escapeHtml(a)+'</option>';}).join('');bulkActivityFilter.value=current;}
   function renderClients(){
     var term=(clientSearch?clientSearch.value:'').trim().toLowerCase(),due=(clientDueFilter?clientDueFilter.value:'');
     var filtered=clients.filter(function(c){
-      var searchable=[c.business_name,c.contact_name,c.email].join(' ').toLowerCase();
+      var searchable=[c.business_name,c.contact_name,c.email,c.activity].join(' ').toLowerCase();
       if(term&&searchable.indexOf(term)===-1)return false;
       if(due==='due')return isDue(c);
       if(due==='sent')return c.status==='active'&&isSentThisMonth(c);
@@ -62,11 +97,12 @@
       return '<tr>'
         +'<td><button type="button" class="link-button" data-client-detail="'+escapeHtml(c.id)+'">'+escapeHtml(c.business_name)+'</button>'+(c.notes?'<span class="muted-note">'+escapeHtml(c.notes)+'</span>':'')+'</td>'
         +'<td class="contact"><strong>'+escapeHtml(c.contact_name||'—')+'</strong><a href="mailto:'+escapeHtml(c.email)+'">'+escapeHtml(c.email)+'</a></td>'
+        +'<td>'+escapeHtml(c.activity||'—')+'</td>'
         +'<td><span class="lang">'+escapeHtml(c.language)+'</span></td>'
         +'<td><select class="status-select" data-client-status="'+escapeHtml(c.id)+'"><option value="active">Active</option><option value="paused">Paused</option></select></td>'
         +'<td>'+escapeHtml(lastSent)+'</td>'
         +'<td>'+dueBadgeHtml(c)+'</td>'
-        +'<td><button type="button" class="secondary" data-send-report="'+escapeHtml(c.id)+'">Send report</button></td>'
+        +'<td><button type="button" class="secondary" data-send-email="'+escapeHtml(c.id)+'">Send email</button></td>'
         +'</tr>';
     }).join('');
     filtered.forEach(function(c,index){clientsBody.querySelectorAll('[data-client-status]')[index].value=c.status||'active';});
@@ -77,90 +113,183 @@
     document.querySelector('[data-client-stat-sent]').textContent=clients.filter(function(c){return c.last_report_sent_at;}).length;
   }
   async function updateClientStatus(id,status,select){select.disabled=true;try{await request('/rest/v1/clients?id=eq.'+encodeURIComponent(id),{method:'PATCH',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({status:status})});var c=clients.find(function(item){return item.id===id;});if(c)c.status=status;renderClients();}catch(error){message(clientsMessage,error.message);}finally{select.disabled=false;}}
-  async function addClient(event){event.preventDefault();var button=addClientForm.querySelector('[data-add-client-submit]'),data=new FormData(addClientForm),payload={business_name:String(data.get('business_name')||'').trim(),contact_name:String(data.get('contact_name')||'').trim()||null,email:String(data.get('email')||'').trim(),language:data.get('language')||'fr',notes:String(data.get('notes')||'').trim()||null};message(addClientMessage,'');button.disabled=true;try{await request('/rest/v1/clients',{method:'POST',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(payload)});addClientForm.reset();addClientForm.hidden=true;await loadClients();}catch(error){message(addClientMessage,error.message);}finally{button.disabled=false;}}
+  async function addClient(event){
+    event.preventDefault();
+    var button=addClientForm.querySelector('[data-add-client-submit]'),data=new FormData(addClientForm);
+    var payload={
+      business_name:String(data.get('business_name')||'').trim(),
+      contact_name:String(data.get('contact_name')||'').trim(),
+      email:String(data.get('email')||'').trim(),
+      whatsapp_number:readPhoneField(addClientForm),
+      activity:String(data.get('activity')||'').trim()||null,
+      language:data.get('language')||'fr',
+      notes:String(data.get('notes')||'').trim()||null,
+      marketing_consent:data.get('marketing_consent')==='on'
+    };
+    message(addClientMessage,'');button.disabled=true;
+    try{await request('/rest/v1/clients',{method:'POST',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(payload)});addClientForm.reset();addClientForm.querySelector('[name="whatsapp_country"]').value='33';addClientForm.hidden=true;await loadClients();}catch(error){message(addClientMessage,error.message);}finally{button.disabled=false;}
+  }
 
-  // ── Clients: detail dialog (edit, history, delete) ──────────────
+  // ── Clients: detail dialog (edit, history, delete, WhatsApp) ────
+  function emailHistorySummary(r){
+    if(r.type==='report'){
+      var chips=METRICS.filter(function(m){return r.highlights&&r.highlights[m.key];}).map(function(m){return '<span class="history-chip">'+escapeHtml(m.label)+': <strong>'+escapeHtml(r.highlights[m.key])+'</strong></span>';}).join('');
+      return '<strong>'+escapeHtml(r.month_label||'Report')+'</strong>'+(chips?'<div class="history-item__chips">'+chips+'</div>':'');
+    }
+    if(r.type==='tip')return '<strong>Tip: '+escapeHtml(r.headline||r.subject)+'</strong>'+(r.body?'<p class="history-item__summary">'+escapeHtml(r.body).slice(0,160)+'</p>':'');
+    return '<strong>'+escapeHtml(r.subject||'Message')+'</strong>'+(r.body?'<p class="history-item__summary">'+escapeHtml(r.body).slice(0,160)+'</p>':'');
+  }
   function renderHistoryList(reports){
     clientHistoryEmpty.hidden=reports.length!==0;
     clientHistoryList.innerHTML=reports.map(function(r){
       var sent=new Intl.DateTimeFormat('en-GB',{dateStyle:'medium'}).format(new Date(r.sent_at));
-      var metrics=r.highlights||{};
-      var chips=METRICS.filter(function(m){return metrics[m.key];}).map(function(m){return '<span class="history-chip">'+escapeHtml(m.label)+': <strong>'+escapeHtml(metrics[m.key])+'</strong></span>';}).join('');
-      var link=r.report_url?'<a href="'+escapeHtml(safeUrl(r.report_url))+'" target="_blank" rel="noopener">Report link ↗</a>':'';
-      return '<li><div class="history-item__head"><strong>'+escapeHtml(r.month_label)+'</strong><span>Sent '+sent+'</span></div>'
-        +(chips?'<div class="history-item__chips">'+chips+'</div>':'')
-        +(r.summary?'<p class="history-item__summary">'+escapeHtml(r.summary)+'</p>':'')
-        +(link?'<p>'+link+'</p>':'')
+      var typeLabel={report:'Report',tip:'Tip',custom:'Custom'}[r.type]||r.type;
+      return '<li><div class="history-item__head"><span class="history-type-badge history-type-badge--'+escapeHtml(r.type)+'">'+typeLabel+'</span><span>Sent '+sent+'</span></div>'
+        +'<div class="history-item__body">'+emailHistorySummary(r)+'</div>'
         +'</li>';
     }).join('');
   }
-  async function loadClientHistory(clientId){message(clientHistoryMessage,'Loading history…');try{var reports=await request('/rest/v1/client_reports?client_id=eq.'+encodeURIComponent(clientId)+'&select=*&order=sent_at.desc');renderHistoryList(reports);message(clientHistoryMessage,'');return reports;}catch(error){message(clientHistoryMessage,error.message);return [];}}
-  function fillClientEditForm(c){var f=clientEditForm;f.elements.business_name.value=c.business_name||'';f.elements.contact_name.value=c.contact_name||'';f.elements.email.value=c.email||'';f.elements.language.value=c.language||'fr';f.elements.status.value=c.status||'active';f.elements.notes.value=c.notes||'';}
+  async function loadClientHistory(clientId){message(clientHistoryMessage,'Loading history…');try{var rows=await request('/rest/v1/client_emails?client_id=eq.'+encodeURIComponent(clientId)+'&select=*&order=sent_at.desc');renderHistoryList(rows);message(clientHistoryMessage,'');return rows;}catch(error){message(clientHistoryMessage,error.message.indexOf('client_emails')>-1?'Database setup required. Run supabase/clients_schema.sql in the Supabase SQL Editor.':error.message);return [];}}
+  function fillClientEditForm(c){var f=clientEditForm;f.elements.business_name.value=c.business_name||'';f.elements.contact_name.value=c.contact_name||'';f.elements.email.value=c.email||'';f.elements.activity.value=c.activity||'';f.elements.language.value=c.language||'fr';f.elements.status.value=c.status||'active';f.elements.notes.value=c.notes||'';f.elements.marketing_consent.checked=!!c.marketing_consent;fillPhoneField(f,c.whatsapp_number);clientUnsubscribedNote.hidden=!c.unsubscribed_at;if(c.whatsapp_number){clientWhatsappLink.hidden=false;clientWhatsappLink.href='https://wa.me/'+c.whatsapp_number.replace(/\D/g,'');}else{clientWhatsappLink.hidden=true;}}
   async function openClientDialog(clientId){var c=clients.find(function(x){return x.id===clientId;});if(!c)return;dialogTarget=c;clientDialogName.textContent=c.business_name;clientDialogStatus.textContent=c.status==='active'?'Active':'Paused';clientDialogStatus.className='status-pill status-pill--'+c.status;fillClientEditForm(c);message(clientEditMessage,'');clientDialog.showModal();await loadClientHistory(c.id);}
-  async function saveClientEdits(event){event.preventDefault();if(!dialogTarget)return;var button=clientEditForm.querySelector('button[type="submit"]'),data=new FormData(clientEditForm),payload={business_name:String(data.get('business_name')||'').trim(),contact_name:String(data.get('contact_name')||'').trim()||null,email:String(data.get('email')||'').trim(),language:data.get('language')||'fr',status:data.get('status')||'active',notes:String(data.get('notes')||'').trim()||null};button.disabled=true;message(clientEditMessage,'Saving…');try{await request('/rest/v1/clients?id=eq.'+encodeURIComponent(dialogTarget.id),{method:'PATCH',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(payload)});Object.assign(dialogTarget,payload);renderClients();clientDialogName.textContent=payload.business_name;clientDialogStatus.textContent=payload.status==='active'?'Active':'Paused';clientDialogStatus.className='status-pill status-pill--'+payload.status;message(clientEditMessage,'Saved.');}catch(error){message(clientEditMessage,error.message);}finally{button.disabled=false;}}
-  async function deleteClient(){if(!dialogTarget)return;if(!confirm('Delete '+dialogTarget.business_name+'? This also removes its report history. This cannot be undone.'))return;clientDeleteBtn.disabled=true;try{await request('/rest/v1/clients?id=eq.'+encodeURIComponent(dialogTarget.id),{method:'DELETE',headers:{Prefer:'return=minimal'}});clients=clients.filter(function(c){return c.id!==dialogTarget.id;});clientDialog.close();renderClients();}catch(error){message(clientEditMessage,error.message);}finally{clientDeleteBtn.disabled=false;}}
+  async function saveClientEdits(event){
+    event.preventDefault();if(!dialogTarget)return;
+    var button=clientEditForm.querySelector('button[type="submit"]'),data=new FormData(clientEditForm);
+    var payload={
+      business_name:String(data.get('business_name')||'').trim(),
+      contact_name:String(data.get('contact_name')||'').trim(),
+      email:String(data.get('email')||'').trim(),
+      whatsapp_number:readPhoneField(clientEditForm),
+      activity:String(data.get('activity')||'').trim()||null,
+      language:data.get('language')||'fr',
+      status:data.get('status')||'active',
+      notes:String(data.get('notes')||'').trim()||null,
+      marketing_consent:data.get('marketing_consent')==='on'
+    };
+    button.disabled=true;message(clientEditMessage,'Saving…');
+    try{await request('/rest/v1/clients?id=eq.'+encodeURIComponent(dialogTarget.id),{method:'PATCH',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(payload)});Object.assign(dialogTarget,payload);renderClients();clientDialogName.textContent=payload.business_name;clientDialogStatus.textContent=payload.status==='active'?'Active':'Paused';clientDialogStatus.className='status-pill status-pill--'+payload.status;fillClientEditForm(dialogTarget);message(clientEditMessage,'Saved.');}catch(error){message(clientEditMessage,error.message);}finally{button.disabled=false;}
+  }
+  async function deleteClient(){if(!dialogTarget)return;if(!confirm('Delete '+dialogTarget.business_name+'? This also removes its email history. This cannot be undone.'))return;clientDeleteBtn.disabled=true;try{await request('/rest/v1/clients?id=eq.'+encodeURIComponent(dialogTarget.id),{method:'DELETE',headers:{Prefer:'return=minimal'}});clients=clients.filter(function(c){return c.id!==dialogTarget.id;});clientDialog.close();renderClients();refreshActivityFilterOptions();}catch(error){message(clientEditMessage,error.message);}finally{clientDeleteBtn.disabled=false;}}
 
-  // ── Send report dialog ─────────────────────────────────────
-  async function openReportDialog(clientId){
+  // ── Send dialog (report / tip / custom) ────────────────────────
+  function setSendType(type){
+    sendForm.querySelectorAll('[data-send-group]').forEach(function(group){group.hidden=group.dataset.sendGroup!==type;});
+    previewPane.hidden=true;
+  }
+  async function openSendDialog(clientId){
     var client=clients.find(function(c){return c.id===clientId;});if(!client)return;
-    reportTarget=client;lastMonthMetrics=null;
-    reportClientLabel.textContent=client.business_name+' · '+client.email;
-    reportForm.reset();
-    METRICS.forEach(function(m){var span=reportForm.querySelector('[data-previous="'+m.key+'"]');if(span)span.textContent='';});
+    sendTarget=client;lastMonthMetrics=null;
+    sendClientLabel.textContent=client.business_name+' · '+client.email;
+    sendForm.reset();
+    sendTypeSelect.value='report';
+    setSendType('report');
+    METRICS.forEach(function(m){var span=sendForm.querySelector('[data-previous="'+m.key+'"]');if(span)span.textContent='';});
     var now=new Date(),defaultMonth=new Intl.DateTimeFormat(client.language==='en'?'en-GB':'fr-FR',{month:'long',year:'numeric'}).format(now);
-    reportForm.elements.month_label.value=defaultMonth.charAt(0).toUpperCase()+defaultMonth.slice(1);
-    message(reportMessage,'');
-    reportDialog.showModal();
+    sendForm.elements.month_label.value=defaultMonth.charAt(0).toUpperCase()+defaultMonth.slice(1);
+    message(sendMessage,'');
+    sendDialog.showModal();
     try{
-      var history=await request('/rest/v1/client_reports?client_id=eq.'+encodeURIComponent(clientId)+'&select=highlights&order=sent_at.desc&limit=1');
+      var history=await request('/rest/v1/client_emails?client_id=eq.'+encodeURIComponent(clientId)+'&type=eq.report&select=highlights&order=sent_at.desc&limit=1');
       if(history&&history.length&&history[0].highlights){
         lastMonthMetrics=history[0].highlights;
-        METRICS.forEach(function(m){
-          var value=lastMonthMetrics[m.key];
-          if(!value)return;
-          var span=reportForm.querySelector('[data-previous="'+m.key+'"]');
-          if(span)span.textContent='Last month: '+value;
-        });
+        METRICS.forEach(function(m){var value=lastMonthMetrics[m.key];if(!value)return;var span=sendForm.querySelector('[data-previous="'+m.key+'"]');if(span)span.textContent='Last month: '+value;});
       }
     }catch(error){/* non-fatal: last-month context is a convenience, not required to send */}
   }
-  async function sendReport(event){
-    event.preventDefault();if(!reportTarget)return;
-    var button=reportForm.querySelector('[data-report-send]'),data=new FormData(reportForm);
-    var metricsPayload={},historyPayload={},hasAny=false;
-    METRICS.forEach(function(m){
-      var value=String(data.get(m.key)||'').trim();
-      if(!value)return;
-      hasAny=true;
-      var previous=lastMonthMetrics&&lastMonthMetrics[m.key]?lastMonthMetrics[m.key]:undefined;
-      metricsPayload[m.key]={value:value,previous:previous};
-      historyPayload[m.key]=value;
-    });
-    if(!hasAny){message(reportMessage,'Fill in at least one metric (visits, impressions, clicks or position).');return;}
-    var monthLabel=String(data.get('month_label')||'').trim(),summary=String(data.get('summary')||'').trim()||undefined,reportUrl=String(data.get('report_url')||'').trim()||undefined;
-    var payload=Object.assign({to:reportTarget.email,business_name:reportTarget.business_name,contact_name:reportTarget.contact_name,language:reportTarget.language||'fr',month_label:monthLabel,summary:summary,report_url:reportUrl},metricsPayload);
-    button.disabled=true;message(reportMessage,'Sending…');
+  function buildSendPayload(){
+    var data=new FormData(sendForm),type=sendTypeSelect.value;
+    var payload={type:type,to:sendTarget.email,business_name:sendTarget.business_name,contact_name:sendTarget.contact_name,language:sendTarget.language||'fr',client_id:sendTarget.id,branding:brandingPayload()};
+    if(appSettings&&appSettings.reply_to_email)payload.reply_to=appSettings.reply_to_email;
+    if(type==='report'){
+      var metricsPayload={},historyPayload={},hasAny=false;
+      METRICS.forEach(function(m){var value=String(data.get(m.key)||'').trim();if(!value)return;hasAny=true;var previous=lastMonthMetrics&&lastMonthMetrics[m.key]?lastMonthMetrics[m.key]:undefined;metricsPayload[m.key]={value:value,previous:previous};historyPayload[m.key]=value;});
+      payload.month_label=String(data.get('month_label')||'').trim();
+      payload.website_visits=metricsPayload.website_visits;payload.google_impressions=metricsPayload.google_impressions;payload.google_clicks=metricsPayload.google_clicks;payload.google_avg_position=metricsPayload.google_avg_position;
+      payload.summary=String(data.get('summary')||'').trim()||undefined;
+      payload.report_url=String(data.get('report_url')||'').trim()||undefined;
+      payload._hasAny=hasAny;payload._historyPayload=historyPayload;
+    }else if(type==='tip'){
+      payload.headline=String(data.get('headline')||'').trim();
+      payload.body=String(data.get('tip_body')||'').trim();
+      payload.cta_label=String(data.get('tip_cta_label')||'').trim()||undefined;
+      payload.cta_url=String(data.get('tip_cta_url')||'').trim()||undefined;
+      payload._hasAny=!!(payload.headline&&payload.body);
+    }else{
+      payload.subject=String(data.get('subject')||'').trim();
+      payload.body=String(data.get('custom_body')||'').trim();
+      payload.cta_label=String(data.get('custom_cta_label')||'').trim()||undefined;
+      payload.cta_url=String(data.get('custom_cta_url')||'').trim()||undefined;
+      payload._hasAny=!!(payload.subject&&payload.body);
+    }
+    return payload;
+  }
+  async function previewSend(){
+    var payload=buildSendPayload();
+    if(!payload._hasAny){message(sendMessage,'Fill in the content first.');return;}
+    message(sendMessage,'Loading preview…');
+    try{var result=await invokeFunction('send-client-report',Object.assign({},payload,{preview:true}));previewFrame.srcdoc=result.html;previewPane.hidden=false;message(sendMessage,'');}catch(error){message(sendMessage,error.message);}
+  }
+  async function sendEmail(event){
+    event.preventDefault();if(!sendTarget)return;
+    var payload=buildSendPayload();
+    if(!payload._hasAny){message(sendMessage,sendTypeSelect.value==='report'?'Fill in at least one metric (visits, impressions, clicks or position).':'Fill in the required fields.');return;}
+    var type=payload.type,historyPayload=payload._historyPayload;delete payload._hasAny;delete payload._historyPayload;
+    var button=sendForm.querySelector('[data-send-submit]');button.disabled=true;message(sendMessage,'Sending…');
     try{
       await invokeFunction('send-client-report',payload);
       var sentAt=new Date().toISOString();
-      await request('/rest/v1/clients?id=eq.'+encodeURIComponent(reportTarget.id),{method:'PATCH',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({last_report_sent_at:sentAt})});
-      await request('/rest/v1/client_reports',{method:'POST',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({client_id:reportTarget.id,month_label:monthLabel,highlights:historyPayload,summary:summary||null,report_url:reportUrl||null,sent_at:sentAt})});
-      var c=clients.find(function(item){return item.id===reportTarget.id;});if(c)c.last_report_sent_at=sentAt;
-      renderClients();
-      reportDialog.close();
-      if(dialogTarget&&dialogTarget.id===reportTarget.id)loadClientHistory(dialogTarget.id);
+      var logEntry={client_id:sendTarget.id,type:type,sent_at:sentAt};
+      if(type==='report'){logEntry.subject=(sendTarget.language==='en'?sendTarget.business_name+' — '+payload.month_label+' report':sendTarget.business_name+' — Rapport '+payload.month_label);logEntry.month_label=payload.month_label;logEntry.highlights=historyPayload;}
+      else if(type==='tip'){logEntry.subject=payload.headline;logEntry.headline=payload.headline;logEntry.body=payload.body;logEntry.cta_label=payload.cta_label||null;logEntry.cta_url=payload.cta_url||null;}
+      else{logEntry.subject=payload.subject;logEntry.body=payload.body;logEntry.cta_label=payload.cta_label||null;logEntry.cta_url=payload.cta_url||null;}
+      await request('/rest/v1/client_emails',{method:'POST',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(logEntry)});
+      if(type==='report'){await request('/rest/v1/clients?id=eq.'+encodeURIComponent(sendTarget.id),{method:'PATCH',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({last_report_sent_at:sentAt})});var c=clients.find(function(item){return item.id===sendTarget.id;});if(c)c.last_report_sent_at=sentAt;renderClients();}
+      sendDialog.close();
+      if(dialogTarget&&dialogTarget.id===sendTarget.id)loadClientHistory(dialogTarget.id);
     }catch(error){
-      message(reportMessage,error.message.indexOf('RESEND_API_KEY')>-1?'Email sending is not configured yet — set RESEND_API_KEY as an Edge Function secret in Supabase.':error.message);
+      message(sendMessage,error.message.indexOf('RESEND_API_KEY')>-1?'Email sending is not configured yet — set RESEND_API_KEY as an Edge Function secret in Supabase.':error.message);
     }finally{button.disabled=false;}
   }
 
+  // ── Bulk tip send ───────────────────────────────────────────────
+  function renderBulkList(){
+    var activity=bulkActivityFilter.value;
+    var candidates=clients.filter(function(c){return c.status==='active'&&c.marketing_consent&&!c.unsubscribed_at&&(!activity||c.activity===activity);});
+    bulkList.innerHTML=candidates.length?candidates.map(function(c){return '<label class="bulk-client-row"><input type="checkbox" value="'+escapeHtml(c.id)+'" checked> '+escapeHtml(c.business_name)+' <span class="muted-note">'+escapeHtml(c.email)+(c.activity?' · '+escapeHtml(c.activity):'')+'</span></label>';}).join(''):'<p class="muted-note">No active, subscribed clients match this filter.</p>';
+  }
+  function openBulkDialog(){bulkForm.reset();refreshActivityFilterOptions();renderBulkList();message(bulkMessage,'');bulkDialog.showModal();}
+  async function sendBulkTip(event){
+    event.preventDefault();
+    var data=new FormData(bulkForm),headline=String(data.get('headline')||'').trim(),body=String(data.get('body')||'').trim(),ctaLabel=String(data.get('cta_label')||'').trim()||undefined,ctaUrl=String(data.get('cta_url')||'').trim()||undefined;
+    var checked=Array.from(bulkList.querySelectorAll('input[type="checkbox"]:checked')).map(function(i){return i.value;});
+    if(!headline||!body){message(bulkMessage,'Headline and body are required.');return;}
+    if(checked.length===0){message(bulkMessage,'Select at least one client.');return;}
+    var button=bulkForm.querySelector('[data-bulk-send]');button.disabled=true;
+    var okCount=0,failCount=0;
+    for(var i=0;i<checked.length;i++){
+      var client=clients.find(function(c){return c.id===checked[i];});if(!client)continue;
+      message(bulkMessage,'Sending '+(i+1)+' / '+checked.length+'…');
+      var payload={type:'tip',to:client.email,business_name:client.business_name,contact_name:client.contact_name,language:client.language||'fr',client_id:client.id,headline:headline,body:body,cta_label:ctaLabel,cta_url:ctaUrl,branding:brandingPayload()};
+      if(appSettings&&appSettings.reply_to_email)payload.reply_to=appSettings.reply_to_email;
+      try{
+        await invokeFunction('send-client-report',payload);
+        await request('/rest/v1/client_emails',{method:'POST',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({client_id:client.id,type:'tip',subject:headline,headline:headline,body:body,cta_label:ctaLabel||null,cta_url:ctaUrl||null,sent_at:new Date().toISOString()})});
+        okCount++;
+      }catch(error){failCount++;}
+    }
+    message(bulkMessage,'Sent to '+okCount+' client'+(okCount===1?'':'s')+(failCount?', '+failCount+' failed':'')+'.');
+    button.disabled=false;
+    if(!failCount)setTimeout(function(){bulkDialog.close();},1200);
+  }
+
   // ── Tabs ────────────────────────────────────────────────────
-  function switchTab(name){if(!views[name])name='leads';tabs.forEach(function(tab){tab.classList.toggle('is-active',tab.dataset.tab===name);});Object.keys(views).forEach(function(key){views[key].hidden=key!==name;});viewTitle.textContent=name==='clients'?'Clients':'Leads';document.title=(name==='clients'?'Clients':'Leads')+' | SB Marketing Admin';document.querySelector('[data-export]').hidden=name!=='leads';if(name==='clients'&&clients.length===0)loadClients();}
-  // Each section lives at its own hash slug (#leads, #clients) so it's
-  // bookmarkable and supports browser back/forward.
+  function switchTab(name){if(!views[name])name='leads';tabs.forEach(function(tab){tab.classList.toggle('is-active',tab.dataset.tab===name);});Object.keys(views).forEach(function(key){views[key].hidden=key!==name;});var titles={clients:'Clients',settings:'Settings',leads:'Leads'};viewTitle.textContent=titles[name];document.title=titles[name]+' | SB Marketing Admin';document.querySelector('[data-export]').hidden=name!=='leads';if(name==='clients'&&clients.length===0)loadClients();if(name==='settings'&&!appSettings)loadSettings();}
+  // Each section lives at its own hash slug (#leads, #clients, #settings)
+  // so it's bookmarkable and supports browser back/forward.
   function applyHash(){switchTab((location.hash||'#leads').replace('#',''));}
 
   // ── Wiring ──────────────────────────────────────────────────
+  populateCountrySelects();
   loginForm.addEventListener('submit',async function(event){event.preventDefault();var button=loginForm.querySelector('button'),data=new FormData(loginForm),email=String(data.get('email')).trim().toLowerCase();message(loginMessage,'');if(email!==config.adminEmail){message(loginMessage,'This account is not authorised.');return;}button.disabled=true;button.textContent='Signing in…';try{var response=await fetch(config.url+'/auth/v1/token?grant_type=password',{method:'POST',headers:{apikey:config.key,'Content-Type':'application/json'},body:JSON.stringify({email:email,password:data.get('password')})}),session=await response.json();if(!response.ok)throw new Error(session.error_description||session.msg||'Unable to sign in');setSession(session);showDashboard(true);loadLeads();applyHash();}catch(error){message(loginMessage,error.message);}finally{button.disabled=false;button.textContent='Sign in';}});
   tbody.addEventListener('change',function(event){var select=event.target.closest('[data-lead-status]');if(select)updateStatus(select.dataset.leadStatus,select.value,select);});
   search.addEventListener('input',render);
@@ -172,7 +301,7 @@
 
   clientsBody.addEventListener('change',function(event){var select=event.target.closest('[data-client-status]');if(select)updateClientStatus(select.dataset.clientStatus,select.value,select);});
   clientsBody.addEventListener('click',function(event){
-    var sendBtn=event.target.closest('[data-send-report]');if(sendBtn){openReportDialog(sendBtn.dataset.sendReport);return;}
+    var sendBtn=event.target.closest('[data-send-email]');if(sendBtn){openSendDialog(sendBtn.dataset.sendEmail);return;}
     var detailBtn=event.target.closest('[data-client-detail]');if(detailBtn)openClientDialog(detailBtn.dataset.clientDetail);
   });
   if(clientSearch)clientSearch.addEventListener('input',renderClients);
@@ -181,13 +310,23 @@
   addClientCancel.addEventListener('click',function(){addClientForm.hidden=true;addClientForm.reset();});
   addClientForm.addEventListener('submit',addClient);
 
-  reportForm.addEventListener('submit',sendReport);
-  reportCancel.addEventListener('click',function(){reportDialog.close();});
+  sendTypeSelect.addEventListener('change',function(){setSendType(sendTypeSelect.value);});
+  sendForm.addEventListener('submit',sendEmail);
+  sendCancel.addEventListener('click',function(){sendDialog.close();});
+  sendPreviewBtn.addEventListener('click',previewSend);
+  previewClose.addEventListener('click',function(){previewPane.hidden=true;});
 
   clientEditForm.addEventListener('submit',saveClientEdits);
   clientDialogClose.addEventListener('click',function(){clientDialog.close();});
   clientDeleteBtn.addEventListener('click',deleteClient);
-  clientDialogSendReport.addEventListener('click',function(){if(!dialogTarget)return;var id=dialogTarget.id;clientDialog.close();openReportDialog(id);});
+  clientDialogSendEmail.addEventListener('click',function(){if(!dialogTarget)return;var id=dialogTarget.id;clientDialog.close();openSendDialog(id);});
+
+  settingsForm.addEventListener('submit',saveSettings);
+
+  bulkToggle.addEventListener('click',openBulkDialog);
+  bulkCancel.addEventListener('click',function(){bulkDialog.close();});
+  bulkActivityFilter.addEventListener('change',renderBulkList);
+  bulkForm.addEventListener('submit',sendBulkTip);
 
   if(!config){message(loginMessage,'Supabase configuration is missing.');return;}var session=getSession();if(session&&session.expires_at*1000>Date.now()){showDashboard(true);loadLeads();applyHash();}else if(session&&session.refresh_token){refreshSession(session.refresh_token).then(function(value){if(value){showDashboard(true);loadLeads();applyHash();}});}else showDashboard(false);
 })();

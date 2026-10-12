@@ -1,11 +1,22 @@
-// SB Marketing — sends a client's monthly report email via Resend.
+// SB Marketing — sends a client email (monthly report, marketing tip, or a
+// custom message) via Resend, all through one branded template shell.
 // Deployed as a standard Supabase Edge Function (verify_jwt: true), so only
 // a signed-in admin session (the same JWT the /admin/ dashboard already
 // holds) can call it. It only sends the email — the caller (admin.js) is
-// responsible for logging the sent report and patching
-// clients.last_report_sent_at afterwards using its own authenticated
-// session, so this function never needs elevated access.
-import { renderClientReportEmail, type Metric } from "../_shared/email-template.ts";
+// responsible for logging it and patching clients.last_report_sent_at
+// afterwards using its own authenticated session, so this function never
+// needs elevated access.
+//
+// Pass "preview": true to get back { subject, html } without sending —
+// used by the admin's live-preview pane so it never has to duplicate the
+// template logic client-side.
+import {
+  renderReportEmail,
+  renderTipEmail,
+  renderCustomEmail,
+  type Metric,
+  type Branding,
+} from "../_shared/email-template.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -20,65 +31,130 @@ const corsHeaders = {
 const FROM = "SB Marketing <admin@partners.sbmarketing.fr>";
 
 interface RequestBody {
+  preview?: boolean;
+  type: "report" | "tip" | "custom";
   to: string;
   business_name: string;
   contact_name?: string;
   language?: "fr" | "en";
-  month_label: string;
+  client_id?: string; // used to build the unsubscribe link for tip/custom
+  branding?: Branding;
+  reply_to?: string;
+  // report
+  month_label?: string;
   website_visits?: Metric;
   google_impressions?: Metric;
   google_clicks?: Metric;
   google_avg_position?: Metric;
   summary?: string;
   report_url?: string;
+  // tip
+  headline?: string;
+  body?: string;
+  // custom
+  subject?: string;
+  // tip/custom shared
+  cta_label?: string;
+  cta_url?: string;
 }
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
   try {
-    const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
-    if (!RESEND_API_KEY) throw new Error("RESEND_API_KEY not configured");
-
     const body: RequestBody = await req.json();
-    const {
-      to,
-      business_name,
-      contact_name,
-      language = "fr",
-      month_label,
-      website_visits,
-      google_impressions,
-      google_clicks,
-      google_avg_position,
-      summary,
-      report_url,
-    } = body || ({} as RequestBody);
+    const { type, to, business_name, contact_name, language = "fr", branding, client_id } = body || ({} as RequestBody);
 
-    const hasAnyMetric = [website_visits, google_impressions, google_clicks, google_avg_position].some(
-      (m) => m?.value
-    );
-    if (!to || !business_name || !month_label || !hasAnyMetric) {
-      return new Response(
-        JSON.stringify({
-          error: "Missing to, business_name, month_label, or at least one metric (visits / impressions / clicks / position)",
-        }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+    if (!type || !["report", "tip", "custom"].includes(type)) {
+      return new Response(JSON.stringify({ error: "type must be report, tip or custom" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+    if (!body.preview && (!to || !business_name)) {
+      return new Response(JSON.stringify({ error: "Missing to or business_name" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
-    const { subject, html } = renderClientReportEmail({
-      businessName: business_name,
-      contactName: contact_name,
-      language,
-      monthLabel: month_label,
-      websiteVisits: website_visits,
-      googleImpressions: google_impressions,
-      googleClicks: google_clicks,
-      googleAvgPosition: google_avg_position,
-      summary,
-      reportUrl: report_url,
-    });
+    const unsubscribeUrl =
+      type !== "report" && client_id
+        ? `https://www.sbmarketing.fr/unsubscribe/?client=${encodeURIComponent(client_id)}`
+        : undefined;
+
+    let rendered: { subject: string; html: string };
+
+    if (type === "report") {
+      const hasAnyMetric = [body.website_visits, body.google_impressions, body.google_clicks, body.google_avg_position].some(
+        (m) => m?.value
+      );
+      if (!body.month_label || !hasAnyMetric) {
+        return new Response(
+          JSON.stringify({ error: "Report emails need month_label and at least one metric" }),
+          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+      rendered = renderReportEmail({
+        businessName: business_name,
+        contactName: contact_name,
+        language,
+        monthLabel: body.month_label,
+        websiteVisits: body.website_visits,
+        googleImpressions: body.google_impressions,
+        googleClicks: body.google_clicks,
+        googleAvgPosition: body.google_avg_position,
+        summary: body.summary,
+        reportUrl: body.report_url,
+        branding,
+      });
+    } else if (type === "tip") {
+      if (!body.headline || !body.body) {
+        return new Response(JSON.stringify({ error: "Tip emails need headline and body" }), {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      rendered = renderTipEmail({
+        businessName: business_name,
+        contactName: contact_name,
+        language,
+        headline: body.headline,
+        body: body.body,
+        ctaLabel: body.cta_label,
+        ctaUrl: body.cta_url,
+        branding,
+        unsubscribeUrl,
+      });
+    } else {
+      if (!body.subject || !body.body) {
+        return new Response(JSON.stringify({ error: "Custom emails need subject and body" }), {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      rendered = renderCustomEmail({
+        businessName: business_name,
+        contactName: contact_name,
+        language,
+        subject: body.subject,
+        body: body.body,
+        ctaLabel: body.cta_label,
+        ctaUrl: body.cta_url,
+        branding,
+        unsubscribeUrl,
+      });
+    }
+
+    if (body.preview) {
+      return new Response(JSON.stringify(rendered), {
+        status: 200,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
+    if (!RESEND_API_KEY) throw new Error("RESEND_API_KEY not configured");
 
     const resendRes = await fetch("https://api.resend.com/emails", {
       method: "POST",
@@ -86,7 +162,13 @@ Deno.serve(async (req) => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${RESEND_API_KEY}`,
       },
-      body: JSON.stringify({ from: FROM, to: [to], subject, html }),
+      body: JSON.stringify({
+        from: FROM,
+        to: [to],
+        subject: rendered.subject,
+        html: rendered.html,
+        ...(body.reply_to ? { reply_to: body.reply_to } : {}),
+      }),
     });
 
     const resendBody = await resendRes.json().catch(() => ({}));

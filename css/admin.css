@@ -69,7 +69,7 @@ button:disabled{opacity:.55;cursor:wait}
 
 /* ── Toolbar ─────────────────────────────────────────────────── */
 .toolbar{display:grid;grid-template-columns:minmax(240px,1fr) 200px;gap:12px;margin-bottom:14px}
-.toolbar--clients{grid-template-columns:minmax(220px,1fr) 180px auto}
+.toolbar--clients{grid-template-columns:minmax(220px,1fr) 170px auto auto}
 .toolbar--clients button{white-space:nowrap}
 
 /* ── Table ───────────────────────────────────────────────────── */
@@ -109,22 +109,44 @@ tbody tr:hover td{background:#fafbfc}
 .add-client-form[hidden]{display:none}
 .field-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
 .add-client-form .form-actions{display:flex;gap:10px}
+.checkbox-field{display:flex;align-items:center;gap:8px;flex-direction:row;font-weight:600;font-size:13px;color:var(--text)}
+.checkbox-field input{width:auto}
 
-/* ── Send-report dialog ──────────────────────────────────────── */
-.report-dialog{border:1px solid var(--border);border-radius:20px;background:#fff;color:var(--text);padding:0;width:min(100%,560px)}
-.report-dialog::backdrop{background:rgba(4,16,33,.45)}
-.report-dialog form{display:grid;gap:14px;padding:28px}
-.report-dialog h2{margin:0;font-size:22px;color:var(--navy)}
-.report-dialog__client{margin:0;color:var(--gold-soft);font-weight:800;font-size:14px}
+/* ── Phone field (WhatsApp) ──────────────────────────────────── */
+.phone-row{display:flex;gap:8px}
+.phone-row .country-select{flex:0 0 auto;width:auto;max-width:9.5rem}
+.phone-row input{flex:1;min-width:0}
+
+/* ── Send dialog (report / tip / custom) ────────────────────── */
+.send-dialog,.client-dialog,.bulk-dialog{border:1px solid var(--border);border-radius:20px;background:#fff;color:var(--text);padding:0;width:min(100%,560px);max-height:88vh}
+.send-dialog::backdrop,.client-dialog::backdrop,.bulk-dialog::backdrop{background:rgba(4,16,33,.45)}
+.send-dialog form,.bulk-dialog form{display:grid;gap:14px;padding:28px;max-height:88vh;overflow:auto}
+.send-dialog h2,.bulk-dialog h2{margin:0;font-size:22px;color:var(--navy)}
+.send-dialog__head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.send-dialog__head select{width:auto;min-width:9.5rem;padding:9px 12px;font-size:13px;font-weight:700}
+.send-dialog__client{margin:0;color:var(--gold-soft);font-weight:800;font-size:14px}
 .field-hint{margin:0;color:var(--navy);font-size:12px;text-transform:uppercase;letter-spacing:.06em;font-weight:800}
 .field-note{margin:-6px 0 0;color:var(--muted);font-size:12px;line-height:1.5}
 .metric-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .metric-grid--single{grid-template-columns:1fr}
 .metric-grid label{position:relative}
 .field-previous{display:block;margin-top:5px;font-size:11px;font-weight:600;color:var(--muted)}
-.report-dialog textarea{width:100%;border:1px solid var(--border);border-radius:10px;background:#fff;color:var(--text);padding:12px 14px;font:inherit;resize:vertical}
-.report-dialog label small{color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0}
-.report-dialog .form-actions{display:flex;gap:10px}
+.send-dialog textarea,.bulk-dialog textarea{width:100%;border:1px solid var(--border);border-radius:10px;background:#fff;color:var(--text);padding:12px 14px;font:inherit;resize:vertical}
+.send-dialog label small,.bulk-dialog label small,.client-dialog label small{color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0}
+.send-dialog .form-actions,.bulk-dialog .form-actions{display:flex;gap:10px;flex-wrap:wrap}
+[data-send-group][hidden]{display:none}
+
+/* ── Email preview pane ──────────────────────────────────────── */
+.preview-pane{border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.preview-pane[hidden]{display:none}
+.preview-pane__head{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#fafbfc;border-bottom:1px solid var(--border);font-size:12px;font-weight:800;color:var(--navy);text-transform:uppercase;letter-spacing:.05em}
+.preview-pane iframe{width:100%;height:420px;border:0;display:block}
+
+/* ── Bulk tip dialog ─────────────────────────────────────────── */
+.bulk-client-list{max-height:220px;overflow:auto;border:1px solid var(--border);border-radius:12px;padding:10px}
+.bulk-client-row{display:flex;align-items:center;gap:8px;flex-direction:row;font-weight:600;font-size:13px;padding:7px 4px}
+.bulk-client-row input{width:auto}
+.bulk-client-row .muted-note{margin:0;font-weight:400}
 
 /* ── Client detail dialog ───────────────────────────────────── */
 .client-dialog{border:1px solid var(--border);border-radius:20px;background:#fff;color:var(--text);padding:0;width:min(100%,640px);max-height:88vh}
@@ -139,15 +161,27 @@ tbody tr:hover td{background:#fafbfc}
 .status-pill--paused{background:#f0f1f4;color:var(--muted)}
 .client-dialog__edit{display:grid;gap:14px}
 .client-dialog__edit .form-actions{display:flex;gap:10px;flex-wrap:wrap}
+.whatsapp-link{text-decoration:none;display:inline-flex;align-items:center}
+.whatsapp-link[hidden]{display:none}
 .client-dialog__history h3{margin:0 0 10px;font-size:15px;color:var(--navy)}
 .history-list{list-style:none;margin:0;padding:0;display:grid;gap:12px;max-height:260px;overflow:auto}
 .history-list li{border:1px solid var(--border);border-radius:14px;padding:14px 16px;background:#fafbfc}
 .history-item__head{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:14px}
 .history-item__head strong{color:var(--navy)}
 .history-item__head span{color:var(--muted);font-size:12px}
+.history-item__body strong{color:var(--navy)}
 .history-item__chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
 .history-chip{background:#fff;border:1px solid var(--border);border-radius:99px;padding:4px 10px;font-size:12px;color:var(--navy-soft)}
 .history-item__summary{margin:10px 0 0;font-size:13px;color:var(--muted)}
+.history-type-badge{display:inline-flex;border-radius:99px;padding:3px 9px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+.history-type-badge--report{background:#e6ebfb;color:#3952c9}
+.history-type-badge--tip{background:#fff3e0;color:#b45309}
+.history-type-badge--custom{background:#f0f1f4;color:var(--navy-soft)}
+
+/* ── Settings ────────────────────────────────────────────────── */
+.settings-form{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;display:grid;gap:16px;max-width:52rem}
+.settings-section-title{margin:6px 0 -4px;font-size:13px;color:var(--navy);text-transform:uppercase;letter-spacing:.06em}
+.settings-section-title:first-child{margin-top:0}
 
 @media(max-width:900px){
   .admin-shell{flex-direction:column}
@@ -166,4 +200,8 @@ tbody tr:hover td{background:#fafbfc}
   .header-actions{width:100%}
   .header-actions button{flex:1}
   .client-dialog__inner{padding:20px}
+  .send-dialog__head{flex-direction:column;align-items:stretch}
+  .send-dialog__head select{width:100%}
+  .phone-row{flex-direction:column}
+  .phone-row .country-select{max-width:100%}
 }

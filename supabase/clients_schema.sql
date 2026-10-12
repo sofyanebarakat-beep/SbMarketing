@@ -28,10 +28,35 @@ with check (lower(auth.jwt() ->> 'email') = 'sofyanebarakat@gmail.com');
 create index if not exists clients_created_at_idx on public.clients (created_at desc);
 create index if not exists clients_status_idx on public.clients (status);
 
--- ── Report history ──────────────────────────────────────────────
--- One row per report actually sent, so the admin can look back at what
--- went out each month and reuse last month's highlight labels instead of
--- retyping them.
+-- ── Richer client profile ───────────────────────────────────────
+-- whatsapp_number is stored E.164 (e.g. +33612345678) so it's always a
+-- valid wa.me link. activity is free text (with suggestions in the admin
+-- UI) so clients can later be filtered for targeted tip campaigns.
+alter table public.clients
+  add column if not exists whatsapp_number text,
+  add column if not exists activity text,
+  add column if not exists marketing_consent boolean not null default true,
+  add column if not exists unsubscribed_at timestamptz;
+
+-- Public, narrowly-scoped unsubscribe: callable by anyone (anon) via
+-- POST /rest/v1/rpc/unsubscribe_client, but it can only ever set
+-- unsubscribed_at on the one row it's given — no other column, no select,
+-- no way to enumerate clients. This is what the public /unsubscribe/ page
+-- calls from the link in marketing-tip and custom emails.
+create or replace function public.unsubscribe_client(target_id uuid)
+returns void
+language sql
+security definer
+set search_path = public
+as $$
+  update public.clients set unsubscribed_at = now() where id = target_id;
+$$;
+
+grant execute on function public.unsubscribe_client(uuid) to anon, authenticated;
+
+-- ── Report history (legacy — superseded by client_emails below) ──────
+-- Kept so nothing breaks if any old deploy still points at it; the admin
+-- UI now reads and writes client_emails instead.
 create table if not exists public.client_reports (
   id uuid primary key default gen_random_uuid(),
   client_id uuid not null references public.clients(id) on delete cascade,
@@ -54,3 +79,75 @@ with check (lower(auth.jwt() ->> 'email') = 'sofyanebarakat@gmail.com');
 
 create index if not exists client_reports_client_id_idx on public.client_reports (client_id);
 create index if not exists client_reports_sent_at_idx on public.client_reports (sent_at desc);
+
+-- ── Unified email history ─────────────────────────────────────────
+-- One row per email actually sent to a client, whatever type it was —
+-- monthly report, marketing tip, or a one-off custom message. This is
+-- what the client detail dialog's "history" timeline reads from, and
+-- clients.last_report_sent_at is only touched for type = 'report' (that's
+-- the one the due/sent tracking is about).
+create table if not exists public.client_emails (
+  id uuid primary key default gen_random_uuid(),
+  client_id uuid not null references public.clients(id) on delete cascade,
+  type text not null check (type in ('report','tip','custom')),
+  subject text not null,
+  -- report-specific
+  month_label text,
+  highlights jsonb,
+  -- tip/custom-specific
+  headline text,
+  body text,
+  cta_label text,
+  cta_url text,
+  sent_at timestamptz not null default now()
+);
+
+alter table public.client_emails enable row level security;
+grant select, insert, update, delete on table public.client_emails to authenticated;
+
+drop policy if exists "Admin can manage client emails" on public.client_emails;
+create policy "Admin can manage client emails"
+on public.client_emails for all
+to authenticated
+using (lower(auth.jwt() ->> 'email') = 'sofyanebarakat@gmail.com')
+with check (lower(auth.jwt() ->> 'email') = 'sofyanebarakat@gmail.com');
+
+create index if not exists client_emails_client_id_idx on public.client_emails (client_id);
+create index if not exists client_emails_sent_at_idx on public.client_emails (sent_at desc);
+
+-- ── Brand settings ─────────────────────────────────────────────────
+-- Single-row config the email template reads for header/footer/social
+-- links, so that can be updated from Settings in the admin without a
+-- code change. Seeded with the current live values.
+create table if not exists public.app_settings (
+  id text primary key default 'default',
+  company_name text not null default 'SB Marketing',
+  logo_part1 text not null default 'SB',
+  logo_part2 text not null default 'MARKETING',
+  footer_tagline_fr text not null default 'Agence marketing digital à Nice, Côte d''Azur',
+  footer_tagline_en text not null default 'Digital marketing agency in Nice, French Riviera',
+  website_url text not null default 'https://www.sbmarketing.fr',
+  reply_to_email text,
+  instagram_url text,
+  facebook_url text,
+  updated_at timestamptz not null default now()
+);
+
+alter table public.app_settings enable row level security;
+grant select, insert, update on table public.app_settings to authenticated;
+
+drop policy if exists "Admin can manage app settings" on public.app_settings;
+create policy "Admin can manage app settings"
+on public.app_settings for all
+to authenticated
+using (lower(auth.jwt() ->> 'email') = 'sofyanebarakat@gmail.com')
+with check (lower(auth.jwt() ->> 'email') = 'sofyanebarakat@gmail.com');
+
+insert into public.app_settings (id, instagram_url, facebook_url, reply_to_email)
+values (
+  'default',
+  'https://www.instagram.com/sb.marketing06/',
+  'https://www.facebook.com/profile.php?id=61556671255980',
+  'admin@partners.sbmarketing.fr'
+)
+on conflict (id) do nothing;
