@@ -25,21 +25,83 @@
 
     <section class="dashboard" data-dashboard hidden>
       <header class="admin-header">
-        <div><span class="admin-kicker">SB Marketing</span><h1>Butcher leads</h1><p data-last-update></p></div>
+        <div><span class="admin-kicker">SB Marketing</span><h1 data-view-title>Butcher leads</h1><p data-last-update></p></div>
         <div class="header-actions"><button class="secondary" type="button" data-refresh>Refresh</button><button class="secondary" type="button" data-export>Export CSV</button><button type="button" data-logout>Sign out</button></div>
       </header>
-      <div class="stats" aria-label="Lead summary">
-        <article><span>Total leads</span><strong data-stat-total>0</strong></article>
-        <article><span>New</span><strong data-stat-new>0</strong></article>
-        <article><span>Contacted</span><strong data-stat-contacted>0</strong></article>
-        <article><span>Customers</span><strong data-stat-customer>0</strong></article>
+
+      <nav class="tabs" aria-label="Admin sections">
+        <button type="button" class="tab is-active" data-tab="leads">Leads</button>
+        <button type="button" class="tab" data-tab="clients">Clients</button>
+      </nav>
+
+      <div data-view="leads">
+        <div class="stats" aria-label="Lead summary">
+          <article><span>Total leads</span><strong data-stat-total>0</strong></article>
+          <article><span>New</span><strong data-stat-new>0</strong></article>
+          <article><span>Contacted</span><strong data-stat-contacted>0</strong></article>
+          <article><span>Customers</span><strong data-stat-customer>0</strong></article>
+        </div>
+        <div class="toolbar"><label class="search"><span class="sr-only">Search leads</span><input type="search" data-search placeholder="Search name, shop, email, city…"></label><select data-status-filter aria-label="Filter by status"><option value="">All statuses</option><option value="new">New</option><option value="contacted">Contacted</option><option value="qualified">Qualified</option><option value="customer">Customer</option><option value="closed">Closed</option></select></div>
+        <p class="dashboard-message" data-dashboard-message aria-live="polite"></p>
+        <div class="table-wrap"><table><thead><tr><th>Date</th><th>Contact</th><th>Butcher shop</th><th>Location</th><th>Website</th><th>Language</th><th>Status</th></tr></thead><tbody data-leads-body></tbody></table></div>
+        <div class="empty" data-empty hidden><h2>No leads found</h2><p>New form submissions will appear here.</p></div>
       </div>
-      <div class="toolbar"><label class="search"><span class="sr-only">Search leads</span><input type="search" data-search placeholder="Search name, shop, email, city…"></label><select data-status-filter aria-label="Filter by status"><option value="">All statuses</option><option value="new">New</option><option value="contacted">Contacted</option><option value="qualified">Qualified</option><option value="customer">Customer</option><option value="closed">Closed</option></select></div>
-      <p class="dashboard-message" data-dashboard-message aria-live="polite"></p>
-      <div class="table-wrap"><table><thead><tr><th>Date</th><th>Contact</th><th>Butcher shop</th><th>Location</th><th>Website</th><th>Language</th><th>Status</th></tr></thead><tbody data-leads-body></tbody></table></div>
-      <div class="empty" data-empty hidden><h2>No leads found</h2><p>New form submissions will appear here.</p></div>
+
+      <div data-view="clients" hidden>
+        <div class="stats" aria-label="Client summary">
+          <article><span>Total clients</span><strong data-client-stat-total>0</strong></article>
+          <article><span>Active</span><strong data-client-stat-active>0</strong></article>
+          <article><span>Paused</span><strong data-client-stat-paused>0</strong></article>
+          <article><span>Reports sent</span><strong data-client-stat-sent>0</strong></article>
+        </div>
+        <div class="toolbar toolbar--clients">
+          <label class="search"><span class="sr-only">Search clients</span><input type="search" data-client-search placeholder="Search business, contact, email…"></label>
+          <button type="button" data-add-client-toggle>+ Add client</button>
+        </div>
+
+        <form class="add-client-form" data-add-client-form hidden>
+          <div class="field-grid">
+            <label>Business name<input name="business_name" required placeholder="Boucherie de la Gare"></label>
+            <label>Contact name<input name="contact_name" placeholder="Optional"></label>
+            <label>Email<input name="email" type="email" required placeholder="client@example.com"></label>
+            <label>Language<select name="language"><option value="fr">French</option><option value="en">English</option></select></label>
+          </div>
+          <label>Notes<input name="notes" placeholder="Optional — campaign, package, anything useful"></label>
+          <div class="form-actions"><button type="submit">Save client</button><button type="button" class="secondary" data-add-client-cancel>Cancel</button></div>
+          <p class="form-message" data-add-client-message aria-live="polite"></p>
+        </form>
+
+        <p class="dashboard-message" data-clients-message aria-live="polite"></p>
+        <div class="table-wrap"><table><thead><tr><th>Business</th><th>Contact</th><th>Language</th><th>Status</th><th>Last report sent</th><th>Actions</th></tr></thead><tbody data-clients-body></tbody></table></div>
+        <div class="empty" data-clients-empty hidden><h2>No clients yet</h2><p>Add your first client to start sending monthly reports.</p></div>
+      </div>
     </section>
   </main>
+
+  <dialog class="report-dialog" data-report-dialog>
+    <form method="dialog" data-report-form>
+      <h2>Send monthly report</h2>
+      <p class="report-dialog__client" data-report-client></p>
+      <label>Month<input name="month_label" required placeholder="October 2026"></label>
+      <p class="field-hint">Highlights (fill in what applies — at least one)</p>
+      <div class="highlight-grid">
+        <label>Label<input name="h1_label" placeholder="New leads"></label>
+        <label>Value<input name="h1_value" placeholder="24"></label>
+        <label>Label<input name="h2_label" placeholder="Website visits"></label>
+        <label>Value<input name="h2_value" placeholder="1 840"></label>
+        <label>Label<input name="h3_label" placeholder="Ad spend ROAS"></label>
+        <label>Value<input name="h3_value" placeholder="4.2x"></label>
+      </div>
+      <label>Summary <small>(optional)</small><textarea name="summary" rows="3" placeholder="A short paragraph of context for this month"></textarea></label>
+      <label>Report link <small>(optional)</small><input name="report_url" type="url" placeholder="https://..."></label>
+      <div class="form-actions">
+        <button type="submit" data-report-send>Send email</button>
+        <button type="button" class="secondary" data-report-cancel>Cancel</button>
+      </div>
+      <p class="form-message" data-report-message aria-live="polite"></p>
+    </form>
+  </dialog>
+
   <script src="/js/supabase-config.js"></script>
   <script src="/js/admin.js"></script>
 </body>
