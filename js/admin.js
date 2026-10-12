@@ -5,10 +5,18 @@
   var viewTitle=document.querySelector('[data-view-title]'),tabs=document.querySelectorAll('[data-tab]'),views={leads:document.querySelector('[data-view="leads"]'),clients:document.querySelector('[data-view="clients"]')};
   var clientsBody=document.querySelector('[data-clients-body]'),clientsEmpty=document.querySelector('[data-clients-empty]'),clientsMessage=document.querySelector('[data-clients-message]'),clientSearch=document.querySelector('[data-client-search]'),clientDueFilter=document.querySelector('[data-client-due-filter]');
   var addClientToggle=document.querySelector('[data-add-client-toggle]'),addClientForm=document.querySelector('[data-add-client-form]'),addClientCancel=document.querySelector('[data-add-client-cancel]'),addClientMessage=document.querySelector('[data-add-client-message]');
-  var reportDialog=document.querySelector('[data-report-dialog]'),reportForm=document.querySelector('[data-report-form]'),reportClientLabel=document.querySelector('[data-report-client]'),reportMessage=document.querySelector('[data-report-message]'),reportCancel=document.querySelector('[data-report-cancel]'),reportPrefillBtn=document.querySelector('[data-report-prefill]');
+  var reportDialog=document.querySelector('[data-report-dialog]'),reportForm=document.querySelector('[data-report-form]'),reportClientLabel=document.querySelector('[data-report-client]'),reportMessage=document.querySelector('[data-report-message]'),reportCancel=document.querySelector('[data-report-cancel]');
   var clientDialog=document.querySelector('[data-client-dialog]'),clientDialogName=document.querySelector('[data-client-dialog-name]'),clientDialogStatus=document.querySelector('[data-client-dialog-status]'),clientDialogClose=document.querySelector('[data-client-dialog-close]'),clientEditForm=document.querySelector('[data-client-edit-form]'),clientEditMessage=document.querySelector('[data-client-edit-message]'),clientDeleteBtn=document.querySelector('[data-client-delete]'),clientDialogSendReport=document.querySelector('[data-client-send-report]');
   var clientHistoryList=document.querySelector('[data-client-history-list]'),clientHistoryMessage=document.querySelector('[data-client-history-message]'),clientHistoryEmpty=document.querySelector('[data-client-history-empty]');
-  var reportTarget=null,lastMonthHighlights=null,dialogTarget=null;
+  var reportTarget=null,lastMonthMetrics=null,dialogTarget=null;
+  // The fixed set of metrics every report is built around — website traffic
+  // and Google Search visibility, which is what these reports exist to show.
+  var METRICS=[
+    {key:'website_visits',label:'Website visits',lowerIsBetter:false},
+    {key:'google_impressions',label:'Google impressions',lowerIsBetter:false},
+    {key:'google_clicks',label:'Google clicks',lowerIsBetter:false},
+    {key:'google_avg_position',label:'Avg. position',lowerIsBetter:true}
+  ];
 
   function message(element,text){if(element)element.textContent=text||'';}
   function getSession(){try{return JSON.parse(localStorage.getItem(sessionKey)||'null');}catch(error){return null;}}
@@ -76,7 +84,8 @@
     clientHistoryEmpty.hidden=reports.length!==0;
     clientHistoryList.innerHTML=reports.map(function(r){
       var sent=new Intl.DateTimeFormat('en-GB',{dateStyle:'medium'}).format(new Date(r.sent_at));
-      var chips=(r.highlights||[]).map(function(h){return '<span class="history-chip">'+escapeHtml(h.label)+': <strong>'+escapeHtml(h.value)+'</strong></span>';}).join('');
+      var metrics=r.highlights||{};
+      var chips=METRICS.filter(function(m){return metrics[m.key];}).map(function(m){return '<span class="history-chip">'+escapeHtml(m.label)+': <strong>'+escapeHtml(metrics[m.key])+'</strong></span>';}).join('');
       var link=r.report_url?'<a href="'+escapeHtml(safeUrl(r.report_url))+'" target="_blank" rel="noopener">Report link ↗</a>':'';
       return '<li><div class="history-item__head"><strong>'+escapeHtml(r.month_label)+'</strong><span>Sent '+sent+'</span></div>'
         +(chips?'<div class="history-item__chips">'+chips+'</div>':'')
@@ -94,33 +103,48 @@
   // ── Send report dialog ─────────────────────────────────────
   async function openReportDialog(clientId){
     var client=clients.find(function(c){return c.id===clientId;});if(!client)return;
-    reportTarget=client;lastMonthHighlights=null;
+    reportTarget=client;lastMonthMetrics=null;
     reportClientLabel.textContent=client.business_name+' · '+client.email;
     reportForm.reset();
+    METRICS.forEach(function(m){var span=reportForm.querySelector('[data-previous="'+m.key+'"]');if(span)span.textContent='';});
     var now=new Date(),defaultMonth=new Intl.DateTimeFormat(client.language==='en'?'en-GB':'fr-FR',{month:'long',year:'numeric'}).format(now);
     reportForm.elements.month_label.value=defaultMonth.charAt(0).toUpperCase()+defaultMonth.slice(1);
     message(reportMessage,'');
-    reportPrefillBtn.hidden=true;
     reportDialog.showModal();
     try{
       var history=await request('/rest/v1/client_reports?client_id=eq.'+encodeURIComponent(clientId)+'&select=highlights&order=sent_at.desc&limit=1');
-      if(history&&history.length&&history[0].highlights&&history[0].highlights.length){lastMonthHighlights=history[0].highlights;reportPrefillBtn.hidden=false;}
-    }catch(error){/* non-fatal: prefill is a convenience, not required to send */}
+      if(history&&history.length&&history[0].highlights){
+        lastMonthMetrics=history[0].highlights;
+        METRICS.forEach(function(m){
+          var value=lastMonthMetrics[m.key];
+          if(!value)return;
+          var span=reportForm.querySelector('[data-previous="'+m.key+'"]');
+          if(span)span.textContent='Last month: '+value;
+        });
+      }
+    }catch(error){/* non-fatal: last-month context is a convenience, not required to send */}
   }
-  function prefillFromLastMonth(){if(!lastMonthHighlights)return;[0,1,2].forEach(function(i){var h=lastMonthHighlights[i];if(!h)return;var labelField=reportForm.elements['h'+(i+1)+'_label'];if(labelField&&!labelField.value)labelField.value=h.label;});}
   async function sendReport(event){
     event.preventDefault();if(!reportTarget)return;
-    var button=reportForm.querySelector('[data-report-send]'),data=new FormData(reportForm),highlights=[];
-    [1,2,3].forEach(function(i){var label=String(data.get('h'+i+'_label')||'').trim(),value=String(data.get('h'+i+'_value')||'').trim();if(label&&value)highlights.push({label:label,value:value});});
-    if(highlights.length===0){message(reportMessage,'Add at least one highlight (label + value).');return;}
+    var button=reportForm.querySelector('[data-report-send]'),data=new FormData(reportForm);
+    var metricsPayload={},historyPayload={},hasAny=false;
+    METRICS.forEach(function(m){
+      var value=String(data.get(m.key)||'').trim();
+      if(!value)return;
+      hasAny=true;
+      var previous=lastMonthMetrics&&lastMonthMetrics[m.key]?lastMonthMetrics[m.key]:undefined;
+      metricsPayload[m.key]={value:value,previous:previous};
+      historyPayload[m.key]=value;
+    });
+    if(!hasAny){message(reportMessage,'Fill in at least one metric (visits, impressions, clicks or position).');return;}
     var monthLabel=String(data.get('month_label')||'').trim(),summary=String(data.get('summary')||'').trim()||undefined,reportUrl=String(data.get('report_url')||'').trim()||undefined;
-    var payload={to:reportTarget.email,business_name:reportTarget.business_name,contact_name:reportTarget.contact_name,language:reportTarget.language||'fr',month_label:monthLabel,highlights:highlights,summary:summary,report_url:reportUrl};
+    var payload=Object.assign({to:reportTarget.email,business_name:reportTarget.business_name,contact_name:reportTarget.contact_name,language:reportTarget.language||'fr',month_label:monthLabel,summary:summary,report_url:reportUrl},metricsPayload);
     button.disabled=true;message(reportMessage,'Sending…');
     try{
       await invokeFunction('send-client-report',payload);
       var sentAt=new Date().toISOString();
       await request('/rest/v1/clients?id=eq.'+encodeURIComponent(reportTarget.id),{method:'PATCH',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({last_report_sent_at:sentAt})});
-      await request('/rest/v1/client_reports',{method:'POST',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({client_id:reportTarget.id,month_label:monthLabel,highlights:highlights,summary:summary||null,report_url:reportUrl||null,sent_at:sentAt})});
+      await request('/rest/v1/client_reports',{method:'POST',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({client_id:reportTarget.id,month_label:monthLabel,highlights:historyPayload,summary:summary||null,report_url:reportUrl||null,sent_at:sentAt})});
       var c=clients.find(function(item){return item.id===reportTarget.id;});if(c)c.last_report_sent_at=sentAt;
       renderClients();
       reportDialog.close();
@@ -159,7 +183,6 @@
 
   reportForm.addEventListener('submit',sendReport);
   reportCancel.addEventListener('click',function(){reportDialog.close();});
-  reportPrefillBtn.addEventListener('click',prefillFromLastMonth);
 
   clientEditForm.addEventListener('submit',saveClientEdits);
   clientDialogClose.addEventListener('click',function(){clientDialog.close();});

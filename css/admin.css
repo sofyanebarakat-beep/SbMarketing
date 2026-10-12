@@ -116,10 +116,12 @@ tbody tr:hover td{background:#fafbfc}
 .report-dialog form{display:grid;gap:14px;padding:28px}
 .report-dialog h2{margin:0;font-size:22px;color:var(--navy)}
 .report-dialog__client{margin:0;color:var(--gold-soft);font-weight:800;font-size:14px}
-.field-hint-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.field-hint{margin:0;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.06em}
-.field-hint-row .link-button{font-size:12px;font-weight:700}
-.highlight-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.field-hint{margin:0;color:var(--navy);font-size:12px;text-transform:uppercase;letter-spacing:.06em;font-weight:800}
+.field-note{margin:-6px 0 0;color:var(--muted);font-size:12px;line-height:1.5}
+.metric-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.metric-grid--single{grid-template-columns:1fr}
+.metric-grid label{position:relative}
+.field-previous{display:block;margin-top:5px;font-size:11px;font-weight:600;color:var(--muted)}
 .report-dialog textarea{width:100%;border:1px solid var(--border);border-radius:10px;background:#fff;color:var(--text);padding:12px 14px;font:inherit;resize:vertical}
 .report-dialog label small{color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0}
 .report-dialog .form-actions{display:flex;gap:10px}
@@ -160,7 +162,7 @@ tbody tr:hover td{background:#fafbfc}
   .login-card{padding:26px;margin:6vh auto}
   .admin-header{align-items:flex-start;flex-direction:column}
   .stats{grid-template-columns:repeat(2,1fr)}
-  .toolbar,.toolbar--clients,.field-grid,.highlight-grid{grid-template-columns:1fr}
+  .toolbar,.toolbar--clients,.field-grid,.metric-grid{grid-template-columns:1fr}
   .header-actions{width:100%}
   .header-actions button{flex:1}
   .client-dialog__inner{padding:20px}

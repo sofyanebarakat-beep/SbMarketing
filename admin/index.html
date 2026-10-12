@@ -96,18 +96,20 @@
       <h2>Send monthly report</h2>
       <p class="report-dialog__client" data-report-client></p>
       <label>Month<input name="month_label" required placeholder="October 2026"></label>
-      <div class="field-hint-row">
-        <p class="field-hint">Highlights (fill in what applies — at least one)</p>
-        <button type="button" class="link-button" data-report-prefill hidden>Load last month's labels</button>
+
+      <p class="field-hint">Website traffic</p>
+      <div class="metric-grid metric-grid--single">
+        <label>Visits this month<input name="website_visits" inputmode="numeric" data-metric-field="website_visits" placeholder="e.g. 842"><span class="field-previous" data-previous="website_visits"></span></label>
       </div>
-      <div class="highlight-grid">
-        <label>Label<input name="h1_label" placeholder="New leads"></label>
-        <label>Value<input name="h1_value" placeholder="24"></label>
-        <label>Label<input name="h2_label" placeholder="Website visits"></label>
-        <label>Value<input name="h2_value" placeholder="1 840"></label>
-        <label>Label<input name="h3_label" placeholder="Ad spend ROAS"></label>
-        <label>Value<input name="h3_value" placeholder="4.2x"></label>
+
+      <p class="field-hint">Google Search performance</p>
+      <div class="metric-grid">
+        <label>Impressions<input name="google_impressions" inputmode="numeric" data-metric-field="google_impressions" placeholder="e.g. 12 400"><span class="field-previous" data-previous="google_impressions"></span></label>
+        <label>Clicks<input name="google_clicks" inputmode="numeric" data-metric-field="google_clicks" placeholder="e.g. 210"><span class="field-previous" data-previous="google_clicks"></span></label>
+        <label>Avg. position<input name="google_avg_position" inputmode="decimal" data-metric-field="google_avg_position" placeholder="e.g. 8.4"><span class="field-previous" data-previous="google_avg_position"></span></label>
       </div>
+      <p class="field-note">Fill in what you have for this client — at least one field. Last month's numbers show under each field when available, and the email will show the trend automatically.</p>
+
       <label>Summary <small>(optional)</small><textarea name="summary" rows="3" placeholder="A short paragraph of context for this month"></textarea></label>
       <label>Report link <small>(optional)</small><input name="report_url" type="url" placeholder="https://..."></label>
       <div class="form-actions">

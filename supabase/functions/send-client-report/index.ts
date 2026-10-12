@@ -2,9 +2,10 @@
 // Deployed as a standard Supabase Edge Function (verify_jwt: true), so only
 // a signed-in admin session (the same JWT the /admin/ dashboard already
 // holds) can call it. It only sends the email — the caller (admin.js) is
-// responsible for patching clients.last_report_sent_at afterwards using its
-// own authenticated session, so this function never needs elevated access.
-import { renderClientReportEmail, type ReportHighlight } from "../_shared/email-template.ts";
+// responsible for logging the sent report and patching
+// clients.last_report_sent_at afterwards using its own authenticated
+// session, so this function never needs elevated access.
+import { renderClientReportEmail, type Metric } from "../_shared/email-template.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -24,7 +25,10 @@ interface RequestBody {
   contact_name?: string;
   language?: "fr" | "en";
   month_label: string;
-  highlights: ReportHighlight[];
+  website_visits?: Metric;
+  google_impressions?: Metric;
+  google_clicks?: Metric;
+  google_avg_position?: Metric;
   summary?: string;
   report_url?: string;
 }
@@ -43,14 +47,22 @@ Deno.serve(async (req) => {
       contact_name,
       language = "fr",
       month_label,
-      highlights,
+      website_visits,
+      google_impressions,
+      google_clicks,
+      google_avg_position,
       summary,
       report_url,
     } = body || ({} as RequestBody);
 
-    if (!to || !business_name || !month_label || !Array.isArray(highlights) || highlights.length === 0) {
+    const hasAnyMetric = [website_visits, google_impressions, google_clicks, google_avg_position].some(
+      (m) => m?.value
+    );
+    if (!to || !business_name || !month_label || !hasAnyMetric) {
       return new Response(
-        JSON.stringify({ error: "Missing to, business_name, month_label or highlights" }),
+        JSON.stringify({
+          error: "Missing to, business_name, month_label, or at least one metric (visits / impressions / clicks / position)",
+        }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
@@ -60,7 +72,10 @@ Deno.serve(async (req) => {
       contactName: contact_name,
       language,
       monthLabel: month_label,
-      highlights,
+      websiteVisits: website_visits,
+      googleImpressions: google_impressions,
+      googleClicks: google_clicks,
+      googleAvgPosition: google_avg_position,
       summary,
       reportUrl: report_url,
     });
