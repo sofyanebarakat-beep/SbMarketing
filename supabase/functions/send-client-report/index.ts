@@ -97,7 +97,7 @@ Deno.serve(async (req) => {
       const groups = body.groups || [];
       const hasAnyMetric = groups.some((g) => g.metrics?.some((m) => m.metric?.value));
       const hasAnyCustom = (body.custom_metrics || []).some((m) => m.label?.trim() && m.value?.trim());
-      if (!body.month_label || (!hasAnyMetric && !hasAnyCustom)) {
+      if (!body.preview && (!body.month_label || (!hasAnyMetric && !hasAnyCustom))) {
         return new Response(
           JSON.stringify({ error: "Report emails need month_label and at least one metric" }),
           { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
@@ -117,7 +117,7 @@ Deno.serve(async (req) => {
         extras: body.extras,
       });
     } else if (type === "tip") {
-      if (!body.headline || !body.body) {
+      if (!body.preview && (!body.headline || !body.body)) {
         return new Response(JSON.stringify({ error: "Tip emails need headline and body" }), {
           status: 400,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -127,8 +127,8 @@ Deno.serve(async (req) => {
         businessName: business_name,
         contactName: contact_name,
         language,
-        headline: body.headline,
-        body: body.body,
+        headline: body.headline || "",
+        body: body.body || "",
         ctaLabel: body.cta_label,
         ctaUrl: body.cta_url,
         branding,
@@ -137,7 +137,7 @@ Deno.serve(async (req) => {
         extras: body.extras,
       });
     } else {
-      if (!body.subject || !body.body) {
+      if (!body.preview && (!body.subject || !body.body)) {
         return new Response(JSON.stringify({ error: "Custom emails need subject and body" }), {
           status: 400,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -147,8 +147,8 @@ Deno.serve(async (req) => {
         businessName: business_name,
         contactName: contact_name,
         language,
-        subject: body.subject,
-        body: body.body,
+        subject: body.subject || "",
+        body: body.body || "",
         ctaLabel: body.cta_label,
         ctaUrl: body.cta_url,
         branding,

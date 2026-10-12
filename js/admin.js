@@ -596,7 +596,6 @@
   }
   async function previewSend(){
     var payload=buildSendPayload();
-    if(!payload._hasAny){message(sendMessage,'Fill in the content first.');return;}
     message(sendMessage,'Loading preview…');
     try{var result=await invokeFunction('send-client-report',Object.assign({},payload,{preview:true}));previewFrame.srcdoc=result.html;previewPane.hidden=false;message(sendMessage,'');}catch(error){message(sendMessage,error.message);}
   }

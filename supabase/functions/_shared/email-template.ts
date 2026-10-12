@@ -606,8 +606,10 @@ export function renderReportEmail(input: ReportEmailInput): { subject: string; h
   const lang = input.language === "en" ? "en" : "fr";
   const t = REPORT_COPY[lang];
   const greetName = input.contactName?.trim() || input.businessName;
-  const subject =
-    lang === "en" ? `${input.businessName} — ${input.monthLabel} report` : `${input.businessName} — Rapport ${input.monthLabel}`;
+  // Preview calls can arrive with no month set yet — fall back to
+  // something readable rather than letting "undefined" show up.
+  const monthLabel = input.monthLabel || (lang === "en" ? "this month" : "ce mois-ci");
+  const subject = lang === "en" ? `${input.businessName} — ${monthLabel} report` : `${input.businessName} — Rapport ${monthLabel}`;
 
   const tldrLabel = lang === "en" ? "TL;DR" : "En bref";
   const summaryHtml = input.summary
@@ -624,7 +626,7 @@ export function renderReportEmail(input: ReportEmailInput): { subject: string; h
 
   const bodyHtml = `
     <h1 style="margin:0 0 16px;font-size:22px;color:#111c2b;">${escapeHtml(t.greeting(greetName))}</h1>
-    <p style="font-size:15px;line-height:1.65;color:#374151;margin:0 0 20px;">${t.intro(input.monthLabel, input.businessName)}</p>
+    <p style="font-size:15px;line-height:1.65;color:#374151;margin:0 0 20px;">${t.intro(monthLabel, input.businessName)}</p>
     ${summaryHtml}
     ${groupsHtml}
     ${customHtml}
@@ -633,7 +635,7 @@ export function renderReportEmail(input: ReportEmailInput): { subject: string; h
 
   const html = renderShell({
     lang,
-    eyebrow: `${SHELL_COPY[lang].reportEyebrow} · ${input.monthLabel}`,
+    eyebrow: `${SHELL_COPY[lang].reportEyebrow} · ${monthLabel}`,
     preheader: subject,
     bodyHtml,
     branding: input.branding,
