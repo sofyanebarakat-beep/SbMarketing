@@ -10,7 +10,10 @@
   var clientHistoryList=document.querySelector('[data-client-history-list]'),clientHistoryMessage=document.querySelector('[data-client-history-message]'),clientHistoryEmpty=document.querySelector('[data-client-history-empty]');
   var settingsForm=document.querySelector('[data-settings-form]'),settingsMessage=document.querySelector('[data-settings-message]');
   var bulkToggle=document.querySelector('[data-bulk-tip-toggle]'),bulkDialog=document.querySelector('[data-bulk-dialog]'),bulkForm=document.querySelector('[data-bulk-form]'),bulkList=document.querySelector('[data-bulk-client-list]'),bulkActivityFilter=document.querySelector('[data-bulk-activity-filter]'),bulkMessage=document.querySelector('[data-bulk-message]'),bulkCancel=document.querySelector('[data-bulk-cancel]');
-  var sendTarget=null,lastMonthMetrics=null,dialogTarget=null;
+  var templateSelect=document.querySelector('[data-template-select]'),templateSaveBtn=document.querySelector('[data-template-save]');
+  var previewMobileToggle=document.querySelector('[data-preview-mobile-toggle]');
+  var assetPicker=document.querySelector('[data-asset-picker]'),assetPickerGrid=document.querySelector('[data-asset-picker-grid]'),assetPickerMessage=document.querySelector('[data-asset-picker-message]'),assetUploadInput=document.querySelector('[data-asset-upload-input]');
+  var sendTarget=null,lastMonthMetrics=null,dialogTarget=null,templates=[],templatesLoaded=false,assetLibrary=null,assetPickerTarget=null;
   // The full metric catalog, grouped the way both the client "which
   // metrics do they track" checklist and the report email organise them.
   // A client's clients.tracked_metrics is just an array of keys from here.
@@ -117,8 +120,72 @@
 
   // ── Settings (brand chrome used by the email templates) ───────
   async function loadSettings(){try{var rows=await request('/rest/v1/app_settings?id=eq.default&select=*&limit=1');appSettings=(rows&&rows[0])||null;if(appSettings&&settingsForm){Object.keys(appSettings).forEach(function(key){var field=settingsForm.elements[key];if(field)field.value=appSettings[key]||'';});}}catch(error){message(settingsMessage,error.message.indexOf('app_settings')>-1?'Database setup required. Re-run supabase/clients_schema.sql in the Supabase SQL Editor.':error.message);}}
-  async function saveSettings(event){event.preventDefault();var button=settingsForm.querySelector('button[type="submit"]'),data=new FormData(settingsForm),payload={};['company_name','logo_url','logo_part1','logo_part2','footer_tagline_fr','footer_tagline_en','website_url','reply_to_email','instagram_url','facebook_url'].forEach(function(key){payload[key]=String(data.get(key)||'').trim()||null;});button.disabled=true;message(settingsMessage,'Saving…');try{await request('/rest/v1/app_settings?id=eq.default',{method:'PATCH',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(payload)});appSettings=Object.assign({},appSettings,payload);message(settingsMessage,'Saved.');}catch(error){message(settingsMessage,error.message);}finally{button.disabled=false;}}
-  function brandingPayload(){if(!appSettings)return undefined;return{companyName:appSettings.company_name||undefined,logoUrl:appSettings.logo_url||undefined,logoPart1:appSettings.logo_part1||undefined,logoPart2:appSettings.logo_part2||undefined,footerTaglineFr:appSettings.footer_tagline_fr||undefined,footerTaglineEn:appSettings.footer_tagline_en||undefined,websiteUrl:appSettings.website_url||undefined,instagramUrl:appSettings.instagram_url||undefined,facebookUrl:appSettings.facebook_url||undefined};}
+  // Columns added by the latest supabase/clients_schema.sql (phone,
+  // whatsapp_number, rendered_html…) may not exist yet on a database that
+  // hasn't been migrated — PostgREST then rejects the whole request with a
+  // "column ... does not exist" error. Rather than let that break saving
+  // everything else, retry once without the newer fields.
+  async function patchWithColumnFallback(path,payload,dropKeys){
+    try{await request(path,{method:'PATCH',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(payload)});return payload;}
+    catch(error){
+      if(!/column/i.test(error.message))throw error;
+      var fallback=Object.assign({},payload);dropKeys.forEach(function(k){delete fallback[k];});
+      await request(path,{method:'PATCH',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(fallback)});
+      return fallback;
+    }
+  }
+  async function postWithColumnFallback(path,payload,dropKeys){
+    try{await request(path,{method:'POST',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(payload)});return payload;}
+    catch(error){
+      if(!/column/i.test(error.message))throw error;
+      var fallback=Object.assign({},payload);dropKeys.forEach(function(k){delete fallback[k];});
+      await request(path,{method:'POST',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(fallback)});
+      return fallback;
+    }
+  }
+  async function saveSettings(event){event.preventDefault();var button=settingsForm.querySelector('button[type="submit"]'),data=new FormData(settingsForm),payload={};['company_name','logo_url','logo_part1','logo_part2','footer_tagline_fr','footer_tagline_en','website_url','reply_to_email','instagram_url','facebook_url','phone','whatsapp_number'].forEach(function(key){payload[key]=String(data.get(key)||'').trim()||null;});button.disabled=true;message(settingsMessage,'Saving…');try{var saved=await patchWithColumnFallback('/rest/v1/app_settings?id=eq.default',payload,['phone','whatsapp_number']);appSettings=Object.assign({},appSettings,saved);message(settingsMessage,saved===payload?'Saved.':'Saved (phone/WhatsApp need the latest database update first — run supabase/clients_schema.sql).');}catch(error){message(settingsMessage,error.message);}finally{button.disabled=false;}}
+  function brandingPayload(){if(!appSettings)return undefined;return{companyName:appSettings.company_name||undefined,logoUrl:appSettings.logo_url||undefined,logoPart1:appSettings.logo_part1||undefined,logoPart2:appSettings.logo_part2||undefined,footerTaglineFr:appSettings.footer_tagline_fr||undefined,footerTaglineEn:appSettings.footer_tagline_en||undefined,websiteUrl:appSettings.website_url||undefined,instagramUrl:appSettings.instagram_url||undefined,facebookUrl:appSettings.facebook_url||undefined,phone:appSettings.phone||undefined,whatsappNumber:appSettings.whatsapp_number||undefined};}
+
+  // ── Image library (Storage-backed "email-assets" bucket) ───────
+  // Public bucket so the images are reachable from the sent emails; only
+  // the admin's session can upload/list (RLS in clients_schema.sql).
+  function storagePublicUrl(path){return config.url+'/storage/v1/object/public/email-assets/'+path;}
+  async function uploadAsset(file){
+    var session=getSession(),safeName=Date.now()+'-'+file.name.replace(/[^a-zA-Z0-9.\-_]/g,'_');
+    var response=await fetch(config.url+'/storage/v1/object/email-assets/'+encodeURIComponent(safeName),{
+      method:'POST',
+      headers:{apikey:config.key,Authorization:'Bearer '+(session?session.access_token:config.key),'Content-Type':file.type||'application/octet-stream'},
+      body:file
+    });
+    if(!response.ok){var details=await response.json().catch(function(){return{};});throw new Error(details.message||'Upload failed');}
+    return{path:safeName,url:storagePublicUrl(safeName)};
+  }
+  async function listAssets(){
+    var session=getSession();
+    var response=await fetch(config.url+'/storage/v1/object/list/email-assets',{
+      method:'POST',
+      headers:{apikey:config.key,Authorization:'Bearer '+(session?session.access_token:config.key),'Content-Type':'application/json'},
+      body:JSON.stringify({limit:60,sortBy:{column:'created_at',order:'desc'}})
+    });
+    if(!response.ok)return [];
+    var items=await response.json().catch(function(){return [];});
+    return(items||[]).filter(function(i){return i.name&&i.id;}).map(function(i){return{path:i.name,url:storagePublicUrl(i.name)};});
+  }
+  function renderAssetGrid(){
+    assetPickerGrid.innerHTML=(assetLibrary&&assetLibrary.length)
+      ?assetLibrary.map(function(a){return '<button type="button" class="asset-thumb" data-asset-pick="'+escapeHtml(a.url)+'"><img src="'+escapeHtml(a.url)+'" alt="" loading="lazy"></button>';}).join('')
+      :'<p class="muted-note">No uploads yet — add one above.</p>';
+  }
+  async function openAssetPicker(form,targetName){
+    assetPickerTarget={form:form,name:targetName};
+    message(assetPickerMessage,'');
+    assetPicker.showModal();
+    if(!assetLibrary){
+      assetPickerGrid.innerHTML='<p class="muted-note">Loading…</p>';
+      assetLibrary=await listAssets().catch(function(){return [];});
+    }
+    renderAssetGrid();
+  }
 
   // ── Clients: due-status helpers ────────────────────────────────
   // "Due" means no report has gone out yet this calendar month — matches
@@ -404,6 +471,53 @@
     list.appendChild(row);
   }
   function readCustomMetricRows(){return Array.from(sendForm.querySelectorAll('[data-custom-metrics-list] .custom-metric-row')).map(function(row){return{label:row.querySelector('.custom-metric-label').value.trim(),value:row.querySelector('.custom-metric-value').value.trim()};}).filter(function(m){return m.label&&m.value;});}
+
+  // ── Rich content extras (banner, image, video, before/after, testimonial, links, PDF) ──
+  function addExtraLinkRow(label,url){
+    var list=sendForm.querySelector('[data-extra-links-list]'),row=document.createElement('div');
+    row.className='custom-metric-row';
+    row.innerHTML='<input type="text" class="extra-link-label" placeholder="Button label (e.g. Book a call)" value="'+escapeHtml(label||'')+'"><input type="url" class="extra-link-url" placeholder="https://..." value="'+escapeHtml(url||'')+'"><button type="button" class="icon-button" data-remove-extra-link aria-label="Remove">✕</button>';
+    list.appendChild(row);
+  }
+  function readExtraLinks(){return Array.from(sendForm.querySelectorAll('[data-extra-links-list] .custom-metric-row')).map(function(row){return{label:row.querySelector('.extra-link-label').value.trim(),url:row.querySelector('.extra-link-url').value.trim()};}).filter(function(l){return l.label&&l.url;});}
+  function readExtras(){
+    var data=new FormData(sendForm),extras={};
+    var bannerUrl=String(data.get('extra_banner_url')||'').trim();
+    if(bannerUrl)extras.bannerUrl=bannerUrl,extras.bannerAlt=String(data.get('extra_banner_alt')||'').trim()||undefined;
+    var imageUrl=String(data.get('extra_image_url')||'').trim();
+    if(imageUrl)extras.image={url:imageUrl,caption:String(data.get('extra_image_caption')||'').trim()||undefined};
+    var videoUrl=String(data.get('extra_video_url')||'').trim(),videoThumb=String(data.get('extra_video_thumb')||'').trim();
+    if(videoUrl&&videoThumb)extras.video={url:videoUrl,thumbnailUrl:videoThumb,caption:String(data.get('extra_video_caption')||'').trim()||undefined};
+    var beforeUrl=String(data.get('extra_before_url')||'').trim(),afterUrl=String(data.get('extra_after_url')||'').trim();
+    if(beforeUrl&&afterUrl)extras.beforeAfter={beforeUrl:beforeUrl,afterUrl:afterUrl,beforeLabel:String(data.get('extra_before_label')||'').trim()||undefined,afterLabel:String(data.get('extra_after_label')||'').trim()||undefined};
+    var quote=String(data.get('extra_testimonial_quote')||'').trim();
+    if(quote)extras.testimonial={quote:quote,author:String(data.get('extra_testimonial_author')||'').trim()||undefined,rating:Number(data.get('extra_testimonial_rating'))||undefined};
+    var links=readExtraLinks();if(links.length)extras.links=links;
+    return Object.keys(extras).length?extras:undefined;
+  }
+  function readAttachment(){
+    var data=new FormData(sendForm),url=String(data.get('attachment_url')||'').trim(),filename=String(data.get('attachment_filename')||'').trim();
+    return(url&&filename)?{url:url,filename:filename}:undefined;
+  }
+
+  // ── Saved email templates ───────────────────────────────────────
+  var TEMPLATE_FIELD_NAMES=['month_label','summary','report_url','headline','tip_body','tip_cta_label','tip_cta_url','subject','custom_body','custom_cta_label','custom_cta_url','extra_banner_url','extra_banner_alt','extra_image_url','extra_image_caption','extra_video_url','extra_video_thumb','extra_video_caption','extra_before_url','extra_after_url','extra_before_label','extra_after_label','extra_testimonial_quote','extra_testimonial_author','extra_testimonial_rating','attachment_url','attachment_filename'];
+  async function loadTemplates(){try{templates=await request('/rest/v1/email_templates?select=*&order=created_at.desc');}catch(error){templates=[];}templatesLoaded=true;templateSelect.innerHTML='<option value="">Start from a template…</option>'+templates.map(function(tpl){return '<option value="'+escapeHtml(tpl.id)+'">'+escapeHtml(tpl.name)+'</option>';}).join('');}
+  function captureTemplatePayload(){
+    var data=new FormData(sendForm),payload={type:sendTypeSelect.value};
+    TEMPLATE_FIELD_NAMES.forEach(function(key){var v=data.get(key);if(v)payload[key]=String(v);});
+    var customMetrics=readCustomMetricRows();if(customMetrics.length)payload.custom_metrics=customMetrics;
+    var links=readExtraLinks();if(links.length)payload.extra_links=links;
+    return payload;
+  }
+  function applyTemplatePayload(payload){
+    sendTypeSelect.value=payload.type||'report';setSendType(sendTypeSelect.value);
+    TEMPLATE_FIELD_NAMES.forEach(function(key){var field=sendForm.elements[key];if(field)field.value=payload[key]||'';});
+    sendForm.querySelector('[data-custom-metrics-list]').innerHTML='';
+    (payload.custom_metrics||[]).forEach(function(m){addCustomMetricRow(m.label,m.value);});
+    sendForm.querySelector('[data-extra-links-list]').innerHTML='';
+    (payload.extra_links||[]).forEach(function(l){addExtraLinkRow(l.label,l.url);});
+  }
   async function openSendDialog(clientId){
     var client=clients.find(function(c){return c.id===clientId;});if(!client)return;
     sendTarget=client;lastMonthMetrics=null;
@@ -412,6 +526,11 @@
     sendTypeSelect.value='report';
     renderReportMetricsFields(client);
     sendForm.querySelector('[data-custom-metrics-list]').innerHTML='';
+    sendForm.querySelector('[data-extra-links-list]').innerHTML='';
+    sendForm.querySelector('.extras-details').open=false;
+    previewPane.classList.remove('is-mobile');
+    templateSelect.value='';
+    if(!templatesLoaded)loadTemplates();
     setSendType('report');
     initShareBlock(sendForm.querySelector('[data-share-banner]'),client.language,client.activity);
     var now=new Date(),defaultMonth=new Intl.DateTimeFormat(client.language==='en'?'en-GB':'fr-FR',{month:'long',year:'numeric'}).format(now);
@@ -432,6 +551,8 @@
     var payload={type:type,to:sendTarget.email,business_name:sendTarget.business_name,contact_name:sendTarget.contact_name,language:sendTarget.language||'fr',client_id:sendTarget.id,branding:brandingPayload()};
     if(appSettings&&appSettings.reply_to_email)payload.reply_to=appSettings.reply_to_email;
     payload.referral=readShare(sendForm.querySelector('[data-share-banner]'),payload.language,sendTarget.activity,sendTarget.business_name);
+    payload.extras=readExtras();
+    payload.attachment=readAttachment();
     if(type==='report'){
       var tracked=(sendTarget.tracked_metrics&&sendTarget.tracked_metrics.length)?sendTarget.tracked_metrics:DEFAULT_TRACKED_METRICS;
       var trackedSet={};tracked.forEach(function(k){trackedSet[k]=true;});
@@ -483,16 +604,19 @@
     event.preventDefault();if(!sendTarget)return;
     var payload=buildSendPayload();
     if(!payload._hasAny){message(sendMessage,sendTypeSelect.value==='report'?'Fill in at least one metric (visits, impressions, clicks or position).':'Fill in the required fields.');return;}
+    var emailId=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():null;
+    if(emailId)payload.extras=Object.assign({},payload.extras,{viewOnlineUrl:'https://www.sbmarketing.fr/view-email/?id='+emailId});
     var type=payload.type,historyPayload=payload._historyPayload;delete payload._hasAny;delete payload._historyPayload;
     var button=sendForm.querySelector('[data-send-submit]');button.disabled=true;message(sendMessage,'Sending…');
     try{
-      await invokeFunction('send-client-report',payload);
+      var result=await invokeFunction('send-client-report',payload);
       var sentAt=new Date().toISOString();
-      var logEntry={client_id:sendTarget.id,type:type,sent_at:sentAt};
+      var logEntry={client_id:sendTarget.id,type:type,sent_at:sentAt,rendered_html:result.html||null};
+      if(emailId)logEntry.id=emailId;
       if(type==='report'){logEntry.subject=(sendTarget.language==='en'?sendTarget.business_name+' — '+payload.month_label+' report':sendTarget.business_name+' — Rapport '+payload.month_label);logEntry.month_label=payload.month_label;logEntry.highlights=historyPayload;logEntry.custom_metrics=(payload.custom_metrics&&payload.custom_metrics.length)?payload.custom_metrics:null;}
       else if(type==='tip'){logEntry.subject=payload.headline;logEntry.headline=payload.headline;logEntry.body=payload.body;logEntry.cta_label=payload.cta_label||null;logEntry.cta_url=payload.cta_url||null;}
       else{logEntry.subject=payload.subject;logEntry.body=payload.body;logEntry.cta_label=payload.cta_label||null;logEntry.cta_url=payload.cta_url||null;}
-      await request('/rest/v1/client_emails',{method:'POST',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(logEntry)});
+      await postWithColumnFallback('/rest/v1/client_emails',logEntry,['rendered_html','id']);
       if(type==='report'){await request('/rest/v1/clients?id=eq.'+encodeURIComponent(sendTarget.id),{method:'PATCH',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({last_report_sent_at:sentAt})});var c=clients.find(function(item){return item.id===sendTarget.id;});if(c)c.last_report_sent_at=sentAt;renderClients();}
       sendDialog.close();
       if(dialogTarget&&dialogTarget.id===sendTarget.id)loadClientHistory(dialogTarget.id);
@@ -585,6 +709,33 @@
   previewClose.addEventListener('click',function(){previewPane.hidden=true;});
   sendForm.querySelector('[data-add-custom-metric]').addEventListener('click',function(){addCustomMetricRow();});
   sendForm.querySelector('[data-custom-metrics-list]').addEventListener('click',function(event){var btn=event.target.closest('[data-remove-custom-metric]');if(btn)btn.closest('.custom-metric-row').remove();});
+  sendForm.querySelector('[data-add-extra-link]').addEventListener('click',function(){addExtraLinkRow();});
+  sendForm.querySelector('[data-extra-links-list]').addEventListener('click',function(event){var btn=event.target.closest('[data-remove-extra-link]');if(btn)btn.closest('.custom-metric-row').remove();});
+  previewMobileToggle.addEventListener('click',function(){previewPane.classList.toggle('is-mobile');});
+
+  templateSelect.addEventListener('change',function(){var tpl=templates.find(function(t){return t.id===templateSelect.value;});if(tpl)applyTemplatePayload(tpl.payload);});
+  templateSaveBtn.addEventListener('click',async function(){
+    var name=prompt('Template name?');if(!name)return;
+    var payload=captureTemplatePayload();
+    templateSaveBtn.disabled=true;
+    try{await request('/rest/v1/email_templates',{method:'POST',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({name:name,type:payload.type,payload:payload})});await loadTemplates();message(sendMessage,'Template saved.');}catch(error){message(sendMessage,error.message);}finally{templateSaveBtn.disabled=false;}
+  });
+
+  document.addEventListener('click',function(event){var pickBtn=event.target.closest('[data-pick-asset]');if(!pickBtn)return;openAssetPicker(pickBtn.closest('form'),pickBtn.dataset.pickAsset);});
+  assetPickerGrid.addEventListener('click',function(event){var btn=event.target.closest('[data-asset-pick]');if(!btn||!assetPickerTarget)return;assetPickerTarget.form.elements[assetPickerTarget.name].value=btn.dataset.assetPick;assetPicker.close();});
+  document.querySelector('[data-asset-picker-close]').addEventListener('click',function(){assetPicker.close();});
+  assetUploadInput.addEventListener('change',async function(){
+    var file=assetUploadInput.files[0];if(!file||!assetPickerTarget)return;
+    message(assetPickerMessage,'Uploading…');
+    try{
+      var asset=await uploadAsset(file);
+      assetLibrary=[{path:asset.path,url:asset.url}].concat(assetLibrary||[]);
+      assetPickerTarget.form.elements[assetPickerTarget.name].value=asset.url;
+      message(assetPickerMessage,'');
+      assetPicker.close();
+    }catch(error){message(assetPickerMessage,error.message);}
+    finally{assetUploadInput.value='';}
+  });
 
   clientEditForm.addEventListener('submit',saveClientEdits);
   clientDialogClose.addEventListener('click',function(){clientDialog.close();});

@@ -235,3 +235,40 @@ tbody tr:hover td{background:#fafbfc}
 .share-banner__status.is-on{color:#178a4a}
 .share-banner__status.is-off{color:var(--muted)}
 .referral-tag{display:block;margin-top:4px;color:#178a4a;font-size:12px;font-weight:700}
+
+/* ── Saved templates row (send dialog) ──────────────────────── */
+.template-row{display:flex;gap:10px}
+.template-row select{flex:1}
+.template-row button{white-space:nowrap}
+
+/* ── Rich content extras (banner, image, video, before/after, testimonial, links, PDF) ── */
+.extras-details{border:1px solid var(--border);border-radius:12px;padding:4px 16px;background:#fafbfc}
+.extras-details summary{cursor:pointer;padding:12px 0;font-weight:800;font-size:13px;color:var(--navy);list-style:none}
+.extras-details summary::-webkit-details-marker{display:none}
+.extras-details summary::before{content:'';}
+.extras-grid{display:grid;gap:16px;padding-bottom:16px}
+.extras-grid fieldset{border:1px solid var(--border);border-radius:10px;padding:14px;display:grid;gap:10px;background:#fff}
+.extras-grid legend{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--navy-soft);padding:0 4px}
+.url-field-row{display:flex;gap:8px}
+.url-field-row input{flex:1;min-width:0}
+
+/* ── Mobile preview toggle ───────────────────────────────────── */
+.preview-pane__actions{display:flex;gap:6px}
+.preview-pane.is-mobile iframe{width:375px;height:640px;margin:0 auto}
+
+/* ── Image library picker ───────────────────────────────────── */
+.asset-picker{border:1px solid var(--border);border-radius:20px;background:#fff;color:var(--text);padding:0;width:min(100%,560px);max-height:88vh}
+.asset-picker[open]{display:grid;gap:14px;padding:24px}
+.asset-picker::backdrop{background:rgba(4,16,33,.45)}
+.asset-picker__head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.asset-picker__head h3{margin:0;font-size:17px;color:var(--navy)}
+.asset-picker__upload{display:inline-flex;align-items:center;justify-content:center;width:fit-content;cursor:pointer}
+.asset-picker__grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:10px;max-height:320px;overflow:auto}
+.asset-thumb{border:1px solid var(--border);border-radius:10px;padding:0;overflow:hidden;cursor:pointer;background:#fafbfc;aspect-ratio:1;display:block}
+.asset-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.asset-thumb:hover{border-color:var(--gold-soft)}
+
+@media(max-width:760px){
+  .extras-grid{grid-template-columns:1fr}
+  .template-row{flex-direction:column}
+}

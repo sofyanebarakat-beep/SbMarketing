@@ -132,6 +132,8 @@
               <label>Tagline (English)<input name="footer_tagline_en" placeholder="Digital marketing agency in Nice, French Riviera"></label>
               <label>Instagram URL <small>(optional)</small><input name="instagram_url" type="url" placeholder="https://instagram.com/..."></label>
               <label>Facebook URL <small>(optional)</small><input name="facebook_url" type="url" placeholder="https://facebook.com/..."></label>
+              <label>Phone <small>(shown in email footer, optional)</small><input name="phone" type="tel" placeholder="+33 4 00 00 00 00"></label>
+              <label>WhatsApp number <small>(shown in email footer, optional)</small><input name="whatsapp_number" type="tel" placeholder="+33600000000"></label>
             </div>
             <h2 class="settings-section-title">Sending</h2>
             <div class="field-grid">
@@ -162,6 +164,11 @@
         </select>
       </div>
       <p class="send-dialog__client" data-send-client></p>
+
+      <div class="template-row">
+        <select data-template-select aria-label="Load a saved template"><option value="">Start from a template…</option></select>
+        <button type="button" class="secondary" data-template-save>💾 Save as template</button>
+      </div>
 
       <div data-send-group="report">
         <label>Month<input name="month_label" placeholder="October 2026"></label>
@@ -197,6 +204,55 @@
         </div>
       </div>
 
+      <details class="extras-details">
+        <summary>+ Add banner, images, video, links &amp; more</summary>
+        <div class="extras-grid">
+          <fieldset>
+            <legend>Hero banner</legend>
+            <label>Image URL <small>(optional)</small><span class="url-field-row"><input name="extra_banner_url" type="url" placeholder="https://..."><button type="button" class="icon-button" data-pick-asset="extra_banner_url" aria-label="Choose image">🖼</button></span></label>
+            <label>Alt text <small>(optional)</small><input name="extra_banner_alt" placeholder="Describe the image"></label>
+          </fieldset>
+          <fieldset>
+            <legend>Inline image</legend>
+            <label>Image URL <small>(optional)</small><span class="url-field-row"><input name="extra_image_url" type="url" placeholder="https://..."><button type="button" class="icon-button" data-pick-asset="extra_image_url" aria-label="Choose image">🖼</button></span></label>
+            <label>Caption <small>(optional)</small><input name="extra_image_caption" placeholder="New homepage design"></label>
+          </fieldset>
+          <fieldset>
+            <legend>Video</legend>
+            <label>Video link <small>(optional)</small><input name="extra_video_url" type="url" placeholder="https://youtube.com/..."></label>
+            <label>Thumbnail URL <small>(optional)</small><span class="url-field-row"><input name="extra_video_thumb" type="url" placeholder="https://..."><button type="button" class="icon-button" data-pick-asset="extra_video_thumb" aria-label="Choose image">🖼</button></span></label>
+            <label>Caption <small>(optional)</small><input name="extra_video_caption" placeholder="See the walkthrough"></label>
+          </fieldset>
+          <fieldset>
+            <legend>Before / after</legend>
+            <div class="field-grid">
+              <label>Before image <small>(optional)</small><span class="url-field-row"><input name="extra_before_url" type="url" placeholder="https://..."><button type="button" class="icon-button" data-pick-asset="extra_before_url" aria-label="Choose image">🖼</button></span></label>
+              <label>After image <small>(optional)</small><span class="url-field-row"><input name="extra_after_url" type="url" placeholder="https://..."><button type="button" class="icon-button" data-pick-asset="extra_after_url" aria-label="Choose image">🖼</button></span></label>
+              <label>Before label <small>(optional)</small><input name="extra_before_label" placeholder="Before"></label>
+              <label>After label <small>(optional)</small><input name="extra_after_label" placeholder="After"></label>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>Testimonial</legend>
+            <label>Quote <small>(optional)</small><textarea name="extra_testimonial_quote" rows="2" placeholder="Great results, highly recommend!"></textarea></label>
+            <div class="field-grid">
+              <label>Author <small>(optional)</small><input name="extra_testimonial_author" placeholder="Jean D."></label>
+              <label>Rating <small>(optional)</small><select name="extra_testimonial_rating"><option value="">No stars</option><option value="5">★★★★★</option><option value="4">★★★★☆</option><option value="3">★★★☆☆</option><option value="2">★★☆☆☆</option><option value="1">★☆☆☆☆</option></select></label>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>Buttons / links</legend>
+            <div data-extra-links-list></div>
+            <button type="button" class="link-button" data-add-extra-link>+ Add button</button>
+          </fieldset>
+          <fieldset>
+            <legend>PDF attachment</legend>
+            <label>File <small>(optional)</small><span class="url-field-row"><input name="attachment_url" type="url" placeholder="https://..."><button type="button" class="icon-button" data-pick-asset="attachment_url" aria-label="Choose file">📎</button></span></label>
+            <label>Filename shown to recipient <small>(optional)</small><input name="attachment_filename" placeholder="rapport-octobre.pdf"></label>
+          </fieldset>
+        </div>
+      </details>
+
       <div class="share-banner" data-share-banner data-single="1">
         <div class="share-banner__head">
           <p class="field-hint">🤝 “Recommend us on WhatsApp” banner</p>
@@ -214,7 +270,13 @@
         </div>
       </div>
       <div class="preview-pane" data-preview-pane hidden>
-        <div class="preview-pane__head"><span>Preview</span><button type="button" class="icon-button" data-preview-close aria-label="Close preview">✕</button></div>
+        <div class="preview-pane__head">
+          <span>Preview</span>
+          <div class="preview-pane__actions">
+            <button type="button" class="icon-button" data-preview-mobile-toggle aria-label="Toggle mobile width">📱</button>
+            <button type="button" class="icon-button" data-preview-close aria-label="Close preview">✕</button>
+          </div>
+        </div>
         <iframe data-preview-frame title="Email preview"></iframe>
       </div>
 
@@ -305,6 +367,17 @@
         <p class="muted-note" data-client-history-empty hidden>No emails sent yet.</p>
       </div>
     </div>
+  </dialog>
+
+  <!-- Image library (Storage-backed) ──────────────────────────────── -->
+  <dialog class="asset-picker" data-asset-picker>
+    <div class="asset-picker__head">
+      <h3>Choose an image or file</h3>
+      <button type="button" class="icon-button" data-asset-picker-close aria-label="Close">✕</button>
+    </div>
+    <label class="secondary asset-picker__upload">⬆ Upload new<input type="file" accept="image/*,application/pdf" data-asset-upload-input hidden></label>
+    <p class="form-message" data-asset-picker-message aria-live="polite"></p>
+    <div class="asset-picker__grid" data-asset-picker-grid></div>
   </dialog>
 
   <script src="/js/supabase-config.js"></script>
