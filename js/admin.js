@@ -3,10 +3,12 @@
   var config=window.SB_SUPABASE,sessionKey='sb_admin_session',leads=[],clients=[];
   var loginView=document.querySelector('[data-login-view]'),dashboard=document.querySelector('[data-dashboard]'),loginForm=document.querySelector('[data-login-form]'),loginMessage=document.querySelector('[data-login-message]'),dashboardMessage=document.querySelector('[data-dashboard-message]'),tbody=document.querySelector('[data-leads-body]'),empty=document.querySelector('[data-empty]'),search=document.querySelector('[data-search]'),filter=document.querySelector('[data-status-filter]');
   var viewTitle=document.querySelector('[data-view-title]'),tabs=document.querySelectorAll('[data-tab]'),views={leads:document.querySelector('[data-view="leads"]'),clients:document.querySelector('[data-view="clients"]')};
-  var clientsBody=document.querySelector('[data-clients-body]'),clientsEmpty=document.querySelector('[data-clients-empty]'),clientsMessage=document.querySelector('[data-clients-message]'),clientSearch=document.querySelector('[data-client-search]');
+  var clientsBody=document.querySelector('[data-clients-body]'),clientsEmpty=document.querySelector('[data-clients-empty]'),clientsMessage=document.querySelector('[data-clients-message]'),clientSearch=document.querySelector('[data-client-search]'),clientDueFilter=document.querySelector('[data-client-due-filter]');
   var addClientToggle=document.querySelector('[data-add-client-toggle]'),addClientForm=document.querySelector('[data-add-client-form]'),addClientCancel=document.querySelector('[data-add-client-cancel]'),addClientMessage=document.querySelector('[data-add-client-message]');
-  var reportDialog=document.querySelector('[data-report-dialog]'),reportForm=document.querySelector('[data-report-form]'),reportClientLabel=document.querySelector('[data-report-client]'),reportMessage=document.querySelector('[data-report-message]'),reportCancel=document.querySelector('[data-report-cancel]');
-  var reportTarget=null;
+  var reportDialog=document.querySelector('[data-report-dialog]'),reportForm=document.querySelector('[data-report-form]'),reportClientLabel=document.querySelector('[data-report-client]'),reportMessage=document.querySelector('[data-report-message]'),reportCancel=document.querySelector('[data-report-cancel]'),reportPrefillBtn=document.querySelector('[data-report-prefill]');
+  var clientDialog=document.querySelector('[data-client-dialog]'),clientDialogName=document.querySelector('[data-client-dialog-name]'),clientDialogStatus=document.querySelector('[data-client-dialog-status]'),clientDialogClose=document.querySelector('[data-client-dialog-close]'),clientEditForm=document.querySelector('[data-client-edit-form]'),clientEditMessage=document.querySelector('[data-client-edit-message]'),clientDeleteBtn=document.querySelector('[data-client-delete]'),clientDialogSendReport=document.querySelector('[data-client-send-report]');
+  var clientHistoryList=document.querySelector('[data-client-history-list]'),clientHistoryMessage=document.querySelector('[data-client-history-message]'),clientHistoryEmpty=document.querySelector('[data-client-history-empty]');
+  var reportTarget=null,lastMonthHighlights=null,dialogTarget=null;
 
   function message(element,text){if(element)element.textContent=text||'';}
   function getSession(){try{return JSON.parse(localStorage.getItem(sessionKey)||'null');}catch(error){return null;}}
@@ -27,15 +29,106 @@
   async function updateStatus(id,status,select){select.disabled=true;try{await request('/rest/v1/butcher_leads?id=eq.'+encodeURIComponent(id),{method:'PATCH',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({status:status})});var lead=leads.find(function(item){return item.id===id;});if(lead)lead.status=status;render();}catch(error){message(dashboardMessage,error.message);}finally{select.disabled=false;}}
   function exportCsv(){var fields=['created_at','full_name','butcher_shop','phone','email','city_country','website','has_website','language','status','source_page'],rows=[fields].concat(leads.map(function(lead){return fields.map(function(field){return lead[field]||'';});})),csv=rows.map(function(row){return row.map(function(value){return '"'+String(value).replace(/"/g,'""')+'"';}).join(',');}).join('\n'),blob=new Blob([csv],{type:'text/csv;charset=utf-8'}),link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download='sb-marketing-leads-'+new Date().toISOString().slice(0,10)+'.csv';link.click();URL.revokeObjectURL(link.href);}
 
-  // ── Clients ─────────────────────────────────────────────────
+  // ── Clients: due-status helpers ────────────────────────────────
+  // "Due" means no report has gone out yet this calendar month — matches
+  // the monthly cadence the whole feature is built around, rather than a
+  // rolling 30-day window.
+  function isSentThisMonth(client){if(!client.last_report_sent_at)return false;var d=new Date(client.last_report_sent_at),now=new Date();return d.getFullYear()===now.getFullYear()&&d.getMonth()===now.getMonth();}
+  function isDue(client){return client.status==='active'&&!isSentThisMonth(client);}
+  function dueBadgeHtml(client){if(client.status!=='active')return '<span class="due-badge due-badge--paused">Paused</span>';return isSentThisMonth(client)?'<span class="due-badge due-badge--ok">Sent this month</span>':'<span class="due-badge due-badge--due">Due now</span>';}
+
+  // ── Clients: list ───────────────────────────────────────────────
   async function loadClients(){message(clientsMessage,'Loading clients…');try{clients=await request('/rest/v1/clients?select=*&order=created_at.desc');renderClients();message(clientsMessage,'');}catch(error){message(clientsMessage,error.message.indexOf('clients')>-1?'Database setup required. Run supabase/clients_schema.sql in the Supabase SQL Editor.':error.message);}}
-  function renderClients(){var term=(clientSearch?clientSearch.value:'').trim().toLowerCase(),filtered=clients.filter(function(c){var searchable=[c.business_name,c.contact_name,c.email].join(' ').toLowerCase();return !term||searchable.indexOf(term)>-1;});clientsBody.innerHTML=filtered.map(function(c){var lastSent=c.last_report_sent_at?new Intl.DateTimeFormat('en-GB',{dateStyle:'medium'}).format(new Date(c.last_report_sent_at)):'Never';return'<tr><td><strong>'+escapeHtml(c.business_name)+'</strong>'+(c.notes?'<span class="muted-note">'+escapeHtml(c.notes)+'</span>':'')+'</td><td class="contact"><strong>'+escapeHtml(c.contact_name||'—')+'</strong><a href="mailto:'+escapeHtml(c.email)+'">'+escapeHtml(c.email)+'</a></td><td><span class="lang">'+escapeHtml(c.language)+'</span></td><td><select class="status-select" data-client-status="'+escapeHtml(c.id)+'"><option value="active">Active</option><option value="paused">Paused</option></select></td><td>'+escapeHtml(lastSent)+'</td><td><button type="button" class="secondary" data-send-report="'+escapeHtml(c.id)+'">Send report</button></td></tr>';}).join('');filtered.forEach(function(c,index){clientsBody.querySelectorAll('[data-client-status]')[index].value=c.status||'active';});clientsEmpty.hidden=filtered.length!==0;document.querySelector('[data-client-stat-total]').textContent=clients.length;document.querySelector('[data-client-stat-active]').textContent=clients.filter(function(c){return c.status==='active';}).length;document.querySelector('[data-client-stat-paused]').textContent=clients.filter(function(c){return c.status==='paused';}).length;document.querySelector('[data-client-stat-sent]').textContent=clients.filter(function(c){return c.last_report_sent_at;}).length;}
+  function renderClients(){
+    var term=(clientSearch?clientSearch.value:'').trim().toLowerCase(),due=(clientDueFilter?clientDueFilter.value:'');
+    var filtered=clients.filter(function(c){
+      var searchable=[c.business_name,c.contact_name,c.email].join(' ').toLowerCase();
+      if(term&&searchable.indexOf(term)===-1)return false;
+      if(due==='due')return isDue(c);
+      if(due==='sent')return c.status==='active'&&isSentThisMonth(c);
+      if(due==='paused')return c.status==='paused';
+      return true;
+    });
+    clientsBody.innerHTML=filtered.map(function(c){
+      var lastSent=c.last_report_sent_at?new Intl.DateTimeFormat('en-GB',{dateStyle:'medium'}).format(new Date(c.last_report_sent_at)):'Never';
+      return '<tr>'
+        +'<td><button type="button" class="link-button" data-client-detail="'+escapeHtml(c.id)+'">'+escapeHtml(c.business_name)+'</button>'+(c.notes?'<span class="muted-note">'+escapeHtml(c.notes)+'</span>':'')+'</td>'
+        +'<td class="contact"><strong>'+escapeHtml(c.contact_name||'—')+'</strong><a href="mailto:'+escapeHtml(c.email)+'">'+escapeHtml(c.email)+'</a></td>'
+        +'<td><span class="lang">'+escapeHtml(c.language)+'</span></td>'
+        +'<td><select class="status-select" data-client-status="'+escapeHtml(c.id)+'"><option value="active">Active</option><option value="paused">Paused</option></select></td>'
+        +'<td>'+escapeHtml(lastSent)+'</td>'
+        +'<td>'+dueBadgeHtml(c)+'</td>'
+        +'<td><button type="button" class="secondary" data-send-report="'+escapeHtml(c.id)+'">Send report</button></td>'
+        +'</tr>';
+    }).join('');
+    filtered.forEach(function(c,index){clientsBody.querySelectorAll('[data-client-status]')[index].value=c.status||'active';});
+    clientsEmpty.hidden=filtered.length!==0;
+    document.querySelector('[data-client-stat-total]').textContent=clients.length;
+    document.querySelector('[data-client-stat-active]').textContent=clients.filter(function(c){return c.status==='active';}).length;
+    document.querySelector('[data-client-stat-due]').textContent=clients.filter(isDue).length;
+    document.querySelector('[data-client-stat-sent]').textContent=clients.filter(function(c){return c.last_report_sent_at;}).length;
+  }
   async function updateClientStatus(id,status,select){select.disabled=true;try{await request('/rest/v1/clients?id=eq.'+encodeURIComponent(id),{method:'PATCH',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({status:status})});var c=clients.find(function(item){return item.id===id;});if(c)c.status=status;renderClients();}catch(error){message(clientsMessage,error.message);}finally{select.disabled=false;}}
-  async function addClient(event){event.preventDefault();var button=addClientForm.querySelector('button[type="submit"]'),data=new FormData(addClientForm),payload={business_name:String(data.get('business_name')||'').trim(),contact_name:String(data.get('contact_name')||'').trim()||null,email:String(data.get('email')||'').trim(),language:data.get('language')||'fr',notes:String(data.get('notes')||'').trim()||null};message(addClientMessage,'');button.disabled=true;try{await request('/rest/v1/clients',{method:'POST',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(payload)});addClientForm.reset();addClientForm.hidden=true;await loadClients();}catch(error){message(addClientMessage,error.message);}finally{button.disabled=false;}}
+  async function addClient(event){event.preventDefault();var button=addClientForm.querySelector('[data-add-client-submit]'),data=new FormData(addClientForm),payload={business_name:String(data.get('business_name')||'').trim(),contact_name:String(data.get('contact_name')||'').trim()||null,email:String(data.get('email')||'').trim(),language:data.get('language')||'fr',notes:String(data.get('notes')||'').trim()||null};message(addClientMessage,'');button.disabled=true;try{await request('/rest/v1/clients',{method:'POST',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(payload)});addClientForm.reset();addClientForm.hidden=true;await loadClients();}catch(error){message(addClientMessage,error.message);}finally{button.disabled=false;}}
+
+  // ── Clients: detail dialog (edit, history, delete) ──────────────
+  function renderHistoryList(reports){
+    clientHistoryEmpty.hidden=reports.length!==0;
+    clientHistoryList.innerHTML=reports.map(function(r){
+      var sent=new Intl.DateTimeFormat('en-GB',{dateStyle:'medium'}).format(new Date(r.sent_at));
+      var chips=(r.highlights||[]).map(function(h){return '<span class="history-chip">'+escapeHtml(h.label)+': <strong>'+escapeHtml(h.value)+'</strong></span>';}).join('');
+      var link=r.report_url?'<a href="'+escapeHtml(safeUrl(r.report_url))+'" target="_blank" rel="noopener">Report link ↗</a>':'';
+      return '<li><div class="history-item__head"><strong>'+escapeHtml(r.month_label)+'</strong><span>Sent '+sent+'</span></div>'
+        +(chips?'<div class="history-item__chips">'+chips+'</div>':'')
+        +(r.summary?'<p class="history-item__summary">'+escapeHtml(r.summary)+'</p>':'')
+        +(link?'<p>'+link+'</p>':'')
+        +'</li>';
+    }).join('');
+  }
+  async function loadClientHistory(clientId){message(clientHistoryMessage,'Loading history…');try{var reports=await request('/rest/v1/client_reports?client_id=eq.'+encodeURIComponent(clientId)+'&select=*&order=sent_at.desc');renderHistoryList(reports);message(clientHistoryMessage,'');return reports;}catch(error){message(clientHistoryMessage,error.message);return [];}}
+  function fillClientEditForm(c){var f=clientEditForm;f.elements.business_name.value=c.business_name||'';f.elements.contact_name.value=c.contact_name||'';f.elements.email.value=c.email||'';f.elements.language.value=c.language||'fr';f.elements.status.value=c.status||'active';f.elements.notes.value=c.notes||'';}
+  async function openClientDialog(clientId){var c=clients.find(function(x){return x.id===clientId;});if(!c)return;dialogTarget=c;clientDialogName.textContent=c.business_name;clientDialogStatus.textContent=c.status==='active'?'Active':'Paused';clientDialogStatus.className='status-pill status-pill--'+c.status;fillClientEditForm(c);message(clientEditMessage,'');clientDialog.showModal();await loadClientHistory(c.id);}
+  async function saveClientEdits(event){event.preventDefault();if(!dialogTarget)return;var button=clientEditForm.querySelector('button[type="submit"]'),data=new FormData(clientEditForm),payload={business_name:String(data.get('business_name')||'').trim(),contact_name:String(data.get('contact_name')||'').trim()||null,email:String(data.get('email')||'').trim(),language:data.get('language')||'fr',status:data.get('status')||'active',notes:String(data.get('notes')||'').trim()||null};button.disabled=true;message(clientEditMessage,'Saving…');try{await request('/rest/v1/clients?id=eq.'+encodeURIComponent(dialogTarget.id),{method:'PATCH',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(payload)});Object.assign(dialogTarget,payload);renderClients();clientDialogName.textContent=payload.business_name;clientDialogStatus.textContent=payload.status==='active'?'Active':'Paused';clientDialogStatus.className='status-pill status-pill--'+payload.status;message(clientEditMessage,'Saved.');}catch(error){message(clientEditMessage,error.message);}finally{button.disabled=false;}}
+  async function deleteClient(){if(!dialogTarget)return;if(!confirm('Delete '+dialogTarget.business_name+'? This also removes its report history. This cannot be undone.'))return;clientDeleteBtn.disabled=true;try{await request('/rest/v1/clients?id=eq.'+encodeURIComponent(dialogTarget.id),{method:'DELETE',headers:{Prefer:'return=minimal'}});clients=clients.filter(function(c){return c.id!==dialogTarget.id;});clientDialog.close();renderClients();}catch(error){message(clientEditMessage,error.message);}finally{clientDeleteBtn.disabled=false;}}
 
   // ── Send report dialog ─────────────────────────────────────
-  function openReportDialog(clientId){var client=clients.find(function(c){return c.id===clientId;});if(!client)return;reportTarget=client;reportClientLabel.textContent=client.business_name+' · '+client.email;reportForm.reset();var now=new Date(),defaultMonth=new Intl.DateTimeFormat(client.language==='en'?'en-GB':'fr-FR',{month:'long',year:'numeric'}).format(now);reportForm.elements.month_label.value=defaultMonth.charAt(0).toUpperCase()+defaultMonth.slice(1);message(reportMessage,'');reportDialog.showModal();}
-  async function sendReport(event){event.preventDefault();if(!reportTarget)return;var button=reportForm.querySelector('[data-report-send]'),data=new FormData(reportForm),highlights=[];[1,2,3].forEach(function(i){var label=String(data.get('h'+i+'_label')||'').trim(),value=String(data.get('h'+i+'_value')||'').trim();if(label&&value)highlights.push({label:label,value:value});});if(highlights.length===0){message(reportMessage,'Add at least one highlight (label + value).');return;}var payload={to:reportTarget.email,business_name:reportTarget.business_name,contact_name:reportTarget.contact_name,language:reportTarget.language||'fr',month_label:String(data.get('month_label')||'').trim(),highlights:highlights,summary:String(data.get('summary')||'').trim()||undefined,report_url:String(data.get('report_url')||'').trim()||undefined};button.disabled=true;message(reportMessage,'Sending…');try{await invokeFunction('send-client-report',payload);await request('/rest/v1/clients?id=eq.'+encodeURIComponent(reportTarget.id),{method:'PATCH',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({last_report_sent_at:new Date().toISOString()})});var c=clients.find(function(item){return item.id===reportTarget.id;});if(c)c.last_report_sent_at=new Date().toISOString();renderClients();reportDialog.close();}catch(error){message(reportMessage,error.message.indexOf('RESEND_API_KEY')>-1?'Email sending is not configured yet — set RESEND_API_KEY as an Edge Function secret in Supabase.':error.message);}finally{button.disabled=false;}}
+  async function openReportDialog(clientId){
+    var client=clients.find(function(c){return c.id===clientId;});if(!client)return;
+    reportTarget=client;lastMonthHighlights=null;
+    reportClientLabel.textContent=client.business_name+' · '+client.email;
+    reportForm.reset();
+    var now=new Date(),defaultMonth=new Intl.DateTimeFormat(client.language==='en'?'en-GB':'fr-FR',{month:'long',year:'numeric'}).format(now);
+    reportForm.elements.month_label.value=defaultMonth.charAt(0).toUpperCase()+defaultMonth.slice(1);
+    message(reportMessage,'');
+    reportPrefillBtn.hidden=true;
+    reportDialog.showModal();
+    try{
+      var history=await request('/rest/v1/client_reports?client_id=eq.'+encodeURIComponent(clientId)+'&select=highlights&order=sent_at.desc&limit=1');
+      if(history&&history.length&&history[0].highlights&&history[0].highlights.length){lastMonthHighlights=history[0].highlights;reportPrefillBtn.hidden=false;}
+    }catch(error){/* non-fatal: prefill is a convenience, not required to send */}
+  }
+  function prefillFromLastMonth(){if(!lastMonthHighlights)return;[0,1,2].forEach(function(i){var h=lastMonthHighlights[i];if(!h)return;var labelField=reportForm.elements['h'+(i+1)+'_label'];if(labelField&&!labelField.value)labelField.value=h.label;});}
+  async function sendReport(event){
+    event.preventDefault();if(!reportTarget)return;
+    var button=reportForm.querySelector('[data-report-send]'),data=new FormData(reportForm),highlights=[];
+    [1,2,3].forEach(function(i){var label=String(data.get('h'+i+'_label')||'').trim(),value=String(data.get('h'+i+'_value')||'').trim();if(label&&value)highlights.push({label:label,value:value});});
+    if(highlights.length===0){message(reportMessage,'Add at least one highlight (label + value).');return;}
+    var monthLabel=String(data.get('month_label')||'').trim(),summary=String(data.get('summary')||'').trim()||undefined,reportUrl=String(data.get('report_url')||'').trim()||undefined;
+    var payload={to:reportTarget.email,business_name:reportTarget.business_name,contact_name:reportTarget.contact_name,language:reportTarget.language||'fr',month_label:monthLabel,highlights:highlights,summary:summary,report_url:reportUrl};
+    button.disabled=true;message(reportMessage,'Sending…');
+    try{
+      await invokeFunction('send-client-report',payload);
+      var sentAt=new Date().toISOString();
+      await request('/rest/v1/clients?id=eq.'+encodeURIComponent(reportTarget.id),{method:'PATCH',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({last_report_sent_at:sentAt})});
+      await request('/rest/v1/client_reports',{method:'POST',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({client_id:reportTarget.id,month_label:monthLabel,highlights:highlights,summary:summary||null,report_url:reportUrl||null,sent_at:sentAt})});
+      var c=clients.find(function(item){return item.id===reportTarget.id;});if(c)c.last_report_sent_at=sentAt;
+      renderClients();
+      reportDialog.close();
+      if(dialogTarget&&dialogTarget.id===reportTarget.id)loadClientHistory(dialogTarget.id);
+    }catch(error){
+      message(reportMessage,error.message.indexOf('RESEND_API_KEY')>-1?'Email sending is not configured yet — set RESEND_API_KEY as an Edge Function secret in Supabase.':error.message);
+    }finally{button.disabled=false;}
+  }
 
   // ── Tabs ────────────────────────────────────────────────────
   function switchTab(name){if(!views[name])name='leads';tabs.forEach(function(tab){tab.classList.toggle('is-active',tab.dataset.tab===name);});Object.keys(views).forEach(function(key){views[key].hidden=key!==name;});viewTitle.textContent=name==='clients'?'Clients':'Leads';document.title=(name==='clients'?'Clients':'Leads')+' | SB Marketing Admin';document.querySelector('[data-export]').hidden=name!=='leads';if(name==='clients'&&clients.length===0)loadClients();}
@@ -52,14 +145,26 @@
   document.querySelector('[data-export]').addEventListener('click',exportCsv);
   document.querySelector('[data-logout]').addEventListener('click',function(){setSession(null);leads=[];clients=[];showDashboard(false);loginForm.reset();});
   window.addEventListener('hashchange',applyHash);
+
   clientsBody.addEventListener('change',function(event){var select=event.target.closest('[data-client-status]');if(select)updateClientStatus(select.dataset.clientStatus,select.value,select);});
-  clientsBody.addEventListener('click',function(event){var btn=event.target.closest('[data-send-report]');if(btn)openReportDialog(btn.dataset.sendReport);});
+  clientsBody.addEventListener('click',function(event){
+    var sendBtn=event.target.closest('[data-send-report]');if(sendBtn){openReportDialog(sendBtn.dataset.sendReport);return;}
+    var detailBtn=event.target.closest('[data-client-detail]');if(detailBtn)openClientDialog(detailBtn.dataset.clientDetail);
+  });
   if(clientSearch)clientSearch.addEventListener('input',renderClients);
+  if(clientDueFilter)clientDueFilter.addEventListener('change',renderClients);
   addClientToggle.addEventListener('click',function(){addClientForm.hidden=!addClientForm.hidden;message(addClientMessage,'');});
   addClientCancel.addEventListener('click',function(){addClientForm.hidden=true;addClientForm.reset();});
   addClientForm.addEventListener('submit',addClient);
+
   reportForm.addEventListener('submit',sendReport);
   reportCancel.addEventListener('click',function(){reportDialog.close();});
+  reportPrefillBtn.addEventListener('click',prefillFromLastMonth);
+
+  clientEditForm.addEventListener('submit',saveClientEdits);
+  clientDialogClose.addEventListener('click',function(){clientDialog.close();});
+  clientDeleteBtn.addEventListener('click',deleteClient);
+  clientDialogSendReport.addEventListener('click',function(){if(!dialogTarget)return;var id=dialogTarget.id;clientDialog.close();openReportDialog(id);});
 
   if(!config){message(loginMessage,'Supabase configuration is missing.');return;}var session=getSession();if(session&&session.expires_at*1000>Date.now()){showDashboard(true);loadLeads();applyHash();}else if(session&&session.refresh_token){refreshSession(session.refresh_token).then(function(value){if(value){showDashboard(true);loadLeads();applyHash();}});}else showDashboard(false);
 })();

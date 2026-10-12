@@ -62,11 +62,12 @@
           <div class="stats" aria-label="Client summary">
             <article><span>Total clients</span><strong data-client-stat-total>0</strong></article>
             <article><span>Active</span><strong data-client-stat-active>0</strong></article>
-            <article><span>Paused</span><strong data-client-stat-paused>0</strong></article>
+            <article class="stat-due"><span>Due now</span><strong data-client-stat-due>0</strong></article>
             <article><span>Reports sent</span><strong data-client-stat-sent>0</strong></article>
           </div>
           <div class="toolbar toolbar--clients">
             <label class="search"><span class="sr-only">Search clients</span><input type="search" data-client-search placeholder="Search business, contact, email…"></label>
+            <select data-client-due-filter aria-label="Filter by report status"><option value="">All clients</option><option value="due">Due now</option><option value="sent">Sent this month</option><option value="paused">Paused</option></select>
             <button type="button" data-add-client-toggle>+ Add client</button>
           </div>
 
@@ -78,12 +79,12 @@
               <label>Language<select name="language"><option value="fr">French</option><option value="en">English</option></select></label>
             </div>
             <label>Notes<input name="notes" placeholder="Optional — campaign, package, anything useful"></label>
-            <div class="form-actions"><button type="submit">Save client</button><button type="button" class="secondary" data-add-client-cancel>Cancel</button></div>
+            <div class="form-actions"><button type="submit" data-add-client-submit>Save client</button><button type="button" class="secondary" data-add-client-cancel>Cancel</button></div>
             <p class="form-message" data-add-client-message aria-live="polite"></p>
           </form>
 
           <p class="dashboard-message" data-clients-message aria-live="polite"></p>
-          <div class="table-wrap"><table><thead><tr><th>Business</th><th>Contact</th><th>Language</th><th>Status</th><th>Last report sent</th><th>Actions</th></tr></thead><tbody data-clients-body></tbody></table></div>
+          <div class="table-wrap"><table><thead><tr><th>Business</th><th>Contact</th><th>Language</th><th>Status</th><th>Last report</th><th>Next report</th><th>Actions</th></tr></thead><tbody data-clients-body></tbody></table></div>
           <div class="empty" data-clients-empty hidden><h2>No clients yet</h2><p>Add your first client to start sending monthly reports.</p></div>
         </div>
       </div>
@@ -95,7 +96,10 @@
       <h2>Send monthly report</h2>
       <p class="report-dialog__client" data-report-client></p>
       <label>Month<input name="month_label" required placeholder="October 2026"></label>
-      <p class="field-hint">Highlights (fill in what applies — at least one)</p>
+      <div class="field-hint-row">
+        <p class="field-hint">Highlights (fill in what applies — at least one)</p>
+        <button type="button" class="link-button" data-report-prefill hidden>Load last month's labels</button>
+      </div>
       <div class="highlight-grid">
         <label>Label<input name="h1_label" placeholder="New leads"></label>
         <label>Value<input name="h1_value" placeholder="24"></label>
@@ -112,6 +116,39 @@
       </div>
       <p class="form-message" data-report-message aria-live="polite"></p>
     </form>
+  </dialog>
+
+  <dialog class="client-dialog" data-client-dialog>
+    <div class="client-dialog__inner">
+      <header class="client-dialog__head">
+        <div><h2 data-client-dialog-name>Business name</h2><span class="status-pill" data-client-dialog-status></span></div>
+        <button type="button" class="icon-button" data-client-dialog-close aria-label="Close">✕</button>
+      </header>
+
+      <form data-client-edit-form class="client-dialog__edit">
+        <div class="field-grid">
+          <label>Business name<input name="business_name" required></label>
+          <label>Contact name<input name="contact_name"></label>
+          <label>Email<input name="email" type="email" required></label>
+          <label>Language<select name="language"><option value="fr">French</option><option value="en">English</option></select></label>
+          <label>Status<select name="status"><option value="active">Active</option><option value="paused">Paused</option></select></label>
+        </div>
+        <label>Notes<input name="notes"></label>
+        <div class="form-actions">
+          <button type="submit">Save changes</button>
+          <button type="button" class="secondary" data-client-send-report>Send report</button>
+          <button type="button" class="danger" data-client-delete>Delete client</button>
+        </div>
+        <p class="form-message" data-client-edit-message aria-live="polite"></p>
+      </form>
+
+      <div class="client-dialog__history">
+        <h3>Report history</h3>
+        <p class="dashboard-message" data-client-history-message aria-live="polite"></p>
+        <ul class="history-list" data-client-history-list></ul>
+        <p class="muted-note" data-client-history-empty hidden>No reports sent yet.</p>
+      </div>
+    </div>
   </dialog>
 
   <script src="/js/supabase-config.js"></script>
