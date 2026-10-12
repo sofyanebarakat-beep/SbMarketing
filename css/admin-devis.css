@@ -24,7 +24,7 @@
 .devis-dialog .field-note{margin:-4px 0 0}
 
 /* Service picker + lines */
-.devis-picker{display:grid;grid-template-columns:auto 1fr;gap:10px}
+.devis-picker{display:grid;grid-template-columns:auto auto 1fr;gap:10px}
 .devis-lines{display:grid;gap:10px}
 .devis-lines:empty{display:none}
 .devis-line{border:1px solid var(--border);border-radius:14px;padding:12px;display:grid;gap:8px;background:#fcfcfd}
@@ -60,7 +60,68 @@
 .devis-services-table td:nth-child(6) input{width:auto}
 .devis-services-table tr.is-dirty td{background:#fffaf2}
 
+/* ── v2: sub-tabs, insights, menus, sections/options, invoices ── */
+.devis-subtabs{display:inline-flex;gap:4px;padding:4px;margin-bottom:18px;background:#fff;border:1px solid var(--border);border-radius:12px}
+.devis-subtabs button{background:none;color:var(--muted);padding:9px 16px;border-radius:9px}
+.devis-subtabs button.is-active{background:var(--navy);color:var(--gold)}
+.devis-insights{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:-8px 0 22px}
+.devis-insights article{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px 18px;font-size:13px;color:var(--muted)}
+.devis-insights strong{display:block;font-size:20px;color:var(--navy);margin-top:4px}
+.devis-insights ol{margin:6px 0 0;padding-left:18px;color:var(--text);font-size:13px;line-height:1.6}
+.devis-insights article.is-wide{grid-column:span 2}
+.toolbar--factures{grid-template-columns:minmax(220px,1fr) 180px}
+.devis-pane-note{margin:-4px 0 12px}
+.devis-table{min-width:1100px}
+.devis-chip{display:inline-flex;margin:6px 6px 0 0;border-radius:99px;padding:3px 9px;font-size:11px;font-weight:700;background:#eef2ff;color:#3730a3;white-space:nowrap}
+.devis-chip--ok{background:#e9f9ee;color:#1a7f3c}
+.devis-chip--warn{background:#fff3e0;color:#b45309}
+.devis-chip--no{background:#fef2f2;color:var(--danger)}
+.devis-chip--muted{background:#f0f1f4;color:var(--muted)}
+
+/* Dropdown menus (Export ▾, More ▾) */
+.devis-menu{position:relative;display:inline-block}
+.devis-menu>summary{list-style:none;cursor:pointer;display:inline-flex;align-items:center;border-radius:10px;padding:12px 18px;font-weight:800;white-space:nowrap}
+.devis-row-actions .devis-menu>summary{padding:7px 11px;font-size:12px}
+.devis-menu>summary::-webkit-details-marker{display:none}
+.devis-menu__list{position:absolute;z-index:20;right:0;top:calc(100% + 6px);min-width:230px;display:grid;background:#fff;border:1px solid var(--border);border-radius:12px;box-shadow:0 14px 40px rgba(4,16,33,.14);padding:6px}
+.devis-actions .devis-menu__list{left:0;right:auto;top:auto;bottom:calc(100% + 6px)}
+.devis-menu__list button{background:none;text-align:left;padding:9px 12px;border-radius:8px;font-weight:700;font-size:13px;color:var(--navy)}
+.devis-menu__list button:hover{background:#f5f6f8;filter:none}
+.devis-menu__list button.is-danger{color:var(--danger)}
+.devis-menu__list hr{border:0;border-top:1px solid var(--border);margin:4px 0}
+
+/* Editor lines: sections, flags row */
+.devis-line--section{background:#fbf3d6;border-color:#f2dd9a}
+.devis-line--section .devis-line__main{grid-template-columns:minmax(0,1fr) 32px}
+.devis-line__flags{display:flex;flex-wrap:wrap;align-items:center;gap:6px 18px;font-size:12px}
+.devis-line__flags .checkbox-field{font-size:12px}
+.devis-line__flags input[type=number]{width:72px;padding:6px 8px;font-size:13px}
+.devis-line__flags label.inline{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--text)}
+.devis-line.is-option{border-style:dashed;background:#fffdf5}
+.devis-options{display:grid;gap:10px}
+.devis-inline-number{width:64px!important;padding:6px 8px!important;display:inline-block}
+.devis-template-row{margin-top:-4px}
+
+/* Invoice dialog */
+.devis-dialog--narrow{width:min(100%,560px)}
+.facture-kinds{display:grid;gap:8px}
+.facture-kind{display:flex;gap:12px;align-items:center;border:1px solid var(--border);border-radius:12px;padding:12px 14px;font-weight:600;cursor:pointer}
+.facture-kind input{width:auto}
+.facture-kind strong{margin-left:auto;color:var(--navy);white-space:nowrap}
+.facture-kind.is-disabled{opacity:.5;cursor:not-allowed}
+
+/* Settings */
+.devis-color-row{display:flex;align-items:center;gap:12px}
+.devis-color-row input[type=color]{width:64px;height:44px;padding:4px}
+.devis-check-cell{align-self:end;padding-bottom:12px}
+.devis-upload{display:inline-flex;justify-self:start;cursor:pointer;border-radius:10px;padding:9px 14px;font-weight:800;font-size:13px}
+.devis-upload-icon{display:inline-flex;align-items:center;justify-content:center;cursor:pointer;flex:0 0 auto}
+
 @media (max-width:900px){
+  .devis-insights{grid-template-columns:1fr 1fr}
+  .devis-insights article.is-wide{grid-column:1/-1}
+  .toolbar--factures{grid-template-columns:1fr}
+
   .toolbar--devis,.devis-totals-grid,.devis-picker{grid-template-columns:1fr}
   .devis-line__main{grid-template-columns:1fr 1fr}
   .devis-line__main > label:first-child{grid-column:1/-1}

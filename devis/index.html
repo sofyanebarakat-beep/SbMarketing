@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="referrer" content="no-referrer">
+  <title>Devis | SB Marketing</title>
+  <link rel="icon" href="/images/sb-favicon.png">
+  <link rel="stylesheet" href="/css/devis-public.css">
+</head>
+<body>
+  <header class="dp-top">
+    <a href="/" aria-label="SB Marketing"><img src="/images/sb-marketing-email-logo.png" alt="SB Marketing" width="168" height="37"></a>
+    <a class="dp-top__site" href="/" data-site-link>www.sbmarketing.fr</a>
+  </header>
+
+  <main class="dp">
+    <p class="dp-loading" data-loading>Chargement du devis…</p>
+    <section class="dp-card dp-error" data-error hidden>
+      <h1 data-error-title>Lien invalide</h1>
+      <p data-error-text>Ce lien de devis n’existe pas ou n’est plus valide. Contactez-nous si vous pensez qu’il s’agit d’une erreur.</p>
+      <a class="dp-btn" href="/contact/" data-error-contact>Nous contacter</a>
+    </section>
+
+    <article data-doc hidden>
+      <div class="dp-banner" data-banner hidden></div>
+
+      <section class="dp-card dp-head">
+        <div>
+          <span class="dp-kicker" data-t="quote">Devis</span>
+          <h1 data-number></h1>
+          <p class="dp-title" data-title></p>
+        </div>
+        <dl class="dp-meta" data-meta></dl>
+      </section>
+
+      <section class="dp-card dp-parties">
+        <div><span class="dp-label" data-t="from">Émetteur</span><div data-issuer></div></div>
+        <div><span class="dp-label" data-t="client">Client</span><div data-client></div></div>
+      </section>
+
+      <section class="dp-card">
+        <p class="dp-intro" data-intro hidden></p>
+        <div class="dp-lines" data-lines></div>
+        <p class="dp-note" data-options-note hidden></p>
+        <dl class="dp-totals" data-totals></dl>
+      </section>
+
+      <section class="dp-card dp-conditions" data-conditions hidden></section>
+
+      <section class="dp-card dp-actions">
+        <div class="dp-actions__row">
+          <button type="button" class="dp-btn dp-btn--ghost" data-download="pdf">⬇ <span data-t="downloadPdf">Télécharger le PDF</span></button>
+          <button type="button" class="dp-btn dp-btn--ghost" data-download="png">🖼 <span data-t="downloadImg">Télécharger en image</span></button>
+        </div>
+        <p class="dp-msg" data-download-msg aria-live="polite"></p>
+      </section>
+
+      <section class="dp-card dp-sign" data-sign hidden>
+        <h2 data-t="acceptTitle">Accepter le devis</h2>
+        <p class="dp-muted" data-t="acceptHint">Indiquez votre nom et signez dans le cadre ci-dessous (au doigt ou à la souris).</p>
+        <label class="dp-field"><span data-t="name">Nom et prénom</span><input type="text" autocomplete="name" maxlength="120" data-sign-name></label>
+        <div class="dp-pad">
+          <canvas data-pad aria-label="Signature"></canvas>
+          <span class="dp-pad__hint" data-pad-hint data-t="padHint">Signez ici</span>
+          <button type="button" class="dp-link" data-pad-clear data-t="clear">Effacer</button>
+        </div>
+        <label class="dp-check"><input type="checkbox" data-sign-consent> <span data-consent-text></span></label>
+        <button type="button" class="dp-btn dp-btn--big" data-accept>✅ <span data-t="accept">Accepter et signer</span> · <span data-accept-total></span></button>
+        <p class="dp-msg" data-sign-msg aria-live="polite"></p>
+        <details class="dp-refuse">
+          <summary data-t="refuseToggle">Je ne souhaite pas donner suite</summary>
+          <label class="dp-field"><span data-t="refuseReason">Une raison ? (facultatif)</span><textarea rows="3" maxlength="2000" data-refuse-reason></textarea></label>
+          <button type="button" class="dp-btn dp-btn--ghost" data-refuse data-t="refuse">Refuser le devis</button>
+        </details>
+      </section>
+    </article>
+  </main>
+
+  <footer class="dp-foot" data-footer></footer>
+
+  <script src="/js/supabase-config.js"></script>
+  <script src="/js/devis-core.js"></script>
+  <script src="/js/devis-public.js"></script>
+</body>
+</html>

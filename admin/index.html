@@ -140,22 +140,47 @@
         </div>
 
         <div data-view="devis" hidden>
-          <div class="stats" aria-label="Devis summary">
-            <article><span>Total devis</span><strong data-devis-stat-total>0</strong></article>
-            <article class="stat-due"><span>Awaiting reply</span><strong data-devis-stat-pending>0</strong></article>
-            <article><span>Accepted</span><strong data-devis-stat-accepted>0</strong></article>
-            <article><span>Accepted (HT)</span><strong data-devis-stat-amount>0 €</strong></article>
+          <div class="devis-subtabs" role="tablist">
+            <button type="button" class="is-active" data-devis-subtab="devis" role="tab">🧾 Devis</button>
+            <button type="button" data-devis-subtab="factures" role="tab">💶 Factures</button>
           </div>
-          <div class="toolbar toolbar--devis">
-            <label class="search"><span class="sr-only">Search devis</span><input type="search" data-devis-search placeholder="Search number, client, object…"></label>
-            <select data-devis-status-filter aria-label="Filter by status"><option value="">All statuses</option><option value="draft">Draft</option><option value="sent">Sent</option><option value="accepted">Accepted</option><option value="refused">Refused</option><option value="expired">Expired</option></select>
-            <button type="button" class="secondary" data-devis-services-open>🗂 Services</button>
-            <button type="button" class="secondary" data-devis-settings-open>⚙️ Devis settings</button>
-            <button type="button" data-devis-new>+ New devis</button>
+
+          <div data-devis-pane="devis">
+            <div class="stats" aria-label="Devis summary">
+              <article><span>Total devis</span><strong data-devis-stat-total>0</strong></article>
+              <article class="stat-due"><span>Awaiting reply</span><strong data-devis-stat-pending>0</strong></article>
+              <article><span>Acceptance rate</span><strong data-devis-stat-rate>—</strong></article>
+              <article><span>Signed this month (HT)</span><strong data-devis-stat-month>0 €</strong></article>
+            </div>
+            <div class="devis-insights" data-devis-insights></div>
+            <div class="toolbar toolbar--devis">
+              <label class="search"><span class="sr-only">Search devis</span><input type="search" data-devis-search placeholder="Search number, client, object…"></label>
+              <select data-devis-status-filter aria-label="Filter by status"><option value="">All statuses</option><option value="draft">Draft</option><option value="sent">Sent</option><option value="viewed">Opened, not answered</option><option value="accepted">Accepted</option><option value="refused">Refused</option><option value="expired">Expired</option><option value="superseded">Replaced (old versions)</option></select>
+              <button type="button" class="secondary" data-devis-services-open>🗂 Services</button>
+              <button type="button" class="secondary" data-devis-settings-open>⚙️ Settings</button>
+              <button type="button" data-devis-new>+ New devis</button>
+            </div>
+            <p class="dashboard-message" data-devis-message aria-live="polite"></p>
+            <div class="table-wrap"><table class="devis-table"><thead><tr><th>Number</th><th>Date</th><th>Client</th><th>Object</th><th>Total TTC</th><th>Status</th><th>Actions</th></tr></thead><tbody data-devis-body></tbody></table></div>
+            <div class="empty" data-devis-empty hidden><h2>No devis yet</h2><p>Create your first quote — the client gets it by email and can sign it online.</p></div>
           </div>
-          <p class="dashboard-message" data-devis-message aria-live="polite"></p>
-          <div class="table-wrap"><table><thead><tr><th>Number</th><th>Date</th><th>Client</th><th>Object</th><th>Total TTC</th><th>Status</th><th>Actions</th></tr></thead><tbody data-devis-body></tbody></table></div>
-          <div class="empty" data-devis-empty hidden><h2>No devis yet</h2><p>Create your first quote — it's emailed to the client as a PDF.</p></div>
+
+          <div data-devis-pane="factures" hidden>
+            <div class="stats" aria-label="Invoice summary">
+              <article class="stat-due"><span>To collect (TTC)</span><strong data-facture-stat-due>0 €</strong></article>
+              <article><span>Overdue</span><strong data-facture-stat-overdue>0</strong></article>
+              <article><span>Paid this month</span><strong data-facture-stat-paid>0 €</strong></article>
+              <article><span>Invoiced this year (TTC)</span><strong data-facture-stat-year>0 €</strong></article>
+            </div>
+            <div class="toolbar toolbar--factures">
+              <label class="search"><span class="sr-only">Search invoices</span><input type="search" data-facture-search placeholder="Search number, client, devis…"></label>
+              <select data-facture-status-filter aria-label="Filter by status"><option value="">All statuses</option><option value="unpaid">Unpaid</option><option value="overdue">Overdue</option><option value="paid">Paid</option><option value="cancelled">Cancelled</option></select>
+            </div>
+            <p class="field-note devis-pane-note">Invoices are created from an accepted devis (“More ▾ → Create invoice”). They can be cancelled but never deleted, so the numbering stays continuous as French law requires.</p>
+            <p class="dashboard-message" data-facture-message aria-live="polite"></p>
+            <div class="table-wrap"><table class="devis-table"><thead><tr><th>Number</th><th>Date</th><th>Client</th><th>Type</th><th>Amount</th><th>Due</th><th>Status</th><th>Actions</th></tr></thead><tbody data-facture-body></tbody></table></div>
+            <div class="empty" data-facture-empty hidden><h2>No invoices yet</h2><p>Accept a devis, then create its deposit or full invoice in one click.</p></div>
+          </div>
         </div>
 
         <div data-view="settings" hidden>
@@ -416,13 +441,19 @@
         <button type="button" class="icon-button" data-devis-close aria-label="Close">✕</button>
       </div>
 
+      <div class="template-row devis-template-row">
+        <span class="template-row__label">Template</span>
+        <select data-devis-template aria-label="Start from a saved template"><option value="">Start from scratch…</option></select>
+        <button type="button" class="secondary" data-devis-template-save>💾 Save as template</button>
+      </div>
+
       <p class="send-dialog__section-title send-dialog__section-title--first">👤 Client</p>
       <label>Fill from an existing client or contact request <small>(optional)</small><select data-devis-source><option value="">Enter details manually…</option></select></label>
       <div class="field-grid">
         <label>Contact name<input name="client_name" placeholder="Karim Haddad"></label>
         <label>Company<input name="client_company" placeholder="Boucherie de la Gare"></label>
         <label>Email<input name="client_email" type="email" placeholder="client@example.com"></label>
-        <label>Phone <small>(optional)</small><input name="client_phone" type="tel" placeholder="+33 6 12 34 56 78"></label>
+        <label>Phone / WhatsApp <small>(optional)</small><input name="client_phone" type="tel" placeholder="+33 6 12 34 56 78"></label>
         <label>SIRET <small>(optional)</small><input name="client_siret" placeholder="123 456 789 00012"></label>
         <label>VAT number <small>(optional)</small><input name="client_vat" placeholder="FR12345678901"></label>
       </div>
@@ -437,20 +468,21 @@
         <label>Date<input name="issue_date" type="date"></label>
         <label>Valid until<input name="valid_until" type="date"></label>
       </div>
-      <label>Introduction <small>(optional — shown above the services)</small><textarea name="intro" rows="2" placeholder="Suite à notre échange, voici notre proposition…"></textarea></label>
+      <label>Introduction <small>(optional — shown above the lines)</small><textarea name="intro" rows="2" placeholder="Suite à notre échange, voici notre proposition…"></textarea></label>
 
-      <p class="send-dialog__section-title">🧾 Services</p>
+      <p class="send-dialog__section-title">🧾 Lines</p>
       <div class="devis-picker">
         <button type="button" data-devis-add-line>+ Add désignation</button>
+        <button type="button" class="secondary" data-devis-add-section>+ Add section</button>
         <select data-devis-service-pick aria-label="Or pick a service from the catalog"><option value="">…or pick from the catalog</option></select>
       </div>
       <div class="devis-lines" data-devis-lines></div>
-      <p class="field-note" data-devis-lines-empty>No lines yet — click “+ Add désignation” and type the service, quantity and price.</p>
-      <p class="field-note">Each line’s Total HT fills in from qty × price — type over it to set your own amount. The totals below always add up the lines.</p>
+      <p class="field-note" data-devis-lines-empty>No lines yet — click “+ Add désignation” and type the service, quantity and price. Use sections (“Site web”, “Réseaux sociaux”…) to group lines with a subtotal.</p>
+      <p class="field-note">Total HT fills in from qty × price − line discount; type over it to set your own amount. <strong>Option</strong> lines aren’t counted unless the client ticks them when signing online. <strong>Monthly</strong> lines are shown as a separate “/ mois” amount.</p>
 
       <p class="send-dialog__section-title">💶 Totals</p>
       <div class="devis-totals-grid">
-        <label>Discount %<input name="discount_percent" type="number" min="0" max="100" step="0.5" value="0"></label>
+        <label>Global discount %<input name="discount_percent" type="number" min="0" max="100" step="0.5" value="0"></label>
         <label>VAT<select name="vat_mode"><option value="20">20 %</option><option value="10">10 %</option><option value="5.5">5,5 %</option><option value="0">0 %</option><option value="exempt">Not applicable (art. 293 B)</option></select></label>
         <label>Deposit %<input name="deposit_percent" type="number" min="0" max="100" step="5" value="0"></label>
       </div>
@@ -460,10 +492,18 @@
       <label>Payment terms<textarea name="payment_terms" rows="2"></textarea></label>
       <label>Notes / conditions <small>(optional)</small><textarea name="notes" rows="3"></textarea></label>
 
+      <p class="send-dialog__section-title">⚙️ Options</p>
+      <div class="devis-options">
+        <label class="checkbox-field"><input type="checkbox" name="cover_page"> Cover page with project summary and portfolio images</label>
+        <label class="checkbox-field"><input type="checkbox" name="reminders_enabled" checked> Automatic reminders — follow up after <input class="devis-inline-number" name="reminder_days" type="number" min="1" max="60" placeholder="5"> days, and before it expires</label>
+        <label class="checkbox-field" data-attach-cgv-row><input type="checkbox" name="attach_cgv"> Attach my general terms (CGV) to the email</label>
+        <label class="checkbox-field" data-attach-portfolio-row><input type="checkbox" name="attach_portfolio"> Attach my portfolio PDF to the email</label>
+      </div>
+
       <p class="send-dialog__section-title">✉️ Email to the client</p>
       <label>Subject<input name="email_subject"></label>
       <label>Message<textarea name="email_message" rows="7"></textarea></label>
-      <p class="field-note">Written for you from the devis details until you edit it. The PDF is attached, and the email has an “Accept the quote” button that opens a pre-filled reply.</p>
+      <p class="field-note">Written for you from the devis details until you edit it. The PDF is attached and the email has a “View &amp; sign online” button: the client can tick options, sign with their finger and accept — you’re emailed when they open, accept or refuse it.</p>
 
       <div class="preview-pane devis-pdf-pane" data-devis-pdf-pane hidden>
         <div class="preview-pane__head"><span>PDF preview</span><div class="preview-pane__actions"><button type="button" class="icon-button" data-devis-pdf-close aria-label="Close preview">✕</button></div></div>
@@ -474,9 +514,39 @@
         <button type="submit" data-devis-send>📨 Save &amp; send to client</button>
         <button type="button" class="secondary" data-devis-save>Save draft</button>
         <button type="button" class="secondary" data-devis-preview>Preview PDF</button>
-        <button type="button" class="secondary" data-devis-download>⬇ Download PDF</button>
+        <details class="devis-menu" data-editor-export>
+          <summary class="secondary">⬇ Export ▾</summary>
+          <div class="devis-menu__list">
+            <button type="button" data-export-format="pdf">📄 PDF</button>
+            <button type="button" data-export-format="png">🖼 Image PNG (one per page)</button>
+            <button type="button" data-export-format="jpeg">🖼 Image JPG (lighter)</button>
+            <button type="button" data-export-format="stacked">🧷 All pages in one image</button>
+          </div>
+        </details>
+        <button type="button" class="secondary" data-devis-whatsapp>💬 WhatsApp</button>
       </div>
       <p class="form-message" data-devis-form-message aria-live="polite"></p>
+    </form>
+  </dialog>
+
+  <!-- Create invoice from an accepted devis ─────────────────────────── -->
+  <dialog class="devis-dialog devis-dialog--narrow" data-facture-dialog>
+    <form data-facture-form>
+      <div class="devis-dialog__head">
+        <div><h2>Create invoice</h2><span class="devis-number" data-facture-devis></span></div>
+        <button type="button" class="icon-button" data-facture-close aria-label="Close">✕</button>
+      </div>
+      <div class="facture-kinds" data-facture-kinds></div>
+      <div class="field-grid">
+        <label>Invoice date<input name="issue_date" type="date" required></label>
+        <label>Due date<input name="due_date" type="date" required></label>
+      </div>
+      <label>Payment terms<textarea name="payment_terms" rows="2"></textarea></label>
+      <div class="form-actions">
+        <button type="submit" data-facture-create-send>📨 Create &amp; send</button>
+        <button type="button" class="secondary" data-facture-create>Create only</button>
+      </div>
+      <p class="form-message" data-facture-form-message aria-live="polite"></p>
     </form>
   </dialog>
 
@@ -496,14 +566,14 @@
     </div>
   </dialog>
 
-  <!-- Devis settings (legal details printed on the PDF) ─────────────── -->
+  <!-- Devis settings ──────────────────────────────────────────────────── -->
   <dialog class="devis-dialog" data-devis-settings-dialog>
     <form data-devis-settings-form>
       <div class="devis-dialog__head">
-        <h2>Devis settings</h2>
+        <h2>Devis &amp; invoice settings</h2>
         <button type="button" class="icon-button" data-devis-settings-close aria-label="Close">✕</button>
       </div>
-      <p class="send-dialog__section-title send-dialog__section-title--first">🏢 Your company (printed on every devis)</p>
+      <p class="send-dialog__section-title send-dialog__section-title--first">🏢 Your company (printed on every devis and invoice)</p>
       <div class="field-grid">
         <label>Legal name<input name="legal_name" placeholder="SB Marketing"></label>
         <label>Legal form <small>(optional)</small><input name="legal_form" placeholder="SAS au capital de 1 000 € / Entrepreneur individuel"></label>
@@ -519,9 +589,28 @@
         <label>IBAN<input name="iban" placeholder="FR76 …"></label>
         <label>BIC<input name="bic" placeholder="…"></label>
       </div>
+      <p class="send-dialog__section-title">🎨 PDF design</p>
+      <div class="field-grid">
+        <label>Accent color<span class="devis-color-row"><input name="accent_color" type="color" value="#f2c94c"><button type="button" class="link-button" data-accent-reset>Reset</button></span></label>
+        <label class="checkbox-field devis-check-cell"><input type="checkbox" name="default_cover_page"> Cover page on new devis by default</label>
+      </div>
+      <label>Portfolio images for the cover page <small>(one URL per line, up to 4)</small><textarea name="portfolio_images" rows="3" placeholder="https://…/projet-1.jpg"></textarea></label>
+      <label class="secondary devis-upload">⬆ Upload an image<input type="file" accept="image/*" data-devis-upload="portfolio_images" hidden></label>
+      <p class="send-dialog__section-title">📎 Documents attached to emails</p>
+      <div class="field-grid">
+        <label>General terms (CGV) PDF<span class="url-field-row"><input name="cgv_url" type="url" placeholder="https://…/cgv.pdf"><label class="icon-button devis-upload-icon" aria-label="Upload CGV">⬆<input type="file" accept="application/pdf" data-devis-upload="cgv_url" hidden></label></span></label>
+        <label>Portfolio PDF<span class="url-field-row"><input name="portfolio_pdf_url" type="url" placeholder="https://…/portfolio.pdf"><label class="icon-button devis-upload-icon" aria-label="Upload portfolio">⬆<input type="file" accept="application/pdf" data-devis-upload="portfolio_pdf_url" hidden></label></span></label>
+      </div>
+      <label class="checkbox-field"><input type="checkbox" name="default_attach_cgv"> Attach the CGV to new devis by default</label>
+      <p class="send-dialog__section-title">⏰ Reminders &amp; alerts</p>
+      <div class="field-grid">
+        <label>Follow-up reminder after (days)<input name="reminder_days" type="number" min="1" step="1"></label>
+        <label>Expiry reminder (days before)<input name="expiry_reminder_days" type="number" min="1" step="1"></label>
+        <label>Alert me at <small>(opened / accepted / refused)</small><input name="notify_email" type="email" placeholder="you@example.com"></label>
+      </div>
       <p class="send-dialog__section-title">🧮 Defaults for new devis</p>
       <div class="field-grid">
-        <label>Number prefix<input name="number_prefix" placeholder="DEV"></label>
+        <label>Devis number prefix<input name="number_prefix" placeholder="DEV"></label>
         <label>Validity (days)<input name="validity_days" type="number" min="1" step="1"></label>
         <label>Default VAT rate %<input name="default_vat_rate" type="number" min="0" step="0.1"></label>
         <label>Default deposit %<input name="default_deposit_percent" type="number" min="0" max="100" step="5"></label>
@@ -530,6 +619,12 @@
       <label>VAT exemption mention<input name="vat_exempt_mention" placeholder="TVA non applicable, art. 293 B du CGI"></label>
       <label>Default payment terms<textarea name="default_payment_terms" rows="2"></textarea></label>
       <label>Default notes / conditions<textarea name="default_notes" rows="3"></textarea></label>
+      <p class="send-dialog__section-title">💶 Invoices</p>
+      <div class="field-grid">
+        <label>Invoice number prefix<input name="invoice_prefix" placeholder="FAC"></label>
+        <label>Payment due after (days)<input name="invoice_payment_days" type="number" min="0" step="1"></label>
+      </div>
+      <label>Legal mentions on invoices<textarea name="invoice_legal_text" rows="3"></textarea></label>
       <div class="form-actions"><button type="submit">Save settings</button></div>
       <p class="form-message" data-devis-settings-message aria-live="polite"></p>
     </form>
@@ -548,6 +643,7 @@
 
   <script src="/js/supabase-config.js"></script>
   <script src="/js/admin.js"></script>
+  <script src="/js/devis-core.js"></script>
   <script src="/js/admin-devis.js"></script>
 </body>
 </html>

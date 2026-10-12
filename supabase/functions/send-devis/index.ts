@@ -1,5 +1,5 @@
-// SB Marketing — emails a devis (quote) to a client via Resend, with the
-// PDF attached. The PDF is generated in the admin (/admin/#devis, jsPDF)
+// SB Marketing — emails a devis (quote) or a facture (invoice) to a client
+// via Resend, with the PDF attached. The PDF is generated in the admin (/admin/#devis, jsPDF)
 // and sent here base64-encoded, so the email always carries exactly the
 // document the admin previewed/downloaded. The email itself reuses the
 // branded "custom message" shell from _shared/email-template.ts.
@@ -39,6 +39,23 @@ interface RequestBody {
   view_online_url?: string;
   pdf_base64?: string;
   filename?: string;
+  // extra files from public URLs (CGV, portfolio PDF), fetched here
+  extra_attachments?: { filename: string; url: string }[];
+}
+
+const MAX_EXTRA_ATTACHMENTS = 3;
+const MAX_EXTRA_BYTES = 15 * 1024 * 1024;
+
+async function fetchAttachment(file: { filename: string; url: string }) {
+  const url = new URL(file.url);
+  if (url.protocol !== "https:") throw new Error(`Attachment must be an https link: ${file.filename}`);
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`Could not fetch attachment ${file.filename} (${res.status})`);
+  const bytes = new Uint8Array(await res.arrayBuffer());
+  if (bytes.length > MAX_EXTRA_BYTES) throw new Error(`Attachment too large: ${file.filename}`);
+  let binary = "";
+  for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+  return { filename: file.filename, content: btoa(binary) };
 }
 
 function json(status: number, payload: unknown) {
@@ -79,6 +96,11 @@ Deno.serve(async (req) => {
     const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
     if (!RESEND_API_KEY) throw new Error("RESEND_API_KEY not configured");
 
+    const extras = (body.extra_attachments || [])
+      .filter((f) => f?.url && f?.filename)
+      .slice(0, MAX_EXTRA_ATTACHMENTS);
+    const extraFiles = await Promise.all(extras.map(fetchAttachment));
+
     const resendRes = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
@@ -91,7 +113,7 @@ Deno.serve(async (req) => {
         subject: rendered.subject,
         html: rendered.html,
         ...(body.reply_to ? { reply_to: body.reply_to } : {}),
-        attachments: [{ filename: body.filename, content: body.pdf_base64 }],
+        attachments: [{ filename: body.filename, content: body.pdf_base64 }, ...extraFiles],
       }),
     });
 
