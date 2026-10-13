@@ -62,7 +62,7 @@
     $('[data-meta]').innerHTML='<dt>'+t('date')+'</dt><dd>'+escapeHtml(Core.formatDate(devis.issue_date,lang))+'</dd>'
       +(devis.valid_until?'<dt>'+t('valid')+'</dt><dd>'+escapeHtml(Core.formatDate(devis.valid_until,lang))+'</dd>':'');
 
-    var issuer=[s.legal_form,s.address,s.siret?'SIRET '+s.siret:'',s.vat_number?(lang==='en'?'VAT ':'TVA ')+s.vat_number:'',s.email,s.phone||brand.phone,site].filter(Boolean);
+    var issuer=devis.simple?[site]:[s.legal_form,s.address,s.siret?'SIRET '+s.siret:'',s.vat_number?(lang==='en'?'VAT ':'TVA ')+s.vat_number:'',s.email,s.phone||brand.phone,site].filter(Boolean);
     $('[data-issuer]').innerHTML='<strong>'+escapeHtml(s.legal_name||brand.company_name||'SB Marketing')+'</strong>'+escapeHtml(issuer.join('\n'));
     var client=[devis.client_company?devis.client_name:'',devis.client_address,devis.client_email,devis.client_phone,devis.client_siret?'SIRET '+devis.client_siret:'',devis.client_vat?(lang==='en'?'VAT ':'TVA ')+devis.client_vat:''].filter(Boolean);
     $('[data-client]').innerHTML='<strong>'+escapeHtml(Core.clientLabel(devis))+'</strong>'+escapeHtml(client.join('\n'));
@@ -71,9 +71,9 @@
     renderLines();renderTotals();
 
     var blocks=[];
-    if(devis.payment_terms)blocks.push([t('payment'),devis.payment_terms]);
-    if(s.iban)blocks.push([t('bank'),'IBAN '+s.iban+(s.bic?'\nBIC '+s.bic:'')]);
-    if(devis.notes)blocks.push([t('notes'),devis.notes]);
+    if(devis.payment_terms&&!devis.simple)blocks.push([t('payment'),devis.payment_terms]);
+    if(s.iban&&!devis.simple)blocks.push([t('bank'),'IBAN '+s.iban+(s.bic?'\nBIC '+s.bic:'')]);
+    if(devis.notes&&!devis.simple)blocks.push([t('notes'),devis.notes]);
     $('[data-conditions]').hidden=!blocks.length;
     $('[data-conditions]').innerHTML=blocks.map(function(b){return '<div><span class="dp-label">'+escapeHtml(b[0])+'</span><p>'+escapeHtml(b[1])+'</p></div>';}).join('');
 
@@ -122,7 +122,13 @@
   }
 
   function renderTotals(){
-    var tt=Core.computeTotals(devis),rows=[[t('subtotal'),Core.money(tt.subtotal,lang)]];
+    var tt=Core.computeTotals(devis);
+    if(devis.simple){
+      $('[data-totals]').innerHTML='<dt class="is-total">Total</dt><dd class="is-total">'+escapeHtml(Core.money(tt.ttc,lang))+'</dd>';
+      $('[data-accept-total]').textContent=Core.money(tt.ttc,lang);
+      return;
+    }
+    var rows=[[t('subtotal'),Core.money(tt.subtotal,lang)]];
     if(tt.discount)rows.push([t('discount')+' ('+Core.percent(devis.discount_percent,lang)+')','- '+Core.money(tt.discount,lang)],[t('totalHt'),Core.money(tt.totalHt,lang)]);
     if(!devis.vat_exempt)rows.push([t('vat')+' ('+Core.percent(devis.vat_rate,lang)+')',Core.money(tt.vat,lang)]);
     var html=rows.map(function(r){return '<dt>'+escapeHtml(r[0])+'</dt><dd>'+escapeHtml(r[1])+'</dd>';}).join('');

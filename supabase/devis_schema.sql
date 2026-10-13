@@ -665,3 +665,15 @@ begin
   perform cron.schedule('devis-reminders', '0 7 * * *', 'select public.send_devis_reminders()');
 end
 $$;
+
+-- ── v3: simple devis + configurable first number ───────────────────
+-- simple = PDF/page with only the logo, client, lines and one Total (no
+-- HT/TVA lines, conditions or payment terms). Simple devis are saved
+-- with vat_exempt = true / vat_rate = 0, so every total stays consistent.
+-- number_start: the first number of each year's sequence (e.g. 50 →
+-- DEV-2026-050), used when it's higher than the last number issued.
+alter table public.devis
+  add column if not exists simple boolean not null default false;
+alter table public.devis_settings
+  add column if not exists default_simple boolean not null default true,
+  add column if not exists number_start integer not null default 1;

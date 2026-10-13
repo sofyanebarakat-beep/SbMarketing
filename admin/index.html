@@ -441,7 +441,12 @@
         <button type="button" class="icon-button" data-devis-close aria-label="Close">✕</button>
       </div>
 
-      <div class="template-row devis-template-row">
+      <div class="devis-mode" role="radiogroup" aria-label="Devis type">
+        <label><input type="radio" name="devis_mode" value="simple"> <span><strong>Simple</strong><small>Logo, client, lines and one total — no HT / TVA, no conditions</small></span></label>
+        <label><input type="radio" name="devis_mode" value="full"> <span><strong>Complet</strong><small>HT + TVA, deposit, sections, options, conditions, bank details</small></span></label>
+      </div>
+
+      <div class="template-row devis-template-row" data-advanced>
         <span class="template-row__label">Template</span>
         <select data-devis-template aria-label="Start from a saved template"><option value="">Start from scratch…</option></select>
         <button type="button" class="secondary" data-devis-template-save>💾 Save as template</button>
@@ -454,10 +459,10 @@
         <label>Company<input name="client_company" placeholder="Boucherie de la Gare"></label>
         <label>Email<input name="client_email" type="email" placeholder="client@example.com"></label>
         <label>Phone / WhatsApp <small>(optional)</small><input name="client_phone" type="tel" placeholder="+33 6 12 34 56 78"></label>
-        <label>SIRET <small>(optional)</small><input name="client_siret" placeholder="123 456 789 00012"></label>
-        <label>VAT number <small>(optional)</small><input name="client_vat" placeholder="FR12345678901"></label>
+        <label data-advanced>SIRET <small>(optional)</small><input name="client_siret" placeholder="123 456 789 00012"></label>
+        <label data-advanced>VAT number <small>(optional)</small><input name="client_vat" placeholder="FR12345678901"></label>
       </div>
-      <div class="field-grid">
+      <div class="field-grid" data-advanced>
         <label>Address <small>(optional)</small><textarea name="client_address" rows="2" placeholder="12 avenue Jean Médecin&#10;06000 Nice"></textarea></label>
         <label>Devis language<select name="language"><option value="fr">French</option><option value="en">English</option></select></label>
       </div>
@@ -468,32 +473,34 @@
         <label>Date<input name="issue_date" type="date"></label>
         <label>Valid until<input name="valid_until" type="date"></label>
       </div>
-      <label>Introduction <small>(optional — shown above the lines)</small><textarea name="intro" rows="2" placeholder="Suite à notre échange, voici notre proposition…"></textarea></label>
+      <label data-advanced>Introduction <small>(optional — shown above the lines)</small><textarea name="intro" rows="2" placeholder="Suite à notre échange, voici notre proposition…"></textarea></label>
 
       <p class="send-dialog__section-title">🧾 Lines</p>
       <div class="devis-picker">
         <button type="button" data-devis-add-line>+ Add désignation</button>
-        <button type="button" class="secondary" data-devis-add-section>+ Add section</button>
+        <button type="button" class="secondary" data-devis-add-section data-advanced>+ Add section</button>
         <select data-devis-service-pick aria-label="Or pick a service from the catalog"><option value="">…or pick from the catalog</option></select>
       </div>
       <div class="devis-lines" data-devis-lines></div>
       <p class="field-note" data-devis-lines-empty>No lines yet — click “+ Add désignation” and type the service, quantity and price. Use sections (“Site web”, “Réseaux sociaux”…) to group lines with a subtotal.</p>
-      <p class="field-note">Total HT fills in from qty × price − line discount; type over it to set your own amount. <strong>Option</strong> lines aren’t counted unless the client ticks them when signing online. <strong>Monthly</strong> lines are shown as a separate “/ mois” amount.</p>
+      <p class="field-note" data-advanced>Total HT fills in from qty × price − line discount; type over it to set your own amount. <strong>Option</strong> lines aren’t counted unless the client ticks them when signing online. <strong>Monthly</strong> lines are shown as a separate “/ mois” amount.</p>
 
-      <p class="send-dialog__section-title">💶 Totals</p>
-      <div class="devis-totals-grid">
+      <p class="send-dialog__section-title">💶 Total</p>
+      <div class="devis-totals-grid" data-advanced>
         <label>Global discount %<input name="discount_percent" type="number" min="0" max="100" step="0.5" value="0"></label>
         <label>VAT<select name="vat_mode"><option value="20">20 %</option><option value="10">10 %</option><option value="5.5">5,5 %</option><option value="0">0 %</option><option value="exempt">Not applicable (art. 293 B)</option></select></label>
         <label>Deposit %<input name="deposit_percent" type="number" min="0" max="100" step="5" value="0"></label>
       </div>
       <dl class="devis-summary" data-devis-summary></dl>
 
+      <div class="devis-advanced-block" data-advanced>
       <p class="send-dialog__section-title">📌 Conditions</p>
       <label>Payment terms<textarea name="payment_terms" rows="2"></textarea></label>
       <label>Notes / conditions <small>(optional)</small><textarea name="notes" rows="3"></textarea></label>
+      </div>
 
-      <p class="send-dialog__section-title">⚙️ Options</p>
-      <div class="devis-options">
+      <p class="send-dialog__section-title" data-advanced>⚙️ Options</p>
+      <div class="devis-options" data-advanced>
         <label class="checkbox-field"><input type="checkbox" name="cover_page"> Cover page with project summary and portfolio images</label>
         <label class="checkbox-field"><input type="checkbox" name="reminders_enabled" checked> Automatic reminders — follow up after <input class="devis-inline-number" name="reminder_days" type="number" min="1" max="60" placeholder="5"> days, and before it expires</label>
         <label class="checkbox-field" data-attach-cgv-row><input type="checkbox" name="attach_cgv"> Attach my general terms (CGV) to the email</label>
@@ -611,10 +618,12 @@
       <p class="send-dialog__section-title">🧮 Defaults for new devis</p>
       <div class="field-grid">
         <label>Devis number prefix<input name="number_prefix" placeholder="DEV"></label>
+        <label>First number each year <small>(e.g. 50 → DEV-2026-050)</small><input name="number_start" type="number" min="1" step="1" placeholder="1"></label>
         <label>Validity (days)<input name="validity_days" type="number" min="1" step="1"></label>
         <label>Default VAT rate %<input name="default_vat_rate" type="number" min="0" step="0.1"></label>
         <label>Default deposit %<input name="default_deposit_percent" type="number" min="0" max="100" step="5"></label>
       </div>
+      <label class="checkbox-field"><input type="checkbox" name="default_simple"> New devis start in <strong>Simple</strong> mode (one total, no HT / TVA, no conditions)</label>
       <label class="checkbox-field"><input type="checkbox" name="vat_exempt"> VAT not applicable (micro-entreprise / franchise en base)</label>
       <label>VAT exemption mention<input name="vat_exempt_mention" placeholder="TVA non applicable, art. 293 B du CGI"></label>
       <label>Default payment terms<textarea name="default_payment_terms" rows="2"></textarea></label>

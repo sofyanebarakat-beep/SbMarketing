@@ -88,8 +88,8 @@
   }
 
   var COPY={
-    fr:{devis:'DEVIS',facture:'FACTURE',no:'N°',date:'Date du devis',invDate:'Date de facture',valid:'Valable jusqu’au',due:'Échéance',ref:'Référence',devisRef:'Devis',to:'CLIENT',object:'Objet',desc:'Désignation',qty:'Qté',unit:'Unité',pu:'P.U. HT',disc:'Rem.',total:'Total HT',subtotal:'Sous-total HT',discount:'Remise',totalHt:'Total HT',vat:'TVA',ttc:'Total TTC',net:'Net à payer',deposit:'Acompte à la signature',depositDeducted:'Acompte déjà facturé',amountDue:'Reste à payer',payment:'Conditions de paiement',bank:'Coordonnées bancaires',notes:'Conditions',legal:'Mentions légales',sign:'Bon pour accord',signHint:'Date, signature et cachet du client, précédés de la mention « Bon pour accord »',signedBy:'Signé électroniquement par',page:'Page',siret:'SIRET',vatNo:'TVA intracom.',option:'Option',optionChosen:'Option retenue',optionsNote:'Les lignes « Option » ne sont pas comprises dans le total, sauf si elles sont retenues.',sectionSub:'Sous-total',once:'Dont ponctuel',monthly:'Dont mensuel',perMonth:'/ mois',paid:'PAYÉE',cancelled:'ANNULÉE',cover:'PROPOSITION COMMERCIALE',preparedFor:'Préparée pour',coverTotal:'Montant total',onlineHint:'Consultez et signez ce devis en ligne :'},
-    en:{devis:'QUOTE',facture:'INVOICE',no:'No.',date:'Quote date',invDate:'Invoice date',valid:'Valid until',due:'Due date',ref:'Reference',devisRef:'Quote',to:'CLIENT',object:'Subject',desc:'Description',qty:'Qty',unit:'Unit',pu:'Unit price',disc:'Disc.',total:'Amount',subtotal:'Subtotal (excl. VAT)',discount:'Discount',totalHt:'Total excl. VAT',vat:'VAT',ttc:'Total incl. VAT',net:'Total due',deposit:'Deposit due on signature',depositDeducted:'Deposit already invoiced',amountDue:'Balance due',payment:'Payment terms',bank:'Bank details',notes:'Terms & conditions',legal:'Legal notice',sign:'Approval',signHint:'Date, signature and company stamp, preceded by “Approved”',signedBy:'Electronically signed by',page:'Page',siret:'SIRET',vatNo:'VAT no.',option:'Option',optionChosen:'Selected option',optionsNote:'“Option” lines are not included in the total unless selected.',sectionSub:'Subtotal',once:'One-off',monthly:'Monthly',perMonth:'/ month',paid:'PAID',cancelled:'CANCELLED',cover:'COMMERCIAL PROPOSAL',preparedFor:'Prepared for',coverTotal:'Total amount',onlineHint:'View and sign this quote online:'}
+    fr:{devis:'DEVIS',facture:'FACTURE',no:'N°',date:'Date du devis',invDate:'Date de facture',valid:'Valable jusqu’au',due:'Échéance',ref:'Référence',devisRef:'Devis',to:'CLIENT',object:'Objet',desc:'Désignation',qty:'Qté',unit:'Unité',pu:'P.U. HT',disc:'Rem.',total:'Total HT',subtotal:'Sous-total HT',discount:'Remise',totalHt:'Total HT',vat:'TVA',ttc:'Total TTC',net:'Net à payer',deposit:'Acompte à la signature',depositDeducted:'Acompte déjà facturé',amountDue:'Reste à payer',payment:'Conditions de paiement',bank:'Coordonnées bancaires',notes:'Conditions',legal:'Mentions légales',sign:'Bon pour accord',signHint:'Date, signature et cachet du client, précédés de la mention « Bon pour accord »',signedBy:'Signé électroniquement par',page:'Page',siret:'SIRET',vatNo:'TVA intracom.',option:'Option',optionChosen:'Option retenue',priceSimple:'Prix unitaire',amountSimple:'Total',totalSimple:'Total',optionsNote:'Les lignes « Option » ne sont pas comprises dans le total, sauf si elles sont retenues.',sectionSub:'Sous-total',once:'Dont ponctuel',monthly:'Dont mensuel',perMonth:'/ mois',paid:'PAYÉE',cancelled:'ANNULÉE',cover:'PROPOSITION COMMERCIALE',preparedFor:'Préparée pour',coverTotal:'Montant total',onlineHint:'Consultez et signez ce devis en ligne :'},
+    en:{devis:'QUOTE',facture:'INVOICE',no:'No.',date:'Quote date',invDate:'Invoice date',valid:'Valid until',due:'Due date',ref:'Reference',devisRef:'Quote',to:'CLIENT',object:'Subject',desc:'Description',qty:'Qty',unit:'Unit',pu:'Unit price',disc:'Disc.',total:'Amount',subtotal:'Subtotal (excl. VAT)',discount:'Discount',totalHt:'Total excl. VAT',vat:'VAT',ttc:'Total incl. VAT',net:'Total due',deposit:'Deposit due on signature',depositDeducted:'Deposit already invoiced',amountDue:'Balance due',payment:'Payment terms',bank:'Bank details',notes:'Terms & conditions',legal:'Legal notice',sign:'Approval',signHint:'Date, signature and company stamp, preceded by “Approved”',signedBy:'Electronically signed by',page:'Page',siret:'SIRET',vatNo:'VAT no.',option:'Option',optionChosen:'Selected option',priceSimple:'Unit price',amountSimple:'Amount',totalSimple:'Total',optionsNote:'“Option” lines are not included in the total unless selected.',sectionSub:'Subtotal',once:'One-off',monthly:'Monthly',perMonth:'/ month',paid:'PAID',cancelled:'CANCELLED',cover:'COMMERCIAL PROPOSAL',preparedFor:'Prepared for',coverTotal:'Total amount',onlineHint:'View and sign this quote online:'}
   };
 
   // ── PDF ─────────────────────────────────────────────────────────
@@ -100,6 +100,9 @@
     ctx=ctx||{};
     await loadPdfLibs();
     var s=ctx.settings||{},brand=ctx.brand||{},isInvoice=ctx.kind==='facture';
+    // Simple devis: logo, client, lines and one Total — no HT/TVA lines,
+    // no company block, conditions, payment terms or bank details.
+    var simple=!isInvoice&&!!d.simple;
     var lang=d.language==='en'?'en':'fr',L=COPY[lang],t=computeTotals(d);
     var portfolio=(!isInvoice&&d.cover_page&&Array.isArray(s.portfolio_images))?s.portfolio_images.slice(0,4):[];
     var images=await Promise.all([loadImage(LOGO_URL),d.signature_data?Promise.resolve(d.signature_data):Promise.resolve('')].concat(portfolio.map(loadImage)));
@@ -140,17 +143,17 @@
 
     // Header band: logo, website, contact, address and legal numbers on
     // navy (the logo artwork is gold on navy).
-    var headerLines=[
+    var headerLines=simple?[]:[
       String(s.address||'').replace(/\s*\n\s*/g,', '),
       [s.phone||brand.phone,s.email].filter(Boolean).join('   ·   '),
       [s.legal_form,s.siret?L.siret+' '+s.siret:'',s.vat_number?L.vatNo+' '+s.vat_number:''].filter(Boolean).join('   ·   ')
     ].filter(Boolean);
-    var bandH=Math.max(38,(website?33:28)+headerLines.length*4.4+3);
+    var bandH=simple?34:Math.max(38,(website?33:28)+headerLines.length*4.4+3);
     doc.setFillColor.apply(doc,NAVY);doc.rect(0,0,210,bandH,'F');
     if(logo)fitImage(logo,left,10,52,52*164/740);
     else{font(18,'bold',ACCENT);doc.text(txt(companyName),left,20);}
     var hy=28;
-    if(website){font(9.5,'bold',ACCENT);doc.text(txt(website),left,hy);hy+=5;}
+    if(website&&!simple){font(9.5,'bold',ACCENT);doc.text(txt(website),left,hy);hy+=5;}
     font(8,'normal',[205,211,222]);
     headerLines.forEach(function(line){doc.text(lines(line,128)[0],left,hy);hy+=4.4;});
     font(24,'bold',ACCENT);doc.text(isInvoice?L.facture:L.devis,right,19,{align:'right'});
@@ -181,9 +184,9 @@
 
     // Lines table: sections (with subtotals), items, options, line discounts
     var items=d.items||[];
-    var hasLineDiscount=items.some(function(i){return !isSection(i)&&num(i.discount_percent)>0;});
+    var hasLineDiscount=!simple&&items.some(function(i){return !isSection(i)&&num(i.discount_percent)>0;});
     var hasOptions=items.some(function(i){return !isSection(i)&&i.optional;});
-    var cols=hasLineDiscount?6:5,body=[],stripe=0,section=null;
+    var cols=simple?4:(hasLineDiscount?6:5),body=[],stripe=0,section=null;
     function closeSection(){
       if(section&&section.count)body.push([{content:txt(L.sectionSub+' '+section.name),colSpan:cols-1,styles:{halign:'right',fontStyle:'bold',textColor:MUTED,fontSize:8.5,cellPadding:{top:2.2,bottom:3.2,left:3,right:3}}},{content:money(round2(section.total),lang),styles:{halign:'right',fontStyle:'bold',fontSize:9}}]);
       section=null;
@@ -200,21 +203,22 @@
       var row=[
         {content:txt(prefix+(item.name||'')),styles:Object.assign({},base,{fontStyle:muted?'italic':'bold',textColor:muted?MUTED:TEXT,cellPadding:{top:3.2,bottom:item.description?1:3.2,left:3,right:3}})},
         {content:item.quantity==null||item.quantity===''?'':qty(item.quantity,lang),styles:base},
-        {content:txt(unit),styles:base},
         {content:item.unit_price==null||item.unit_price===''?'':money(item.unit_price,lang),styles:base}
       ];
+      if(!simple)row.splice(2,0,{content:txt(unit),styles:base});
       if(hasLineDiscount)row.push({content:num(item.discount_percent)>0?'-'+percent(item.discount_percent,lang):'',styles:base});
       row.push({content:muted?'('+money(total,lang)+')':money(total,lang),styles:Object.assign({},base,{fontStyle:muted?'italic':'bold',textColor:muted?MUTED:TEXT})});
       body.push(row);
       if(item.description)body.push([{content:txt(item.description),colSpan:cols,styles:{fillColor:fill,textColor:MUTED,fontSize:8.5,cellPadding:{top:0,bottom:3.2,left:3,right:60}}}]);
     });
     closeSection();
-    var head=[L.desc,{content:L.qty,styles:{halign:'right'}},L.unit,{content:L.pu,styles:{halign:'right'}}];
+    var head=simple?[L.desc,{content:L.qty,styles:{halign:'right'}},{content:L.priceSimple,styles:{halign:'right'}}]:[L.desc,{content:L.qty,styles:{halign:'right'}},L.unit,{content:L.pu,styles:{halign:'right'}}];
     if(hasLineDiscount)head.push({content:L.disc,styles:{halign:'right'}});
-    head.push({content:L.total,styles:{halign:'right'}});
+    head.push({content:simple?L.amountSimple:L.total,styles:{halign:'right'}});
     var columnStyles={1:{halign:'right',cellWidth:14},2:{cellWidth:21},3:{halign:'right',cellWidth:26}};
     if(hasLineDiscount){columnStyles[4]={halign:'right',cellWidth:16};columnStyles[5]={halign:'right',cellWidth:28};}
     else columnStyles[4]={halign:'right',cellWidth:30};
+    if(simple)columnStyles={1:{halign:'right',cellWidth:16},2:{halign:'right',cellWidth:34},3:{halign:'right',cellWidth:34}};
     doc.autoTable({
       startY:y,theme:'plain',margin:{left:left,right:210-right,bottom:24,top:20},
       head:[head],body:body,
@@ -229,14 +233,14 @@
 
     // Bottom block — right: totals (+ signature box for a devis);
     // left: payment terms, bank details, conditions, legal mentions.
-    var totalRows=[[L.subtotal,money(t.subtotal,lang)]];
-    if(t.discount)totalRows.push([L.discount+' ('+percent(d.discount_percent,lang)+')','- '+money(t.discount,lang)],[L.totalHt,money(t.totalHt,lang)]);
-    if(!d.vat_exempt)totalRows.push([L.vat+' ('+percent(d.vat_rate,lang)+')',money(t.vat,lang)]);
+    var totalRows=simple?[]:[[L.subtotal,money(t.subtotal,lang)]];
+    if(t.discount&&!simple)totalRows.push([L.discount+' ('+percent(d.discount_percent,lang)+')','- '+money(t.discount,lang)],[L.totalHt,money(t.totalHt,lang)]);
+    if(!d.vat_exempt&&!simple)totalRows.push([L.vat+' ('+percent(d.vat_rate,lang)+')',money(t.vat,lang)]);
     var deducted=isInvoice?num(d.deposit_deducted):0;
     var leftBlocks=[];
-    if(d.payment_terms)leftBlocks.push([L.payment,d.payment_terms]);
-    if(s.iban)leftBlocks.push([L.bank,'IBAN '+s.iban+(s.bic?'\nBIC '+s.bic:'')]);
-    if(d.notes)leftBlocks.push([L.notes,d.notes]);
+    if(d.payment_terms&&!simple)leftBlocks.push([L.payment,d.payment_terms]);
+    if(s.iban&&!simple)leftBlocks.push([L.bank,'IBAN '+s.iban+(s.bic?'\nBIC '+s.bic:'')]);
+    if(d.notes&&!simple)leftBlocks.push([L.notes,d.notes]);
     if(isInvoice&&s.invoice_legal_text)leftBlocks.push([L.legal,s.invoice_legal_text]);
     if(!isInvoice&&d.status==='sent'&&d.public_token)leftBlocks.push(['',L.onlineHint+'\n'+publicUrl(d)]);
     font(9,'normal');
@@ -244,8 +248,8 @@
     var leftH=leftBlocks.reduce(function(h,b){return h+5.5+b[2].length*4.1+5;},0);
     var signed=!isInvoice&&!!d.signed_at;
     var signH=isInvoice?0:(signed?34:26);
-    var breakdown=t.monthlyTotal>0;
-    var rightH=totalRows.length*6+10+(d.vat_exempt?6:0)+(!isInvoice&&t.deposit?8.5:0)+(deducted?17:0)+(breakdown?11:0)+(signH?5+signH:0);
+    var breakdown=t.monthlyTotal>0&&!simple;
+    var rightH=totalRows.length*6+10+(d.vat_exempt&&!simple?6:0)+(!isInvoice&&t.deposit&&!simple?8.5:0)+(deducted?17:0)+(breakdown?11:0)+(signH?5+signH:0);
     ensure(Math.max(leftH,rightH));
     var tx=118,tw=right-tx,ty=y;
     totalRows.forEach(function(r){font(9.5,'normal',MUTED);doc.text(txt(r[0]),tx+3,ty+4);font(9.5,'bold');doc.text(txt(r[1]),right-3,ty+4,{align:'right'});ty+=6;});
@@ -258,9 +262,9 @@
       font(9.5,'bold',TEXT);doc.text(txt(d.vat_exempt?L.net:L.ttc),tx+3,ty+4);doc.text(money(t.ttc,lang),right-3,ty+4,{align:'right'});ty+=6;
       font(9.5,'normal',MUTED);doc.text(txt(L.depositDeducted),tx+3,ty+4);font(9.5,'bold');doc.text('- '+money(deducted,lang),right-3,ty+4,{align:'right'});ty+=7;
       highlight(L.amountDue,money(round2(t.ttc-deducted),lang));
-    }else highlight(d.vat_exempt?L.net:L.ttc,money(t.ttc,lang));
-    if(d.vat_exempt){font(8,'italic',MUTED);doc.text(txt(s.vat_exempt_mention||'TVA non applicable, art. 293 B du CGI'),right,ty+4.5,{align:'right'});ty+=6;}
-    if(!isInvoice&&t.deposit){font(9,'normal',MUTED);doc.text(txt(L.deposit+' ('+percent(d.deposit_percent,lang)+')'),tx+3,ty+6);font(9.5,'bold');doc.text(money(t.deposit,lang),right-3,ty+6,{align:'right'});ty+=8.5;}
+    }else highlight(simple?L.totalSimple:(d.vat_exempt?L.net:L.ttc),money(t.ttc,lang));
+    if(d.vat_exempt&&!simple){font(8,'italic',MUTED);doc.text(txt(s.vat_exempt_mention||'TVA non applicable, art. 293 B du CGI'),right,ty+4.5,{align:'right'});ty+=6;}
+    if(!isInvoice&&t.deposit&&!simple){font(9,'normal',MUTED);doc.text(txt(L.deposit+' ('+percent(d.deposit_percent,lang)+')'),tx+3,ty+6);font(9.5,'bold');doc.text(money(t.deposit,lang),right-3,ty+6,{align:'right'});ty+=8.5;}
     if(breakdown){
       font(8.5,'normal',MUTED);
       if(t.once)doc.text(txt(L.once+' : '+money(t.once,lang)+' HT'),right-3,ty+5,{align:'right'});

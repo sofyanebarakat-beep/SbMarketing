@@ -19,8 +19,8 @@
   var FACTURE_KIND={deposit:'Deposit',balance:'Balance',full:'Full'};
   // Columns the editor writes (everything else — status, signature,
   // tracking — is managed by the send flow or the client's page).
-  var DEVIS_FIELDS=['client_id','client_name','client_company','client_email','client_phone','client_address','client_siret','client_vat','language','title','intro','issue_date','valid_until','items','discount_percent','vat_rate','vat_exempt','deposit_percent','payment_terms','notes','email_message','cover_page','reminders_enabled','reminder_days','attach_cgv','attach_portfolio','subtotal_ht','total_ht','total_vat','total_ttc'];
-  var TEMPLATE_FIELDS=['language','title','intro','items','discount_percent','vat_rate','vat_exempt','deposit_percent','payment_terms','notes','cover_page','attach_cgv','attach_portfolio'];
+  var DEVIS_FIELDS=['client_id','client_name','client_company','client_email','client_phone','client_address','client_siret','client_vat','language','title','intro','issue_date','valid_until','items','discount_percent','vat_rate','vat_exempt','deposit_percent','payment_terms','notes','email_message','cover_page','reminders_enabled','reminder_days','attach_cgv','attach_portfolio','simple','subtotal_ht','total_ht','total_vat','total_ttc'];
+  var TEMPLATE_FIELDS=['simple','language','title','intro','items','discount_percent','vat_rate','vat_exempt','deposit_percent','payment_terms','notes','cover_page','attach_cgv','attach_portfolio'];
 
   var devisList=[],factures=[],services=[],templates=[],settings={},appSettings={},clients=[],contacts=[];
   var loaded=false,loading=null,editing=null,pdfUrl=null,invoiceSource=null;
@@ -144,7 +144,7 @@
         +'<td>'+escapeHtml(formatDate(d.issue_date,'en'))+'<span class="muted-note">valid until '+escapeHtml(formatDate(d.valid_until,'en'))+'</span></td>'
         +'<td class="contact"><strong>'+escapeHtml(clientLabel(d))+'</strong>'+(d.client_company&&d.client_name?'<span class="muted-note">'+escapeHtml(d.client_name)+'</span>':'')+(d.client_email?'<a href="mailto:'+escapeHtml(d.client_email)+'">'+escapeHtml(d.client_email)+'</a>':'')+'</td>'
         +'<td>'+escapeHtml(d.title||'—')+'<span class="muted-note">'+lineCount+' line'+(lineCount===1?'':'s')+'</span></td>'
-        +'<td><span class="devis-total">'+escapeHtml(money(d.total_ttc,lang))+'</span><span class="muted-note">'+escapeHtml(money(d.total_ht,lang))+' HT</span></td>'
+        +'<td><span class="devis-total">'+escapeHtml(money(d.total_ttc,lang))+'</span>'+(d.simple?'':'<span class="muted-note">'+escapeHtml(money(d.total_ht,lang))+' HT</span>')+'</td>'
         +'<td><select class="status-select" data-devis-status="'+escapeHtml(d.id)+'">'+Object.keys(STATUS_LABELS).map(function(key){return '<option value="'+key+'"'+(d.status===key?' selected':'')+'>'+STATUS_LABELS[key]+'</option>';}).join('')+'</select>'+statusChips(d)+'</td>'
         +'<td><div class="devis-row-actions">'
           +'<button type="button" class="secondary" data-devis-edit="'+escapeHtml(d.id)+'">Edit</button>'
@@ -210,12 +210,12 @@
   }
 
   // ── Numbering: PREFIX-YEAR-001, per calendar year ───────────────
-  function nextNumber(list,prefix){
-    var base=String(prefix).trim()+'-'+new Date().getFullYear()+'-',max=0;
+  function nextNumber(list,prefix,start){
+    var base=String(prefix).trim()+'-'+new Date().getFullYear()+'-',max=Math.max(0,Math.round(num(start)||1)-1);
     list.forEach(function(d){if(d.number&&d.number.indexOf(base)===0){var n=parseInt(d.number.slice(base.length),10);if(n>max)max=n;}});
     return base+String(max+1).padStart(3,'0');
   }
-  function nextDevisNumber(){return nextNumber(devisList,settings.number_prefix||'DEV');}
+  function nextDevisNumber(){return nextNumber(devisList,settings.number_prefix||'DEV',settings.number_start);}
   function nextFactureNumber(){return nextNumber(factures,settings.invoice_prefix||'FAC');}
 
   // ── Editor: lines ───────────────────────────────────────────────
@@ -260,6 +260,7 @@
         unit_price:f('unit_price').value===''?null:round2(num(f('unit_price').value)),
         discount_percent:Math.min(100,Math.max(0,num(f('discount_percent').value))),
         optional:f('optional').checked,selected:false,billing:f('monthly').checked?'monthly':'once'};
+      if(isSimpleMode()){item.optional=false;item.billing='once';item.discount_percent=0;}
       item.total=row.dataset.manual&&f('total').value!==''?round2(num(f('total').value)):autoLineTotal(item);
       return item;
     }).filter(function(item){return isSection(item)?!!item.name:(item.name||item.description||item.unit_price||item.total);});
@@ -299,10 +300,16 @@
     refreshEditor();
   }
 
+  // ── Editor: Simple / Complet mode ─────────────────────────────────
+  // Simple = one plain Total (saved as VAT-exempt, no discount/deposit),
+  // and the editor hides everything but client, object, lines and email.
+  function isSimpleMode(){return form.elements.devis_mode.value==='simple';}
+  function setMode(simple){form.elements.devis_mode.value=simple?'simple':'full';form.classList.toggle('is-simple',simple);}
+
   // ── Editor: read / fill ─────────────────────────────────────────
   function readForm(){
-    var el=form.elements,vatMode=el.vat_mode.value;
-    var d={
+    var el=form.elements,vatMode=el.vat_mode.value,simple=isSimpleMode();
+    var d={simple:simple,
       client_id:form.dataset.clientId||null,
       client_name:el.client_name.value.trim()||null,client_company:el.client_company.value.trim()||null,client_email:el.client_email.value.trim()||null,
       client_phone:el.client_phone.value.trim()||null,client_address:el.client_address.value.trim()||null,client_siret:el.client_siret.value.trim()||null,client_vat:el.client_vat.value.trim()||null,
@@ -318,6 +325,7 @@
       cover_page:el.cover_page.checked,reminders_enabled:el.reminders_enabled.checked,reminder_days:el.reminder_days.value?Math.max(1,Math.round(num(el.reminder_days.value))):null,
       attach_cgv:el.attach_cgv.checked,attach_portfolio:el.attach_portfolio.checked
     };
+    if(simple){d.vat_exempt=true;d.vat_rate=0;d.discount_percent=0;d.deposit_percent=0;}
     var t=computeTotals(d);
     d.subtotal_ht=t.subtotal;d.total_ht=t.totalHt;d.total_vat=t.vat;d.total_ttc=t.ttc;
     return d;
@@ -331,6 +339,7 @@
     el.cover_page.checked=!!d.cover_page;el.reminders_enabled.checked=d.reminders_enabled!==false;el.reminder_days.value=d.reminder_days||'';el.reminder_days.placeholder=String(settings.reminder_days||5);
     el.attach_cgv.checked=!!d.attach_cgv;el.attach_portfolio.checked=!!d.attach_portfolio;
     form.dataset.clientId=d.client_id||'';
+    setMode(!!d.simple);
     linesBox.innerHTML='';(d.items||[]).forEach(addLine);
     // A saved message counts as "edited" so reopening never overwrites it.
     el.email_message.value=d.email_message||'';el.email_message.dataset.edited=d.email_message?'1':'';
@@ -338,13 +347,18 @@
   }
   function emptyDevis(){
     var exempt=!!settings.vat_exempt;
-    return{language:'fr',issue_date:todayIso(),valid_until:addDays(todayIso(),num(settings.validity_days)||30),items:[],discount_percent:0,vat_exempt:exempt,vat_rate:exempt?0:(settings.default_vat_rate==null?20:num(settings.default_vat_rate)),deposit_percent:num(settings.default_deposit_percent),payment_terms:settings.default_payment_terms||'',notes:settings.default_notes||'',cover_page:!!settings.default_cover_page,attach_cgv:!!settings.default_attach_cgv&&!!settings.cgv_url,attach_portfolio:false,reminders_enabled:true};
+    return{simple:settings.default_simple!==false,language:'fr',issue_date:todayIso(),valid_until:addDays(todayIso(),num(settings.validity_days)||30),items:[],discount_percent:0,vat_exempt:exempt,vat_rate:exempt?0:(settings.default_vat_rate==null?20:num(settings.default_vat_rate)),deposit_percent:num(settings.default_deposit_percent),payment_terms:settings.default_payment_terms||'',notes:settings.default_notes||'',cover_page:!!settings.default_cover_page,attach_cgv:!!settings.default_attach_cgv&&!!settings.cgv_url,attach_portfolio:false,reminders_enabled:true};
   }
 
   // ── Email text (auto-written until the admin edits it) ─────────────
   function defaultSubject(d,number){return d.language==='en'?'Your quote '+number+' — '+companyName():'Votre devis '+number+' — '+companyName();}
   function defaultMessage(d,number){
     var t=computeTotals(d),lang=d.language,valid=formatDate(d.valid_until,lang);
+    if(d.simple){
+      return lang==='en'
+        ?['Please find attached our quote no. '+number+(d.title?' for “'+d.title+'”':'')+'.','Total: '+money(t.ttc,lang)+'.'+(valid?'\nThis quote is valid until '+valid+'.':''),'You can review and sign it online in one click with the button below. Happy to answer any question.','Speak soon,\nThe '+companyName()+' team'].join('\n\n')
+        :['Veuillez trouver ci-joint notre devis n° '+number+(d.title?' pour « '+d.title+' »':'')+'.','Montant total : '+money(t.ttc,lang)+'.'+(valid?'\nCe devis est valable jusqu’au '+valid+'.':''),'Vous pouvez le consulter et le signer en ligne en un clic grâce au bouton ci-dessous. Nous restons à votre disposition pour toute question.','À très bientôt,\nL’équipe '+companyName()].join('\n\n');
+    }
     if(lang==='en'){
       return ['Please find attached our quote no. '+number+(d.title?' for “'+d.title+'”':'')+'.',
         'Total: '+money(t.ttc,lang)+(d.vat_exempt?' (VAT not applicable)':' incl. VAT ('+money(t.totalHt,lang)+' excl. VAT)')+'.'+(t.monthlyTotal?'\nIncluding '+money(t.monthlyPerMonth,lang)+' excl. VAT per month.':'')+(t.deposit?'\nA '+percent(d.deposit_percent,lang)+' deposit ('+money(t.deposit,lang)+') is due on signature.':'')+(valid?'\nThis quote is valid until '+valid+'.':''),
@@ -367,6 +381,9 @@
       row.querySelector('[data-f="total"]').value=get('unit_price')===''?'':autoLineTotal({quantity:get('quantity'),unit_price:get('unit_price'),discount_percent:get('discount_percent')}).toFixed(2);
     });
     linesEmpty.hidden=linesBox.children.length>0;
+    if(d.simple){
+      summary.innerHTML='<dt class="is-total">Total</dt><dd class="is-total">'+escapeHtml(money(t.ttc,lang))+'</dd>';
+    }else{
     var rows=[['Subtotal HT',money(t.subtotal,lang)]];
     if(t.discount)rows.push(['Discount ('+percent(d.discount_percent,lang)+')','− '+money(t.discount,lang)],['Total HT',money(t.totalHt,lang)]);
     rows.push([d.vat_exempt?'VAT (not applicable)':'VAT ('+percent(d.vat_rate,lang)+')',money(t.vat,lang)]);
@@ -375,6 +392,7 @@
       +(t.deposit?'<dt>Deposit on signature ('+escapeHtml(percent(d.deposit_percent,lang))+')</dt><dd>'+escapeHtml(money(t.deposit,lang))+'</dd>':'')
       +(t.monthlyTotal?'<dt>One-off + monthly</dt><dd>'+escapeHtml(money(t.once,lang)+' + '+money(t.monthlyPerMonth,lang)+' / mois')+' HT</dd>':'')
       +(t.options?'<dt>Options (not counted)</dt><dd>'+escapeHtml(money(t.options,lang))+' HT</dd>':'');
+    }
     var number=currentNumber(),el=form.elements;
     if(!el.email_message.dataset.edited)el.email_message.value=defaultMessage(d,number);
     if(!el.email_subject.dataset.edited)el.email_subject.value=defaultSubject(d,number);
@@ -798,13 +816,13 @@
 
   // ── Settings dialog ─────────────────────────────────────────────
   var SETTINGS_TEXT=['legal_name','legal_form','address','siret','vat_number','email','phone','website','iban','bic','number_prefix','vat_exempt_mention','default_payment_terms','default_notes','cgv_url','portfolio_pdf_url','notify_email','invoice_prefix','invoice_legal_text'];
-  var SETTINGS_NUMBERS=['validity_days','default_vat_rate','default_deposit_percent','reminder_days','expiry_reminder_days','invoice_payment_days'];
-  var SETTINGS_BOOLS=['vat_exempt','default_cover_page','default_attach_cgv'];
+  var SETTINGS_NUMBERS=['number_start','validity_days','default_vat_rate','default_deposit_percent','reminder_days','expiry_reminder_days','invoice_payment_days'];
+  var SETTINGS_BOOLS=['default_simple','vat_exempt','default_cover_page','default_attach_cgv'];
   function openSettings(){
     if(!loaded){message(listMessage,'Still loading — try again in a moment.');return;}
     var el=settingsForm.elements;
     SETTINGS_TEXT.concat(SETTINGS_NUMBERS).forEach(function(key){el[key].value=settings[key]==null?'':settings[key];});
-    SETTINGS_BOOLS.forEach(function(key){el[key].checked=!!settings[key];});
+    SETTINGS_BOOLS.forEach(function(key){el[key].checked=key==='default_simple'?settings[key]!==false:!!settings[key];});
     el.accent_color.value=/^#[0-9a-f]{6}$/i.test(settings.accent_color||'')?settings.accent_color:'#f2c94c';
     el.portfolio_images.value=(Array.isArray(settings.portfolio_images)?settings.portfolio_images:[]).join('\n');
     message(settingsMessage,'');settingsDialog.showModal();
@@ -821,6 +839,7 @@
     if(!payload.invoice_prefix)payload.invoice_prefix='FAC';
     if(!payload.vat_exempt_mention)payload.vat_exempt_mention='TVA non applicable, art. 293 B du CGI';
     if(payload.validity_days<1)payload.validity_days=30;
+    payload.number_start=Math.max(1,Math.round(payload.number_start||1));
     if(payload.reminder_days<1)payload.reminder_days=5;
     if(payload.expiry_reminder_days<1)payload.expiry_reminder_days=3;
     var button=settingsForm.querySelector('button[type="submit"]');button.disabled=true;message(settingsMessage,'Saving…');
@@ -885,6 +904,7 @@
     refreshEditor();
   });
   form.addEventListener('change',function(event){if(event.target.matches('select,input[type="checkbox"]')&&event.target!==sourceSelect&&event.target!==templateSelect&&event.target!==servicePick)refreshEditor();});
+  form.querySelectorAll('input[name="devis_mode"]').forEach(function(radio){radio.addEventListener('change',function(){setMode(radio.value==='simple');refreshEditor();});});
   sourceSelect.addEventListener('change',function(){if(sourceSelect.value)applySource(sourceSelect.value);});
   templateSelect.addEventListener('change',function(){if(templateSelect.value)applyTemplate(templateSelect.value);});
   $('[data-devis-template-save]').addEventListener('click',saveTemplate);
