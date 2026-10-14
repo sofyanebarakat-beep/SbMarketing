@@ -1,0 +1,90 @@
+/* Shared homepage layout safeguards for the French and English versions. */
+.page-wrapper,
+.main-wrapper {
+  min-width: 0;
+  overflow-x: clip;
+}
+
+.page-wrapper img,
+.page-wrapper video,
+.page-wrapper iframe {
+  max-width: 100%;
+}
+
+.case-studies_component,
+.case-studies_main-wrapper,
+.case-studies_list-wrapper,
+.layout393_component,
+.layout393_row,
+.layout393_row > * {
+  min-width: 0;
+}
+
+@media screen and (max-width: 767px) {
+  .header30_content {
+    min-height: min(50rem, 100svh);
+    padding-top: 7rem;
+  }
+
+  .max-width-hero,
+  .heading-style-hero {
+    overflow-wrap: anywhere;
+  }
+
+  .hero-tagline {
+    max-width: 100%;
+    line-height: 1.25;
+    white-space: normal;
+  }
+
+  .layout393_component {
+    margin-top: -8rem;
+  }
+
+  .layout393_card-small,
+  .layout393_card-large-horizontal,
+  .layout393_card-large-vertical {
+    border-radius: 2rem;
+  }
+
+  .case-studies_-top {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .header30_content {
+    min-height: min(44rem, 100svh);
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .heading-style-hero {
+    font-size: clamp(2.25rem, 11vw, 3rem);
+    letter-spacing: -0.06rem;
+  }
+
+  .hero-tagline {
+    border-radius: 1.25rem;
+    padding: 0.65rem 0.9rem;
+  }
+
+  .layout393_component {
+    margin-top: -5rem;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .layout393_card-small,
+  .layout393_card-large-horizontal,
+  .layout393_card-large-vertical {
+    border-width: 0.3rem;
+    border-radius: 1.5rem;
+  }
+
+  .special-button {
+    max-width: 100%;
+  }
+}

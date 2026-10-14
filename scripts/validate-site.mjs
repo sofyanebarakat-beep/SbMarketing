@@ -103,6 +103,66 @@ const files = walk(root);
 const scannedFiles = files.filter((file) => scannedExtensions.has(path.extname(file)));
 const missing = [];
 
+function templateSignature(content) {
+  const body = content.match(/<body\b[^>]*>([\s\S]*?)<\/body>/i)?.[1] ?? content;
+  const signature = [];
+  const tagPattern = /<\/?([a-z][a-z0-9-]*)\b([^>]*)>/gi;
+  let match;
+
+  while ((match = tagPattern.exec(body)) !== null) {
+    const raw = match[0];
+    const closing = raw.startsWith("</");
+    const tag = match[1].toLowerCase();
+    if (["script", "noscript"].includes(tag)) continue;
+    if (closing) {
+      signature.push(`/${tag}`);
+      continue;
+    }
+
+    const classes = match[2].match(/\bclass=["']([^"']*)["']/i)?.[1]
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean)
+      .sort()
+      .join(".") ?? "";
+    signature.push(classes ? `${tag}.${classes}` : tag);
+  }
+
+  return signature;
+}
+
+function validateLocalizedHomepageParity() {
+  const frenchPath = path.join(root, "index.html");
+  const englishPath = path.join(root, "en", "index.html");
+  const french = fs.readFileSync(frenchPath, "utf8");
+  const english = fs.readFileSync(englishPath, "utf8");
+  const errors = [];
+
+  for (const [language, content] of [["French", french], ["English", english]]) {
+    if (!/<meta\s+[^>]*name=["']viewport["'][^>]*content=["'][^"']*width=device-width/i.test(content) &&
+        !/<meta\s+[^>]*content=["'][^"']*width=device-width[^"']*["'][^>]*name=["']viewport["']/i.test(content)) {
+      errors.push(`${language} homepage is missing a mobile viewport meta tag.`);
+    }
+    if (!/href=["']\/css\/home-responsive\.css["']/.test(content)) {
+      errors.push(`${language} homepage is missing the shared responsive stylesheet.`);
+    }
+  }
+
+  const frenchSignature = templateSignature(french);
+  const englishSignature = templateSignature(english);
+  if (frenchSignature.join("\n") !== englishSignature.join("\n")) {
+    const limit = Math.max(frenchSignature.length, englishSignature.length);
+    let difference = 0;
+    while (difference < limit && frenchSignature[difference] === englishSignature[difference]) difference += 1;
+    errors.push(
+      `French and English homepage templates differ at element ${difference + 1}: ` +
+      `${frenchSignature[difference] ?? "<missing>"} vs ${englishSignature[difference] ?? "<missing>"}.`
+    );
+  }
+
+  return errors;
+}
+
 for (const file of scannedFiles) {
   const content = fs.readFileSync(file, "utf8");
   const contentWithoutDisabledHtml = path.extname(file) === ".html"
@@ -131,4 +191,11 @@ if (missing.length > 0) {
   process.exit(1);
 }
 
-console.log(`Validated ${scannedFiles.length} source files. No missing local assets found.`);
+const homepageErrors = validateLocalizedHomepageParity();
+if (homepageErrors.length > 0) {
+  console.error("Localized homepage validation failed:");
+  for (const error of homepageErrors) console.error(`- ${error}`);
+  process.exit(1);
+}
+
+console.log(`Validated ${scannedFiles.length} source files, homepage template parity, and mobile support.`);
