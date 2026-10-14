@@ -421,6 +421,21 @@ html.w-mod-js:not(.w-mod-ix3) .callouts-wrapper [data-wf-target],
     margin-bottom: 1.5rem;
   }
 
+  .layout408_image-wrapper .div-block-24,
+  .layout408_image-wrapper .div-block-24.alt {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 0.65rem;
+    inset: 0.75rem auto auto 0.75rem;
+  }
+
+  .layout408_image-wrapper .div-block-24 .heading-style-h2 {
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1;
+    letter-spacing: 0;
+  }
+
   .latest-project-card__content h3 {
     font-size: 1rem;
   }
