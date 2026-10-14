@@ -28,6 +28,19 @@
   max-width: 48rem;
 }
 
+/* Prevent the legacy Webflow markup from flashing before enhancements mount. */
+.sb-home-enhance .section_case-studies:not(.sectors-section),
+.sb-home-enhance #w-node-c7205946-1fc5-f34e-333d-506597463021-f88eecce:not(.latest-project-card) {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+.sb-home-enhance .section_case-studies.sectors-section,
+.sb-home-enhance #w-node-c7205946-1fc5-f34e-333d-506597463021-f88eecce.latest-project-card {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
 html.w-mod-js:not(.w-mod-ix3) .callouts-wrapper [data-wf-target],
 .callouts-wrapper [data-wf-target] {
   opacity: 1 !important;
