@@ -29,6 +29,24 @@
       type: "Website · Local visibility",
       description: "A clear digital presence that makes local vehicle services easy to discover.",
       href: "/en/projets/edmondgarage.html"
+    },
+    {
+      title: "Find Forsa",
+      type: "Web platform · Education",
+      description: "An accessible learning platform designed to guide users toward new opportunities.",
+      href: "/en/projets/findforsa.html"
+    },
+    {
+      title: "247Pay",
+      type: "Fintech · Digital experience",
+      description: "A clear digital presentation for a modern B2B payment solution.",
+      href: "/en/projets/247pay.html"
+    },
+    {
+      title: "Climanova Energie",
+      type: "Website · Lead generation",
+      description: "A conversion-focused website for an energy and home-services specialist.",
+      href: "/en/projets/climanovaenergie.html"
     }
   ] : [
     {
@@ -54,17 +72,35 @@
       type: "Site web · Visibilité locale",
       description: "Une présence digitale claire pour rendre les services automobiles faciles à trouver.",
       href: "/projets/edmondgarage.html"
+    },
+    {
+      title: "Find Forsa",
+      type: "Plateforme web · Éducation",
+      description: "Une plateforme d’apprentissage accessible conçue pour guider vers de nouvelles opportunités.",
+      href: "/projets/findforsa.html"
+    },
+    {
+      title: "247Pay",
+      type: "Fintech · Expérience digitale",
+      description: "Une présentation digitale claire pour une solution de paiement B2B moderne.",
+      href: "/projets/247pay.html"
+    },
+    {
+      title: "Climanova Energie",
+      type: "Site web · Génération de leads",
+      description: "Un site orienté conversion pour un spécialiste de l’énergie et des services habitat.",
+      href: "/projets/climanovaenergie.html"
     }
   ];
   var labels = english ? {
     eyebrow: "Latest projects",
     action: "View project",
-    count: "4 projects",
+    count: "7 projects",
     region: "Latest projects"
   } : {
     eyebrow: "Derniers projets",
     action: "Voir le projet",
-    count: "4 projets",
+    count: "7 projets",
     region: "Derniers projets"
   };
 
