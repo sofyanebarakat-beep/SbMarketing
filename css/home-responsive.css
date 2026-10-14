@@ -69,6 +69,90 @@ html.w-mod-js:not(.w-mod-ix3) .callouts-wrapper [data-wf-target],
   margin-top: 3.5rem;
 }
 
+.sectors-slider {
+  margin-top: 3.5rem;
+}
+
+.sectors-slider__viewport {
+  display: grid;
+  overflow: hidden;
+}
+
+.sectors-slider__slide {
+  grid-area: 1 / 1;
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.sectors-slider__slide.is-active {
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+}
+
+.sectors-slider__slide.is-active.from-next {
+  animation: sectors-slide-next 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.sectors-slider__slide.is-active.from-previous {
+  animation: sectors-slide-previous 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.sectors-slider .sectors-grid {
+  margin-top: 0;
+}
+
+.sectors-slider__controls {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+}
+
+.sectors-slider__page {
+  color: rgba(4, 16, 32, 0.55);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.sectors-slider__controls > div {
+  display: flex;
+  gap: 0.65rem;
+}
+
+.sectors-slider__button {
+  align-items: center;
+  background: #041020;
+  border: 0;
+  border-radius: 999px;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 1.25rem;
+  height: 3rem;
+  justify-content: center;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  width: 3rem;
+}
+
+.sectors-slider__button:hover,
+.sectors-slider__button:focus-visible {
+  background: #2b73ff;
+  transform: translateY(-0.1rem);
+}
+
+@keyframes sectors-slide-next {
+  from { opacity: 0; transform: translateX(2rem); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes sectors-slide-previous {
+  from { opacity: 0; transform: translateX(-2rem); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
 .sectors-grid__item {
   border-bottom: 1px solid rgba(4, 16, 32, 0.18);
   min-height: 10rem;
@@ -302,6 +386,9 @@ html.w-mod-js:not(.w-mod-ix3) .callouts-wrapper [data-wf-target],
 
   .sectors-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sectors-slider {
     margin-top: 2.5rem;
   }
 
@@ -399,5 +486,10 @@ html.w-mod-js:not(.w-mod-ix3) .callouts-wrapper [data-wf-target],
 
   .latest-project-card__progress {
     display: none;
+  }
+
+  .sectors-slider__slide.is-active.from-next,
+  .sectors-slider__slide.is-active.from-previous {
+    animation: none;
   }
 }
