@@ -251,4 +251,16 @@
   }
   window.addEventListener("scroll", updateHeader, { passive: true });
   updateHeader();
+
+  Array.prototype.forEach.call(document.querySelectorAll(".sb-footer-contact__social"), function (socialLinks) {
+    if (socialLinks.querySelector('[aria-label="Behance"]')) return;
+    var behanceLink = document.createElement("a");
+    behanceLink.href = "https://www.behance.net/soufianebarakat";
+    behanceLink.className = "sb-footer-contact__icon";
+    behanceLink.target = "_blank";
+    behanceLink.rel = "noopener noreferrer";
+    behanceLink.setAttribute("aria-label", "Behance");
+    behanceLink.innerHTML = '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><text x="2" y="17" fill="currentColor" font-family="Arial, sans-serif" font-size="14" font-weight="700">Bē</text></svg>';
+    socialLinks.appendChild(behanceLink);
+  });
 })();
