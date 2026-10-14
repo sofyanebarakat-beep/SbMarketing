@@ -67,65 +67,69 @@
   var labels = english ? {
     eyebrow: "Latest projects",
     action: "View project",
-    region: "Latest projects carousel"
+    count: "4 projects",
+    region: "Latest projects"
   } : {
     eyebrow: "Derniers projets",
     action: "Voir le projet",
-    region: "Carrousel des derniers projets"
+    count: "4 projets",
+    region: "Derniers projets"
   };
 
-  function projectMarkup(project, index) {
-    return '<article class="latest-project-card__slide' + (index === 0 ? ' is-active' : '') + '" data-project-slide="' + index + '" aria-hidden="' + (index === 0 ? 'false' : 'true') + '">' +
-      '<div class="latest-project-card__content">' +
-        '<div class="latest-project-card__identity"><span class="latest-project-card__logo"><img src="' + project.image + '" alt="" loading="lazy"></span><div><p class="latest-project-card__type">' + project.type + '</p><h3>' + project.title + '</h3></div></div>' +
-        '<p class="latest-project-card__description">' + project.description + '</p>' +
-        '<a href="' + project.href + '">' + labels.action + '<span aria-hidden="true">↗</span></a>' +
-      '</div>' +
+  function projectMarkup(project, index, clone) {
+    return '<article class="latest-project-card__item" data-project-item="' + index + '"' + (clone ? ' aria-hidden="true"' : '') + '>' +
+      '<span class="latest-project-card__logo"><img src="' + project.image + '" alt="" loading="lazy"></span>' +
+      '<div class="latest-project-card__content"><p class="latest-project-card__type">' + project.type + '</p><h3>' + project.title + '</h3><p class="latest-project-card__description">' + project.description + '</p></div>' +
+      '<a class="latest-project-card__link" href="' + project.href + '" aria-label="' + labels.action + ' — ' + project.title + '"' + (clone ? ' tabindex="-1"' : '') + '><span>' + labels.action + '</span><b aria-hidden="true">↗</b></a>' +
     '</article>';
   }
 
   card.classList.add("latest-project-card");
-  card.innerHTML = '<div class="latest-project-card__header"><span>' + labels.eyebrow + '</span><span class="latest-project-card__counter" aria-live="polite">01 / 0' + projects.length + '</span></div>' +
-    '<div class="latest-project-card__stack" role="region" aria-label="' + labels.region + '">' + projects.map(projectMarkup).join("") + '</div>' +
-    '<div class="latest-project-card__progress" aria-hidden="true"><span></span></div>';
+  card.innerHTML = '<div class="latest-project-card__header"><span>' + labels.eyebrow + '</span><span>' + labels.count + '</span></div>' +
+    '<div class="latest-project-card__viewport" role="region" aria-label="' + labels.region + '"><div class="latest-project-card__track">' +
+      projects.map(function (project, index) { return projectMarkup(project, index, false); }).join("") +
+      projects.slice(0, 3).map(function (project, index) { return projectMarkup(project, index, true); }).join("") +
+    '</div></div>';
 
-  var slides = Array.prototype.slice.call(card.querySelectorAll("[data-project-slide]"));
-  var counter = card.querySelector(".latest-project-card__counter");
-  var progress = card.querySelector(".latest-project-card__progress span");
+  var track = card.querySelector(".latest-project-card__track");
+  var firstItem = card.querySelector(".latest-project-card__item");
   var current = 0;
   var timer;
+  var resetTimer;
 
-  function show(index) {
-    current = index;
-    slides.forEach(function (slide, slideIndex) {
-      var active = slideIndex === current;
-      slide.classList.toggle("is-active", active);
-      slide.setAttribute("aria-hidden", active ? "false" : "true");
-      var link = slide.querySelector("a");
-      if (link) link.tabIndex = active ? 0 : -1;
-    });
-    counter.textContent = "0" + (current + 1) + " / 0" + slides.length;
-    progress.classList.remove("is-running");
-    void progress.offsetWidth;
-    progress.classList.add("is-running");
+  function setPosition(animate) {
+    var rowHeight = firstItem.getBoundingClientRect().height;
+    track.style.transition = animate ? "transform 0.65s cubic-bezier(0.22, 1, 0.36, 1)" : "none";
+    track.style.transform = "translate3d(0," + (-current * rowHeight) + "px,0)";
+  }
+
+  function advance() {
+    current += 1;
+    setPosition(true);
+    if (current === projects.length) {
+      window.clearTimeout(resetTimer);
+      resetTimer = window.setTimeout(function () {
+        current = 0;
+        setPosition(false);
+      }, 680);
+    }
   }
 
   function start() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     window.clearInterval(timer);
-    timer = window.setInterval(function () { show((current + 1) % slides.length); }, 4500);
-    progress.classList.add("is-running");
+    timer = window.setInterval(advance, 3200);
   }
 
   function stop() {
     window.clearInterval(timer);
-    progress.classList.remove("is-running");
   }
 
   card.addEventListener("mouseenter", stop);
   card.addEventListener("mouseleave", start);
   card.addEventListener("focusin", stop);
   card.addEventListener("focusout", start);
-  show(0);
+  window.addEventListener("resize", function () { setPosition(false); }, { passive: true });
+  setPosition(false);
   start();
 })();
