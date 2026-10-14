@@ -10,44 +10,58 @@
       title: "Boucherie Dounia",
       type: "Website · Brand identity",
       description: "A modern local website designed to build trust and drive store visits.",
-      image: "/images/boucheriedounia-project-cover.svg",
+      image: "/images/boucheriedounia/logo-white.png",
       href: "/en/projets/boucheriedounia.html"
     },
     {
       title: "Outreach Recruitment",
       type: "Website · Recruitment platform",
       description: "A complete digital experience built to attract candidates and employers.",
-      image: "/images/outreach-project-cover.svg",
+      image: "/images/outreach-mark.svg",
       href: "/en/projets/outreachrecruitment.html"
     },
     {
       title: "Outreach Recruitment App",
       type: "Web application · Product design",
       description: "A streamlined recruitment app for managing talent and opportunities.",
-      image: "/images/outreachrecruitmentapp-project-cover.svg",
+      image: "/images/outreach-mark.svg",
       href: "/en/projets/outreachrecruitmentapp.html"
+    },
+    {
+      title: "Edmond Garage",
+      type: "Website · Local visibility",
+      description: "A clear digital presence that makes local vehicle services easy to discover.",
+      image: "/images/edmondgarage-logo-white.png",
+      href: "/en/projets/edmondgarage.html"
     }
   ] : [
     {
       title: "Boucherie Dounia",
       type: "Site web · Identité visuelle",
       description: "Un site local moderne conçu pour inspirer confiance et générer des visites.",
-      image: "/images/boucheriedounia-project-cover.svg",
+      image: "/images/boucheriedounia/logo-white.png",
       href: "/projets/boucheriedounia.html"
     },
     {
       title: "Outreach Recruitment",
       type: "Site web · Plateforme de recrutement",
       description: "Une expérience digitale complète pour attirer candidats et entreprises.",
-      image: "/images/outreach-project-cover.svg",
+      image: "/images/outreach-mark.svg",
       href: "/projets/outreachrecruitment.html"
     },
     {
       title: "Outreach Recruitment App",
       type: "Application web · Design produit",
       description: "Une application de recrutement fluide pour gérer talents et opportunités.",
-      image: "/images/outreachrecruitmentapp-project-cover.svg",
+      image: "/images/outreach-mark.svg",
       href: "/projets/outreachrecruitmentapp.html"
+    },
+    {
+      title: "Edmond Garage",
+      type: "Site web · Visibilité locale",
+      description: "Une présence digitale claire pour rendre les services automobiles faciles à trouver.",
+      image: "/images/edmondgarage-logo-white.png",
+      href: "/projets/edmondgarage.html"
     }
   ];
   var labels = english ? {
@@ -62,10 +76,8 @@
 
   function projectMarkup(project, index) {
     return '<article class="latest-project-card__slide' + (index === 0 ? ' is-active' : '') + '" data-project-slide="' + index + '" aria-hidden="' + (index === 0 ? 'false' : 'true') + '">' +
-      '<div class="latest-project-card__visual"><img src="' + project.image + '" alt="' + project.title + ' — ' + project.type + '" loading="lazy"></div>' +
       '<div class="latest-project-card__content">' +
-        '<p class="latest-project-card__type">' + project.type + '</p>' +
-        '<h3>' + project.title + '</h3>' +
+        '<div class="latest-project-card__identity"><span class="latest-project-card__logo"><img src="' + project.image + '" alt="" loading="lazy"></span><div><p class="latest-project-card__type">' + project.type + '</p><h3>' + project.title + '</h3></div></div>' +
         '<p class="latest-project-card__description">' + project.description + '</p>' +
         '<a href="' + project.href + '">' + labels.action + '<span aria-hidden="true">↗</span></a>' +
       '</div>' +
