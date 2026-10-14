@@ -6,10 +6,10 @@
 User-agent: *
 Allow: /
 
-# Block non-content assets that should not be indexed
-Disallow: /js/
-Disallow: /css/
-Disallow: /media/
+# Allow assets required to render and understand the site
+Allow: /js/
+Allow: /css/
+Allow: /media/
 
 # Block legal pages from being crawled with query params
 Disallow: /*?*
@@ -29,21 +29,30 @@ Allow: /images/
 User-agent: Bingbot
 Allow: /
 
-# ── Block AI scrapers ────────────────────────────────────────────────
+# ── AI search and answer engines ────────────────────────────────────
 User-agent: GPTBot
-Disallow: /
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
 
 User-agent: ChatGPT-User
-Disallow: /
+Allow: /
 
 User-agent: CCBot
-Disallow: /
+Allow: /
 
 User-agent: anthropic-ai
-Disallow: /
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
 
 User-agent: Google-Extended
-Disallow: /
+Allow: /
 
 # ── Sitemap ──────────────────────────────────────────────────────────
 Sitemap: https://www.sbmarketing.fr/sitemap.xml

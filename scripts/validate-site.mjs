@@ -163,6 +163,37 @@ function validateLocalizedHomepageParity() {
   return errors;
 }
 
+function validateHomepageSeo() {
+  const errors = [];
+  const pages = [
+    ["French", path.join(root, "index.html"), "fr"],
+    ["English", path.join(root, "en", "index.html"), "en"]
+  ];
+
+  for (const [label, file, language] of pages) {
+    const content = fs.readFileSync(file, "utf8");
+    const h1Count = (content.match(/<h1\b/gi) ?? []).length;
+    const canonicalCount = (content.match(/<link\b[^>]*rel=["']canonical["']/gi) ?? []).length;
+    const alternateCount = (content.match(/hreflang=["'](?:fr|en|x-default)["']/gi) ?? []).length;
+
+    if (h1Count !== 1) errors.push(`${label} homepage must contain exactly one H1; found ${h1Count}.`);
+    if (canonicalCount !== 1) errors.push(`${label} homepage must contain exactly one canonical URL; found ${canonicalCount}.`);
+    if (alternateCount !== 3) errors.push(`${label} homepage must contain fr, en, and x-default hreflang links.`);
+    if (!new RegExp(`<html[^>]+lang=["']${language}`, "i").test(content)) errors.push(`${label} homepage has an incorrect HTML language.`);
+    if (!/\/js\/homepage-seo\.js/.test(content)) errors.push(`${label} homepage is missing the shared SEO enhancement script.`);
+
+    for (const match of content.matchAll(/<script type=["']application\/ld\+json["']>([\s\S]*?)<\/script>/gi)) {
+      try {
+        JSON.parse(match[1]);
+      } catch {
+        errors.push(`${label} homepage contains invalid JSON-LD.`);
+      }
+    }
+  }
+
+  return errors;
+}
+
 for (const file of scannedFiles) {
   const content = fs.readFileSync(file, "utf8");
   const contentWithoutDisabledHtml = path.extname(file) === ".html"
@@ -198,4 +229,11 @@ if (homepageErrors.length > 0) {
   process.exit(1);
 }
 
-console.log(`Validated ${scannedFiles.length} source files, homepage template parity, and mobile support.`);
+const seoErrors = validateHomepageSeo();
+if (seoErrors.length > 0) {
+  console.error("Homepage SEO validation failed:");
+  for (const error of seoErrors) console.error(`- ${error}`);
+  process.exit(1);
+}
+
+console.log(`Validated ${scannedFiles.length} source files, homepage parity, mobile support, and SEO essentials.`);

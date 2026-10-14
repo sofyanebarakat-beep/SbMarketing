@@ -20,6 +20,14 @@
   min-width: 0;
 }
 
+.hero-seo-intro {
+  color: rgba(255, 255, 255, 0.76);
+  font-size: clamp(1rem, 1.6vw, 1.2rem);
+  line-height: 1.55;
+  margin: 1.5rem auto 0;
+  max-width: 48rem;
+}
+
 html.w-mod-js:not(.w-mod-ix3) .callouts-wrapper [data-wf-target],
 .callouts-wrapper [data-wf-target] {
   opacity: 1 !important;
