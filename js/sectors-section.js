@@ -9,33 +9,35 @@
     eyebrow: "Sectors",
     title: "Experience across the sectors that drive your growth.",
     intro: "A focused view of the industries where we already deliver digital projects.",
-    metric: "projects",
+    metric: ["project", "projects"],
     sectors: [
       ["Recruitment", 3],
       ["Local commerce", 5],
       ["Fintech", 2],
       ["B2B technology", 3],
       ["Beauty & lifestyle", 2],
-      ["Energy & home services", 2]
+      ["Energy & home services", 2],
+      ["Automotive", 1]
     ]
   } : {
     eyebrow: "Secteurs",
     title: "Une expérience dans les secteurs qui font grandir votre activité.",
     intro: "Un aperçu ciblé des secteurs dans lesquels nous avons déjà livré des projets digitaux.",
-    metric: "projets",
+    metric: ["projet", "projets"],
     sectors: [
       ["Recrutement", 3],
       ["Commerce local", 5],
       ["Fintech", 2],
       ["Technologie B2B", 3],
       ["Beauté & lifestyle", 2],
-      ["Énergie & services habitat", 2]
+      ["Énergie & services habitat", 2],
+      ["Automobile", 1]
     ]
   };
 
   function sectorCard(item, index) {
     var count = item[1];
-    var metric = count + " " + content.metric;
+    var metric = count + " " + content.metric[count === 1 ? 0 : 1];
     return '<article class="sectors-grid__item">' +
       '<span class="sectors-grid__index" aria-hidden="true">0' + (index + 1) + '</span>' +
       '<h3>' + item[0] + '</h3>' +
