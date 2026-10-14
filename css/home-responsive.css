@@ -20,6 +20,84 @@
   min-width: 0;
 }
 
+html.w-mod-js:not(.w-mod-ix3) .callouts-wrapper [data-wf-target],
+.callouts-wrapper [data-wf-target] {
+  opacity: 1 !important;
+  transform: none !important;
+  visibility: visible !important;
+}
+
+.sectors-section {
+  background: #f4f5f2;
+}
+
+.sectors-section__inner {
+  padding: 7rem 0;
+}
+
+.sectors-section__heading {
+  max-width: 48rem;
+}
+
+.sectors-section__heading h2 {
+  font-size: clamp(2.4rem, 5vw, 4.5rem);
+  letter-spacing: -0.055em;
+  line-height: 0.98;
+  margin: 1.25rem 0 1rem;
+}
+
+.sectors-section__heading > p {
+  color: rgba(4, 16, 32, 0.65);
+  font-size: 1.05rem;
+  line-height: 1.55;
+  margin: 0;
+  max-width: 39rem;
+}
+
+.sectors-grid {
+  border-top: 1px solid rgba(4, 16, 32, 0.18);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 3.5rem;
+}
+
+.sectors-grid__item {
+  border-bottom: 1px solid rgba(4, 16, 32, 0.18);
+  min-height: 10rem;
+  padding: 1.5rem 1.5rem 1.6rem 0;
+  position: relative;
+}
+
+.sectors-grid__item:not(:nth-child(3n + 1)) {
+  border-left: 1px solid rgba(4, 16, 32, 0.18);
+  padding-left: 1.5rem;
+}
+
+.sectors-grid__index {
+  color: rgba(4, 16, 32, 0.38);
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  margin-bottom: 2.5rem;
+}
+
+.sectors-grid__item h3 {
+  font-size: clamp(1.3rem, 2.2vw, 2rem);
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+  margin: 0;
+}
+
+.sectors-grid__item p {
+  color: #2b73ff;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  margin: 0.75rem 0 0;
+  text-transform: uppercase;
+}
+
 .latest-project-card {
   background: #071426;
   color: #fff;
@@ -194,6 +272,24 @@
   .latest-project-card__stack {
     min-height: 26rem;
   }
+
+  .sectors-section__inner {
+    padding: 5rem 0;
+  }
+
+  .sectors-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 2.5rem;
+  }
+
+  .sectors-grid__item:not(:nth-child(3n + 1)) {
+    border-left: 0;
+  }
+
+  .sectors-grid__item:nth-child(even) {
+    border-left: 1px solid rgba(4, 16, 32, 0.18);
+    padding-left: 1.25rem;
+  }
 }
 
 @media screen and (max-width: 479px) {
@@ -244,6 +340,26 @@
   .latest-project-card__progress {
     left: 1rem;
     right: 1rem;
+  }
+
+  .sectors-section__inner {
+    padding: 4rem 0;
+  }
+
+  .sectors-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sectors-grid__item,
+  .sectors-grid__item:nth-child(even),
+  .sectors-grid__item:not(:nth-child(3n + 1)) {
+    border-left: 0;
+    min-height: 0;
+    padding: 1.2rem 0;
+  }
+
+  .sectors-grid__index {
+    margin-bottom: 1.5rem;
   }
 }
 
