@@ -194,6 +194,87 @@ function validateHomepageSeo() {
   return errors;
 }
 
+function pageAssetReferences(content, extension) {
+  return [...content.matchAll(/\b(?:href|src)=["']([^"']+)["']/gi)]
+    .map((match) => match[1].split(/[?#]/)[0])
+    .filter((reference) => reference.endsWith(extension))
+    .map((reference) => reference.replace(/^\.\.\//, "/"))
+    .sort();
+}
+
+function linkAttribute(content, rel, attribute) {
+  const tag = [...content.matchAll(/<link\b[^>]*>/gi)]
+    .map((match) => match[0])
+    .find((candidate) => new RegExp(`\\brel=["']${rel}["']`, "i").test(candidate));
+  return tag?.match(new RegExp(`\\b${attribute}=["']([^"']+)["']`, "i"))?.[1];
+}
+
+function validateLocalizedProjectParity() {
+  const frenchDir = path.join(root, "projets");
+  const englishDir = path.join(root, "en", "projets");
+  const excluded = new Set(["index.html", "template.html"]);
+  const frenchFiles = fs.readdirSync(frenchDir)
+    .filter((file) => file.endsWith(".html") && !excluded.has(file))
+    .sort();
+  const englishFiles = fs.readdirSync(englishDir)
+    .filter((file) => file.endsWith(".html") && !excluded.has(file))
+    .sort();
+  const errors = [];
+
+  if (frenchFiles.join("\n") !== englishFiles.join("\n")) {
+    errors.push("French and English project inventories do not match.");
+    return errors;
+  }
+
+  for (const file of frenchFiles) {
+    const slug = file.replace(/\.html$/, "");
+    const french = fs.readFileSync(path.join(frenchDir, file), "utf8");
+    const english = fs.readFileSync(path.join(englishDir, file), "utf8");
+    const frenchSignature = templateSignature(french);
+    const englishSignature = templateSignature(english);
+
+    if (frenchSignature.join("\n") !== englishSignature.join("\n")) {
+      const limit = Math.max(frenchSignature.length, englishSignature.length);
+      let difference = 0;
+      while (difference < limit && frenchSignature[difference] === englishSignature[difference]) difference += 1;
+      errors.push(
+        `${file} templates differ at element ${difference + 1}: ` +
+        `${frenchSignature[difference] ?? "<missing>"} vs ${englishSignature[difference] ?? "<missing>"}.`
+      );
+    }
+
+    for (const extension of [".css", ".js"]) {
+      const frenchAssets = pageAssetReferences(french, extension);
+      const englishAssets = pageAssetReferences(english, extension);
+      if (frenchAssets.join("\n") !== englishAssets.join("\n")) {
+        errors.push(`${file} does not load the same ${extension.slice(1).toUpperCase()} assets in French and English.`);
+      }
+    }
+
+    const pages = [
+      ["French", french, "fr", `https://www.sbmarketing.fr/projets/${slug}`],
+      ["English", english, "en", `https://www.sbmarketing.fr/en/projets/${slug}`]
+    ];
+
+    for (const [label, content, language, canonical] of pages) {
+      if (!new RegExp(`<html[^>]+lang=["']${language}["']`, "i").test(content)) {
+        errors.push(`${label} ${file} has an incorrect HTML language.`);
+      }
+      if (linkAttribute(content, "canonical", "href") !== canonical) {
+        errors.push(`${label} ${file} has an incorrect canonical URL.`);
+      }
+      for (const alternateLanguage of ["fr", "en", "x-default"]) {
+        if (!new RegExp(`<link(?=[^>]*rel=["']alternate["'])(?=[^>]*hreflang=["']${alternateLanguage}["'])`, "i").test(content) &&
+            !new RegExp(`<link(?=[^>]*hreflang=["']${alternateLanguage}["'])(?=[^>]*rel=["']alternate["'])`, "i").test(content)) {
+          errors.push(`${label} ${file} is missing the ${alternateLanguage} hreflang link.`);
+        }
+      }
+    }
+  }
+
+  return errors;
+}
+
 for (const file of scannedFiles) {
   const content = fs.readFileSync(file, "utf8");
   const contentWithoutDisabledHtml = path.extname(file) === ".html"
@@ -236,4 +317,11 @@ if (seoErrors.length > 0) {
   process.exit(1);
 }
 
-console.log(`Validated ${scannedFiles.length} source files, homepage parity, mobile support, and SEO essentials.`);
+const projectErrors = validateLocalizedProjectParity();
+if (projectErrors.length > 0) {
+  console.error("Localized project validation failed:");
+  for (const error of projectErrors) console.error(`- ${error}`);
+  process.exit(1);
+}
+
+console.log(`Validated ${scannedFiles.length} source files, homepage and project parity, mobile support, and SEO essentials.`);
