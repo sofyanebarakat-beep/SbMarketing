@@ -1,7 +1,7 @@
 :root{--orp-navy:#07182d;--orp-blue:#3a38da;--orp-red:#ee3f36;--orp-ink:#15213a;--orp-muted:#657087;--orp-paper:#f4f5fb;--orp-white:#fff}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:var(--orp-white);color:var(--orp-ink);font-family:Arial,Helvetica,sans-serif;-webkit-font-smoothing:antialiased}
+body{margin:0;background:var(--orp-white);color:var(--orp-ink);-webkit-font-smoothing:antialiased}
 .orp-nav{position:absolute;z-index:10;inset:0 0 auto;display:flex;align-items:center;justify-content:space-between;width:min(1180px,calc(100% - 40px));margin:auto;padding:24px 0}
 .orp-logo img{display:block;width:160px;filter:brightness(0) invert(1)}
 .orp-nav__links{display:flex;align-items:center;gap:26px}
