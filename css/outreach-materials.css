@@ -7,6 +7,17 @@
   border: 1px solid rgba(255, 255, 255, .18);
 }
 
+.outreach-materials .outreach-materials__detail-link {
+  color: inherit;
+  text-decoration-thickness: 2px;
+  text-underline-offset: .2em;
+}
+
+.outreach-materials .outreach-materials__detail-link:hover,
+.outreach-materials .outreach-materials__detail-link:focus-visible {
+  color: #ffe500;
+}
+
 .outreach-materials .outreach-materials__combined-media {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
