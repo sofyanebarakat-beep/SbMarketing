@@ -26,35 +26,25 @@
   var index = projects.findIndex(function (project) { return project[0] === slug; });
   if (index < 0) return;
 
-  var current = projects[index];
   var previous = projects[(index - 1 + projects.length) % projects.length];
   var next = projects[(index + 1) % projects.length];
-  var related = projects.filter(function (project, projectIndex) {
-    return projectIndex !== index && project[2].some(function (category) { return current[2].indexOf(category) !== -1; });
-  }).sort(function (a, b) {
-    var scoreA = a[2].filter(function (category) { return current[2].indexOf(category) !== -1; }).length;
-    var scoreB = b[2].filter(function (category) { return current[2].indexOf(category) !== -1; }).length;
-    return scoreB - scoreA;
-  }).slice(0, 3);
+  var others = previous === next ? [next] : [previous, next];
 
   var labels = english ? {
-    back: "Back to filtered results", previous: "Previous project", next: "Next project", related: "Related projects", position: "Project"
+    heading: "Other projects", previous: "Previous project", next: "Next project"
   } : {
-    back: "Retour aux résultats filtrés", previous: "Projet précédent", next: "Projet suivant", related: "Projets similaires", position: "Projet"
+    heading: "Autres projets", previous: "Projet précédent", next: "Projet suivant"
   };
-  var returnUrl = prefix + "/projets/";
-  try {
-    var saved = sessionStorage.getItem("sb-portfolio-return");
-    if (saved && saved.indexOf(prefix + "/projets/") === 0 && saved.indexOf(".html") === -1) returnUrl = saved;
-  } catch (error) {}
   function url(project) { return prefix + "/projets/" + project[0] + ".html"; }
-  function relatedCard(project) {
-    return '<a class="sb-related-project" href="' + url(project) + '"><img src="/images/' + project[3] + '" width="' + (project[4] || 1600) + '" height="' + (project[5] || 1000) + '" loading="lazy" decoding="async" alt=""><span>' + project[1] + '<b aria-hidden="true">↗</b></span></a>';
+  function card(project, label) {
+    return '<a class="sb-related-project" href="' + url(project) + '"><img src="/images/' + project[3] + '" width="' + (project[4] || 1600) + '" height="' + (project[5] || 1000) + '" loading="lazy" decoding="async" alt=""><span><span><small>' + label + '</small>' + project[1] + '</span><b aria-hidden="true">↗</b></span></a>';
   }
   var section = document.createElement("section");
   section.className = "sb-project-navigation";
-  section.setAttribute("aria-label", english ? "Project navigation" : "Navigation entre les projets");
-  section.innerHTML = '<div class="sb-project-navigation__inner"><div class="sb-project-navigation__top"><a class="sb-project-navigation__back" href="' + returnUrl + '">← ' + labels.back + '</a><span class="sb-project-navigation__position">' + labels.position + ' ' + (index + 1) + ' / ' + projects.length + '</span></div><nav class="sb-project-navigation__pager"><a href="' + url(previous) + '"><span aria-hidden="true">←</span><span><small>' + labels.previous + '</small><strong>' + previous[1] + '</strong></span></a><a href="' + url(next) + '"><span><small>' + labels.next + '</small><strong>' + next[1] + '</strong></span><span aria-hidden="true">→</span></a></nav><h2>' + labels.related + '</h2><div class="sb-project-navigation__related">' + related.map(relatedCard).join("") + '</div></div>';
+  section.setAttribute("aria-label", labels.heading);
+  section.innerHTML = '<div class="sb-project-navigation__inner"><h2>' + labels.heading + '</h2><div class="sb-project-navigation__related">' + others.map(function (project) {
+    return card(project, project === previous ? labels.previous : labels.next);
+  }).join("") + '</div></div>';
   var main = document.querySelector("main") || document.querySelector(".main-wrapper");
   if (main) main.appendChild(section);
 })();
