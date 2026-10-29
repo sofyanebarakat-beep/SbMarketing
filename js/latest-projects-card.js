@@ -19,10 +19,10 @@
       href: "/en/projets/outreachrecruitment.html"
     },
     {
-      title: "Outreach Recruitment App",
-      type: "Web application · Product design",
-      description: "A streamlined recruitment app for managing talent and opportunities.",
-      href: "/en/projets/outreachrecruitmentapp.html"
+      title: "Outreach Recruitment Portal",
+      type: "Web application · Recruitment portal",
+      description: "One connected portal for employees, employers, agents and recruiters.",
+      href: "/en/projets/outreachrecruitmentportal"
     },
     {
       title: "Edmond Garage",
@@ -62,10 +62,10 @@
       href: "/projets/outreachrecruitment.html"
     },
     {
-      title: "Outreach Recruitment App",
-      type: "Application web · Design produit",
-      description: "Une application de recrutement fluide pour gérer talents et opportunités.",
-      href: "/projets/outreachrecruitmentapp.html"
+      title: "Portail Outreach Recruitment",
+      type: "Application web · Portail de recrutement",
+      description: "Un portail connecté pour employés, employeurs, agents et recruteurs.",
+      href: "/projets/outreachrecruitmentportal"
     },
     {
       title: "Edmond Garage",
