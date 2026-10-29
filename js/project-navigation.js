@@ -6,7 +6,7 @@
   var prefix = english ? "/en" : "";
   var projects = [
     ["outreachrecruitment", "Outreach Recruitment", ["leads", "websites", "branding", "seo"], "outreach-project-cover.svg", 1440, 810],
-    ["outreachrecruitmentapp", "Outreach Recruitment App", ["webapps"], "outreachrecruitmentapp-project-cover.svg"],
+    ["outreachrecruitmentapp", "Outreach Recruitment App", ["webapps"], "outreachrecruitmentapp-project-cover.png"],
     ["edmondgarage", "Edmond Garage", ["websites", "branding", "seo"], "edmondgarage-project-cover.svg", 1440, 810],
     ["handsonsystems", "HandsOn Systems", ["websites", "branding"], "handsonsystems-project-cover.svg"],
     ["handsonrfid", "Hands On RFID", ["websites", "branding"], "handsonrfid-project-cover.svg"],
