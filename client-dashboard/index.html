@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="/css/client-dashboard.css">
 </head>
 <body>
-  <header class="portal-header"><a href="https://www.sbmarketing.fr" class="portal-brand"><span>SB</span><span>MARKETING</span></a><a href="mailto:contact@sbmarketing.fr" class="portal-contact" data-i18n="help">Need help? <strong>Contact us</strong></a></header>
+  <header class="portal-header"><a href="https://www.sbmarketing.fr" class="portal-brand"><span>SB</span><span>MARKETING</span></a><div class="portal-header__actions"><button type="button" data-print>Save PDF</button><a href="mailto:contact@sbmarketing.fr" class="portal-contact" data-i18n="help">Need help? <strong>Contact us</strong></a></div></header>
   <main class="portal-main">
     <div class="portal-loading" data-portal-loading><span>✦</span><h1>Preparing your dashboard…</h1><p>Loading the latest marketing information.</p></div>
     <div class="portal-error" data-portal-error hidden><span>⚠️</span><h1>Dashboard unavailable</h1><p>This private link is invalid, disabled, or has expired. Please contact SB Marketing for a new link.</p><a href="mailto:contact@sbmarketing.fr">Contact SB Marketing</a></div>
@@ -20,7 +20,10 @@
         <section class="portal-card"><div class="portal-section-head"><div><span class="portal-kicker" data-i18n="priorities">Current priorities</span><h2 data-i18n="actions">Actions this month</h2></div></div><div class="action-list" data-actions></div></section>
         <section class="portal-card plan-card"><div class="portal-section-head"><div><span class="portal-kicker" data-i18n="direction">Where we are going</span><h2 data-i18n="plan">Marketing plan</h2></div></div><div data-plan></div></section>
       </div>
+      <section class="portal-card portal-attention" data-attention-section hidden><div class="portal-section-head"><div><span class="portal-kicker">Needs your attention</span><h2>Approvals and requests</h2></div><p>Only the items that need a decision from you.</p></div><div data-attention></div></section>
       <section class="portal-card"><div class="portal-section-head"><div><span class="portal-kicker" data-i18n="audience">What your audience will see</span><h2 data-i18n="calendar">Content calendar</h2></div><p data-i18n="calendarCopy">Planned content across your active channels.</p></div><div class="calendar-list" data-calendar></div></section>
+      <section class="portal-card"><div class="portal-section-head"><div><span class="portal-kicker">Growth activity</span><h2>Active campaigns</h2></div></div><div class="portal-campaigns" data-campaigns></div></section>
+      <section class="portal-card" data-files-section hidden><div class="portal-section-head"><div><span class="portal-kicker">Shared resources</span><h2>Files and reports</h2></div></div><div class="portal-files" data-files></div></section>
       <section class="portal-cta"><div><span class="portal-kicker" data-i18n="team">Your SB Marketing team</span><h2 data-i18n="idea">Have a new priority or idea?</h2><p data-i18n="ideaCopy">Tell us what is happening in your business so we can adapt the next actions.</p></div><a href="mailto:contact@sbmarketing.fr" data-i18n="contact">Contact the team →</a></section>
     </div>
   </main>

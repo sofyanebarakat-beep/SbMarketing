@@ -28,7 +28,8 @@
       <aside class="admin-sidebar">
         <a href="/" class="admin-sidebar__brand" aria-label="SB Marketing home"><img src="/images/logo-climanova.svg" alt="SB Marketing"></a>
         <nav class="sidebar-nav" aria-label="Admin sections">
-          <a href="#leads" class="sidebar-link is-active" data-tab="leads">
+          <a href="#overview" class="sidebar-link is-active" data-tab="overview"><span class="sidebar-link__icon" aria-hidden="true">⌂</span> Overview</a>
+          <a href="#leads" class="sidebar-link" data-tab="leads">
             <span class="sidebar-link__icon" aria-hidden="true">📥</span> Leads
           </a>
           <a href="#contacts" class="sidebar-link" data-tab="contacts">
@@ -40,12 +41,17 @@
           <a href="#dashboards" class="sidebar-link" data-tab="dashboards">
             <span class="sidebar-link__icon" aria-hidden="true">📊</span> Client dashboards
           </a>
+          <a href="#tasks" class="sidebar-link" data-tab="tasks"><span class="sidebar-link__icon" aria-hidden="true">✓</span> Tasks</a>
+          <a href="#content" class="sidebar-link" data-tab="content"><span class="sidebar-link__icon" aria-hidden="true">🗓</span> Content calendar</a>
+          <a href="#campaigns" class="sidebar-link" data-tab="campaigns"><span class="sidebar-link__icon" aria-hidden="true">◉</span> Campaigns</a>
           <a href="#marketing" class="sidebar-link" data-tab="marketing">
             <span class="sidebar-link__icon" aria-hidden="true">📧</span> Email Marketing
           </a>
           <a href="#devis" class="sidebar-link" data-tab="devis">
             <span class="sidebar-link__icon" aria-hidden="true">🧾</span> Devis
           </a>
+          <a href="#reports" class="sidebar-link" data-tab="reports"><span class="sidebar-link__icon" aria-hidden="true">▤</span> Reports</a>
+          <a href="#assets" class="sidebar-link" data-tab="assets"><span class="sidebar-link__icon" aria-hidden="true">▣</span> Assets</a>
           <a href="#settings" class="sidebar-link" data-tab="settings">
             <span class="sidebar-link__icon" aria-hidden="true">⚙️</span> Settings
           </a>
@@ -57,11 +63,13 @@
 
       <div class="admin-main">
         <header class="admin-header">
-          <div><span class="admin-kicker">SB Marketing</span><h1 data-view-title>Leads</h1><p data-last-update></p></div>
+          <div><span class="admin-kicker">SB Marketing</span><h1 data-view-title>Overview</h1><p data-last-update></p></div>
           <div class="header-actions"><button class="secondary" type="button" data-refresh>Refresh</button><button class="secondary" type="button" data-export>Export CSV</button></div>
         </header>
 
-        <div data-view="leads">
+        <div data-view="overview" class="ops-view"><div data-ops-overview></div></div>
+
+        <div data-view="leads" hidden>
           <div class="stats" aria-label="Lead summary">
             <article><span>Total leads</span><strong data-stat-total>0</strong></article>
             <article><span>New</span><strong data-stat-new>0</strong></article>
@@ -198,6 +206,12 @@
           <div class="portal-grid" data-portals-grid></div>
           <div class="empty" data-portals-empty hidden><h2>No clients yet</h2><p>Add a client first, then their dashboard will appear here.</p></div>
         </div>
+
+        <div data-view="tasks" class="ops-view" hidden><div data-ops-tasks></div></div>
+        <div data-view="content" class="ops-view" hidden><div data-ops-content></div></div>
+        <div data-view="campaigns" class="ops-view" hidden><div data-ops-campaigns></div></div>
+        <div data-view="reports" class="ops-view" hidden><div data-ops-reports></div></div>
+        <div data-view="assets" class="ops-view" hidden><div data-ops-assets></div></div>
 
         <div data-view="devis" hidden>
           <div class="devis-subtabs" role="tablist">
@@ -443,7 +457,7 @@
       <p class="send-dialog__section-title">🗓 Content calendar</p>
       <label>One publication per line<textarea name="calendar" rows="7" placeholder="05 Nov | Instagram | Behind the scenes | Ready\n12 Nov | Google | Customer review | Planned\n19 Nov | Blog | How to choose... | Draft"></textarea></label>
       <p class="field-note">Format: date | channel | topic | status.</p>
-      <div class="form-actions"><button type="submit">Save dashboard</button><button type="button" class="secondary" data-portal-copy>Copy private link</button><a class="portal-open-link" data-portal-open target="_blank" rel="noopener">Open preview ↗</a></div>
+      <div class="form-actions"><button type="submit">Save dashboard</button><button type="button" class="secondary" data-portal-copy>Copy private link</button><button type="button" class="secondary" data-portal-regenerate>Regenerate private link</button><a class="portal-open-link" data-portal-open target="_blank" rel="noopener">Open preview ↗</a></div>
       <p class="form-message" data-portal-form-message aria-live="polite"></p>
     </form>
   </dialog>
@@ -505,6 +519,12 @@
           <label>Language<select name="language"><option value="fr">French</option><option value="en">English</option></select></label>
           <label>Status<select name="status"><option value="active">Active</option><option value="paused">Paused</option></select></label>
         </div>
+        <p class="send-dialog__section-title">Commercial profile</p>
+        <div class="field-grid">
+          <label>Current package<input name="package_name" placeholder="Growth package"></label><label>Services <small>(comma separated)</small><input name="services" placeholder="SEO, Social media, Google Ads"></label><label>Start date<input name="start_date" type="date"></label><label>Monthly price (€)<input name="monthly_price" type="number" step="0.01"></label><label>Account manager<input name="account_manager" placeholder="SB Marketing"></label><label>Next report date<input name="next_report_date" type="date"></label><label>Preferred channel<select name="preferred_channel"><option value="email">Email</option><option value="whatsapp">WhatsApp</option><option value="phone">Phone</option></select></label><label>Main objective<input name="main_objective" placeholder="Generate more qualified leads"></label>
+        </div>
+        <p class="send-dialog__section-title">Useful access links <small>links only—never passwords</small></p>
+        <div class="field-grid"><label>Website<input name="link_website" type="url"></label><label>Google Business Profile<input name="link_google_business" type="url"></label><label>Google Analytics<input name="link_analytics" type="url"></label><label>Search Console<input name="link_search_console" type="url"></label><label>Meta Business Manager<input name="link_meta" type="url"></label><label>Instagram<input name="link_instagram" type="url"></label><label>Facebook<input name="link_facebook" type="url"></label><label>TikTok<input name="link_tiktok" type="url"></label></div>
         <label>Notes<input name="notes"></label>
         <label class="checkbox-field"><input type="checkbox" name="marketing_consent"> Can receive marketing tips (not just reports)</label>
         <p class="muted-note" data-client-unsubscribed hidden>⚠️ This client unsubscribed from marketing tips. They'll still receive monthly reports.</p>
@@ -741,6 +761,7 @@
 
   <script src="/js/supabase-config.js"></script>
   <script src="/js/admin.js"></script>
+  <script src="/js/admin-operations.js"></script>
   <script src="/js/devis-core.js"></script>
   <script src="/js/admin-devis.js"></script>
 </body>
