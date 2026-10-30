@@ -169,9 +169,14 @@ values (
   'https://www.sbmarketing.fr/images/sb-marketing-email-logo.png',
   'https://www.instagram.com/sb.marketing06/',
   'https://www.facebook.com/profile.php?id=61556671255980',
-  'admin@partners.sbmarketing.fr'
+  'contact@sbmarketing.fr'
 )
 on conflict (id) do nothing;
+
+-- All client-facing emails should bring replies to the main contact inbox.
+update public.app_settings
+set reply_to_email = 'contact@sbmarketing.fr'
+where id = 'default';
 
 -- ── View-in-browser ──────────────────────────────────────────────
 -- Every sent email can carry a "view in browser" link. The admin logs the

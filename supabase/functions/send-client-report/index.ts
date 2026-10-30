@@ -32,6 +32,7 @@ const corsHeaders = {
 // Resend verifies at the domain level, so any local-part @ this domain
 // works — using "admin" to match the inbox this is meant to read as.
 const FROM = "SB Marketing <admin@partners.sbmarketing.fr>";
+const REPLY_TO = "contact@sbmarketing.fr";
 
 interface RequestBody {
   preview?: boolean;
@@ -189,7 +190,7 @@ Deno.serve(async (req) => {
         to: [to],
         subject: rendered.subject,
         html: rendered.html,
-        ...(body.reply_to ? { reply_to: body.reply_to } : {}),
+        reply_to: REPLY_TO,
         ...(attachments ? { attachments } : {}),
       }),
     });

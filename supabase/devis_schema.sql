@@ -366,7 +366,7 @@ begin
       'to', jsonb_build_array(p_to),
       'subject', p_subject,
       'html', p_html
-    ) || case when coalesce(p_reply_to, '') <> '' then jsonb_build_object('reply_to', p_reply_to) else '{}'::jsonb end
+    ) || jsonb_build_object('reply_to', 'contact@sbmarketing.fr')
   );
 exception when others then
   raise warning 'devis_send_mail failed: %', sqlerrm;
