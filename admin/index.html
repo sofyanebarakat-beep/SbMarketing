@@ -37,6 +37,9 @@
           <a href="#clients" class="sidebar-link" data-tab="clients">
             <span class="sidebar-link__icon" aria-hidden="true">👥</span> Clients
           </a>
+          <a href="#dashboards" class="sidebar-link" data-tab="dashboards">
+            <span class="sidebar-link__icon" aria-hidden="true">📊</span> Client dashboards
+          </a>
           <a href="#marketing" class="sidebar-link" data-tab="marketing">
             <span class="sidebar-link__icon" aria-hidden="true">📧</span> Email Marketing
           </a>
@@ -177,6 +180,23 @@
           <div class="table-wrap"><table><thead><tr><th>Date</th><th>Client</th><th>Type</th><th>Subject</th></tr></thead><tbody data-marketing-history-body></tbody></table></div>
           <div class="empty" data-marketing-history-empty hidden><h2>No emails sent yet</h2><p>Compose one above to get started.</p></div>
           </div>
+        </div>
+
+        <div data-view="dashboards" hidden>
+          <section class="portal-admin-hero">
+            <div><span class="admin-kicker">Passwordless client portal</span><h2>One clear dashboard for every client</h2><p>Publish results, monthly priorities, the marketing plan and the content calendar. Clients open their private link directly—no login or password.</p></div>
+            <div class="portal-admin-hero__note"><strong>🔒 Private by design</strong><span>Each dashboard uses a unique, unguessable link.</span></div>
+          </section>
+          <div class="stats" aria-label="Client dashboard summary">
+            <article><span>Total portals</span><strong data-portal-stat-total>0</strong></article>
+            <article><span>Published</span><strong data-portal-stat-live>0</strong></article>
+            <article><span>Need an update</span><strong data-portal-stat-stale>0</strong></article>
+            <article><span>Active clients</span><strong data-portal-stat-active>0</strong></article>
+          </div>
+          <div class="toolbar"><label class="search"><span class="sr-only">Search client dashboards</span><input type="search" data-portal-search placeholder="Search business or contact…"></label><select data-portal-filter aria-label="Filter dashboards"><option value="">All dashboards</option><option value="live">Published</option><option value="draft">Not published</option><option value="stale">Needs update</option></select></div>
+          <p class="dashboard-message" data-portals-message aria-live="polite"></p>
+          <div class="portal-grid" data-portals-grid></div>
+          <div class="empty" data-portals-empty hidden><h2>No clients yet</h2><p>Add a client first, then their dashboard will appear here.</p></div>
         </div>
 
         <div data-view="devis" hidden>
@@ -396,6 +416,35 @@
         <button type="button" class="secondary" data-send-cancel>Cancel</button>
       </div>
       <p class="form-message" data-send-message aria-live="polite"></p>
+    </form>
+  </dialog>
+
+  <!-- Client dashboard editor ──────────────────────────────────── -->
+  <dialog class="portal-dialog" data-portal-dialog>
+    <form data-portal-form>
+      <div class="send-dialog__head"><div><span class="admin-kicker">Client portal</span><h2 data-portal-dialog-name>Dashboard</h2></div><button type="button" class="icon-button" data-portal-close aria-label="Close">✕</button></div>
+      <label class="checkbox-field portal-publish"><input type="checkbox" name="portal_enabled"> Publish this dashboard for the client</label>
+      <div class="field-grid">
+        <label>Reporting period<input name="period" placeholder="October 2026"></label>
+        <label>Last updated<input name="updated_label" placeholder="30 October 2026"></label>
+      </div>
+      <label>Welcome message<textarea name="welcome" rows="3" placeholder="Here is the current view of your marketing activity and our priorities."></textarea></label>
+      <p class="send-dialog__section-title">📈 Key results</p>
+      <div class="portal-metric-editor">
+        <label>Website visits<input name="website_visits" placeholder="1,240"></label><label>Leads / enquiries<input name="leads" placeholder="38"></label><label>Google visibility<input name="google_visibility" placeholder="12,800"></label><label>Social reach<input name="social_reach" placeholder="24,500"></label>
+      </div>
+      <p class="field-note">Values can be numbers, percentages or short text. Leave a field empty to hide it.</p>
+      <p class="send-dialog__section-title">✅ Actions this month</p>
+      <label>One action per line<textarea name="actions" rows="5" placeholder="Optimise the Google Business Profile | In progress\nPublish the new service page | Planned\nLaunch the review campaign | Done"></textarea></label>
+      <p class="field-note">Format: action | status. Status can be Planned, In progress, Done or Waiting.</p>
+      <p class="send-dialog__section-title">🎯 Marketing plan</p>
+      <div class="field-grid"><label>Main objective<input name="plan_goal" placeholder="Generate more qualified local enquiries"></label><label>Primary audience<input name="plan_audience" placeholder="Local customers within 15 km"></label><label>Focus offer<input name="plan_offer" placeholder="Priority service or promotion"></label><label>Channels<input name="plan_channels" placeholder="Google, Instagram, website"></label></div>
+      <label>Strategy summary<textarea name="plan_summary" rows="3" placeholder="What we are focusing on and why."></textarea></label>
+      <p class="send-dialog__section-title">🗓 Content calendar</p>
+      <label>One publication per line<textarea name="calendar" rows="7" placeholder="05 Nov | Instagram | Behind the scenes | Ready\n12 Nov | Google | Customer review | Planned\n19 Nov | Blog | How to choose... | Draft"></textarea></label>
+      <p class="field-note">Format: date | channel | topic | status.</p>
+      <div class="form-actions"><button type="submit">Save dashboard</button><button type="button" class="secondary" data-portal-copy>Copy private link</button><a class="portal-open-link" data-portal-open target="_blank" rel="noopener">Open preview ↗</a></div>
+      <p class="form-message" data-portal-form-message aria-live="polite"></p>
     </form>
   </dialog>
 

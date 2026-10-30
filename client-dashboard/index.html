@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Marketing dashboard | SB Marketing</title>
+  <link rel="icon" href="/images/sb-favicon.png">
+  <link rel="stylesheet" href="/css/client-dashboard.css">
+</head>
+<body>
+  <header class="portal-header"><a href="https://www.sbmarketing.fr" class="portal-brand"><span>SB</span><span>MARKETING</span></a><a href="mailto:contact@sbmarketing.fr" class="portal-contact" data-i18n="help">Need help? <strong>Contact us</strong></a></header>
+  <main class="portal-main">
+    <div class="portal-loading" data-portal-loading><span>✦</span><h1>Preparing your dashboard…</h1><p>Loading the latest marketing information.</p></div>
+    <div class="portal-error" data-portal-error hidden><span>⚠️</span><h1>Dashboard unavailable</h1><p>This private link is invalid, disabled, or has expired. Please contact SB Marketing for a new link.</p><a href="mailto:contact@sbmarketing.fr">Contact SB Marketing</a></div>
+    <div data-portal-content hidden>
+      <section class="portal-welcome"><div><span class="portal-kicker" data-i18n="dashboard">Your marketing dashboard</span><h1><span data-greeting>Welcome</span>, <span data-client-name></span></h1><p data-welcome></p></div><div class="portal-period"><span data-i18n="period">Reporting period</span><strong data-period>Current month</strong><small data-updated></small></div></section>
+      <section><div class="portal-section-head"><div><span class="portal-kicker" data-i18n="performance">Performance at a glance</span><h2 data-i18n="results">Key results</h2></div><p data-i18n="resultsCopy">We use these numbers to decide what to improve next.</p></div><div class="portal-metrics" data-metrics></div></section>
+      <div class="portal-two-column">
+        <section class="portal-card"><div class="portal-section-head"><div><span class="portal-kicker" data-i18n="priorities">Current priorities</span><h2 data-i18n="actions">Actions this month</h2></div></div><div class="action-list" data-actions></div></section>
+        <section class="portal-card plan-card"><div class="portal-section-head"><div><span class="portal-kicker" data-i18n="direction">Where we are going</span><h2 data-i18n="plan">Marketing plan</h2></div></div><div data-plan></div></section>
+      </div>
+      <section class="portal-card"><div class="portal-section-head"><div><span class="portal-kicker" data-i18n="audience">What your audience will see</span><h2 data-i18n="calendar">Content calendar</h2></div><p data-i18n="calendarCopy">Planned content across your active channels.</p></div><div class="calendar-list" data-calendar></div></section>
+      <section class="portal-cta"><div><span class="portal-kicker" data-i18n="team">Your SB Marketing team</span><h2 data-i18n="idea">Have a new priority or idea?</h2><p data-i18n="ideaCopy">Tell us what is happening in your business so we can adapt the next actions.</p></div><a href="mailto:contact@sbmarketing.fr" data-i18n="contact">Contact the team →</a></section>
+    </div>
+  </main>
+  <footer>Private dashboard prepared by <strong>SB Marketing</strong> · <a href="mailto:contact@sbmarketing.fr">contact@sbmarketing.fr</a></footer>
+  <script src="/js/supabase-config.js"></script>
+  <script src="/js/client-dashboard.js"></script>
+</body>
+</html>

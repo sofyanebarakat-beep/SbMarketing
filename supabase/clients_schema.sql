@@ -40,6 +40,42 @@ alter table public.clients
   add column if not exists tracked_metrics jsonb not null default
     '["website_visits","google_impressions","google_clicks","google_avg_position"]'::jsonb;
 
+-- Passwordless client portal. The token is deliberately separate from the
+-- client id and is the only credential carried in the private dashboard URL.
+alter table public.clients
+  add column if not exists portal_token uuid not null default gen_random_uuid(),
+  add column if not exists portal_enabled boolean not null default false,
+  add column if not exists portal_updated_at timestamptz,
+  add column if not exists dashboard_data jsonb not null default '{}'::jsonb;
+
+create unique index if not exists clients_portal_token_idx on public.clients (portal_token);
+
+-- The public portal can only retrieve a deliberately limited projection for
+-- one enabled client with the exact secret token. It cannot enumerate clients
+-- or read email addresses, notes, phone numbers, or any admin-only fields.
+create or replace function public.get_client_dashboard(access_token uuid)
+returns jsonb
+language sql
+security definer
+set search_path = public
+as $$
+  select jsonb_build_object(
+    'business_name', c.business_name,
+    'contact_name', c.contact_name,
+    'language', c.language,
+    'updated_at', c.portal_updated_at,
+    'dashboard', c.dashboard_data
+  )
+  from public.clients c
+  where c.portal_token = access_token
+    and c.portal_enabled = true
+    and c.status = 'active'
+  limit 1;
+$$;
+
+revoke all on function public.get_client_dashboard(uuid) from public;
+grant execute on function public.get_client_dashboard(uuid) to anon, authenticated;
+
 -- Public, narrowly-scoped unsubscribe: callable by anyone (anon) via
 -- POST /rest/v1/rpc/unsubscribe_client, but it can only ever set
 -- unsubscribed_at on the one row it's given — no other column, no select,
