@@ -122,12 +122,51 @@
         </div>
 
         <div data-view="marketing" hidden>
+          <section class="marketing-hero">
+            <div>
+              <span class="admin-kicker">Client growth centre</span>
+              <h2>Email plans that keep every client informed and engaged</h2>
+              <p>Choose a client, follow a proven sequence, and turn monthly results into useful advice and new opportunities.</p>
+            </div>
+            <div class="marketing-hero__cadence"><strong>Recommended rhythm</strong><span>1 useful tip every 2 weeks</span><span>1 performance report every month</span></div>
+          </section>
+
+          <div class="stats marketing-stats" aria-label="Email marketing summary">
+            <article><span>Emails sent</span><strong data-email-stat-total>0</strong><small data-email-stat-period>This month</small></article>
+            <article><span>Tips shared</span><strong data-email-stat-tips>0</strong><small>Useful client advice</small></article>
+            <article><span>Reports sent</span><strong data-email-stat-reports>0</strong><small>Performance updates</small></article>
+            <article><span>Clients reached</span><strong data-email-stat-reached>0</strong><small data-email-stat-coverage>0% coverage</small></article>
+          </div>
+
           <div class="toolbar toolbar--marketing">
             <select data-marketing-client-select aria-label="Pick a client"><option value="">Pick a client…</option></select>
             <button type="button" data-marketing-compose>✉️ Compose email</button>
             <button type="button" class="secondary" data-bulk-tip-toggle>Send tip to multiple</button>
           </div>
           <p class="dashboard-message" data-marketing-message aria-live="polite"></p>
+
+          <section class="client-next-step" data-client-next-step hidden>
+            <div><span class="eyebrow">Recommended next email</span><h3 data-next-step-title></h3><p data-next-step-copy></p></div>
+            <button type="button" data-next-step-use>Prepare email →</button>
+          </section>
+
+          <div class="marketing-subnav" role="tablist" aria-label="Email marketing tools">
+            <button type="button" class="is-active" data-marketing-pane-tab="sequences">Sequences</button>
+            <button type="button" data-marketing-pane-tab="ideas">Campaign ideas</button>
+            <button type="button" data-marketing-pane-tab="library">Templates & history</button>
+          </div>
+
+          <div data-marketing-pane="sequences">
+            <div class="section-heading"><div><span class="eyebrow">Ready-to-use playbooks</span><h2>Client email sequences</h2></div><p>Each step opens a complete draft adapted to the client's language.</p></div>
+            <div class="sequence-grid" data-sequence-grid></div>
+          </div>
+
+          <div data-marketing-pane="ideas" hidden>
+            <div class="section-heading"><div><span class="eyebrow">Always have something useful to say</span><h2>Campaign idea library</h2></div><select data-idea-filter aria-label="Filter campaign ideas"><option value="">All goals</option><option value="visibility">Visibility</option><option value="reputation">Reputation</option><option value="conversion">Conversion</option><option value="retention">Retention</option></select></div>
+            <div class="idea-grid" data-idea-grid></div>
+          </div>
+
+          <div data-marketing-pane="library" hidden>
 
           <h2 class="settings-section-title">Saved templates</h2>
           <div class="table-wrap"><table><thead><tr><th>Name</th><th>Type</th><th>Created</th><th>Actions</th></tr></thead><tbody data-templates-body></tbody></table></div>
@@ -137,6 +176,7 @@
           <div class="toolbar"><label class="search"><span class="sr-only">Search email history</span><input type="search" data-marketing-history-search placeholder="Search client, subject…"></label></div>
           <div class="table-wrap"><table><thead><tr><th>Date</th><th>Client</th><th>Type</th><th>Subject</th></tr></thead><tbody data-marketing-history-body></tbody></table></div>
           <div class="empty" data-marketing-history-empty hidden><h2>No emails sent yet</h2><p>Compose one above to get started.</p></div>
+          </div>
         </div>
 
         <div data-view="devis" hidden>
