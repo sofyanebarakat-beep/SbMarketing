@@ -21,6 +21,35 @@
   }
   function respond(token,decision,button){var textarea=document.querySelector('[data-approval-comment="'+token+'"]');button.disabled=true;fetch(config.url+'/rest/v1/rpc/respond_to_content',{method:'POST',headers:{apikey:config.key,Authorization:'Bearer '+config.key,'Content-Type':'application/json'},body:JSON.stringify({access_token:accessToken,action_token:token,decision:decision,comment_text:textarea?textarea.value:null})}).then(function(response){if(!response.ok)throw new Error('Request failed');return response.json();}).then(function(ok){if(!ok)throw new Error('Expired');location.reload();}).catch(function(){button.disabled=false;button.textContent='Link expired — contact us';});}
   document.addEventListener('click',function(event){var approve=event.target.closest('[data-approve]'),changes=event.target.closest('[data-changes]');if(approve)respond(approve.dataset.approve,'approved',approve);if(changes)respond(changes.dataset.changes,'changes_requested',changes);});document.querySelector('[data-print]').addEventListener('click',function(){window.print();});
+  var previewId=new URLSearchParams(location.search).get('preview');
+  if(previewId&&config){loadPreview(previewId);return;}
   if(!accessToken||!config){fail();return;}
   fetch(config.url+'/rest/v1/rpc/get_client_dashboard',{method:'POST',headers:{apikey:config.key,Authorization:'Bearer '+config.key,'Content-Type':'application/json'},body:JSON.stringify({access_token:accessToken})}).then(function(response){if(!response.ok)throw new Error('Request failed');return response.json();}).then(function(result){if(!result)throw new Error('Not found');render(result);}).catch(fail);
+  // Admin preview: opened from /admin/ with ?preview=<client id>. Uses the
+  // admin's own signed-in session (same browser), so drafts can be checked
+  // before publishing. Clients never get this link.
+  function adminSession(){try{return JSON.parse(localStorage.getItem('sb_admin_session')||'null');}catch(e){return null;}}
+  function previewFail(message){loading.hidden=true;error.hidden=false;var title=error.querySelector('h1'),copy=error.querySelector('p'),link=error.querySelector('a');if(title)title.textContent='Admin preview unavailable';if(copy)copy.textContent=message;if(link){link.href='/admin/';link.textContent='Open the admin';}}
+  async function adminGet(path,session){var response=await fetch(config.url+path,{headers:{apikey:config.key,Authorization:'Bearer '+session.access_token}});if(response.status===401&&session.refresh_token){var refresh=await fetch(config.url+'/auth/v1/token?grant_type=refresh_token',{method:'POST',headers:{apikey:config.key,'Content-Type':'application/json'},body:JSON.stringify({refresh_token:session.refresh_token})});if(!refresh.ok)throw new Error('session');var fresh=await refresh.json();localStorage.setItem('sb_admin_session',JSON.stringify(fresh));Object.assign(session,fresh);return adminGet(path,session);}if(!response.ok)throw new Error('request');return response.json();}
+  async function loadPreview(id){
+    var session=adminSession();if(!session||!session.access_token){previewFail('Sign in to the SB Marketing admin in this browser, then open the dashboard again.');return;}
+    var q=encodeURIComponent(id);
+    try{
+      var rows=await adminGet('/rest/v1/clients?id=eq.'+q+'&select=business_name,contact_name,language,account_manager,portal_enabled,portal_updated_at,dashboard_data',session);
+      if(!rows||!rows.length){previewFail('This client could not be found.');return;}
+      var c=rows[0],parts=await Promise.all([
+        adminGet('/rest/v1/client_tasks?client_id=eq.'+q+'&client_visible=eq.true&status=neq.completed&select=title,client_update,status,due_date&order=due_date.asc',session),
+        adminGet('/rest/v1/content_items?client_id=eq.'+q+'&client_visible=eq.true&select=publish_date,platform,content_type,topic,caption,visual_url,status,publication_url&order=publish_date.asc',session),
+        adminGet('/rest/v1/client_campaigns?client_id=eq.'+q+'&client_visible=eq.true&select=name,channel,objective,status,budget,spend,leads,conversions,performance_note',session),
+        adminGet('/rest/v1/client_files?client_id=eq.'+q+'&client_visible=eq.true&select=name,category,url',session)
+      ]).catch(function(){return[[],[],[],[]];});
+      render({business_name:c.business_name,contact_name:c.contact_name,language:c.language,account_manager:c.account_manager,dashboard:c.dashboard_data||{},
+        tasks:(parts[0]||[]).map(function(t){return{title:t.title,description:t.client_update,status:t.status,due_date:t.due_date};}),
+        content:(parts[1]||[]).map(function(i){return{date:i.publish_date,platform:i.platform,type:i.content_type,topic:i.topic,caption:i.caption,visual_url:i.visual_url,status:i.status,publication_url:i.publication_url};}),
+        campaigns:(parts[2]||[]).map(function(p){return Object.assign({note:p.performance_note},p);}),
+        files:parts[3]||[]});
+      var banner=document.createElement('div');banner.className='portal-preview-banner';banner.innerHTML='<strong>Admin preview</strong><span>'+(c.portal_enabled?'Published — the client sees this dashboard through their private link.':'Draft — not visible to the client until you publish it in the admin.')+'</span><a href="/admin/">Back to admin</a>';
+      document.querySelector('.portal-main').prepend(banner);document.title='Preview · '+c.business_name+' | SB Marketing';
+    }catch(e){previewFail(e.message==='session'?'Your admin session has expired. Sign in to the admin again, then reopen this dashboard.':'The dashboard could not be loaded. Check that you are signed in to the admin with the SB Marketing account.');}
+  }
 })();
