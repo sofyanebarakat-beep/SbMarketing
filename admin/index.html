@@ -8,6 +8,9 @@
   <link rel="icon" href="/images/sb-favicon.png">
   <link rel="stylesheet" href="/css/admin.css">
   <link rel="stylesheet" href="/css/admin-devis.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap">
+  <link rel="stylesheet" href="/css/admin-theme.css">
 </head>
 <body>
   <main class="admin-page">
@@ -25,7 +28,13 @@
     </section>
 
     <div class="admin-shell" data-dashboard hidden>
+      <header class="admin-topbar">
+        <a href="/" class="admin-topbar__brand" aria-label="SB Marketing home"><img src="/images/logo-climanova.svg" alt="SB Marketing"></a>
+        <label class="admin-topbar__search"><span aria-hidden="true">⌕</span><span class="sr-only">Search clients</span><input type="search" data-global-search placeholder="Search clients…"></label>
+        <div class="admin-topbar__user"><span>Sofyane</span><span class="admin-avatar" aria-hidden="true">S</span></div>
+      </header>
       <aside class="admin-sidebar">
+        <div class="sidebar-welcome"><span class="admin-avatar" aria-hidden="true">S</span><div><strong>Welcome, Sofyane!</strong><small>Admin</small></div></div>
         <a href="/" class="admin-sidebar__brand" aria-label="SB Marketing home"><img src="/images/logo-climanova.svg" alt="SB Marketing"></a>
         <nav class="sidebar-nav" aria-label="Admin sections">
           <a href="#overview" class="sidebar-link is-active" data-tab="overview"><span class="sidebar-link__icon" aria-hidden="true">⌂</span> Overview</a>

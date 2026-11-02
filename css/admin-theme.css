@@ -1,0 +1,100 @@
+/* Admin theme — light "Boardash"-style layout: white top bar, floating sidebar card,
+   blue accent (#2290ff), Lato, soft grey shadows. Loaded after admin.css. */
+:root{
+  --navy:#222222;--navy-soft:#333333;--gold:#2290ff;--gold-soft:#2290ff;
+  --bg:#f6f6f6;--card:#ffffff;--border:#e6e6e6;--text:#222222;--muted:#8a8a8a;--danger:#ff5026;
+  --blue:#2290ff;--blue-soft:#f5faff;--shadow:0 0 12px 0 hsla(0,0%,63%,.19);--radius:6px;
+}
+body{background:var(--bg);font-family:Lato,"Helvetica Neue",Arial,sans-serif;color:var(--text)}
+h1,h2,h3{color:#222;font-weight:700}
+p{color:var(--muted)}
+.admin-kicker{color:var(--blue);letter-spacing:.1em}
+
+/* Buttons & inputs */
+button{background:var(--blue);color:#fff;border-radius:4px;font-weight:700}
+button:hover{filter:brightness(1.06)}
+.secondary,button.secondary{background:#fff;color:#333;border:1px solid #dddddd}
+.secondary:hover{background:#f5faff;border-color:#bcdcff;color:var(--blue)}
+.icon-button{background:transparent;color:#888;border:0}
+input,select,textarea{border-color:#e2e2e2;border-radius:4px;background:#fff}
+input:focus,select:focus,textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(34,144,255,.15)}
+label{color:#333}
+
+/* Login */
+.login-card{border:0;border-radius:var(--radius);box-shadow:var(--shadow)}
+
+/* Shell: top bar across, floating sidebar card + content */
+.admin-shell{display:grid;grid-template-columns:300px minmax(0,1fr);grid-template-rows:auto 1fr;min-height:100vh;align-items:start}
+.admin-topbar{grid-column:1/-1;position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:24px;height:71px;padding:0 clamp(16px,4vw,48px);background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.admin-topbar__brand{display:flex;align-items:center;width:250px;flex:none}
+.admin-topbar__brand img{height:26px;width:auto;filter:brightness(0) saturate(100%) invert(11%)}
+.admin-topbar__search{flex:1;max-width:560px;display:flex;align-items:center;gap:10px;height:40px;padding:0 14px;border-radius:4px;background:#f3f3f3;color:#a0a0a0}
+.admin-topbar__search input{border:0;background:transparent;padding:0;height:100%;box-shadow:none!important;color:#333}
+.admin-topbar__user{margin-left:auto;display:flex;align-items:center;gap:12px;color:#777;font-size:15px}
+.admin-avatar{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#2290ff,#6bb6ff);color:#fff;font-weight:900;font-size:16px;flex:none}
+
+.admin-sidebar{position:sticky;top:105px;height:auto;max-height:calc(100vh - 125px);overflow:auto;width:auto;flex:none;margin:34px 0 34px clamp(16px,4vw,48px);padding:0 0 18px;background:#fff;color:#333;border-radius:var(--radius);box-shadow:var(--shadow)}
+.admin-sidebar__brand{display:none}
+.sidebar-welcome{position:relative;display:flex;align-items:center;gap:14px;padding:24px 28px 18px}
+.sidebar-welcome:after{content:"";position:absolute;top:0;right:28px;width:12px;height:18px;background:var(--blue);clip-path:polygon(0 0,100% 0,100% 100%,50% 72%,0 100%)}
+.sidebar-welcome strong{display:block;color:#555;font-size:15px;font-weight:400}
+.sidebar-welcome small{display:block;margin-top:3px;color:#a0a0a0;font-size:12px}
+.sidebar-nav{gap:0;flex:none}
+.sidebar-link{position:relative;gap:18px;padding:14px 28px 14px 56px;border-radius:0;color:#8a8a8a;font-size:15px;font-weight:400}
+.sidebar-link__icon{position:absolute;left:28px;width:18px;text-align:center;font-size:14px;filter:grayscale(1);opacity:.55}
+.sidebar-link:hover{background:#fafcff;color:#333}
+.sidebar-link.is-active{background:var(--blue-soft);color:#333}
+.sidebar-link.is-active:before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--blue)}
+.sidebar-link.is-active .sidebar-link__icon{filter:none;opacity:1}
+.sidebar-footer{padding:16px 28px 0;margin-top:12px;border-top:1px solid #f0f0f0}
+.sidebar-footer button{background:transparent;color:#8a8a8a;border:0;padding:10px 0;text-align:left;font-weight:400}
+.sidebar-footer button:hover{background:transparent;color:var(--danger)}
+
+.admin-main{padding:34px clamp(16px,4vw,48px) 60px 30px}
+.admin-header{margin-bottom:22px}
+.admin-header h1{font-size:28px;font-weight:700;margin:4px 0}
+.admin-header .admin-kicker{display:none}
+
+/* Figures: one white strip like the template's KPI row */
+.stats,.marketing-stats,.ops-stats{gap:0;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:14px 10px;overflow:hidden}
+.stats article,.marketing-stats article,.ops-stats article{border:0;border-radius:0;background:transparent;padding:10px 24px;border-left:1px solid #eeeeee}
+.stats article:first-child,.marketing-stats article:first-child,.ops-stats article:first-child{border-left:0}
+.stats span,.marketing-stats span,.ops-stats span{color:#333;font-size:13px}
+.stats strong,.marketing-stats strong,.ops-stats strong{font-size:34px;font-weight:700;color:#222}
+.stat-due{background:transparent}.stat-due strong{color:var(--danger)}
+
+/* Cards, tables, panels */
+.table-wrap,.ops-table,.ops-panel,.ops-quick-form,.portal-admin-card,.sequence-card,.settings-form,.empty,.toolbar{border:0;border-radius:var(--radius);box-shadow:var(--shadow);background:#fff}
+.toolbar{padding:12px}
+th{background:#fafafa;color:#a0a0a0}
+td{border-bottom-color:#f0f0f0}
+.ops-table-head{background:#fafafa}
+.ops-hero,.portal-admin-hero,.marketing-hero{background:#fff!important;color:#222!important;border:0;border-radius:var(--radius);box-shadow:var(--shadow)}
+.ops-hero *,.portal-admin-hero *,.marketing-hero *{color:inherit}
+.ops-hero p,.portal-admin-hero p,.marketing-hero p{color:var(--muted)!important}
+.status-pill--active{background:#eaf4ff;color:var(--blue)}
+.ops-badge{border-radius:4px}
+.link-button{color:var(--blue)}
+.portal-admin-card__summary{background:#f8f8f8;border-radius:4px}
+.portal-view-link{border-radius:4px}
+
+/* Dialogs */
+dialog{border:0!important;border-radius:var(--radius)!important;box-shadow:0 10px 40px rgba(0,0,0,.18)}
+
+
+@media(max-width:900px){
+  .admin-shell{grid-template-columns:1fr}
+  .admin-topbar__brand{width:auto}
+  .admin-topbar__user span{display:none}
+  .admin-sidebar{position:static;max-height:none;margin:16px 16px 0}
+  .sidebar-welcome{display:none}
+  .sidebar-nav{flex-direction:row;overflow-x:auto}
+  .sidebar-link{padding:14px 18px 14px 40px;white-space:nowrap}
+  .sidebar-link__icon{left:16px}
+  .sidebar-link.is-active:before{top:auto;left:0;right:0;width:auto;height:3px}
+  .sidebar-footer{display:none}
+  .admin-main{padding:20px 16px 60px}
+  .stats article,.marketing-stats article,.ops-stats article{border-left:0;border-top:1px solid #eee}
+  .stats article:nth-child(-n+2),.marketing-stats article:nth-child(-n+2),.ops-stats article:nth-child(-n+2){border-top:0}
+}
+@media(max-width:560px){.admin-topbar__search{display:none}}

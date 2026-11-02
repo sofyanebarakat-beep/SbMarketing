@@ -845,6 +845,7 @@
     var detailBtn=event.target.closest('[data-client-detail]');if(detailBtn)openClientDialog(detailBtn.dataset.clientDetail);
   });
   if(clientSearch)clientSearch.addEventListener('input',renderClients);
+  var globalSearch=document.querySelector('[data-global-search]');if(globalSearch)globalSearch.addEventListener('input',function(){if(location.hash!=='#clients')location.hash='#clients';if(clientSearch){clientSearch.value=globalSearch.value;renderClients();}});
   if(clientDueFilter)clientDueFilter.addEventListener('change',renderClients);
   addClientToggle.addEventListener('click',function(){addClientForm.hidden=!addClientForm.hidden;message(addClientMessage,'');});
   addClientCancel.addEventListener('click',function(){addClientForm.hidden=true;addClientForm.reset();});
