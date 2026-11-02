@@ -269,17 +269,22 @@
   // ── Passwordless client dashboards ────────────────────────────
   var DASHBOARD_SETUP_MESSAGE='Database update required: run supabase/client_dashboard_setup.sql once in the Supabase SQL Editor, then refresh this page.';
   function isDashboardSchemaError(error){var text=String(error&&error.message||'');return /dashboard_data|portal_(token|enabled|updated_at)|schema cache/.test(text);}
+  function notifyDashboard(text){message(portalsMessage,text);message(clientsMessage,text);if(portalDialog&&portalDialog.open)message(portalFormMessage,text);}
   async function openClientDashboard(client,button){
     if(!client)return;
-    if(!client.portal_token||!('dashboard_data' in client)){message(portalsMessage,DASHBOARD_SETUP_MESSAGE);message(clientsMessage,DASHBOARD_SETUP_MESSAGE);return;}
-    if(!client.portal_enabled&&!confirm(client.business_name+'’s dashboard is still a draft. Publish it so the private link works?'))return;
-    var win=window.open('about:blank','_blank');if(button)button.disabled=true;
+    var needsPublish=!client.portal_enabled;
+    if(needsPublish&&!confirm(client.business_name+'’s dashboard is still a draft. Publish it so the private link works?'))return;
+    // Copy while this tab still has focus, then open the tab inside the click so it is not blocked.
+    var copying=client.portal_token&&navigator.clipboard?navigator.clipboard.writeText(portalUrl(client)).then(function(){return true;},function(){return false;}):Promise.resolve(false);
+    var win=window.open('about:blank','_blank');if(button)button.disabled=true;notifyDashboard('Opening '+client.business_name+'’s dashboard…');
     try{
-      if(!client.portal_enabled){var patch={portal_enabled:true,portal_updated_at:client.portal_updated_at||new Date().toISOString()};await request('/rest/v1/clients?id=eq.'+encodeURIComponent(client.id),{method:'PATCH',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(patch)});Object.assign(client,patch);renderPortals();}
-      var url=portalUrl(client),copied=true;try{await navigator.clipboard.writeText(url);}catch(e){copied=false;}
-      if(win){win.location.href=url;}else{window.location.href=url;}
-      var note=copied?'Private link copied and opened for '+client.business_name+'.':'Opened '+client.business_name+'’s dashboard. Copy the link from the new tab’s address bar.';message(portalsMessage,note);message(clientsMessage,note);
-    }catch(error){if(win)win.close();var text=isDashboardSchemaError(error)?DASHBOARD_SETUP_MESSAGE:error.message;message(portalsMessage,text);message(clientsMessage,text);}
+      if(!client.portal_token){var rows=await request('/rest/v1/clients?id=eq.'+encodeURIComponent(client.id)+'&select=*');if(rows&&rows[0])Object.assign(client,rows[0]);}
+      if(!client.portal_token)throw new Error('portal_token missing');
+      if(needsPublish){var patch={portal_enabled:true,portal_updated_at:client.portal_updated_at||new Date().toISOString()};await request('/rest/v1/clients?id=eq.'+encodeURIComponent(client.id),{method:'PATCH',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(patch)});Object.assign(client,patch);renderPortals();if(portalTarget===client&&portalForm)portalForm.elements.portal_enabled.checked=true;}
+      var url=portalUrl(client),copied=await copying;
+      if(win){win.location.href=url;}else{window.prompt('Copy this private dashboard link:',url);copied=true;}
+      notifyDashboard(copied?'Private link copied'+(win?' and opened':'')+' for '+client.business_name+'.':'Opened '+client.business_name+'’s dashboard in a new tab — copy the link from its address bar.');
+    }catch(error){if(win)win.close();notifyDashboard(isDashboardSchemaError(error)?DASHBOARD_SETUP_MESSAGE:error.message);}
     finally{if(button)button.disabled=false;}
   }
   function portalUrl(client){return client&&client.portal_token?'https://www.sbmarketing.fr/client-dashboard/?token='+encodeURIComponent(client.portal_token):'';}
