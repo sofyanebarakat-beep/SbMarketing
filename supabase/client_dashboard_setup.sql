@@ -22,7 +22,18 @@ alter table public.clients
   add column if not exists portal_token uuid not null default gen_random_uuid(),
   add column if not exists portal_enabled boolean not null default false,
   add column if not exists portal_updated_at timestamptz,
-  add column if not exists dashboard_data jsonb not null default '{}'::jsonb;
+  add column if not exists dashboard_data jsonb not null default '{}'::jsonb,
+  add column if not exists portal_draft_data jsonb,
+  add column if not exists portal_draft_saved_at timestamptz,
+  add column if not exists portal_published_at timestamptz,
+  add column if not exists dashboard_data_source text,
+  add column if not exists dashboard_admin_notes text;
+
+update public.clients
+set portal_published_at = portal_updated_at
+where portal_enabled = true
+  and portal_published_at is null
+  and portal_updated_at is not null;
 
 create unique index if not exists clients_portal_token_idx on public.clients (portal_token);
 

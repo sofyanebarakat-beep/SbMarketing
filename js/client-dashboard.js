@@ -179,9 +179,9 @@
       var rows=await adminGet('/rest/v1/clients?id=eq.'+q+'&select=*',session);
       if(!rows||!rows.length){previewFail('This client could not be found.');return;}
       var c=rows[0],contentRows=await adminGet('/rest/v1/content_items?client_id=eq.'+q+'&client_visible=eq.true&select=publish_date,platform,content_type,topic,caption,visual_url,status,publication_url&order=publish_date.asc',session).catch(function(){return[];});
-      render({business_name:c.business_name,contact_name:c.contact_name,language:c.language,dashboard:c.dashboard_data||{},calendar_feedback:c.calendar_feedback||{},
+      render({business_name:c.business_name,contact_name:c.contact_name,language:c.language,dashboard:c.portal_draft_data||c.dashboard_data||{},calendar_feedback:c.calendar_feedback||{},
         content:(contentRows||[]).map(function(i){return{date:i.publish_date,platform:i.platform,type:i.content_type,topic:i.topic,caption:i.caption,visual_url:i.visual_url,status:i.status,publication_url:i.publication_url};})},{canAnswer:false});
-      var banner=document.createElement('div');banner.className='portal-preview-banner';banner.innerHTML='<strong>Admin preview</strong><span>'+(c.portal_enabled?'Published — the client sees this dashboard through their private link.':'Draft — not visible to the client until you publish it in the admin.')+'</span><a href="/admin/">Back to admin</a>';
+      var banner=document.createElement('div');banner.className='portal-preview-banner';banner.innerHTML='<strong>Admin preview</strong><span>'+(c.portal_draft_data?'Previewing the saved draft — the client still sees the last published version.':c.portal_enabled?'Published — the client sees this dashboard through their private link.':'Draft — not visible to the client until you publish it in the admin.')+'</span><a href="/admin/">Back to admin</a>';
       document.querySelector('.portal-main').prepend(banner);document.title='Preview · '+c.business_name+' | SB Marketing';
     }catch(e){previewFail(e.message==='session'?'Your admin session has expired. Sign in to the admin again, then reopen this dashboard.':'The dashboard could not be loaded. Check that you are signed in to the admin with the SB Marketing account.');}
   }

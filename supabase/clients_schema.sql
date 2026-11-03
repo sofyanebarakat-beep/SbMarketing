@@ -46,7 +46,18 @@ alter table public.clients
   add column if not exists portal_token uuid not null default gen_random_uuid(),
   add column if not exists portal_enabled boolean not null default false,
   add column if not exists portal_updated_at timestamptz,
-  add column if not exists dashboard_data jsonb not null default '{}'::jsonb;
+  add column if not exists dashboard_data jsonb not null default '{}'::jsonb,
+  add column if not exists portal_draft_data jsonb,
+  add column if not exists portal_draft_saved_at timestamptz,
+  add column if not exists portal_published_at timestamptz,
+  add column if not exists dashboard_data_source text,
+  add column if not exists dashboard_admin_notes text;
+
+update public.clients
+set portal_published_at = portal_updated_at
+where portal_enabled = true
+  and portal_published_at is null
+  and portal_updated_at is not null;
 
 create unique index if not exists clients_portal_token_idx on public.clients (portal_token);
 
@@ -162,6 +173,8 @@ select jsonb_build_object('business_name',c.business_name,'contact_name',c.conta
   'campaigns',coalesce((select jsonb_agg(jsonb_build_object('name',p.name,'channel',p.channel,'objective',p.objective,'status',p.status,'budget',p.budget,'spend',p.spend,'leads',p.leads,'conversions',p.conversions,'note',p.performance_note)) from public.client_campaigns p where p.client_id=c.id and p.client_visible),'[]'::jsonb),
   'files',coalesce((select jsonb_agg(jsonb_build_object('name',f.name,'category',f.category,'url',f.url)) from public.client_files f where f.client_id=c.id and f.client_visible),'[]'::jsonb)
 ) from public.clients c where c.portal_token=access_token and c.portal_enabled and c.status='active' limit 1;$$;
+
+notify pgrst, 'reload schema';
 
 -- Public, narrowly-scoped unsubscribe: callable by anyone (anon) via
 -- POST /rest/v1/rpc/unsubscribe_client, but it can only ever set
