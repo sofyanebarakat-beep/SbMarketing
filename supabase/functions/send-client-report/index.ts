@@ -36,7 +36,10 @@ const REPLY_TO = "contact@sbmarketing.fr";
 
 interface RequestBody {
   preview?: boolean;
-  type: "report" | "tip" | "custom";
+  type: "report" | "tip" | "custom" | "html";
+  // html: a complete email document built by the admin's email builder
+  // (Email marketing → templates/campaigns/automations), sent verbatim.
+  html?: string;
   to: string;
   business_name: string;
   contact_name?: string;
@@ -74,8 +77,8 @@ Deno.serve(async (req) => {
     const body: RequestBody = await req.json();
     const { type, to, business_name, contact_name, language = "fr", branding, client_id } = body || ({} as RequestBody);
 
-    if (!type || !["report", "tip", "custom"].includes(type)) {
-      return new Response(JSON.stringify({ error: "type must be report, tip or custom" }), {
+    if (!type || !["report", "tip", "custom", "html"].includes(type)) {
+      return new Response(JSON.stringify({ error: "type must be report, tip, custom or html" }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
@@ -94,7 +97,15 @@ Deno.serve(async (req) => {
 
     let rendered: { subject: string; html: string };
 
-    if (type === "report") {
+    if (type === "html") {
+      if (!body.subject || !body.html) {
+        return new Response(JSON.stringify({ error: "HTML emails need subject and html" }), {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      rendered = { subject: body.subject, html: body.html };
+    } else if (type === "report") {
       const groups = body.groups || [];
       const hasAnyMetric = groups.some((g) => g.metrics?.some((m) => m.metric?.value));
       const hasAnyCustom = (body.custom_metrics || []).some((m) => m.label?.trim() && m.value?.trim());
@@ -190,7 +201,7 @@ Deno.serve(async (req) => {
         to: [to],
         subject: rendered.subject,
         html: rendered.html,
-        reply_to: REPLY_TO,
+        reply_to: body.reply_to || REPLY_TO,
         ...(attachments ? { attachments } : {}),
       }),
     });
