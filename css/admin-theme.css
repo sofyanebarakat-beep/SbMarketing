@@ -209,3 +209,12 @@ dialog::backdrop{background:rgba(4,16,33,.4)}
 .analytics-field span{color:var(--n800)}
 .calendar-upload{border-radius:48px}
 .calendar-item textarea{border-color:var(--n300);border-radius:14px}
+/* Client answers on calendar posts (approve / reject / change request) */
+.calendar-feedback{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:12px 14px;border-radius:14px;background:#fff;border:1px solid var(--n300)}
+.calendar-feedback strong{font-size:13px}
+.calendar-feedback small{color:var(--n600);font-size:12px}
+.calendar-feedback p{margin:4px 0 0;color:var(--n700);font-size:13px}
+.calendar-feedback button{flex:none;padding:8px 14px;font-size:12px}
+.calendar-feedback--approved{background:#e4faed;border-color:#7fdca4}.calendar-feedback--approved strong{color:#13a570}
+.calendar-feedback--rejected{background:#ffeff0;border-color:#ffbec2}.calendar-feedback--rejected strong{color:#dc2b2b}
+.calendar-feedback--changes_requested{background:#fff3e4;border-color:#ffd19b}.calendar-feedback--changes_requested strong{color:#d5691b}

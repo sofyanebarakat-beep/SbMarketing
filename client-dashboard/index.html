@@ -32,22 +32,40 @@
   <header class="cd-topbar">
     <button type="button" class="sidebar-toggle" data-sidebar-toggle aria-label="Open menu"><span></span><span></span></button>
     <a href="https://www.sbmarketing.fr" class="cd-topbar__brand" aria-label="SB Marketing"><img src="/images/logo-climanova.svg" alt="SB Marketing"></a>
-    <span class="cd-topbar__title" data-i18n="dashboard">Your marketing dashboard</span>
-    <div class="cd-topbar__user"><button type="button" class="cd-button-ghost" data-print data-i18n="pdf">Save PDF</button><span class="cd-avatar" data-avatar aria-hidden="true">•</span><span class="cd-topbar__name"><span data-top-name></span><small data-side-business></small></span></div>
+    <span class="cd-topbar__title" data-page-title>Website analytics</span>
+    <div class="cd-topbar__user"><span class="cd-avatar" data-avatar aria-hidden="true">•</span><span class="cd-topbar__name"><span data-top-name></span><small data-side-business></small></span></div>
   </header>
     <main class="portal-main">
       <div class="portal-loading" data-portal-loading><span>✦</span><h1>Preparing your dashboard…</h1><p>Loading the latest marketing information.</p></div>
       <div class="portal-error" data-portal-error hidden><span>⚠️</span><h1>Dashboard unavailable</h1><p>This private link is invalid, disabled, or has expired. Please contact SB Marketing for a new link.</p><a href="mailto:contact@sbmarketing.fr">Contact SB Marketing</a></div>
       <div data-portal-content hidden>
-        <section class="cd-head"><div><h1 data-client-name></h1></div><div class="portal-period"><span data-i18n="period">Reporting period</span><strong data-period></strong><small data-updated></small></div></section>
-        <section id="analytics"><div class="portal-section-head"><h2 data-i18n="analytics">Website analytics</h2><p data-i18n="analyticsCopy">How your website performed over the period.</p></div><div class="portal-metrics" data-metrics></div>
-          <div class="portal-two-column" data-analytics-lists hidden><div class="portal-card"><div class="portal-section-head"><h2 data-i18n="topPages">Most visited pages</h2></div><div data-top-pages></div></div><div class="portal-card"><div class="portal-section-head"><h2 data-i18n="sources">Where visitors come from</h2></div><div data-sources></div></div></div>
+        <section class="cd-view" data-page="analytics">
+          <div class="cd-head"><div><h1 data-i18n="analytics">Website analytics</h1><p><span data-client-name></span> · <span data-i18n="analyticsCopy">How your website performed over the period.</span></p></div><div class="portal-period"><span data-i18n="period">Reporting period</span><strong data-period></strong><small data-updated></small></div></div>
+          <p class="cd-demo-note" data-demo-note hidden><span data-i18n="demo">Example data</span> — <span data-i18n="demoNote">Example figures shown while your real website statistics are being connected.</span></p>
+          <div class="cd-metrics-head"><span data-metrics-badge></span></div>
+          <div class="portal-metrics" data-metrics></div>
+          <div class="portal-card"><div class="portal-section-head"><h2 data-i18n="visitsChart">Daily visits — last 30 days</h2><span data-chart-badge></span></div><div class="cd-chart" data-visits-chart></div></div>
+          <div class="portal-two-column"><div class="portal-card"><div class="portal-section-head"><h2 data-i18n="topPages">Most visited pages</h2><span data-top-pages-badge></span></div><div data-top-pages></div></div><div class="portal-card"><div class="portal-section-head"><h2 data-i18n="sources">Where visitors come from</h2><span data-sources-badge></span></div><div data-sources></div></div></div>
+          <div class="portal-two-column"><div class="portal-card"><div class="portal-section-head"><h2 data-i18n="devices">Devices</h2><span data-devices-badge></span></div><div data-devices></div></div><div class="portal-card"><div class="portal-section-head"><h2 data-i18n="engagement">Engagement</h2><span data-engagement-badge></span></div><div data-engagement></div></div></div>
         </section>
-        <section class="portal-card" id="calendar"><div class="portal-section-head"><h2 data-i18n="calendar">Content calendar</h2><p data-i18n="calendarCopy">What we will publish for you, and what is already live.</p></div><div data-calendar></div></section>
+        <section class="cd-view" data-page="calendar" hidden>
+          <div class="cd-head"><div><h1 data-i18n="calendar">Content calendar</h1><p><span data-client-name></span> · <span data-i18n="calendarCopy">Click a publication to approve it, reject it or ask for a change.</span></p></div>
+            <div class="cd-cal-nav"><button type="button" class="cd-round" data-cal-nav="prev" data-i18n-label="prev" aria-label="Previous month">‹</button><strong data-cal-month></strong><button type="button" class="cd-round" data-cal-nav="next" data-i18n-label="next" aria-label="Next month">›</button><button type="button" class="cd-btn cd-btn--ghost cd-btn--small" data-cal-nav="today" data-i18n="today">Today</button></div></div>
+          <div class="portal-card cd-cal">
+            <div class="cd-cal__weekdays" data-cal-weekdays></div>
+            <div class="cd-cal__grid" data-cal-grid></div>
+            <p class="cd-muted cd-cal__empty" data-cal-empty hidden></p>
+          </div>
+          <div class="portal-card cd-cal-undated" data-cal-undated hidden></div>
+        </section>
       </div>
     </main>
   <footer class="cd-footer">Private dashboard prepared by <strong>SB Marketing</strong> · <a href="mailto:contact@sbmarketing.fr">contact@sbmarketing.fr</a></footer>
   </div>
+  <dialog class="cd-dialog" data-post-dialog aria-labelledby="cd-post-title">
+    <button type="button" class="cd-dialog__close" data-post-close aria-label="Close">&times;</button>
+    <div class="cd-dialog__body" data-post-body></div>
+  </dialog>
   <script src="/js/supabase-config.js"></script>
   <script src="/js/client-dashboard.js"></script>
   <script src="/js/dashboard-shell.js"></script>
