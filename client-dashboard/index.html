@@ -7,50 +7,49 @@
   <title>Marketing dashboard | SB Marketing</title>
   <link rel="icon" href="/images/sb-favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="/css/client-dashboard.css">
 </head>
 <body>
+  <aside class="cd-sidebar" data-sidebar hidden>
+    <div class="sidebar-logo-section">
+      <a href="https://www.sbmarketing.fr" class="cd-brand" aria-label="SB Marketing"><img src="/images/logo-climanova.svg" alt="SB Marketing"></a>
+      <button type="button" class="sidebar-close" data-sidebar-toggle aria-label="Close menu">&times;</button>
+    </div>
+    <nav class="cd-nav" aria-label="Dashboard sections">
+      <details class="sidebar-group" open>
+        <summary><svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h7v9H3zM14 3h7v5h-7zM14 12h7v9h-7zM3 16h7v5H3z"/></svg><span data-i18n="navDashboard">Dashboard</span><svg class="sidebar-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="sidebar-sub">
+          <a href="#analytics" class="is-active"><span data-i18n="navAnalytics">Website analytics</span></a>
+          <a href="#calendar"><span data-i18n="navCalendar">Content calendar</span></a>
+        </div>
+      </details>
+    </nav>
+    <a class="cd-nav__contact" href="mailto:contact@sbmarketing.fr"><span data-i18n="navContact">Contact SB Marketing</span></a>
+  </aside>
+  <div class="cd-backdrop" data-sidebar-toggle></div>
+  <div class="cd-page">
   <header class="cd-topbar">
-    <a href="https://www.sbmarketing.fr" class="portal-brand"><span>SB</span><span>MARKETING</span></a>
+    <button type="button" class="sidebar-toggle" data-sidebar-toggle aria-label="Open menu"><span></span><span></span></button>
+    <a href="https://www.sbmarketing.fr" class="cd-topbar__brand" aria-label="SB Marketing"><img src="/images/logo-climanova.svg" alt="SB Marketing"></a>
     <span class="cd-topbar__title" data-i18n="dashboard">Your marketing dashboard</span>
-    <div class="cd-topbar__user"><button type="button" class="cd-button-ghost" data-print data-i18n="pdf">Save PDF</button><span class="cd-topbar__name" data-top-name></span><span class="cd-avatar" data-avatar aria-hidden="true">•</span></div>
+    <div class="cd-topbar__user"><button type="button" class="cd-button-ghost" data-print data-i18n="pdf">Save PDF</button><span class="cd-avatar" data-avatar aria-hidden="true">•</span><span class="cd-topbar__name"><span data-top-name></span><small data-side-business></small></span></div>
   </header>
-  <div class="cd-shell">
-    <aside class="cd-sidebar" data-sidebar hidden>
-      <div class="cd-welcome"><span class="cd-avatar" data-avatar aria-hidden="true">•</span><div><strong><span data-greeting>Welcome</span>, <span data-side-name></span>!</strong><small data-side-business></small></div></div>
-      <nav class="cd-nav" aria-label="Dashboard sections">
-        <a href="#overview" class="is-active"><span class="cd-nav__icon" aria-hidden="true">▦</span><span data-i18n="navOverview">Overview</span></a>
-        <a href="#results"><span class="cd-nav__icon" aria-hidden="true">▲</span><span data-i18n="navResults">Results</span></a>
-        <a href="#actions"><span class="cd-nav__icon" aria-hidden="true">✓</span><span data-i18n="navActions">Actions</span></a>
-        <a href="#plan"><span class="cd-nav__icon" aria-hidden="true">◎</span><span data-i18n="navPlan">Marketing plan</span></a>
-        <a href="#calendar"><span class="cd-nav__icon" aria-hidden="true">▤</span><span data-i18n="navCalendar">Content calendar</span></a>
-        <a href="#campaigns"><span class="cd-nav__icon" aria-hidden="true">◉</span><span data-i18n="navCampaigns">Campaigns</span></a>
-        <a href="#files" data-files-link hidden><span class="cd-nav__icon" aria-hidden="true">▣</span><span data-i18n="navFiles">Files</span></a>
-      </nav>
-      <a class="cd-nav__contact" href="mailto:contact@sbmarketing.fr"><span class="cd-nav__icon" aria-hidden="true">✉</span><span data-i18n="navContact">Contact SB Marketing</span></a>
-    </aside>
     <main class="portal-main">
       <div class="portal-loading" data-portal-loading><span>✦</span><h1>Preparing your dashboard…</h1><p>Loading the latest marketing information.</p></div>
       <div class="portal-error" data-portal-error hidden><span>⚠️</span><h1>Dashboard unavailable</h1><p>This private link is invalid, disabled, or has expired. Please contact SB Marketing for a new link.</p><a href="mailto:contact@sbmarketing.fr">Contact SB Marketing</a></div>
       <div data-portal-content hidden>
-        <section class="cd-head" id="overview"><div><h1 data-client-name></h1><p data-welcome></p></div><div class="portal-period"><span data-i18n="period">Reporting period</span><strong data-period>Current month</strong><small data-updated></small></div></section>
-        <section id="results"><div class="portal-section-head"><h2 data-i18n="results">Key results</h2><p data-i18n="resultsCopy">We use these numbers to decide what to improve next.</p></div><div class="portal-metrics" data-metrics></div></section>
-        <div class="portal-two-column">
-          <section class="portal-card" id="actions"><div class="portal-section-head"><h2 data-i18n="actions">Actions this month</h2></div><div class="action-list" data-actions></div></section>
-          <section class="portal-card plan-card" id="plan"><div class="portal-section-head"><h2 data-i18n="plan">Marketing plan</h2></div><div data-plan></div></section>
-        </div>
-        <section class="portal-card portal-attention" data-attention-section hidden><div class="portal-section-head"><h2 data-i18n="approvals">Approvals and requests</h2><p data-i18n="approvalsCopy">Only the items that need a decision from you.</p></div><div data-attention></div></section>
-        <section class="portal-card" id="calendar"><div class="portal-section-head"><h2 data-i18n="calendar">Content calendar</h2><p data-i18n="calendarCopy">Planned content across your active channels.</p></div><div class="calendar-list" data-calendar></div></section>
-        <section class="portal-card" id="campaigns"><div class="portal-section-head"><h2 data-i18n="campaigns">Active campaigns</h2></div><div class="portal-campaigns" data-campaigns></div></section>
-        <section class="portal-card" id="files" data-files-section hidden><div class="portal-section-head"><h2 data-i18n="files">Files and reports</h2></div><div class="portal-files" data-files></div></section>
-        <section class="portal-cta"><div><h2 data-i18n="idea">Have a new priority or idea?</h2><p data-i18n="ideaCopy">Tell us what is happening in your business so we can adapt the next actions.</p></div><a href="mailto:contact@sbmarketing.fr" data-i18n="contact">Contact the team →</a></section>
+        <section class="cd-head"><div><h1 data-client-name></h1></div><div class="portal-period"><span data-i18n="period">Reporting period</span><strong data-period></strong><small data-updated></small></div></section>
+        <section id="analytics"><div class="portal-section-head"><h2 data-i18n="analytics">Website analytics</h2><p data-i18n="analyticsCopy">How your website performed over the period.</p></div><div class="portal-metrics" data-metrics></div>
+          <div class="portal-two-column" data-analytics-lists hidden><div class="portal-card"><div class="portal-section-head"><h2 data-i18n="topPages">Most visited pages</h2></div><div data-top-pages></div></div><div class="portal-card"><div class="portal-section-head"><h2 data-i18n="sources">Where visitors come from</h2></div><div data-sources></div></div></div>
+        </section>
+        <section class="portal-card" id="calendar"><div class="portal-section-head"><h2 data-i18n="calendar">Content calendar</h2><p data-i18n="calendarCopy">What we will publish for you, and what is already live.</p></div><div data-calendar></div></section>
       </div>
     </main>
+  <footer class="cd-footer">Private dashboard prepared by <strong>SB Marketing</strong> · <a href="mailto:contact@sbmarketing.fr">contact@sbmarketing.fr</a></footer>
   </div>
-  <a class="cd-fab" href="mailto:contact@sbmarketing.fr" aria-label="Contact SB Marketing">✉</a>
-  <footer>Private dashboard prepared by <strong>SB Marketing</strong> · <a href="mailto:contact@sbmarketing.fr">contact@sbmarketing.fr</a></footer>
   <script src="/js/supabase-config.js"></script>
   <script src="/js/client-dashboard.js"></script>
+  <script src="/js/dashboard-shell.js"></script>
 </body>
 </html>
