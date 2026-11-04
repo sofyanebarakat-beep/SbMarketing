@@ -35,7 +35,7 @@
         <span class="admin-topbar__title" data-topbar-title>Overview</span>
         <label class="admin-topbar__search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span class="sr-only">Search clients</span><input type="search" data-global-search placeholder="Search clients…"></label>
         <div class="admin-topbar__user">
-          <a href="#tasks" class="topbar-bell" aria-label="Tasks"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/></svg><i></i></a>
+          <a href="#calendar" class="topbar-bell" aria-label="Client messages"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/></svg><i hidden></i></a>
           <details class="profile-menu">
             <summary><span class="admin-avatar" aria-hidden="true">S</span><span class="profile-menu__name">Sofyane<small>Account settings</small></span><svg class="profile-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
             <div class="profile-menu__list">
@@ -285,6 +285,7 @@
             <label class="cc-client"><span class="cc-client__avatar" data-cc-avatar aria-hidden="true">?</span><span class="cc-client__text"><small>Client</small><select data-cc-client aria-label="Client"><option value="">Select a client…</option></select></span></label>
             <div class="cc-nav"><button type="button" class="cc-round" data-cc-nav="prev" aria-label="Previous">‹</button><strong data-cc-period>—</strong><button type="button" class="cc-round" data-cc-nav="next" aria-label="Next">›</button><button type="button" class="secondary cc-today" data-cc-nav="today">Today</button></div>
             <div class="cc-switch" role="group" aria-label="Calendar view"><button type="button" data-cc-view="week">Week</button><button type="button" data-cc-view="month" class="is-active">Month</button></div>
+            <div class="cc-tools"><button type="button" class="secondary cc-tool" data-cc-inbox-open><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.5 5.1 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.5-6.9A2 2 0 0 0 16.8 4H7.2a2 2 0 0 0-1.7 1.1z"/></svg>Inbox<b class="cc-count" data-cc-inbox-count hidden>0</b></button><button type="button" class="secondary cc-tool" data-cc-copy-open hidden><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy week to…</button><button type="button" class="secondary cc-tool" data-cc-settings-open title="Tone of voice and summary emails"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>Client settings</button></div>
             <button type="button" class="cc-new" data-cc-new><span aria-hidden="true">+</span> New post</button>
           </div>
           <div class="cc-empty-state" data-cc-pick>
@@ -292,6 +293,7 @@
             <h2>Choose a client to plan their content</h2>
             <p>Pick a client above. You can then add posts with images or videos, captions, dates and times. The client sees them in the calendar on their private dashboard and can approve them, reject them or ask for changes.</p>
           </div>
+          <div class="cc-attention" data-cc-attention hidden></div>
           <div class="cc-body" data-cc-body hidden>
             <div class="cc-filters" data-cc-filters role="group" aria-label="Filter by status"></div>
             <p class="dashboard-message" data-cc-message aria-live="polite"></p>
@@ -823,42 +825,91 @@
 
   <dialog class="cc-drawer" data-cc-drawer aria-labelledby="cc-drawer-title">
     <form class="cc-form" data-cc-form novalidate>
-      <header class="cc-form__head"><div><span class="cc-form__client" data-cc-form-client></span><h2 id="cc-drawer-title" data-cc-form-title>New post</h2></div><button type="button" class="cc-x" data-cc-close aria-label="Close">&times;</button></header>
+      <header class="cc-form__head"><div><span class="cc-form__client" data-cc-form-client></span><h2 id="cc-drawer-title" data-cc-form-title>New post</h2><small class="cc-seen" data-cc-seen hidden></small></div><button type="button" class="cc-x" data-cc-close aria-label="Close">&times;</button></header>
+      <div class="cc-tabs" role="tablist"><button type="button" role="tab" data-cc-tab="edit" class="is-active">Edit</button><button type="button" role="tab" data-cc-tab="preview">Preview</button><button type="button" role="tab" data-cc-tab="history">History <b data-cc-history-count></b></button></div>
       <div class="cc-form__body">
-        <div class="cc-feedback" data-cc-feedback hidden></div>
-        <div class="cc-drop" data-cc-drop>
-          <input type="file" accept="image/*,video/*" data-cc-file hidden>
-          <div class="cc-drop__empty" data-cc-drop-empty><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg><strong>Drop an image or video here</strong><span>or <button type="button" class="link-button" data-cc-browse>browse your files</button> · JPG, PNG, WEBP, MP4 up to 50 MB</span></div>
-          <div class="cc-drop__preview" data-cc-preview hidden></div>
-          <div class="cc-drop__progress" data-cc-progress hidden><i></i><span>Uploading…</span></div>
-        </div>
-        <div class="cc-media-row"><input name="image" type="url" placeholder="…or paste an image / video link" data-cc-image-url><button type="button" class="secondary" data-cc-media-remove hidden>Remove</button></div>
-        <fieldset class="cc-field"><legend>Channels</legend><div class="cc-pf-chips"><label class="cc-pf-chip"><input type="checkbox" name="platforms" value="Instagram"><span data-cc-pf-icon="instagram"></span>Instagram</label><label class="cc-pf-chip"><input type="checkbox" name="platforms" value="Facebook"><span data-cc-pf-icon="facebook"></span>Facebook</label><label class="cc-pf-chip"><input type="checkbox" name="platforms" value="TikTok"><span data-cc-pf-icon="tiktok"></span>TikTok</label><label class="cc-pf-chip"><input type="checkbox" name="platforms" value="LinkedIn"><span data-cc-pf-icon="linkedin"></span>LinkedIn</label><label class="cc-pf-chip"><input type="checkbox" name="platforms" value="YouTube"><span data-cc-pf-icon="youtube"></span>YouTube</label><label class="cc-pf-chip"><input type="checkbox" name="platforms" value="Google"><span data-cc-pf-icon="google"></span>Google</label><label class="cc-pf-chip"><input type="checkbox" name="platforms" value="Pinterest"><span data-cc-pf-icon="pinterest"></span>Pinterest</label><label class="cc-pf-chip"><input type="checkbox" name="platforms" value="Website"><span data-cc-pf-icon="website"></span>Website</label><label class="cc-pf-chip"><input type="checkbox" name="platforms" value="Email"><span data-cc-pf-icon="email"></span>Email</label></div></fieldset>
-        <div class="cc-grid-3">
-          <label class="cc-field">Date<input name="date" type="date"></label>
-          <label class="cc-field">Time<input name="time" type="time" step="300"></label>
-          <label class="cc-field">Format<select name="format"><option>Post</option><option>Carousel</option><option>Reel</option><option>Story</option><option>Video</option><option>Article</option><option>Email</option><option>Ad</option></select></label>
-        </div>
-        <label class="cc-field">Title <small>(shown in the calendar)</small><input name="topic" required maxlength="140" placeholder="e.g. Weekend meat boxes"></label>
-        <label class="cc-field"><span class="cc-field__row">Caption <small data-cc-count>0</small></span><textarea name="caption" rows="6" placeholder="Text that will be published, with emojis and #hashtags"></textarea></label>
-        <div class="cc-grid-2">
-          <label class="cc-field">Status<select name="status"><option value="idea">Idea (internal)</option><option value="draft">Draft</option><option value="design_in_progress">In design</option><option value="ready_for_approval">Pending client approval</option><option value="approved">Approved</option><option value="scheduled">Scheduled</option><option value="published">Published</option></select></label>
+        <div class="cc-pane" data-cc-pane="edit">
+          <div class="cc-feedback" data-cc-feedback hidden></div>
+          <div class="cc-drop" data-cc-drop>
+            <input type="file" accept="image/*,video/*" multiple data-cc-file hidden>
+            <div class="cc-drop__empty" data-cc-drop-empty><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg><strong data-cc-drop-empty-title>Drop images or videos here</strong><span>or <button type="button" class="link-button" data-cc-browse>browse your files</button> · several files = carousel · JPG, PNG, WEBP, MP4 up to 50 MB</span></div>
+            <div class="cc-drop__progress" data-cc-progress hidden><i></i><span data-cc-progress-text>Uploading…</span></div>
+          </div>
+          <div class="cc-media-strip" data-cc-media-strip hidden></div>
+          <div class="cc-media-row"><input type="url" placeholder="…or paste an image / video link" data-cc-image-url aria-label="Image or video link"><button type="button" class="secondary" data-cc-media-add>Add</button></div>
+          <fieldset class="cc-field"><legend>Channels</legend><div class="cc-pf-chips"><label class="cc-pf-chip"><input type="checkbox" name="platforms" value="Instagram"><span data-cc-pf-icon="instagram"></span>Instagram</label><label class="cc-pf-chip"><input type="checkbox" name="platforms" value="Facebook"><span data-cc-pf-icon="facebook"></span>Facebook</label><label class="cc-pf-chip"><input type="checkbox" name="platforms" value="TikTok"><span data-cc-pf-icon="tiktok"></span>TikTok</label><label class="cc-pf-chip"><input type="checkbox" name="platforms" value="LinkedIn"><span data-cc-pf-icon="linkedin"></span>LinkedIn</label><label class="cc-pf-chip"><input type="checkbox" name="platforms" value="YouTube"><span data-cc-pf-icon="youtube"></span>YouTube</label><label class="cc-pf-chip"><input type="checkbox" name="platforms" value="Google"><span data-cc-pf-icon="google"></span>Google</label><label class="cc-pf-chip"><input type="checkbox" name="platforms" value="Pinterest"><span data-cc-pf-icon="pinterest"></span>Pinterest</label><label class="cc-pf-chip"><input type="checkbox" name="platforms" value="Website"><span data-cc-pf-icon="website"></span>Website</label><label class="cc-pf-chip"><input type="checkbox" name="platforms" value="Email"><span data-cc-pf-icon="email"></span>Email</label></div></fieldset>
+          <div class="cc-grid-3">
+            <label class="cc-field">Date<input name="date" type="date"></label>
+            <label class="cc-field">Time<input name="time" type="time" step="300"></label>
+            <label class="cc-field">Format<select name="format"><option>Post</option><option>Carousel</option><option>Reel</option><option>Story</option><option>Video</option><option>Article</option><option>Email</option><option>Ad</option></select></label>
+          </div>
+          <label class="cc-field">Title <small>(shown in the calendar)</small><input name="topic" required maxlength="140" placeholder="e.g. Weekend meat boxes"></label>
+          <div class="cc-field">
+            <div class="cc-field__row"><label for="cc-caption">Caption</label><small data-cc-count>0</small></div>
+            <div class="cc-caption-tools">
+              <div class="cc-menu-wrap"><button type="button" class="secondary" data-cc-menu-open="caption">Templates ▾</button><div class="cc-menu" data-cc-menu="caption" hidden></div></div>
+              <div class="cc-menu-wrap"><button type="button" class="secondary" data-cc-menu-open="hashtags"># Hashtags ▾</button><div class="cc-menu" data-cc-menu="hashtags" hidden></div></div>
+              <button type="button" class="secondary cc-ai-btn" data-cc-ai="suggest">✨ Suggest</button>
+              <button type="button" class="secondary cc-ai-btn" data-cc-ai="rewrite">✨ Rewrite in the client’s tone</button>
+            </div>
+            <textarea id="cc-caption" name="caption" rows="6" placeholder="Text that will be published, with emojis and #hashtags"></textarea>
+            <input class="cc-ai-hint" data-cc-ai-hint placeholder="Optional instruction for ✨ (e.g. shorter, mention the Saturday opening)" aria-label="Instruction for the caption assistant">
+            <div class="cc-ai" data-cc-ai-result hidden></div>
+          </div>
+          <div class="cc-grid-3">
+            <label class="cc-field">Status<select name="status"><option value="idea">Idea (internal)</option><option value="draft">Draft</option><option value="design_in_progress">In design</option><option value="ready_for_approval">Pending client approval</option><option value="approved">Approved</option><option value="scheduled">Scheduled</option><option value="published">Published</option></select></label>
+            <label class="cc-field">Approve by<input name="deadline" type="date" title="Shown to the client as “à valider avant le …”"></label>
+            <label class="cc-field">Repeat weekly<select name="repeat"><option value="0">Don’t repeat</option><option value="2">for 2 weeks</option><option value="3">for 3 weeks</option><option value="4">for 4 weeks</option><option value="6">for 6 weeks</option><option value="8">for 8 weeks</option><option value="12">for 12 weeks</option></select></label>
+          </div>
           <label class="cc-field" data-cc-link-field>Publication link<input name="link" type="url" placeholder="https://instagram.com/p/…"></label>
+          <fieldset class="cc-field cc-results" data-cc-results hidden><legend>Results <small>(shown to the client on published posts)</small></legend><div class="cc-metrics" data-cc-metrics></div></fieldset>
+          <label class="cc-toggle"><input type="checkbox" name="visible" checked><span></span>Visible to the client on their dashboard</label>
+          <label class="cc-field cc-notes">Internal notes <small>— only you see this</small><textarea name="notes" rows="2" placeholder="e.g. photo to take on Thursday, boost with 20 € budget"></textarea></label>
+          <p class="form-message" data-cc-form-message aria-live="polite"></p>
+          <section class="cc-thread" data-cc-thread-section hidden>
+            <div class="ccv-thread-head"><h4>Conversation with the client</h4><small>The client sees these messages on this post.</small></div>
+            <div class="ccv-thread" data-cc-thread aria-live="polite"></div>
+            <div class="ccv-compose"><textarea data-cc-thread-input rows="2" maxlength="2000" placeholder="Write to the client…" aria-label="Message to the client"></textarea><button type="button" data-cc-thread-send>Send</button></div>
+            <p class="form-message is-error" data-cc-thread-msg aria-live="polite"></p>
+          </section>
         </div>
-        <label class="cc-toggle"><input type="checkbox" name="visible" checked><span></span>Visible to the client on their dashboard</label>
-        <p class="form-message" data-cc-form-message aria-live="polite"></p>
-        <section class="cc-thread" data-cc-thread-section hidden>
-          <div class="ccv-thread-head"><h4>Conversation with the client</h4><small>The client sees these messages on this post.</small></div>
-          <div class="ccv-thread" data-cc-thread aria-live="polite"></div>
-          <div class="ccv-compose"><textarea data-cc-thread-input rows="2" maxlength="2000" placeholder="Write to the client…" aria-label="Message to the client"></textarea><button type="button" data-cc-thread-send>Send</button></div>
-          <p class="form-message is-error" data-cc-thread-msg aria-live="polite"></p>
-        </section>
+        <div class="cc-pane" data-cc-pane="preview" hidden>
+          <div class="pv-tabs" data-cc-pv-tabs></div>
+          <div data-cc-pv></div>
+          <p class="cc-muted cc-pv-note">How the post will look on the network. Red numbers are the client’s pinned comments.</p>
+        </div>
+        <div class="cc-pane" data-cc-pane="history" hidden><div data-cc-history></div></div>
       </div>
       <footer class="cc-form__foot">
         <div><button type="button" class="cc-danger" data-cc-delete hidden>Delete</button><button type="button" class="secondary" data-cc-duplicate hidden>Duplicate</button></div>
         <div><button type="submit" class="secondary" data-cc-save>Save</button><button type="button" data-cc-send>Send for approval</button></div>
       </footer>
     </form>
+  </dialog>
+  <dialog class="cc-modal" data-cc-inbox aria-labelledby="cc-inbox-title">
+    <header class="cc-modal__head"><h2 id="cc-inbox-title">Inbox — unread client messages</h2><button type="button" class="cc-x" data-cc-inbox-close aria-label="Close">&times;</button></header>
+    <div class="cc-inbox" data-cc-inbox-body></div>
+  </dialog>
+  <dialog class="cc-modal cc-modal--small" data-cc-copy aria-labelledby="cc-copy-title">
+    <header class="cc-modal__head"><h2 id="cc-copy-title">Copy this week to…</h2><button type="button" class="cc-x" data-cc-copy-close aria-label="Close">&times;</button></header>
+    <div class="cc-modal__body">
+      <p class="cc-muted" data-cc-copy-summary></p>
+      <label class="cc-field">Client<select data-cc-copy-client></select></label>
+      <label class="cc-field">Week starting<input type="date" data-cc-copy-week></label>
+      <p class="cc-muted">Copies arrive as drafts (no client answers), with the same images, captions, channels and times.</p>
+      <p class="form-message is-error" data-cc-copy-msg></p>
+      <div class="cc-modal__actions"><button type="button" class="secondary" data-cc-copy-close>Cancel</button><button type="button" data-cc-copy-run>Copy posts</button></div>
+    </div>
+  </dialog>
+  <dialog class="cc-modal cc-modal--small" data-cc-settings aria-labelledby="cc-settings-title">
+    <header class="cc-modal__head"><h2 id="cc-settings-title">Client settings — <span data-cc-settings-name></span></h2><button type="button" class="cc-x" data-cc-settings-close aria-label="Close">&times;</button></header>
+    <div class="cc-modal__body">
+      <label class="cc-field">Tone of voice <small>(used by ✨ Suggest / Rewrite)</small><textarea name="tone" rows="4" placeholder="e.g. Warm and local, tutoiement, short sentences, 2–3 emojis, always end with the shop address"></textarea></label>
+      <label class="cc-field">Summary email to the client<select name="digest"><option value="off">Off</option><option value="daily">Every morning</option><option value="weekly">Every Monday</option></select></label>
+      <p class="cc-muted">Sent to <strong data-cc-settings-email></strong>. Approval requests (one email a day) and 48-hour reminders are always sent.</p>
+      <p class="form-message is-error" data-cc-settings-msg></p>
+      <div class="cc-modal__actions"><button type="button" class="secondary" data-cc-settings-close>Cancel</button><button type="button" data-cc-settings-save>Save</button></div>
+    </div>
   </dialog>
 
   <script src="/js/supabase-config.js"></script>
