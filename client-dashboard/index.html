@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="/css/client-dashboard.css">
+  <link rel="stylesheet" href="/css/content-calendar.css">
 </head>
 <body>
   <aside class="cd-sidebar" data-sidebar hidden>
@@ -49,11 +50,14 @@
           <div class="portal-two-column"><div class="portal-card"><div class="portal-section-head"><h2 data-i18n="devices">Devices</h2><span data-devices-badge></span></div><div data-devices></div></div><div class="portal-card"><div class="portal-section-head"><h2 data-i18n="engagement">Engagement</h2><span data-engagement-badge></span></div><div data-engagement></div></div></div>
         </section>
         <section class="cd-view" data-page="calendar" hidden>
-          <div class="cd-head"><div><h1 data-i18n="calendar">Content calendar</h1><p><span data-client-name></span> · <span data-i18n="calendarCopy">Click a publication to approve it, reject it or ask for a change.</span></p></div>
-            <div class="cd-cal-nav"><button type="button" class="cd-round" data-cal-nav="prev" data-i18n-label="prev" aria-label="Previous month">‹</button><strong data-cal-month></strong><button type="button" class="cd-round" data-cal-nav="next" data-i18n-label="next" aria-label="Next month">›</button><button type="button" class="cd-btn cd-btn--ghost cd-btn--small" data-cal-nav="today" data-i18n="today">Today</button></div></div>
+          <div class="cd-head"><div><h1 data-i18n="calendar">Content calendar</h1><p><span data-client-name></span> · <span data-i18n="calendarCopy">Click a publication to approve it, reject it or ask for a change.</span></p></div></div>
+          <p class="cd-pending" data-cal-pending hidden></p>
+          <div class="cd-cal-toolbar">
+            <div class="cd-cal-nav"><button type="button" class="cd-round" data-cal-nav="prev" data-i18n-label="prev" aria-label="Previous">‹</button><strong data-cal-month></strong><button type="button" class="cd-round" data-cal-nav="next" data-i18n-label="next" aria-label="Next">›</button><button type="button" class="cd-btn cd-btn--ghost cd-btn--small" data-cal-nav="today" data-i18n="today">Today</button></div>
+            <div class="cd-switch" role="group"><button type="button" data-cal-view="week" data-i18n="viewWeek">Week</button><button type="button" data-cal-view="month" data-i18n="viewMonth" class="is-active">Month</button></div>
+          </div>
           <div class="portal-card cd-cal">
-            <div class="cd-cal__weekdays" data-cal-weekdays></div>
-            <div class="cd-cal__grid" data-cal-grid></div>
+            <div data-cal-grid></div>
             <p class="cd-muted cd-cal__empty" data-cal-empty hidden></p>
           </div>
           <div class="portal-card cd-cal-undated" data-cal-undated hidden></div>
@@ -67,6 +71,7 @@
     <div class="cd-dialog__body" data-post-body></div>
   </dialog>
   <script src="/js/supabase-config.js"></script>
+  <script src="/js/content-calendar-view.js"></script>
   <script src="/js/client-dashboard.js"></script>
   <script src="/js/dashboard-shell.js"></script>
 </body>

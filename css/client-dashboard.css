@@ -320,3 +320,19 @@ section{scroll-margin-top:100px}
   .cd-dialog__info{padding:22px 20px 24px}
   .cd-actions .cd-btn{flex:1 1 100%}
 }
+
+/* Calendar page — shared card view (css/content-calendar.css) */
+.cd-cal-toolbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+.cd-switch{display:inline-flex;padding:4px;border:1px solid var(--n300);border-radius:48px;background:#fff}
+.cd-switch button{padding:8px 18px;border:0;border-radius:40px;background:transparent;color:var(--n600);font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+.cd-switch button:hover{color:var(--main)}
+.cd-switch button.is-active{background:var(--main);color:#fff}
+.cd-pending{display:flex;align-items:center;gap:8px;margin:-16px 0 20px;padding:12px 18px;border:1px solid #ffd19b;border-radius:16px;background:#fff7e8;color:#8a4b0f;font-size:14px}
+.cd-pending strong{display:grid;place-items:center;min-width:26px;height:26px;padding:0 6px;border-radius:13px;background:#ffb016;color:#fff}
+.cd-cal{padding:18px}
+.cd-undated{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px}
+.cd-dialog__media video{display:block;width:100%;max-height:420px;background:#0b0e2c}
+.cd-post__tags .channel{display:inline-flex;align-items:center;gap:6px}
+@media(max-width:767px){.cd-cal{padding:0;border:0;background:transparent;box-shadow:none}.cd-cal-toolbar{flex-direction:column;align-items:stretch}.cd-switch button{flex:1}}
+.cd-dialog__info .cd-post__meta{padding-right:44px}
+.cd-dialog__media+.cd-dialog__info .cd-post__meta{padding-right:0}

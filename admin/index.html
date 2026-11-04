@@ -11,6 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap">
   <link rel="stylesheet" href="/css/admin-theme.css">
+  <link rel="stylesheet" href="/css/content-calendar.css">
 </head>
 <body>
   <main class="admin-page">
@@ -54,8 +55,8 @@
         <nav class="sidebar-nav" aria-label="Admin sections">
           <details class="sidebar-group" open><summary><svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h7v9H3zM14 3h7v5h-7zM14 12h7v9h-7zM3 16h7v5H3z"/></svg><span>Dashboard</span><svg class="sidebar-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></summary><div class="sidebar-sub"><a href="#overview" class="sidebar-link" data-tab="overview">Overview</a><a href="#reports" class="sidebar-link" data-tab="reports">Reports</a><a href="#tasks" class="sidebar-link" data-tab="tasks">Tasks</a></div></details>
           <details class="sidebar-group"><summary><svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>CRM</span><svg class="sidebar-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></summary><div class="sidebar-sub"><a href="#leads" class="sidebar-link" data-tab="leads">Leads</a><a href="#contacts" class="sidebar-link" data-tab="contacts">Contact requests</a><a href="#clients" class="sidebar-link" data-tab="clients">Clients</a></div></details>
-          <details class="sidebar-group"><summary><svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Client portal</span><svg class="sidebar-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></summary><div class="sidebar-sub"><a href="#dashboards" class="sidebar-link" data-tab="dashboards">Client dashboards</a><a href="#assets" class="sidebar-link" data-tab="assets">Assets</a></div></details>
-          <details class="sidebar-group"><summary><svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11v2a1 1 0 0 0 1 1h2l5 4V6L6 10H4a1 1 0 0 0-1 1zM15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg><span>Marketing</span><svg class="sidebar-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></summary><div class="sidebar-sub"><a href="#content" class="sidebar-link" data-tab="content">Content calendar</a><a href="#campaigns" class="sidebar-link" data-tab="campaigns">Campaigns</a><a href="#marketing" class="sidebar-link" data-tab="marketing">Email marketing</a></div></details>
+          <details class="sidebar-group"><summary><svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Client portal</span><svg class="sidebar-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></summary><div class="sidebar-sub"><a href="#calendar" class="sidebar-link" data-tab="calendar">Content calendar</a><a href="#dashboards" class="sidebar-link" data-tab="dashboards">Client dashboards</a><a href="#assets" class="sidebar-link" data-tab="assets">Assets</a></div></details>
+          <details class="sidebar-group"><summary><svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11v2a1 1 0 0 0 1 1h2l5 4V6L6 10H4a1 1 0 0 0-1 1zM15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg><span>Marketing</span><svg class="sidebar-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></summary><div class="sidebar-sub"><a href="#campaigns" class="sidebar-link" data-tab="campaigns">Campaigns</a><a href="#marketing" class="sidebar-link" data-tab="marketing">Email marketing</a></div></details>
           <details class="sidebar-group"><summary><svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg><span>Sales</span><svg class="sidebar-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></summary><div class="sidebar-sub"><a href="#devis" class="sidebar-link" data-tab="devis">Quotes &amp; invoices</a></div></details>
           <details class="sidebar-group sidebar-group--secondary"><summary><svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Settings</span><svg class="sidebar-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></summary><div class="sidebar-sub"><a href="#settings" class="sidebar-link" data-tab="settings">Settings</a></div></details>
         </nav>
@@ -279,6 +280,25 @@
 
         <div data-view="tasks" class="ops-view" hidden><div data-ops-tasks></div></div>
         <div data-view="content" class="ops-view" hidden><div data-ops-content></div></div>
+        <div data-view="calendar" class="cc-page" hidden>
+          <div class="cc-toolbar">
+            <label class="cc-client"><span class="cc-client__avatar" data-cc-avatar aria-hidden="true">?</span><span class="cc-client__text"><small>Client</small><select data-cc-client aria-label="Client"><option value="">Select a client…</option></select></span></label>
+            <div class="cc-nav"><button type="button" class="cc-round" data-cc-nav="prev" aria-label="Previous">‹</button><strong data-cc-period>—</strong><button type="button" class="cc-round" data-cc-nav="next" aria-label="Next">›</button><button type="button" class="secondary cc-today" data-cc-nav="today">Today</button></div>
+            <div class="cc-switch" role="group" aria-label="Calendar view"><button type="button" data-cc-view="week">Week</button><button type="button" data-cc-view="month" class="is-active">Month</button></div>
+            <button type="button" class="cc-new" data-cc-new><span aria-hidden="true">+</span> New post</button>
+          </div>
+          <div class="cc-empty-state" data-cc-pick>
+            <div class="cc-empty-state__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18M8 14h3M8 17h6"/></svg></div>
+            <h2>Choose a client to plan their content</h2>
+            <p>Pick a client above. You can then add posts with images or videos, captions, dates and times. The client sees them in the calendar on their private dashboard and can approve them, reject them or ask for changes.</p>
+          </div>
+          <div class="cc-body" data-cc-body hidden>
+            <div class="cc-filters" data-cc-filters role="group" aria-label="Filter by status"></div>
+            <p class="dashboard-message" data-cc-message aria-live="polite"></p>
+            <div class="cc-board" data-cc-board></div>
+            <section class="cc-unscheduled" data-cc-unscheduled hidden><div class="cc-section-head"><h2>Ideas &amp; unscheduled</h2><span>Posts without a date yet. Open one to give it a date.</span></div><div class="cc-unscheduled__grid" data-cc-unscheduled-grid></div></section>
+          </div>
+        </div>
         <div data-view="campaigns" class="ops-view" hidden><div data-ops-campaigns></div></div>
         <div data-view="reports" class="ops-view" hidden><div data-ops-reports></div></div>
         <div data-view="assets" class="ops-view" hidden><div data-ops-assets></div></div>
@@ -801,11 +821,47 @@
     <div class="asset-picker__grid" data-asset-picker-grid></div>
   </dialog>
 
+  <dialog class="cc-drawer" data-cc-drawer aria-labelledby="cc-drawer-title">
+    <form class="cc-form" data-cc-form novalidate>
+      <header class="cc-form__head"><div><span class="cc-form__client" data-cc-form-client></span><h2 id="cc-drawer-title" data-cc-form-title>New post</h2></div><button type="button" class="cc-x" data-cc-close aria-label="Close">&times;</button></header>
+      <div class="cc-form__body">
+        <div class="cc-feedback" data-cc-feedback hidden></div>
+        <div class="cc-drop" data-cc-drop>
+          <input type="file" accept="image/*,video/*" data-cc-file hidden>
+          <div class="cc-drop__empty" data-cc-drop-empty><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg><strong>Drop an image or video here</strong><span>or <button type="button" class="link-button" data-cc-browse>browse your files</button> · JPG, PNG, WEBP, MP4 up to 50 MB</span></div>
+          <div class="cc-drop__preview" data-cc-preview hidden></div>
+          <div class="cc-drop__progress" data-cc-progress hidden><i></i><span>Uploading…</span></div>
+        </div>
+        <div class="cc-media-row"><input name="image" type="url" placeholder="…or paste an image / video link" data-cc-image-url><button type="button" class="secondary" data-cc-media-remove hidden>Remove</button></div>
+        <fieldset class="cc-field"><legend>Channels</legend><div class="cc-pf-chips"><label class="cc-pf-chip"><input type="checkbox" name="platforms" value="Instagram"><span data-cc-pf-icon="instagram"></span>Instagram</label><label class="cc-pf-chip"><input type="checkbox" name="platforms" value="Facebook"><span data-cc-pf-icon="facebook"></span>Facebook</label><label class="cc-pf-chip"><input type="checkbox" name="platforms" value="TikTok"><span data-cc-pf-icon="tiktok"></span>TikTok</label><label class="cc-pf-chip"><input type="checkbox" name="platforms" value="LinkedIn"><span data-cc-pf-icon="linkedin"></span>LinkedIn</label><label class="cc-pf-chip"><input type="checkbox" name="platforms" value="YouTube"><span data-cc-pf-icon="youtube"></span>YouTube</label><label class="cc-pf-chip"><input type="checkbox" name="platforms" value="Google"><span data-cc-pf-icon="google"></span>Google</label><label class="cc-pf-chip"><input type="checkbox" name="platforms" value="Pinterest"><span data-cc-pf-icon="pinterest"></span>Pinterest</label><label class="cc-pf-chip"><input type="checkbox" name="platforms" value="Website"><span data-cc-pf-icon="website"></span>Website</label><label class="cc-pf-chip"><input type="checkbox" name="platforms" value="Email"><span data-cc-pf-icon="email"></span>Email</label></div></fieldset>
+        <div class="cc-grid-3">
+          <label class="cc-field">Date<input name="date" type="date"></label>
+          <label class="cc-field">Time<input name="time" type="time" step="300"></label>
+          <label class="cc-field">Format<select name="format"><option>Post</option><option>Carousel</option><option>Reel</option><option>Story</option><option>Video</option><option>Article</option><option>Email</option><option>Ad</option></select></label>
+        </div>
+        <label class="cc-field">Title <small>(shown in the calendar)</small><input name="topic" required maxlength="140" placeholder="e.g. Weekend meat boxes"></label>
+        <label class="cc-field"><span class="cc-field__row">Caption <small data-cc-count>0</small></span><textarea name="caption" rows="6" placeholder="Text that will be published, with emojis and #hashtags"></textarea></label>
+        <div class="cc-grid-2">
+          <label class="cc-field">Status<select name="status"><option value="idea">Idea (internal)</option><option value="draft">Draft</option><option value="design_in_progress">In design</option><option value="ready_for_approval">Pending client approval</option><option value="approved">Approved</option><option value="scheduled">Scheduled</option><option value="published">Published</option></select></label>
+          <label class="cc-field" data-cc-link-field>Publication link<input name="link" type="url" placeholder="https://instagram.com/p/…"></label>
+        </div>
+        <label class="cc-toggle"><input type="checkbox" name="visible" checked><span></span>Visible to the client on their dashboard</label>
+        <p class="form-message" data-cc-form-message aria-live="polite"></p>
+      </div>
+      <footer class="cc-form__foot">
+        <div><button type="button" class="cc-danger" data-cc-delete hidden>Delete</button><button type="button" class="secondary" data-cc-duplicate hidden>Duplicate</button></div>
+        <div><button type="submit" class="secondary" data-cc-save>Save</button><button type="button" data-cc-send>Send for approval</button></div>
+      </footer>
+    </form>
+  </dialog>
+
   <script src="/js/supabase-config.js"></script>
   <script src="/js/admin.js"></script>
   <script src="/js/admin-operations.js"></script>
   <script src="/js/devis-core.js"></script>
   <script src="/js/admin-devis.js"></script>
+  <script src="/js/content-calendar-view.js"></script>
+  <script src="/js/admin-calendar.js"></script>
   <script src="/js/dashboard-shell.js"></script>
 </body>
 </html>

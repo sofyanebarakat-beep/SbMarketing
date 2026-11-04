@@ -11,7 +11,8 @@
       decisions:{approved:'Approved',rejected:'Rejected',changes_requested:'Change requested'},
       labels:{visitors:'Unique visitors',sessions:'Sessions',visits:'Visits',page_views:'Page views',avg_duration:'Avg. visit time',contacts:'Calls & enquiries'},
       engage:{bounce:'Bounce rate',pages_per_session:'Pages per session',new_visitors:'New visitors',contacts:'Calls & enquiries'},
-      statuses:{planned:'Planned',in_design:'In design',ready:'Ready',published:'Published'}},
+      statuses:{planned:'Planned',in_design:'In design',ready:'Ready',published:'Published'},
+      cstatus:{idea:'Idea',draft:'In progress',design_in_progress:'In design',ready_for_approval:'To approve',approved:'Approved',scheduled:'Scheduled',published:'Published'},noPeriod:'No publications in this period.',pendingOne:'publication is waiting for your approval.',pendingMany:'publications are waiting for your approval.',viewWeek:'Week',viewMonth:'Month'},
     fr:{navDashboard:'Tableau de bord',dashboard:'Votre tableau de bord marketing',navAnalytics:'Statistiques du site',navCalendar:'Calendrier de contenu',navContact:'Contacter SB Marketing',period:'Période du rapport',analytics:'Statistiques du site',analyticsCopy:'Les performances de votre site sur la période.',calendar:'Calendrier de contenu',calendarCopy:'Cliquez sur une publication pour l’approuver, la refuser ou demander une modification.',topPages:'Pages les plus visitées',sources:'D’où viennent vos visiteurs',devices:'Appareils',engagement:'Engagement',visitsChart:'Visites par jour — 30 derniers jours',noAnalytics:'Les chiffres de votre site seront ajoutés ici prochainement.',noCalendar:'Vos prochaines publications apparaîtront ici prochainement.',noList:'Pas encore disponible.',updated:'Mis à jour : ',vs:'vs mois dernier',footer:'Tableau de bord privé préparé par',greeting:'Bonjour',
       demo:'Données d’exemple',demoNote:'Chiffres d’exemple affichés en attendant la connexion de vos vraies statistiques.',today:'Aujourd’hui',prev:'Mois précédent',next:'Mois suivant',noDate:'Pas encore programmé',more:'de plus',
       weekdays:['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'],visits:'visites',
@@ -19,7 +20,8 @@
       decisions:{approved:'Approuvé',rejected:'Refusé',changes_requested:'Modification demandée'},
       labels:{visitors:'Visiteurs uniques',sessions:'Sessions',visits:'Visites',page_views:'Pages vues',avg_duration:'Durée moyenne',contacts:'Appels et demandes'},
       engage:{bounce:'Taux de rebond',pages_per_session:'Pages par session',new_visitors:'Nouveaux visiteurs',contacts:'Appels et demandes'},
-      statuses:{planned:'Prévu',in_design:'En création',ready:'Prêt',published:'Publié'}}};
+      statuses:{planned:'Prévu',in_design:'En création',ready:'Prêt',published:'Publié'},
+      cstatus:{idea:'Idée',draft:'En cours',design_in_progress:'En création',ready_for_approval:'À valider',approved:'Approuvé',scheduled:'Programmé',published:'Publié'},noPeriod:'Aucune publication sur cette période.',pendingOne:'publication attend votre validation.',pendingMany:'publications attendent votre validation.',viewWeek:'Semaine',viewMonth:'Mois'}};
   var ICONS={visitors:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>',sessions:'<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>',visits:'<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',page_views:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/>',avg_duration:'<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',contacts:'<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/>'};
   function icon(key){return '<svg viewBox="0 0 24 24" aria-hidden="true">'+(ICONS[key]||ICONS.visits)+'</svg>';}
   function legacyStatus(value){var v=String(value||'').toLowerCase();if(/publi|done|termin|live/.test(v))return 'published';if(/ready|prêt|approved|scheduled/.test(v))return 'ready';if(/design|draft|cours|progress|création/.test(v))return 'in_design';return 'planned';}
@@ -78,35 +80,37 @@
     document.querySelector('[data-demo-note]').hidden=!anyDemo;
   }
 
-  // ── Content calendar ──
-  var state={items:[],feedback:{},month:null,lang:'en',t:T.en,canAnswer:false,current:null};
-  function decisionOf(item){return item.id&&state.feedback[item.id]?state.feedback[item.id]:null;}
-  function chipHtml(item,index){var t=state.t,fb=decisionOf(item);return '<button type="button" class="cd-chip cd-chip--'+item.status+'" data-open-post="'+index+'">'+(item.image?'<img src="'+escapeHtml(item.image)+'" alt="" loading="lazy">':'<b>'+escapeHtml((item.platform||'•').charAt(0))+'</b>')+'<span>'+escapeHtml(item.topic||item.platform||'—')+'</span>'+(fb?'<em class="cd-decision cd-decision--'+fb.decision+'" title="'+escapeHtml(t.decisions[fb.decision])+'"></em>':'')+'</button>';}
+  // ── Content calendar (shared view: js/content-calendar-view.js) ──
+  var CV=window.SBContentCalendar,VIEW_KEY='sb_cd_cal_view';
+  var state={items:[],view:'month',anchor:new Date(),lang:'en',t:T.en,canAnswer:false,current:null};
+  try{state.view=localStorage.getItem(VIEW_KEY)==='week'?'week':'month';}catch(e){}
+  var CONTENT_STATUSES=['idea','draft','design_in_progress','ready_for_approval','approved','scheduled','published'],LEGACY={planned:'draft',in_design:'design_in_progress',ready:'ready_for_approval',published:'published'};
+  function fromContent(i){return{id:String(i.id||''),answerId:String(i.id||''),source:'content',date:i.date||'',time:String(i.time||'').slice(0,5),platforms:CV.platformList(i.platform),format:i.type||'',topic:i.topic||'',caption:i.caption||'',image:i.visual_url||'',mediaType:i.media_type||'',status:CONTENT_STATUSES.indexOf(i.status)>-1?i.status:LEGACY[legacyStatus(i.status)],decision:i.client_decision||'',comment:i.client_comment||'',link:i.publication_url||''};}
+  function fromLegacy(i,index,feedback){var fb=i.id&&feedback[i.id]||null;return{id:'legacy-'+(i.id||index),answerId:i.id||'',source:'legacy',date:i.date||'',time:String(i.time||'').slice(0,5),platforms:CV.platformList(i.platform||i.channel),format:i.format||i.type||'',topic:i.topic||'',caption:i.caption||'',image:i.image||i.visual_url||'',mediaType:'',status:LEGACY[legacyStatus(i.status)],decision:fb?fb.decision:'',comment:fb&&fb.comment||'',link:i.link||i.publication_url||''};}
+  function find(id){return state.items.find(function(i){return i.id===id;});}
+  function periodLabel(){var loc=locale(state.lang);if(state.view==='week'){var s=CV.weekStart(state.anchor),e=new Date(s);e.setDate(s.getDate()+6);var f=new Intl.DateTimeFormat(loc,{day:'numeric',month:'short'});return f.format(s)+' – '+f.format(e);}return new Intl.DateTimeFormat(loc,{month:'long',year:'numeric'}).format(state.anchor);}
+  function viewOptions(){var t=state.t;return{locale:locale(state.lang),weekdays:t.weekdays,statusLabel:function(i){return t.cstatus[i.status]||i.status;},decisionLabel:function(d){return t.decisions[d];}};}
+  function cardsHtml(list){var tmp=document.createElement('div');return list.map(function(i){CV.render(tmp,Object.assign(viewOptions(),{items:[Object.assign({},i,{date:'2000-01-03'})],view:'week',anchor:new Date(2000,0,3)}));var card=tmp.querySelector('.ccv-card');return card?'<div class="ccv">'+card.outerHTML+'</div>':'';}).join('');}
   function renderCalendar(){
-    var t=state.t,lang=state.lang,m=state.month,first=new Date(m.getFullYear(),m.getMonth(),1),offset=(first.getDay()+6)%7,start=new Date(first);start.setDate(1-offset);
-    var last=new Date(m.getFullYear(),m.getMonth()+1,0),cells=Math.ceil((offset+last.getDate())/7)*7,today=iso(new Date()),byDay={};
-    state.items.forEach(function(item,i){if(/^\d{4}-\d{2}-\d{2}/.test(item.date)){var k=item.date.slice(0,10);(byDay[k]=byDay[k]||[]).push(i);}});
-    text('[data-cal-month]',new Intl.DateTimeFormat(locale(lang),{month:'long',year:'numeric'}).format(first));
-    document.querySelector('[data-cal-weekdays]').innerHTML=t.weekdays.map(function(d){return '<span>'+d+'</span>';}).join('');
-    var dayFmt=new Intl.DateTimeFormat(locale(lang),{weekday:'long',day:'numeric',month:'long'}),html='';
-    for(var c=0;c<cells;c++){var d=new Date(start);d.setDate(start.getDate()+c);var key=iso(d),list=byDay[key]||[],out=d.getMonth()!==m.getMonth();
-      html+='<div class="cd-cal__cell'+(out?' is-out':'')+(key===today?' is-today':'')+(list.length?'':' is-empty')+'"><span class="cd-cal__day">'+d.getDate()+'</span><span class="cd-cal__full">'+escapeHtml(dayFmt.format(d))+'</span>'+list.map(function(i){return chipHtml(state.items[i],i);}).join('')+'</div>';}
-    document.querySelector('[data-cal-grid]').innerHTML=html;
-    var monthHasPosts=Object.keys(byDay).some(function(k){return k.slice(0,7)===iso(first).slice(0,7);});document.querySelector('[data-cal-empty]').hidden=monthHasPosts;
-    document.querySelector('[data-cal-empty]').textContent=state.items.length?(lang==='fr'?'Aucune publication ce mois-ci.':'No publications this month.'):t.noCalendar;
-    var undated=state.items.map(function(item,i){return{item:item,i:i};}).filter(function(x){return !/^\d{4}-\d{2}-\d{2}/.test(x.item.date);});
-    var box=document.querySelector('[data-cal-undated]');box.hidden=!undated.length;box.innerHTML=undated.length?'<h3>'+escapeHtml(t.noDate)+'</h3><div class="cd-undated">'+undated.map(function(x){return chipHtml(x.item,x.i);}).join('')+'</div>':'';
+    var t=state.t;text('[data-cal-month]',periodLabel());
+    document.querySelectorAll('[data-cal-view]').forEach(function(b){var on=b.dataset.calView===state.view;b.classList.toggle('is-active',on);b.setAttribute('aria-pressed',on);});
+    var result=CV.render(document.querySelector('[data-cal-grid]'),Object.assign(viewOptions(),{items:state.items,view:state.view,anchor:state.anchor}));
+    var empty=document.querySelector('[data-cal-empty]');empty.hidden=result.hasAny;empty.textContent=state.items.length?t.noPeriod:t.noCalendar;
+    var pending=state.items.filter(function(i){return i.status==='ready_for_approval'&&!i.decision;}).length,note=document.querySelector('[data-cal-pending]');note.hidden=!pending||!state.canAnswer;note.innerHTML='<strong>'+pending+'</strong> '+escapeHtml(pending>1?t.pendingMany:t.pendingOne);
+    var undated=state.items.filter(function(i){return !CV.isDate(i.date);}),box=document.querySelector('[data-cal-undated]');box.hidden=!undated.length;box.innerHTML=undated.length?'<h3>'+escapeHtml(t.noDate)+'</h3><div class="cd-undated">'+cardsHtml(undated)+'</div>':'';
   }
-  function initialMonth(){var today=iso(new Date()),dated=state.items.filter(function(i){return /^\d{4}-\d{2}-\d{2}/.test(i.date);}).map(function(i){return i.date.slice(0,10);}).sort(),pick=dated.find(function(d){return d>=today;})||dated[dated.length-1];var d=pick?new Date(pick+'T12:00:00'):new Date();return new Date(d.getFullYear(),d.getMonth(),1);}
+  function initialAnchor(){var today=iso(new Date()),dated=state.items.filter(function(i){return CV.isDate(i.date);}).map(function(i){return i.date.slice(0,10);}).sort(),pick=dated.find(function(d){return d>=today;})||dated[dated.length-1];return pick&&state.view==='month'?CV.parse(pick):new Date();}
   var dialog=document.querySelector('[data-post-dialog]');
-  function openPost(index){
-    var item=state.items[index],t=state.t,fb=decisionOf(item);if(!item)return;state.current=index;
-    var reason=!state.canAnswer?t.previewOnly:item.status==='published'?t.cannotAnswer:!item.id?t.noId:'',canAnswer=!reason;
-    dialog.querySelector('[data-post-body]').innerHTML=(item.image?'<div class="cd-dialog__media"><img src="'+escapeHtml(item.image)+'" alt=""></div>':'')
-      +'<div class="cd-dialog__info"><div class="cd-post__meta"><span class="cd-post__date">'+escapeHtml(longDate(item.date,state.lang)||t.noDate)+'</span><span class="status status--'+item.status+'">'+escapeHtml(t.statuses[item.status])+'</span></div>'
-      +'<h2 id="cd-post-title">'+escapeHtml(item.topic||'—')+'</h2><div class="cd-post__tags">'+(item.platform?'<span class="channel">'+escapeHtml(item.platform)+'</span>':'')+(item.format?'<span class="cd-post__format">'+escapeHtml(item.format)+'</span>':'')+'</div>'
+  function openPost(id){
+    var item=find(id),t=state.t;if(!item)return;state.current=id;
+    var reason=!state.canAnswer?t.previewOnly:item.status==='published'?t.cannotAnswer:!item.answerId?t.noId:'',canAnswer=!reason;
+    var media=item.image?(CV.isVideo(item)?'<div class="cd-dialog__media"><video src="'+escapeHtml(item.image)+'" controls playsinline></video></div>':'<div class="cd-dialog__media"><img src="'+escapeHtml(item.image)+'" alt=""></div>'):'';
+    var when=(CV.isDate(item.date)?longDate(item.date,state.lang):t.noDate)+(item.time?' · '+item.time:'');
+    dialog.querySelector('[data-post-body]').innerHTML=media
+      +'<div class="cd-dialog__info"><div class="cd-post__meta"><span class="cd-post__date">'+escapeHtml(when)+'</span>'+CV.statusPill(item.status,t.cstatus[item.status]||item.status)+'</div>'
+      +'<h2 id="cd-post-title">'+escapeHtml(item.topic||'—')+'</h2><div class="cd-post__tags">'+item.platforms.map(function(p){return '<span class="channel">'+CV.platformIcon(p,14)+' '+escapeHtml(p)+'</span>';}).join('')+(item.format?'<span class="cd-post__format">'+escapeHtml(item.format)+'</span>':'')+'</div>'
       +(item.caption?'<h4>'+escapeHtml(t.caption)+'</h4><p class="cd-dialog__caption">'+escapeHtml(item.caption)+'</p>':'')+(item.link?'<a class="cd-dialog__link" href="'+escapeHtml(item.link)+'" target="_blank" rel="noopener">'+escapeHtml(t.openLink)+' ↗</a>':'')
-      +(fb?'<div class="cd-answer cd-answer--'+fb.decision+'"><span>'+escapeHtml(t.yourAnswer)+'</span><strong>'+escapeHtml(t.decisions[fb.decision])+'</strong>'+(fb.comment?'<p>'+escapeHtml(fb.comment)+'</p>':'')+'</div>':'')
+      +(item.decision&&t.decisions[item.decision]?'<div class="cd-answer cd-answer--'+item.decision+'"><span>'+escapeHtml(t.yourAnswer)+'</span><strong>'+escapeHtml(t.decisions[item.decision])+'</strong>'+(item.comment?'<p>'+escapeHtml(item.comment)+'</p>':'')+'</div>':'')
       +(canAnswer?'<div class="cd-actions" data-actions><button type="button" class="cd-btn cd-btn--approve" data-decide="approved">'+escapeHtml(t.approve)+'</button><button type="button" class="cd-btn cd-btn--ghost" data-decide="changes_requested">'+escapeHtml(t.change)+'</button><button type="button" class="cd-btn cd-btn--reject" data-decide="rejected">'+escapeHtml(t.reject)+'</button></div>'
         +'<form class="cd-comment" data-comment-form hidden><label><span data-comment-label></span><textarea name="comment" rows="3" maxlength="2000"></textarea></label><div><button type="button" class="cd-btn cd-btn--ghost" data-comment-cancel>'+escapeHtml(t.cancel)+'</button><button type="submit" class="cd-btn">'+escapeHtml(t.send)+'</button></div></form>'
         :'<p class="cd-note">'+escapeHtml(reason)+'</p>')
@@ -115,11 +119,12 @@
   }
   function feedbackMsg(value,isError){var el=dialog.querySelector('[data-feedback-msg]');if(el){el.textContent=value;el.classList.toggle('is-error',!!isError);}}
   async function submitDecision(decision,comment){
-    var item=state.items[state.current],t=state.t;if(!item||!item.id)return;
+    var item=find(state.current),t=state.t;if(!item||!item.answerId)return;
     if(decision==='changes_requested'&&!comment){feedbackMsg(t.commentRequired,true);return;}
     dialog.querySelectorAll('.cd-btn').forEach(function(b){b.disabled=true;});feedbackMsg(t.saving);
-    try{var response=await fetch(config.url+'/rest/v1/rpc/respond_to_calendar_item',{method:'POST',headers:{apikey:config.key,Authorization:'Bearer '+config.key,'Content-Type':'application/json'},body:JSON.stringify({access_token:accessToken,item_id:item.id,decision:decision,comment_text:comment||null})});
-      if(!response.ok)throw new Error('failed');var entry=await response.json();state.feedback[item.id]=entry&&entry.decision?entry:{decision:decision,comment:comment||null};renderCalendar();openPost(state.current);feedbackMsg(t.saved);}
+    var rpc=item.source==='content'?'respond_to_content_item':'respond_to_calendar_item';
+    try{var response=await fetch(config.url+'/rest/v1/rpc/'+rpc,{method:'POST',headers:{apikey:config.key,Authorization:'Bearer '+config.key,'Content-Type':'application/json'},body:JSON.stringify({access_token:accessToken,item_id:item.answerId,decision:decision,comment_text:comment||null})});
+      if(!response.ok)throw new Error('failed');var entry=await response.json()||{};item.decision=entry.decision||decision;item.comment=entry.comment||comment||'';if(entry.status&&CONTENT_STATUSES.indexOf(entry.status)>-1)item.status=entry.status;renderCalendar();openPost(item.id);feedbackMsg(t.saved);}
     catch(e){dialog.querySelectorAll('.cd-btn').forEach(function(b){b.disabled=false;});feedbackMsg(t.saveError,true);}
   }
   if(dialog){
@@ -132,8 +137,9 @@
     dialog.addEventListener('submit',function(event){var form=event.target.closest('[data-comment-form]');if(!form)return;event.preventDefault();submitDecision(form.dataset.decision,String(form.elements.comment.value||'').trim());});
   }
   document.addEventListener('click',function(event){
-    var open=event.target.closest('[data-open-post]');if(open){openPost(Number(open.dataset.openPost));return;}
-    var nav=event.target.closest('[data-cal-nav]');if(nav&&state.month){var step=nav.dataset.calNav;state.month=step==='today'?new Date(new Date().getFullYear(),new Date().getMonth(),1):new Date(state.month.getFullYear(),state.month.getMonth()+(step==='next'?1:-1),1);renderCalendar();}
+    var open=event.target.closest('[data-ccv-open]');if(open){openPost(open.dataset.ccvOpen);return;}
+    var view=event.target.closest('[data-cal-view]');if(view){state.view=view.dataset.calView;try{localStorage.setItem(VIEW_KEY,state.view);}catch(e){}renderCalendar();return;}
+    var nav=event.target.closest('[data-cal-nav]');if(nav){var step=nav.dataset.calNav,a=state.anchor;state.anchor=step==='today'?new Date():state.view==='week'?new Date(a.getFullYear(),a.getMonth(),a.getDate()+(step==='next'?7:-7)):new Date(a.getFullYear(),a.getMonth()+(step==='next'?1:-1),1);renderCalendar();}
   });
 
   // ── Pages (hash routing: #analytics, #calendar) ──
@@ -153,12 +159,11 @@
     var person=result.contact_name||result.business_name||'';document.querySelectorAll('[data-client-name]').forEach(function(el){el.textContent=result.business_name||'';});text('[data-side-business]',result.business_name);text('[data-top-name]',person);document.querySelectorAll('[data-avatar]').forEach(function(el){el.textContent=(person.trim().charAt(0)||'•');});var sidebar=document.querySelector('[data-sidebar]');if(sidebar)sidebar.hidden=false;
     text('[data-period]',data.period||'—');text('[data-updated]',data.updated_label?t.updated+data.updated_label:'');
     renderAnalytics(data,t,lang);
-    // Calendar: posts uploaded in the admin dashboard editor, plus client-visible content items.
-    state.feedback=result.calendar_feedback||{};
-    state.items=(data.calendar||[]).map(function(i){return{id:i.id||'',date:i.date||'',platform:i.platform||i.channel||'',format:i.format||i.type||'',topic:i.topic||'',caption:i.caption||'',image:i.image||i.visual_url||'',status:legacyStatus(i.status),link:i.link||i.publication_url||''};})
-      .concat((result.content||[]).map(function(i){return{id:'',date:i.date||'',platform:i.platform||'',format:i.type||'',topic:i.topic||'',caption:i.caption||'',image:i.visual_url||'',status:legacyStatus(i.status),link:i.publication_url||''};}))
-      .sort(function(a,b){return String(a.date||'9999').localeCompare(String(b.date||'9999'));});
-    state.month=initialMonth();renderCalendar();
+    // Calendar: posts planned in Admin → Content calendar (content_items), plus any older posts saved in the dashboard editor.
+    var feedback=result.calendar_feedback||{};
+    state.items=(result.content||[]).map(fromContent).concat((data.calendar||[]).map(function(i,index){return fromLegacy(i,index,feedback);}))
+      .sort(function(a,b){return (String(a.date||'9999')+(a.time||'')).localeCompare(String(b.date||'9999')+(b.time||''));});
+    state.anchor=initialAnchor();renderCalendar();
     loading.hidden=true;content.hidden=false;showPage();
   }
 
@@ -178,9 +183,9 @@
     try{
       var rows=await adminGet('/rest/v1/clients?id=eq.'+q+'&select=*',session);
       if(!rows||!rows.length){previewFail('This client could not be found.');return;}
-      var c=rows[0],contentRows=await adminGet('/rest/v1/content_items?client_id=eq.'+q+'&client_visible=eq.true&select=publish_date,platform,content_type,topic,caption,visual_url,status,publication_url&order=publish_date.asc',session).catch(function(){return[];});
+      var c=rows[0],contentRows=await adminGet('/rest/v1/content_items?client_id=eq.'+q+'&client_visible=eq.true&status=neq.idea&select=*&order=publish_date.asc',session).catch(function(){return[];});
       render({business_name:c.business_name,contact_name:c.contact_name,language:c.language,dashboard:c.portal_draft_data||c.dashboard_data||{},calendar_feedback:c.calendar_feedback||{},
-        content:(contentRows||[]).map(function(i){return{date:i.publish_date,platform:i.platform,type:i.content_type,topic:i.topic,caption:i.caption,visual_url:i.visual_url,status:i.status,publication_url:i.publication_url};})},{canAnswer:false});
+        content:(contentRows||[]).map(function(i){return{id:i.id,date:i.publish_date,time:i.publish_time,platform:i.platform,type:i.content_type,topic:i.topic,caption:i.caption,visual_url:i.visual_url,media_type:i.media_type,status:i.status,publication_url:i.publication_url,client_decision:i.client_decision,client_comment:i.client_comment};})},{canAnswer:false});
       var banner=document.createElement('div');banner.className='portal-preview-banner';banner.innerHTML='<strong>Admin preview</strong><span>'+(c.portal_draft_data?'Previewing the saved draft — the client still sees the last published version.':c.portal_enabled?'Published — the client sees this dashboard through their private link.':'Draft — not visible to the client until you publish it in the admin.')+'</span><a href="/admin/">Back to admin</a>';
       document.querySelector('.portal-main').prepend(banner);document.title='Preview · '+c.business_name+' | SB Marketing';
     }catch(e){previewFail(e.message==='session'?'Your admin session has expired. Sign in to the admin again, then reopen this dashboard.':'The dashboard could not be loaded. Check that you are signed in to the admin with the SB Marketing account.');}
