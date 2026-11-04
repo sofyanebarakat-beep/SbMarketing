@@ -847,6 +847,12 @@
         </div>
         <label class="cc-toggle"><input type="checkbox" name="visible" checked><span></span>Visible to the client on their dashboard</label>
         <p class="form-message" data-cc-form-message aria-live="polite"></p>
+        <section class="cc-thread" data-cc-thread-section hidden>
+          <div class="ccv-thread-head"><h4>Conversation with the client</h4><small>The client sees these messages on this post.</small></div>
+          <div class="ccv-thread" data-cc-thread aria-live="polite"></div>
+          <div class="ccv-compose"><textarea data-cc-thread-input rows="2" maxlength="2000" placeholder="Write to the client…" aria-label="Message to the client"></textarea><button type="button" data-cc-thread-send>Send</button></div>
+          <p class="form-message is-error" data-cc-thread-msg aria-live="polite"></p>
+        </section>
       </div>
       <footer class="cc-form__foot">
         <div><button type="button" class="cc-danger" data-cc-delete hidden>Delete</button><button type="button" class="secondary" data-cc-duplicate hidden>Duplicate</button></div>

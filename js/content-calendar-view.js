@@ -42,7 +42,7 @@
     var label=o.statusLabel?o.statusLabel(item):item.status,dec=item.decision&&DECISION_ICON[item.decision]?'<span class="ccv-decision ccv-decision--'+esc(item.decision)+'" title="'+esc(o.decisionLabel?o.decisionLabel(item.decision):item.decision)+(item.comment?': '+esc(item.comment):'')+'">'+DECISION_ICON[item.decision]+'</span>':'';
     return '<div role="button" tabindex="0" class="ccv-card ccv-card--'+esc(item.status)+'" data-ccv-open="'+esc(item.id)+'"'+(o.draggable?' draggable="true" data-ccv-drag="'+esc(item.id)+'"':'')+'>'
       +'<span class="ccv-card__top"><span class="ccv-pfs">'+(platformIcons(item.platforms)||'<span class="ccv-pf ccv-pf--text">•</span>')+'</span>'+(item.time?'<span class="ccv-time">'+esc(item.time)+'</span>':'')+'</span>'
-      +'<span class="ccv-card__status">'+statusPill(item.status,label)+dec+(item.comment?'<span class="ccv-comment" title="'+esc(item.comment)+'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>':'')+'</span>'
+      +'<span class="ccv-card__status">'+statusPill(item.status,label)+dec+(item.commentCount||item.comment?'<span class="ccv-comment'+(item.unread?' is-unread':'')+'" title="'+esc(item.unread?(o.unreadLabel||'New message'):(item.comment||''))+'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>'+(item.commentCount?'<b>'+item.commentCount+'</b>':'')+'</span>':'')+'</span>'
       +mediaHtml(item)
       +'<span class="ccv-caption"><i class="ccv-dot ccv-dot--'+esc(item.status)+'"></i><span>'+esc(item.caption||item.topic||'—')+'</span></span>'
       +'</div>';
@@ -59,11 +59,23 @@
     for(var c=0;c<cells;c++){var d=new Date(start);d.setDate(start.getDate()+c);var key=iso(d),list=map[key]||[],out=view==='month'&&d.getMonth()!==anchor.getMonth();if(list.length&&!out)hasAny=true;
       html+='<div class="ccv-cell'+(out?' is-out':'')+(key===today?' is-today':'')+(key<today?' is-past':'')+(list.length?'':' is-empty')+'" data-ccv-day="'+key+'">'
         +'<div class="ccv-cell__head"><span class="ccv-day">'+d.getDate()+'</span><span class="ccv-full">'+esc(dayFmt.format(d))+'</span>'+(o.editable?'<button type="button" class="ccv-add" data-ccv-add="'+key+'" aria-label="'+esc((o.labels&&o.labels.add)||'Add')+' '+esc(dayFmt.format(d))+'">+</button>':'')+'</div>'
-        +list.map(function(i){return cardHtml(i,{statusLabel:o.statusLabel,decisionLabel:o.decisionLabel,draggable:o.editable});}).join('')+'</div>';}
+        +list.map(function(i){return cardHtml(i,{statusLabel:o.statusLabel,decisionLabel:o.decisionLabel,unreadLabel:o.unreadLabel,draggable:o.editable});}).join('')+'</div>';}
     html+='</div></div>';
     root.innerHTML=html;
     if(!root.__ccvKeys){root.__ccvKeys=true;root.addEventListener('keydown',function(e){var card=e.target.closest&&e.target.closest('[data-ccv-open]');if(card&&(e.key==='Enter'||e.key===' ')){e.preventDefault();card.click();}});}
     return{hasAny:hasAny,start:start,end:(function(){var e=new Date(start);e.setDate(start.getDate()+cells-1);return e;})()};
+  }
+
+
+  // Conversation thread on a post. messages: [{author:'client'|'agency', author_name, kind, body, created_at}]
+  // o: {viewer:'client'|'agency', locale, labels:{empty, you, kinds:{approved, rejected, changes_requested, sent_for_approval}}}
+  var KIND_ICON={approved:'✓',rejected:'✕',changes_requested:'✎',sent_for_approval:'➜'};
+  function threadHtml(messages,o){
+    var L=o.labels||{},kinds=L.kinds||{},time=new Intl.DateTimeFormat(o.locale||'en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
+    if(!messages||!messages.length)return '<p class="ccv-thread__empty">'+esc(L.empty||'No messages yet.')+'</p>';
+    return messages.map(function(m){var when=m.created_at?time.format(new Date(m.created_at)):'',mine=m.author===o.viewer,name=mine?(L.you||'You'):(m.author_name||'');
+      if(m.kind&&m.kind!=='message')return '<div class="ccv-event ccv-event--'+esc(m.kind)+'"><span class="ccv-event__icon">'+(KIND_ICON[m.kind]||'•')+'</span><div><strong>'+esc(kinds[m.kind]||m.kind)+'</strong> · '+esc(name)+(m.body?'<p>'+esc(m.body)+'</p>':'')+'<small>'+esc(when)+'</small></div></div>';
+      return '<div class="ccv-msg'+(mine?' ccv-msg--mine':'')+' ccv-msg--'+esc(m.author)+'"><div class="ccv-msg__bubble">'+esc(m.body).replace(/\n/g,'<br>')+'</div><small>'+esc(name)+(when?' · '+esc(when):'')+'</small></div>';}).join('');
   }
 
   // Drag a card onto another day (admin). onMove(id, 'YYYY-MM-DD').
@@ -75,5 +87,5 @@
     root.addEventListener('drop',function(e){var cell=e.target.closest&&e.target.closest('[data-ccv-day]');if(!cell||!dragged)return;e.preventDefault();cell.classList.remove('is-drop');var id=dragged;dragged=null;onMove(id,cell.dataset.ccvDay);});
   }
 
-  window.SBContentCalendar={render:render,enableDrag:enableDrag,platformIcon:platformIcon,platformIcons:platformIcons,platformList:platformList,platformKey:platformKey,statusPill:statusPill,PLATFORMS:PLATFORMS,iso:iso,parse:parse,isDate:isDate,weekStart:weekStart,isVideo:isVideo,esc:esc};
+  window.SBContentCalendar={render:render,threadHtml:threadHtml,enableDrag:enableDrag,platformIcon:platformIcon,platformIcons:platformIcons,platformList:platformList,platformKey:platformKey,statusPill:statusPill,PLATFORMS:PLATFORMS,iso:iso,parse:parse,isDate:isDate,weekStart:weekStart,isVideo:isVideo,esc:esc};
 })();
