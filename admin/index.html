@@ -138,6 +138,50 @@
         </div>
 
         <div data-view="marketing" hidden>
+          <section class="ml-campaigns" aria-label="Campaigns template">
+            <header class="ml-campaigns__head">
+              <div><span class="ml-eyebrow">Email marketing</span><h2>Campaigns</h2></div>
+              <button type="button" class="ml-create">Create campaign</button>
+            </header>
+            <nav class="ml-tabs" aria-label="Campaign status">
+              <button type="button" class="is-active">Sent <span>3</span></button>
+              <button type="button">Drafts <span>3</span></button>
+              <button type="button">Outbox <span>0</span></button>
+            </nav>
+            <div class="ml-panel">
+              <div class="ml-toolbar">
+                <label class="ml-check"><input type="checkbox"> Select all</label>
+                <button type="button" class="ml-control">▢ &nbsp; All⌄</button>
+                <button type="button" class="ml-control">Filter⌄</button>
+                <span class="ml-toolbar__space"></span>
+                <button type="button" class="ml-control">Campaign name⌄</button>
+                <button type="button" class="ml-control">▥ &nbsp; Custom reports</button>
+                <label class="ml-search"><input type="search" placeholder="Search campaign"><span>⌕</span></label>
+              </div>
+              <div class="ml-list">
+                <article class="ml-campaign">
+                  <div class="ml-preview"><input type="checkbox" aria-label="Select campaign"><img src="/images/social-media-post-design-offer.jpg" alt="Campaign preview"></div>
+                  <div class="ml-campaign__info"><h3>Monthly performance report — November</h3><p>Regular <i></i> Sent 2026-11-03</p><button type="button">View report</button></div>
+                  <dl class="ml-results"><div><dt>Recipients</dt><dd>184</dd></div><div class="is-opened"><dt>Opened</dt><dd>65.76%</dd></div><div class="is-clicked"><dt>Clicked</dt><dd>8.7%</dd></div><div class="is-ctor"><dt>CTOR</dt><dd>13.22%</dd></div></dl>
+                  <button type="button" class="ml-more">More⌄</button>
+                </article>
+                <article class="ml-campaign">
+                  <div class="ml-preview"><input type="checkbox" aria-label="Select campaign"><img src="/images/social-media-post-design.jpg" alt="Campaign preview"></div>
+                  <div class="ml-campaign__info"><h3>Website statistics — October</h3><p>Regular <i></i> Sent 2026-10-05</p><button type="button">View report</button></div>
+                  <dl class="ml-results"><div><dt>Recipients</dt><dd>61</dd></div><div class="is-opened"><dt>Opened</dt><dd>29.51%</dd></div><div class="is-clicked"><dt>Clicked</dt><dd>3.28%</dd></div><div class="is-ctor"><dt>CTOR</dt><dd>11.11%</dd></div></dl>
+                  <button type="button" class="ml-more">More⌄</button>
+                </article>
+                <article class="ml-campaign">
+                  <div class="ml-preview"><input type="checkbox" aria-label="Select campaign"><img src="/images/blog-meta-advertising-hero.jpg" alt="Campaign preview"></div>
+                  <div class="ml-campaign__info"><h3>Grow your local visibility</h3><p>Regular <i></i> Sent 2026-09-08</p><button type="button">View report</button></div>
+                  <dl class="ml-results"><div><dt>Recipients</dt><dd>58</dd></div><div class="is-opened"><dt>Opened</dt><dd>34.48%</dd></div><div class="is-clicked"><dt>Clicked</dt><dd>8.62%</dd></div><div class="is-ctor"><dt>CTOR</dt><dd>25%</dd></div></dl>
+                  <button type="button" class="ml-more">More⌄</button>
+                </article>
+              </div>
+              <footer class="ml-pagination"><span>Showing 1 to 3 of 3 results</span><div><button type="button" disabled>Previous</button><button type="button" disabled>Next</button></div></footer>
+            </div>
+          </section>
+          <div hidden aria-hidden="true">
           <section class="marketing-hero">
             <div>
               <span class="admin-kicker">Client growth centre</span>
@@ -192,6 +236,7 @@
           <div class="toolbar"><label class="search"><span class="sr-only">Search email history</span><input type="search" data-marketing-history-search placeholder="Search client, subject…"></label></div>
           <div class="table-wrap"><table><thead><tr><th>Date</th><th>Client</th><th>Type</th><th>Subject</th></tr></thead><tbody data-marketing-history-body></tbody></table></div>
           <div class="empty" data-marketing-history-empty hidden><h2>No emails sent yet</h2><p>Compose one above to get started.</p></div>
+          </div>
           </div>
         </div>
 
