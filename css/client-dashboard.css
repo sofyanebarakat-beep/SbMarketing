@@ -473,3 +473,11 @@ section{scroll-margin-top:100px}
   .cd-print .cdl-day{break-inside:avoid;opacity:1}
   .cd-print .cdl-chev,.cd-print .ccv-comment{display:none}
 }
+.portal-metrics--gsc{margin-top:18px}
+.portal-card-kicker{display:block;margin-bottom:4px;color:var(--main);font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.search-query-section{margin-top:24px;padding-top:22px;border-top:1px solid var(--n300)}
+.search-query-section h3{margin:0 0 14px;color:var(--n800);font-size:17px}
+.search-query-list{display:grid;gap:10px}
+.search-query-row{display:flex;justify-content:space-between;gap:20px;padding:13px 16px;border-radius:12px;background:var(--n200)}
+.search-query-row strong{color:var(--n800);font-size:14px}.search-query-row span{color:var(--n600);font-size:14px;text-align:right}
+@media(max-width:600px){.search-query-row{align-items:flex-start;flex-direction:column;gap:5px}.search-query-row span{text-align:left}}
