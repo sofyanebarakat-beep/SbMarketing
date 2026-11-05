@@ -109,9 +109,9 @@ Deno.serve(async (req) => {
       const groups = body.groups || [];
       const hasAnyMetric = groups.some((g) => g.metrics?.some((m) => m.metric?.value));
       const hasAnyCustom = (body.custom_metrics || []).some((m) => m.label?.trim() && m.value?.trim());
-      if (!body.preview && (!body.month_label || (!hasAnyMetric && !hasAnyCustom))) {
+      if (!body.preview && (!body.month_label || (!hasAnyMetric && !hasAnyCustom && !body.summary?.trim()))) {
         return new Response(
-          JSON.stringify({ error: "Report emails need month_label and at least one metric" }),
+          JSON.stringify({ error: "Report emails need a month and some report content" }),
           { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
         );
       }

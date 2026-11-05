@@ -186,7 +186,7 @@ const REFERRAL_COPY = {
     button: "Partager sur WhatsApp",
     copyButton: "Copier le message ou l'envoyer autrement",
     thanks: "Merci, c'est grâce à vos recommandations qu'on grandit 🙏",
-    contactPath: "/contact/",
+    contactPath: "/en/contact/",
     sharePath: "/partager/",
   },
   en: {
@@ -230,12 +230,6 @@ function referralHtml(referral: Referral | undefined, lang: "fr" | "en", website
   const sentText = offer ? `${message}\n\n${t.offerLine(offer)}` : message;
   const fullText = `${sentText}\n\n👉 ${link}`;
   const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(fullText)}`;
-  const shareUrl = `${site}${t.sharePath}?${new URLSearchParams({ l: lang, t: fullText }).toString()}`;
-  const rewardHtml = reward
-    ? `<p style="margin:16px 0 0;padding:12px 14px;border:1px dashed #f2c94c;border-radius:10px;font-size:14px;line-height:1.55;color:#ffffff;">${t.reward(
-        escapeHtml(reward)
-      )}</p>`
-    : "";
   return `
           <tr>
             <td style="padding:0 32px 32px;">
@@ -247,20 +241,10 @@ function referralHtml(referral: Referral | undefined, lang: "fr" | "en", website
                       offer ? escapeHtml(t.offerHeadline(offer)) : t.headline
                     }</div>
                     <p style="margin:10px 0 16px;font-size:14px;line-height:1.6;color:#c7cfdd;">${t.text}</p>
-                    <div style="background:#111c2b;border-left:3px solid #25d366;border-radius:10px;padding:14px 16px;font-size:14px;line-height:1.6;color:#e5e9f0;font-style:italic;">${escapeHtml(
-                      sentText
-                    ).replace(/\n/g, "<br>")}</div>
-                    ${rewardHtml}
                     <p style="text-align:center;margin:20px 0 0;">
                       <a href="${escapeHtml(whatsappUrl)}"
                          style="background:#25d366;color:#ffffff;text-decoration:none;padding:15px 30px;border-radius:999px;font-weight:800;font-size:16px;display:inline-block;">
                         ${t.button}
-                      </a>
-                    </p>
-                    <p style="text-align:center;margin:12px 0 0;">
-                      <a href="${escapeHtml(shareUrl)}"
-                         style="color:#ffffff;text-decoration:none;padding:9px 18px;border:1px solid #3a4660;border-radius:999px;font-weight:700;font-size:13px;display:inline-block;">
-                        📋 ${t.copyButton}
                       </a>
                     </p>
                     <p style="text-align:center;margin:18px 0 0;font-size:13px;color:#9aa7c2;">${t.thanks}</p>

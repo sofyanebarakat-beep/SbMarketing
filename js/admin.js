@@ -521,11 +521,13 @@
   function shareContext(block){return{lang:block.dataset.lang||'fr',activity:block.dataset.activity||'',single:block.dataset.single==='1'};}
   function shareGrowth(block){var ctx=shareContext(block);return ctx.single?reportGrowth():null;}
   function shareIncluded(block,growth){
+    if(block.dataset.simple==='1')return true;
     var mode=block.querySelector('[data-share-mode]').value;
     if(mode==='off')return false;if(mode==='always')return true;
     return !growth||growth.up+growth.down===0||growth.up>growth.down;
   }
   function refreshShare(block){
+    if(block.dataset.simple==='1'){var simpleStatus=block.querySelector('[data-share-status]');simpleStatus.className='share-banner__status is-on';simpleStatus.textContent='✅ Le bouton de partage WhatsApp sera inclus avec le lien de contact SB Marketing.';return;}
     var ctx=shareContext(block),growth=shareGrowth(block),list=shareSuggestions(ctx.lang,ctx.activity,growth),textarea=block.querySelector('[data-share-message]'),status=block.querySelector('[data-share-status]'),mode=block.querySelector('[data-share-mode]').value;
     if(block.dataset.edited!=='1')textarea.value=list[Number(block.dataset.idx||0)%list.length];
     block.querySelector('[data-share-fields]').hidden=mode==='off';
@@ -541,12 +543,14 @@
   function initShareBlock(block,lang,activity){
     var stored=readShareStore();
     block.dataset.lang=lang==='en'?'en':'fr';block.dataset.activity=activity||'';block.dataset.idx='0';block.dataset.edited='0';
+    if(block.dataset.simple==='1'){refreshShare(block);return;}
     block.querySelector('[data-share-mode]').value=stored.mode||'auto';
     block.querySelector('[data-share-offer]').value=stored.offer||'';
     block.querySelector('[data-share-reward]').value=stored.reward||'';
     refreshShare(block);
   }
   function wireShareBlock(block){
+    if(block.dataset.simple==='1')return;
     var textarea=block.querySelector('[data-share-message]');
     block.querySelector('[data-share-mode]').addEventListener('change',function(event){writeShareStore({mode:event.target.value});refreshShare(block);});
     block.querySelector('[data-share-offer]').addEventListener('change',function(event){writeShareStore({offer:event.target.value.trim()});});
@@ -561,6 +565,7 @@
     var ctx=shareContext(block),growth=shareGrowth(block);
     if(!shareIncluded(block,growth))return undefined;
     lang=lang==='en'?'en':'fr';
+    if(block.dataset.simple==='1')return{message:shareSuggestions(lang,activity,growth)[0],ref:businessName};
     var custom=block.dataset.edited==='1'||block.dataset.idx!=='0',message;
     if(ctx.single||(custom&&lang===ctx.lang))message=block.querySelector('[data-share-message]').value.trim();
     else message=shareSuggestions(lang,activity,null)[0];
@@ -593,6 +598,7 @@
     });
     container.innerHTML=html||'<p class="muted-note">This client has no tracked metrics set yet — add some from their profile, or just use the custom metric rows below.</p>';
   }
+  function fillReportMonthOptions(lang){var select=sendForm.querySelector('[data-report-month]'),now=new Date(),locale=lang==='en'?'en-GB':'fr-FR';select.innerHTML='';for(var i=0;i<12;i++){var date=new Date(now.getFullYear(),now.getMonth()-i,1),label=new Intl.DateTimeFormat(locale,{month:'long',year:'numeric'}).format(date);label=label.charAt(0).toUpperCase()+label.slice(1);select.insertAdjacentHTML('beforeend','<option value="'+escapeHtml(label)+'">'+escapeHtml(label)+'</option>');}}
   function addCustomMetricRow(label,value){
     var list=sendForm.querySelector('[data-custom-metrics-list]'),row=document.createElement('div');
     row.className='custom-metric-row';
@@ -736,14 +742,14 @@
     (payload.custom_metrics||[]).forEach(function(m){addCustomMetricRow(m.label,m.value);});
     sendForm.querySelector('[data-extra-links-list]').innerHTML='';
     (payload.extra_links||[]).forEach(function(l){addExtraLinkRow(l.label,l.url);});
-    if(activeEmailTemplateId==='builtin-stats')fillWebsiteStatsFromDashboard(sendTarget);
+    if(activeEmailTemplateId==='builtin-stats'){fillReportMonthOptions('fr');fillWebsiteStatsFromDashboard(sendTarget);}
     updateSendSubjectPreview();
   }
   function fillWebsiteStatsFromDashboard(client){
     var data=client&&(client.dashboard_data||client.portal_draft_data)||{},analytics=data.analytics||{},search=data.search_console||{};
     var values={website_visits:analytics.visits&&analytics.visits.value,google_impressions:search.impressions,google_clicks:search.clicks,google_avg_position:search.position};
     Object.keys(values).forEach(function(key){var input=sendForm.querySelector('[data-metric-field="'+key+'"]');if(input&&values[key]!=null&&String(values[key]).trim())input.value=String(values[key]);});
-    if(data.period)sendForm.elements.month_label.value=data.period;
+    if(data.period){var select=sendForm.elements.month_label;if(!Array.prototype.some.call(select.options,function(option){return option.value===data.period;}))select.insertAdjacentHTML('afterbegin','<option value="'+escapeHtml(data.period)+'">'+escapeHtml(data.period)+'</option>');select.value=data.period;}
   }
   function updateMailerSteps(step){document.querySelectorAll('[data-ml-step]').forEach(function(item){var n=Number(item.dataset.mlStep);item.classList.toggle('is-active',n===step);item.classList.toggle('is-complete',n<step);});}
   function currentSubject(payload){if(!sendTarget)return '—';payload=payload||buildSendPayload();if(payload.type==='report')return payload.language==='en'?sendTarget.business_name+' — '+(payload.month_label||'Monthly')+' report':sendTarget.business_name+' — Rapport '+(payload.month_label||'mensuel');if(payload.type==='tip')return payload.headline||'—';return payload.subject||'—';}
@@ -754,6 +760,7 @@
     sendClientLabel.textContent=client.business_name+' · '+client.email;
     sendForm.reset();
     sendTypeSelect.value='report';
+    fillReportMonthOptions(client.language);
     renderReportMetricsFields(client);
     sendForm.querySelector('[data-custom-metrics-list]').innerHTML='';
     sendForm.querySelector('[data-extra-links-list]').innerHTML='';
@@ -763,8 +770,6 @@
     if(!templatesLoaded)loadTemplates();
     setSendType('report');
     initShareBlock(sendForm.querySelector('[data-share-banner]'),client.language,client.activity);
-    var now=new Date(),defaultMonth=new Intl.DateTimeFormat(client.language==='en'?'en-GB':'fr-FR',{month:'long',year:'numeric'}).format(now);
-    sendForm.elements.month_label.value=defaultMonth.charAt(0).toUpperCase()+defaultMonth.slice(1);
     message(sendMessage,'');
     updateSendSubjectPreview();
     sendDialog.showModal();
@@ -809,7 +814,7 @@
       payload.custom_metrics=customRows;
       payload.summary=String(data.get('summary')||'').trim()||undefined;
       payload.report_url=String(data.get('report_url')||'').trim()||undefined;
-      payload._hasAny=hasAny;payload._historyPayload=historyPayload;
+      payload._hasAny=hasAny||!!(activeEmailTemplateId==='builtin-stats'&&payload.summary);payload._historyPayload=historyPayload;
     }else if(type==='tip'){
       payload.headline=String(data.get('headline')||'').trim();
       payload.body=String(data.get('tip_body')||'').trim();
@@ -832,14 +837,14 @@
   }
   async function sendTest(){
     var email=String(sendTestEmail&&sendTestEmail.value||'').trim();if(!/^\S+@\S+\.\S+$/.test(email)){message(sendMessage,'Enter a valid test email address.');return;}
-    var payload=buildSendPayload();if(!payload._hasAny){message(sendMessage,sendTypeSelect.value==='report'?'Add at least one website statistic before sending a test.':'Complete the subject and message before sending a test.');return;}
+    var payload=buildSendPayload();if(!payload._hasAny){message(sendMessage,sendTypeSelect.value==='report'?'Choose a month and add a short summary.':'Complete the subject and message before sending a test.');return;}
     delete payload._hasAny;delete payload._historyPayload;payload.to=email;if(payload.type==='custom')payload.subject='[TEST] '+payload.subject;else if(payload.type==='tip')payload.headline='[TEST] '+payload.headline;
     sendTestButton.disabled=true;message(sendMessage,'Sending test…');try{await invokeFunction('send-client-report',payload);message(sendMessage,'Test email sent to '+email+'.');}catch(error){message(sendMessage,error.message);}finally{sendTestButton.disabled=false;}
   }
   async function sendEmail(event){
     event.preventDefault();if(!sendTarget)return;
     var payload=buildSendPayload();
-    if(!payload._hasAny){message(sendMessage,sendTypeSelect.value==='report'?'Fill in at least one metric (visits, impressions, clicks or position).':'Fill in the required fields.');return;}
+    if(!payload._hasAny){message(sendMessage,sendTypeSelect.value==='report'?'Choose a month and add a short summary.':'Fill in the required fields.');return;}
     if(!confirm('Send “'+currentSubject(payload)+'” to '+sendTarget.email+'?'))return;
     var emailId=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():null;
     if(emailId)payload.extras=Object.assign({},payload.extras,{viewOnlineUrl:'https://www.sbmarketing.fr/view-email/?id='+emailId});
@@ -993,7 +998,7 @@
   sendPreviewBtn.addEventListener('click',previewSend);
   if(sendTestButton)sendTestButton.addEventListener('click',sendTest);
   previewClose.addEventListener('click',function(){previewPane.hidden=true;});
-  sendForm.querySelector('[data-add-custom-metric]').addEventListener('click',function(){addCustomMetricRow();});
+  var addCustomMetricButton=sendForm.querySelector('[data-add-custom-metric]');if(addCustomMetricButton)addCustomMetricButton.addEventListener('click',function(){addCustomMetricRow();});
   sendForm.querySelector('[data-custom-metrics-list]').addEventListener('click',function(event){var btn=event.target.closest('[data-remove-custom-metric]');if(btn)btn.closest('.custom-metric-row').remove();});
   sendForm.querySelector('[data-add-extra-link]').addEventListener('click',function(){addExtraLinkRow();});
   sendForm.querySelector('[data-extra-links-list]').addEventListener('click',function(event){var btn=event.target.closest('[data-remove-extra-link]');if(btn)btn.closest('.custom-metric-row').remove();});

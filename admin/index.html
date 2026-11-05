@@ -395,16 +395,11 @@
 
       <p class="send-dialog__section-title send-dialog__section-title--first">📝 Edit before sending</p>
       <div data-send-group="report">
-        <label>Month<input name="month_label" placeholder="October 2026"></label>
+        <label>Month<select name="month_label" data-report-month></select></label>
 
         <div data-report-metrics></div>
-        <p class="field-note">Fill in what you have — at least one field. Last month's numbers show underneath when available, and the email shows the trend automatically. Set which metrics a client tracks from their profile.</p>
-
-        <div class="field-hint-row">
-          <p class="field-hint">Other metrics</p>
-          <button type="button" class="link-button" data-add-custom-metric>+ Add custom metric</button>
-        </div>
-        <div data-custom-metrics-list></div>
+        <p class="field-note">The important figures are filled automatically from the client dashboard. Choose the month, review the email and send.</p>
+        <div data-custom-metrics-list hidden></div>
 
         <label>Summary <small>(optional)</small><textarea name="summary" rows="3" placeholder="A short paragraph of context for this month"></textarea></label>
         <label>Report link <small>(optional)</small><input name="report_url" type="url" placeholder="https://..."></label>
@@ -477,21 +472,11 @@
         </div>
       </details>
 
-      <div class="share-banner" data-share-banner data-single="1">
+      <div class="share-banner share-banner--simple" data-share-banner data-single="1" data-simple="1">
         <div class="share-banner__head">
-          <p class="field-hint">🤝 “Recommend us on WhatsApp” banner</p>
-          <select data-share-mode aria-label="When to include the banner"><option value="auto">Only when results are up</option><option value="always">Always</option><option value="off">Off</option></select>
+          <p class="field-hint">🤝 WhatsApp sharing CTA</p>
         </div>
         <p class="share-banner__status" data-share-status aria-live="polite"></p>
-        <div class="share-banner__fields" data-share-fields>
-          <div class="field-hint-row"><p class="field-hint">Message the client shares</p><button type="button" class="link-button" data-share-suggest>✨ Suggest another</button></div>
-          <textarea rows="4" data-share-message aria-label="WhatsApp message"></textarea>
-          <div class="field-grid">
-            <label>Offer for the friend <small>(optional)</small><input data-share-offer placeholder="-20 % sur le premier mois"></label>
-            <label>Reward for your client <small>(optional)</small><input data-share-reward placeholder="on vous offre 1 mois de gestion Instagram"></label>
-          </div>
-          <p class="field-note">Picked for this client: their best result this month first, then a message for their type of business. The email adds a WhatsApp button, a “copy / send another way” button, the offer and reward, and a link to your contact page tagged with this client’s name. Offer and reward are remembered — write them in the client’s language.</p>
-        </div>
       </div>
       <div class="preview-pane" data-preview-pane hidden>
         <div class="preview-pane__head">
