@@ -617,7 +617,7 @@ export function renderReportEmail(input: ReportEmailInput): { subject: string; h
         <div style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#b45309;margin-bottom:6px;">${escapeHtml(
           tldrLabel
         )}</div>
-        <p style="margin:0;font-size:14px;line-height:1.6;color:#374151;">${escapeHtml(input.summary)}</p>
+        <p style="margin:0;font-size:14px;line-height:1.6;color:#374151;white-space:pre-line;">${escapeHtml(input.summary)}</p>
       </td></tr></table>`
     : "";
 

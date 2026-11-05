@@ -19,10 +19,10 @@
   var mailerList=document.querySelector('[data-ml-list]'),mailerClient=document.querySelector('[data-ml-client]'),mailerSearch=document.querySelector('[data-ml-search]'),mailerMessage=document.querySelector('[data-ml-message]'),mailerMode='drafts';
   var sequenceGrid=document.querySelector('[data-sequence-grid]'),ideaGrid=document.querySelector('[data-idea-grid]'),ideaFilter=document.querySelector('[data-idea-filter]'),clientNextStep=document.querySelector('[data-client-next-step]'),nextStepTitle=document.querySelector('[data-next-step-title]'),nextStepCopy=document.querySelector('[data-next-step-copy]'),nextStepUse=document.querySelector('[data-next-step-use]');
   var portalsGrid=document.querySelector('[data-portals-grid]'),portalsEmpty=document.querySelector('[data-portals-empty]'),portalsMessage=document.querySelector('[data-portals-message]'),portalSearch=document.querySelector('[data-portal-search]'),portalFilter=document.querySelector('[data-portal-filter]'),portalForm=document.querySelector('[data-portal-form]'),portalFormMessage=document.querySelector('[data-portal-form-message]'),portalEditorName=document.querySelector('[data-portal-editor-name]'),portalOpen=document.querySelector('[data-portal-open]');
-  var sendTarget=null,lastMonthMetrics=null,dialogTarget=null,templates=[],templatesLoaded=false,assetLibrary=null,assetPickerTarget=null,marketingHistory=[],marketingHistoryLoaded=false;
+  var sendTarget=null,activeEmailTemplateId='',lastMonthMetrics=null,dialogTarget=null,templates=[],templatesLoaded=false,assetLibrary=null,assetPickerTarget=null,marketingHistory=[],marketingHistoryLoaded=false;
   var BUILTIN_EMAIL_TEMPLATES=[
     {id:'builtin-calendar',builtin:true,name:'Calendrier de contenu',type:'custom',created_at:'2026-11-05T00:00:00Z',payload:{type:'custom',subject:'Votre calendrier de contenu est prêt',custom_body:'Bonjour {{name}},\n\nVotre calendrier de contenu est disponible dans votre espace client SB Marketing. Vous pouvez consulter chaque publication, vérifier le visuel et le texte, puis approuver ou demander une modification directement depuis le calendrier.\n\nNous restons disponibles si vous avez une question.',custom_cta_label:'Voir mon calendrier de contenu'}},
-    {id:'builtin-stats',builtin:true,name:'Statistiques du site',type:'report',created_at:'2026-11-05T00:00:00Z',payload:{type:'report',summary:'Bonjour {{name}}, voici les dernières performances du site de {{business}}. Retrouvez ci-dessous les chiffres essentiels et ouvrez votre tableau de bord pour consulter le détail.',report_url:'portal-analytics'}}
+    {id:'builtin-stats',builtin:true,name:'Statistiques du site',type:'report',created_at:'2026-11-05T00:00:00Z',payload:{type:'report',summary:'Dans le cadre de l\u2019am\u00e9lioration de la visibilit\u00e9 en ligne de {{business}}, nous allons d\u00e9sormais vous envoyer ce rapport chaque mois. Nous comparerons les r\u00e9sultats d\u2019un mois \u00e0 l\u2019autre afin de v\u00e9rifier les progr\u00e8s et d\u2019identifier les actions les plus utiles.\n\nVoici un aper\u00e7u des chiffres de ce mois. Cliquez ci-dessous pour consulter le d\u00e9tail dans votre tableau de bord priv\u00e9, accessible directement sans identifiant ni mot de passe.\n\nRestez \u00e0 l\u2019\u00e9coute : de nombreuses am\u00e9liorations arrivent. Nous vous expliquerons \u00e9galement comment votre entreprise peut tirer le meilleur parti de ces r\u00e9sultats.',report_url:'portal-analytics'}}
   ];
   var recommendedDraft=null,portalTarget=null,portalDraftDirty=false,portalDraftRevision=0,portalSaving=false,portalCalendarMonth=new Date(new Date().getFullYear(),new Date().getMonth(),1),portalCalendarView='calendar',currentAdminHash='';
   var EMAIL_SEQUENCES=[
@@ -692,7 +692,7 @@
   }
 
   function campaignPayload(row){if(row.type==='report')return{type:'report',month_label:row.month_label||'',summary:'',custom_metrics:Array.isArray(row.custom_metrics)?row.custom_metrics:[]};if(row.type==='tip')return{type:'tip',headline:row.headline||row.subject||'',tip_body:row.body||'',tip_cta_label:row.cta_label||'',tip_cta_url:row.cta_url||''};return{type:'custom',subject:row.subject||'',custom_body:row.body||'',custom_cta_label:row.cta_label||'',custom_cta_url:row.cta_url||''};}
-  function templatePayloadForClient(tpl){var payload=JSON.parse(JSON.stringify(tpl.payload||{})),client=sendTarget;if(client){Object.keys(payload).forEach(function(key){if(typeof payload[key]==='string')payload[key]=payload[key].replace(/\{\{name\}\}/g,client.contact_name||client.business_name).replace(/\{\{business\}\}/g,client.business_name);});if(tpl.id==='builtin-calendar')payload.custom_cta_url=portalUrl(client)+'#calendar';if(tpl.id==='builtin-stats')payload.report_url=portalUrl(client)+'#analytics';}return payload;}
+  function templatePayloadForClient(tpl){var payload=JSON.parse(JSON.stringify(tpl.payload||{})),client=sendTarget;payload._template_id=tpl.id;if(client){Object.keys(payload).forEach(function(key){if(typeof payload[key]==='string')payload[key]=payload[key].replace(/\{\{name\}\}/g,client.contact_name||client.business_name).replace(/\{\{business\}\}/g,client.business_name);});if(tpl.id==='builtin-calendar')payload.custom_cta_url=portalUrl(client)+'#calendar';if(tpl.id==='builtin-stats')payload.report_url=portalUrl(client)+'#analytics';}return payload;}
   function renderMailerCampaigns(){if(!mailerList)return;var term=(mailerSearch&&mailerSearch.value||'').trim().toLowerCase(),rows=mailerMode==='drafts'?templates:(mailerMode==='outbox'?[]:marketingHistory);rows=rows.filter(function(row){var business=row.clients&&row.clients.business_name||'',text=[row.name,row.subject,business,row.type].join(' ').toLowerCase();return!term||text.indexOf(term)>-1;});document.querySelectorAll('[data-ml-count="sent"]').forEach(function(el){el.textContent=marketingHistory.length;});document.querySelectorAll('[data-ml-count="drafts"]').forEach(function(el){el.textContent=templates.length;});
     mailerList.innerHTML=rows.length?rows.map(function(row){if(mailerMode==='drafts'){var description=row.id==='builtin-calendar'?'Send a client their latest content calendar.':'Send a client their latest website statistics.';return '<article class="ml-campaign ml-campaign--template"><div class="ml-preview ml-preview--template"><img src="/images/sb-marketing-email-logo.png" alt="SB Marketing email template"></div><div class="ml-campaign__info"><h3>'+escapeHtml(row.name)+'</h3><p>'+description+'</p><button type="button" data-ml-use-template="'+escapeHtml(row.id)+'">Use template</button></div></article>';}
       var client=row.clients&&row.clients.business_name||'Unknown client',sent=new Intl.DateTimeFormat('en-GB',{dateStyle:'medium',timeStyle:'short'}).format(new Date(row.sent_at)),preview=row.rendered_html?'/view-email/?id='+encodeURIComponent(row.id):'';return '<article class="ml-campaign"><div class="ml-preview"><img src="/images/sb-marketing-email-logo.png" alt="SB Marketing email"></div><div class="ml-campaign__info"><h3>'+escapeHtml(row.subject||'Campaign')+'</h3><p>'+escapeHtml(client)+' <i></i> Sent '+escapeHtml(sent)+'</p>'+(preview?'<a class="ml-report-link" href="'+preview+'" target="_blank" rel="noopener">View email</a>':'')+'</div><dl class="ml-results"><div><dt>Client</dt><dd>'+escapeHtml(client)+'</dd></div><div class="is-opened"><dt>Type</dt><dd>'+escapeHtml(row.type)+'</dd></div><div class="is-clicked"><dt>Status</dt><dd>Sent</dd></div></dl><details class="ml-actions"><summary>More</summary><button type="button" data-ml-duplicate="'+escapeHtml(row.id)+'">Duplicate / edit</button><button type="button" data-ml-edit-client-id="'+escapeHtml(row.client_id)+'">Edit client</button><button type="button" class="is-danger" data-ml-delete-email="'+escapeHtml(row.id)+'">Delete record</button></details></article>';}).join(''):'<div class="ml-empty"><strong>No '+(mailerMode==='drafts'?'templates':mailerMode)+' found</strong><span>Create a campaign to get started.</span></div>';
@@ -729,20 +729,28 @@
     return payload;
   }
   function applyTemplatePayload(payload){
+    activeEmailTemplateId=payload._template_id||'';
     sendTypeSelect.value=payload.type||'report';setSendType(sendTypeSelect.value);
     TEMPLATE_FIELD_NAMES.forEach(function(key){var field=sendForm.elements[key];if(field)field.value=payload[key]||'';});
     sendForm.querySelector('[data-custom-metrics-list]').innerHTML='';
     (payload.custom_metrics||[]).forEach(function(m){addCustomMetricRow(m.label,m.value);});
     sendForm.querySelector('[data-extra-links-list]').innerHTML='';
     (payload.extra_links||[]).forEach(function(l){addExtraLinkRow(l.label,l.url);});
+    if(activeEmailTemplateId==='builtin-stats')fillWebsiteStatsFromDashboard(sendTarget);
     updateSendSubjectPreview();
   }
+  function fillWebsiteStatsFromDashboard(client){
+    var data=client&&(client.dashboard_data||client.portal_draft_data)||{},analytics=data.analytics||{},search=data.search_console||{};
+    var values={website_visits:analytics.visits&&analytics.visits.value,google_impressions:search.impressions,google_clicks:search.clicks,google_avg_position:search.position};
+    Object.keys(values).forEach(function(key){var input=sendForm.querySelector('[data-metric-field="'+key+'"]');if(input&&values[key]!=null&&String(values[key]).trim())input.value=String(values[key]);});
+    if(data.period)sendForm.elements.month_label.value=data.period;
+  }
   function updateMailerSteps(step){document.querySelectorAll('[data-ml-step]').forEach(function(item){var n=Number(item.dataset.mlStep);item.classList.toggle('is-active',n===step);item.classList.toggle('is-complete',n<step);});}
-  function currentSubject(payload){if(!sendTarget)return '—';payload=payload||buildSendPayload();if(payload.type==='report')return sendTarget.language==='en'?sendTarget.business_name+' — '+(payload.month_label||'Monthly')+' report':sendTarget.business_name+' — Rapport '+(payload.month_label||'mensuel');if(payload.type==='tip')return payload.headline||'—';return payload.subject||'—';}
+  function currentSubject(payload){if(!sendTarget)return '—';payload=payload||buildSendPayload();if(payload.type==='report')return payload.language==='en'?sendTarget.business_name+' — '+(payload.month_label||'Monthly')+' report':sendTarget.business_name+' — Rapport '+(payload.month_label||'mensuel');if(payload.type==='tip')return payload.headline||'—';return payload.subject||'—';}
   function updateSendSubjectPreview(){if(sendSubjectPreview)sendSubjectPreview.textContent=currentSubject();}
   async function openSendDialog(clientId){
     var client=clients.find(function(c){return c.id===clientId;});if(!client)return;
-    sendTarget=client;lastMonthMetrics=null;
+    sendTarget=client;activeEmailTemplateId='';lastMonthMetrics=null;
     sendClientLabel.textContent=client.business_name+' · '+client.email;
     sendForm.reset();
     sendTypeSelect.value='report';
@@ -771,7 +779,7 @@
   }
   function buildSendPayload(){
     var data=new FormData(sendForm),type=sendTypeSelect.value;
-    var payload={type:type,to:sendTarget.email,business_name:sendTarget.business_name,contact_name:sendTarget.contact_name,language:sendTarget.language||'fr',client_id:sendTarget.id,branding:brandingPayload()};
+    var payload={type:type,to:sendTarget.email,business_name:sendTarget.business_name,contact_name:sendTarget.contact_name,language:activeEmailTemplateId==='builtin-stats'?'fr':(sendTarget.language||'fr'),client_id:sendTarget.id,branding:brandingPayload()};
     if(appSettings&&appSettings.reply_to_email)payload.reply_to=appSettings.reply_to_email;
     payload.referral=readShare(sendForm.querySelector('[data-share-banner]'),payload.language,sendTarget.activity,sendTarget.business_name);
     payload.extras=dashboardExtras(readExtras(),sendTarget);
