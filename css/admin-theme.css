@@ -156,15 +156,15 @@ dialog::backdrop{background:rgba(4,16,33,.4)}
 /* MailerLite-inspired campaign template */
 .ml-campaigns{--ml-green:#05c168;--ml-line:#e2e5e9;color:#202124}
 .ml-campaigns__head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:12px}
-.ml-campaigns__head h2{margin:4px 0 0;color:#08090a;font-size:42px;line-height:1.1;letter-spacing:-.035em}
+.ml-campaigns__head h2{margin:3px 0 0;color:#08090a;font-size:34px;line-height:1.1;letter-spacing:-.035em}
 .ml-eyebrow{color:#71757b;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.08em}
 .ml-create{padding:14px 24px!important;border-radius:6px!important;background:var(--ml-green)!important;color:#fff!important;font-size:16px!important;box-shadow:none!important}
-.ml-tabs{display:flex;gap:34px;margin-bottom:34px;border-bottom:1px solid var(--ml-line)}
+.ml-tabs{display:flex;gap:28px;margin-bottom:22px;border-bottom:1px solid var(--ml-line)}
 .ml-tabs button{display:flex;align-items:center;gap:9px;padding:18px 4px!important;border:0!important;border-bottom:2px solid transparent!important;border-radius:0!important;background:transparent!important;color:#42454a!important;font-size:15px!important;box-shadow:none!important}
 .ml-tabs button.is-active{border-bottom-color:var(--ml-green)!important;color:#17191b!important}
 .ml-tabs span{display:grid;place-items:center;min-width:26px;height:24px;padding:0 7px;border-radius:5px;background:#e8eaed;color:#555a60;font-size:13px}
 .ml-panel{border:1px solid var(--ml-line);border-radius:7px;background:#fff;overflow:hidden}
-.ml-toolbar{display:flex;align-items:center;gap:12px;padding:28px 32px}
+.ml-toolbar{display:flex;align-items:center;gap:10px;padding:18px 22px}
 .ml-toolbar__space{flex:1}
 .ml-check{display:flex;align-items:center;gap:10px;white-space:nowrap;font-weight:600}
 .ml-check input,.ml-preview input{width:18px;height:18px;accent-color:var(--ml-green)}
@@ -173,18 +173,22 @@ dialog::backdrop{background:rgba(4,16,33,.4)}
 .ml-search input{min-width:0;flex:1;padding:0 14px;border:0;font:inherit}.ml-search input:focus{outline:0}
 .ml-search span{display:grid;place-items:center;width:46px;background:#e6e8eb;font-size:24px}
 .ml-list{border-top:1px solid var(--ml-line)}
-.ml-campaign{position:relative;display:grid;grid-template-columns:170px minmax(280px,1fr) 340px;align-items:center;gap:30px;min-height:230px;padding:30px 42px 30px 32px;border-bottom:1px solid var(--ml-line)}
-.ml-preview{position:relative;width:170px;height:172px;padding:10px;border:1px solid #dce0e4;border-radius:7px;background:#f7f8f9;overflow:hidden}
+.ml-campaign{position:relative;display:grid;grid-template-columns:110px minmax(260px,1fr) 280px;align-items:center;gap:24px;min-height:160px;padding:22px 32px 22px 22px;border-bottom:1px solid var(--ml-line)}
+.ml-preview{position:relative;width:110px;height:116px;padding:8px;border:1px solid #dce0e4;border-radius:7px;background:#f7f8f9;overflow:hidden}
 .ml-preview input{position:absolute;z-index:1;top:10px;left:10px}.ml-preview img{width:100%;height:100%;object-fit:cover;border-radius:3px}
-.ml-campaign__info h3{max-width:520px;margin:0 0 7px;color:#111;font-size:20px;line-height:1.25}
+.ml-campaign__info h3{max-width:520px;margin:0 0 7px;color:#111;font-size:17px;line-height:1.25}
 .ml-campaign__info p{display:flex;align-items:center;gap:10px;margin:0 0 20px;color:#666b71}.ml-campaign__info i{width:4px;height:4px;border-radius:50%;background:#c8ccd1}
 .ml-campaign__info button,.ml-pagination button{padding:11px 18px!important;border:0!important;border-radius:5px!important;background:#e7e9ec!important;color:#45494f!important;box-shadow:none!important}
 .ml-results{display:grid;gap:14px;margin:0}.ml-results div{display:grid;grid-template-columns:1fr auto;gap:20px;padding-left:18px;border-left:3px solid #e6e8eb}
 .ml-results .is-opened{border-color:#16d592}.ml-results .is-clicked{border-color:#5796ff}.ml-results .is-ctor{border-color:#a96aff}
 .ml-results dt{color:#666b71}.ml-results dd{margin:0;color:#222;font-weight:600}
 .ml-more{position:absolute;top:28px;right:32px;padding:6px 12px!important;border:0!important;border-radius:5px!important;background:#e7e9ec!important;color:#4c5055!important;font-size:13px!important;box-shadow:none!important}
+.ml-report-link{display:inline-flex;padding:9px 14px;border-radius:5px;background:#e7e9ec;color:#45494f;font-size:13px;font-weight:700;text-decoration:none}
+.ml-preview--template img,.ml-preview img[src*="sb-marketing-email-logo"]{object-fit:contain;background:#fff}
+.ml-actions{position:absolute;top:18px;right:20px}.ml-actions summary{padding:6px 10px;border-radius:5px;background:#e7e9ec;color:#4c5055;font-size:12px;cursor:pointer;list-style:none}.ml-actions[open]{z-index:4}.ml-actions[open] summary{margin-bottom:5px}.ml-actions button{display:block;width:150px;padding:8px 10px!important;border:1px solid #e1e4e8!important;border-radius:0!important;background:#fff!important;color:#333!important;font-size:12px!important;text-align:left;box-shadow:0 4px 10px rgba(0,0,0,.05)!important}.ml-actions button.is-danger,.ml-more--danger{color:#c83232!important}
+.ml-empty{display:grid;place-items:center;gap:6px;min-height:240px;padding:40px;color:#777}.ml-empty strong{color:#222;font-size:18px}.ml-message{margin:0;padding:0 22px}.ml-message:empty{display:none}
 .ml-pagination{display:flex;align-items:center;justify-content:space-between;padding:24px 32px;color:#666b71}.ml-pagination div{display:flex;gap:12px}.ml-pagination button:disabled{opacity:.55}
-@media(max-width:1100px){.ml-toolbar{flex-wrap:wrap}.ml-toolbar__space{display:none}.ml-search{flex:1}.ml-campaign{grid-template-columns:130px 1fr}.ml-preview{width:130px;height:150px}.ml-results{grid-column:1/-1;grid-template-columns:repeat(4,1fr)}}
+@media(max-width:1100px){.ml-toolbar{flex-wrap:wrap}.ml-toolbar__space{display:none}.ml-search{flex:1}.ml-campaign{grid-template-columns:100px 1fr}.ml-preview{width:100px;height:112px}.ml-results{grid-column:1/-1;grid-template-columns:repeat(4,1fr)}}
 @media(max-width:700px){.ml-campaigns__head{align-items:flex-start;flex-direction:column}.ml-campaigns__head h2{font-size:34px}.ml-create{width:100%}.ml-tabs{gap:12px}.ml-toolbar{padding:18px}.ml-toolbar>*{flex:1}.ml-check{flex-basis:100%}.ml-search{flex-basis:100%}.ml-campaign{grid-template-columns:90px 1fr;gap:18px;padding:24px 18px}.ml-preview{width:90px;height:116px}.ml-campaign__info h3{font-size:17px}.ml-results{grid-template-columns:1fr 1fr}.ml-more{top:14px;right:14px}.ml-pagination{align-items:flex-start;flex-direction:column;gap:18px}}
 
 /* ── Responsive (Dashly collapses the sidebar into a slide-in menu under 992px) ── */

@@ -15,9 +15,14 @@
   var marketingMessage=document.querySelector('[data-marketing-message]'),marketingClientSelect=document.querySelector('[data-marketing-client-select]'),marketingComposeBtn=document.querySelector('[data-marketing-compose]');
   var templatesBody=document.querySelector('[data-templates-body]'),templatesEmpty=document.querySelector('[data-templates-empty]');
   var marketingHistoryBody=document.querySelector('[data-marketing-history-body]'),marketingHistoryEmpty=document.querySelector('[data-marketing-history-empty]'),marketingHistorySearch=document.querySelector('[data-marketing-history-search]');
+  var mailerList=document.querySelector('[data-ml-list]'),mailerClient=document.querySelector('[data-ml-client]'),mailerSearch=document.querySelector('[data-ml-search]'),mailerMessage=document.querySelector('[data-ml-message]'),mailerMode='sent';
   var sequenceGrid=document.querySelector('[data-sequence-grid]'),ideaGrid=document.querySelector('[data-idea-grid]'),ideaFilter=document.querySelector('[data-idea-filter]'),clientNextStep=document.querySelector('[data-client-next-step]'),nextStepTitle=document.querySelector('[data-next-step-title]'),nextStepCopy=document.querySelector('[data-next-step-copy]'),nextStepUse=document.querySelector('[data-next-step-use]');
   var portalsGrid=document.querySelector('[data-portals-grid]'),portalsEmpty=document.querySelector('[data-portals-empty]'),portalsMessage=document.querySelector('[data-portals-message]'),portalSearch=document.querySelector('[data-portal-search]'),portalFilter=document.querySelector('[data-portal-filter]'),portalForm=document.querySelector('[data-portal-form]'),portalFormMessage=document.querySelector('[data-portal-form-message]'),portalEditorName=document.querySelector('[data-portal-editor-name]'),portalOpen=document.querySelector('[data-portal-open]');
   var sendTarget=null,lastMonthMetrics=null,dialogTarget=null,templates=[],templatesLoaded=false,assetLibrary=null,assetPickerTarget=null,marketingHistory=[],marketingHistoryLoaded=false;
+  var BUILTIN_EMAIL_TEMPLATES=[
+    {id:'builtin-calendar',builtin:true,name:'Calendrier de contenu',type:'custom',created_at:'2026-11-05T00:00:00Z',payload:{type:'custom',subject:'Votre calendrier de contenu est prêt',custom_body:'Bonjour {{name}},\n\nVotre calendrier de contenu est disponible dans votre espace client SB Marketing. Vous pouvez consulter chaque publication, vérifier le visuel et le texte, puis approuver ou demander une modification directement depuis le calendrier.\n\nNous restons disponibles si vous avez une question.',custom_cta_label:'Voir mon calendrier de contenu'}},
+    {id:'builtin-stats',builtin:true,name:'Statistiques du site',type:'report',created_at:'2026-11-05T00:00:00Z',payload:{type:'report',summary:'Bonjour {{name}}, voici les dernières performances du site de {{business}}. Retrouvez ci-dessous les chiffres essentiels et ouvrez votre tableau de bord pour consulter le détail.',report_url:'portal-analytics'}}
+  ];
   var recommendedDraft=null,portalTarget=null,portalDraftDirty=false,portalDraftRevision=0,portalSaving=false,portalCalendarMonth=new Date(new Date().getFullYear(),new Date().getMonth(),1),portalCalendarView='calendar',currentAdminHash='';
   var EMAIL_SEQUENCES=[
     {icon:'👋',name:'New client welcome',description:'Build trust and set expectations during the first month.',timing:'First 30 days',goal:'Onboarding',steps:[
@@ -236,8 +241,10 @@
   function refreshMarketingClientOptions(){
     if(!marketingClientSelect)return;
     var current=marketingClientSelect.value;
-    marketingClientSelect.innerHTML='<option value="">Pick a client…</option>'+clients.slice().sort(function(a,b){return a.business_name.localeCompare(b.business_name);}).map(function(c){return '<option value="'+escapeHtml(c.id)+'">'+escapeHtml(c.business_name)+'</option>';}).join('');
+    var options=clients.slice().sort(function(a,b){return a.business_name.localeCompare(b.business_name);}).map(function(c){return '<option value="'+escapeHtml(c.id)+'">'+escapeHtml(c.business_name)+' — '+escapeHtml(c.email||'')+'</option>';}).join('');
+    marketingClientSelect.innerHTML='<option value="">Pick a client…</option>'+options;
     marketingClientSelect.value=current;
+    if(mailerClient){var mailerCurrent=mailerClient.value;mailerClient.innerHTML='<option value="">Choose a client…</option>'+options;mailerClient.value=clients.some(function(c){return c.id===mailerCurrent;})?mailerCurrent:'';}
   }
   function refreshActivityFilterOptions(){if(!bulkActivityFilter)return;var activities=Array.from(new Set(clients.map(function(c){return c.activity;}).filter(Boolean))).sort();var current=bulkActivityFilter.value;bulkActivityFilter.innerHTML='<option value="">All activities</option>'+activities.map(function(a){return '<option value="'+escapeHtml(a)+'">'+escapeHtml(a)+'</option>';}).join('');bulkActivityFilter.value=current;}
   function renderClients(){
@@ -626,14 +633,14 @@
 
   // ── Saved email templates ───────────────────────────────────────
   var TEMPLATE_FIELD_NAMES=['month_label','summary','report_url','headline','tip_body','tip_cta_label','tip_cta_url','subject','custom_body','custom_cta_label','custom_cta_url','extra_banner_url','extra_banner_alt','extra_image_url','extra_image_caption','extra_video_url','extra_video_thumb','extra_video_caption','extra_before_url','extra_after_url','extra_before_label','extra_after_label','extra_testimonial_quote','extra_testimonial_author','extra_testimonial_rating','attachment_url','attachment_filename'];
-  async function loadTemplates(){try{templates=await request('/rest/v1/email_templates?select=*&order=created_at.desc');}catch(error){templates=[];}templatesLoaded=true;templateSelect.innerHTML='<option value="">Start from a template…</option>'+templates.map(function(tpl){return '<option value="'+escapeHtml(tpl.id)+'">'+escapeHtml(tpl.name)+'</option>';}).join('');renderTemplatesTable();}
+  async function loadTemplates(){var saved=[];try{saved=await request('/rest/v1/email_templates?select=*&order=created_at.desc');}catch(error){saved=[];}templates=BUILTIN_EMAIL_TEMPLATES.concat(saved);templatesLoaded=true;templateSelect.innerHTML='<option value="">Start from a template…</option>'+templates.map(function(tpl){return '<option value="'+escapeHtml(tpl.id)+'">'+escapeHtml(tpl.name)+(tpl.builtin?' — SB Marketing':'')+'</option>';}).join('');renderTemplatesTable();renderMailerCampaigns();}
   function renderTemplatesTable(){
     if(!templatesBody)return;
     templatesBody.innerHTML=templates.map(function(tpl){
       var created=new Intl.DateTimeFormat('en-GB',{dateStyle:'medium'}).format(new Date(tpl.created_at));
       var typeLabel={report:'Report',tip:'Tip',custom:'Custom'}[tpl.type]||tpl.type;
       return '<tr><td>'+escapeHtml(tpl.name)+'</td><td><span class="history-type-badge history-type-badge--'+escapeHtml(tpl.type)+'">'+typeLabel+'</span></td><td>'+escapeHtml(created)+'</td>'
-        +'<td><button type="button" class="link-button" data-use-template="'+escapeHtml(tpl.id)+'">Use</button> <button type="button" class="icon-button" data-delete-template="'+escapeHtml(tpl.id)+'" aria-label="Delete template">✕</button></td></tr>';
+        +'<td><button type="button" class="link-button" data-use-template="'+escapeHtml(tpl.id)+'">Use</button> '+(tpl.builtin?'':'<button type="button" class="icon-button" data-delete-template="'+escapeHtml(tpl.id)+'" aria-label="Delete template">✕</button>')+'</td></tr>';
     }).join('');
     if(templatesEmpty)templatesEmpty.hidden=templates.length!==0;
   }
@@ -643,9 +650,10 @@
     if(!clientId){message(marketingMessage,'Pick a client first, then Use this template.');return;}
     message(marketingMessage,'');
     await openSendDialog(clientId);
-    applyTemplatePayload(tpl.payload);
+    applyTemplatePayload(templatePayloadForClient(tpl));
   }
   async function deleteTemplate(tplId){
+    if(String(tplId).indexOf('builtin-')===0)return;
     if(!confirm('Delete this template? This cannot be undone.'))return;
     try{await request('/rest/v1/email_templates?id=eq.'+encodeURIComponent(tplId),{method:'DELETE',headers:{Prefer:'return=minimal'}});await loadTemplates();}catch(error){message(marketingMessage,error.message);}
   }
@@ -653,13 +661,16 @@
   // ── Global email history (Email Marketing tab) ─────────────────
   async function loadMarketingHistory(){
     message(marketingMessage,'Loading email history…');
+    message(mailerMessage,'Loading campaigns…');
     try{
       marketingHistory=await request('/rest/v1/client_emails?select=*,clients(business_name)&order=sent_at.desc&limit=100');
       marketingHistoryLoaded=true;
       renderMarketingHistory();
       message(marketingMessage,'');
+      message(mailerMessage,'');
     }catch(error){
       message(marketingMessage,error.message.indexOf('client_emails')>-1?'Database setup required. Run supabase/clients_schema.sql in the Supabase SQL Editor.':error.message);
+      message(mailerMessage,error.message);
     }
   }
   function renderMarketingHistory(){
@@ -679,7 +690,15 @@
     if(marketingHistoryEmpty)marketingHistoryEmpty.hidden=filtered.length!==0;
     renderMarketingStats();
     updateClientRecommendation();
+    renderMailerCampaigns();
   }
+
+  function campaignPayload(row){if(row.type==='report')return{type:'report',month_label:row.month_label||'',summary:'',custom_metrics:Array.isArray(row.custom_metrics)?row.custom_metrics:[]};if(row.type==='tip')return{type:'tip',headline:row.headline||row.subject||'',tip_body:row.body||'',tip_cta_label:row.cta_label||'',tip_cta_url:row.cta_url||''};return{type:'custom',subject:row.subject||'',custom_body:row.body||'',custom_cta_label:row.cta_label||'',custom_cta_url:row.cta_url||''};}
+  function templatePayloadForClient(tpl){var payload=JSON.parse(JSON.stringify(tpl.payload||{})),client=sendTarget;if(client){Object.keys(payload).forEach(function(key){if(typeof payload[key]==='string')payload[key]=payload[key].replace(/\{\{name\}\}/g,client.contact_name||client.business_name).replace(/\{\{business\}\}/g,client.business_name);});if(tpl.id==='builtin-calendar')payload.custom_cta_url=portalUrl(client)+'#calendar';if(tpl.id==='builtin-stats')payload.report_url=portalUrl(client)+'#analytics';}return payload;}
+  function renderMailerCampaigns(){if(!mailerList)return;var term=(mailerSearch&&mailerSearch.value||'').trim().toLowerCase(),rows=mailerMode==='drafts'?templates:(mailerMode==='outbox'?[]:marketingHistory);rows=rows.filter(function(row){var business=row.clients&&row.clients.business_name||'',text=[row.name,row.subject,business,row.type].join(' ').toLowerCase();return!term||text.indexOf(term)>-1;});document.querySelectorAll('[data-ml-count="sent"]').forEach(function(el){el.textContent=marketingHistory.length;});document.querySelectorAll('[data-ml-count="drafts"]').forEach(function(el){el.textContent=templates.length;});
+    mailerList.innerHTML=rows.length?rows.map(function(row){if(mailerMode==='drafts'){return '<article class="ml-campaign ml-campaign--template"><div class="ml-preview ml-preview--template"><img src="/images/sb-marketing-email-logo.png" alt="SB Marketing email template"></div><div class="ml-campaign__info"><h3>'+escapeHtml(row.name)+'</h3><p>'+(row.builtin?'SB Marketing template':'Saved template')+' <i></i> '+escapeHtml(row.type)+'</p><button type="button" data-ml-use-template="'+escapeHtml(row.id)+'">Use template</button></div><dl class="ml-results"><div><dt>Branding</dt><dd>Logo</dd></div><div class="is-opened"><dt>Footer</dt><dd>Included</dd></div><div class="is-clicked"><dt>Language</dt><dd>FR / EN</dd></div></dl>'+(row.builtin?'':'<button type="button" class="ml-more ml-more--danger" data-ml-delete-template="'+escapeHtml(row.id)+'">Delete</button>')+'</article>';}
+      var client=row.clients&&row.clients.business_name||'Unknown client',sent=new Intl.DateTimeFormat('en-GB',{dateStyle:'medium',timeStyle:'short'}).format(new Date(row.sent_at)),preview=row.rendered_html?'/view-email/?id='+encodeURIComponent(row.id):'';return '<article class="ml-campaign"><div class="ml-preview"><img src="/images/sb-marketing-email-logo.png" alt="SB Marketing email"></div><div class="ml-campaign__info"><h3>'+escapeHtml(row.subject||'Campaign')+'</h3><p>'+escapeHtml(client)+' <i></i> Sent '+escapeHtml(sent)+'</p>'+(preview?'<a class="ml-report-link" href="'+preview+'" target="_blank" rel="noopener">View email</a>':'')+'</div><dl class="ml-results"><div><dt>Client</dt><dd>'+escapeHtml(client)+'</dd></div><div class="is-opened"><dt>Type</dt><dd>'+escapeHtml(row.type)+'</dd></div><div class="is-clicked"><dt>Status</dt><dd>Sent</dd></div></dl><details class="ml-actions"><summary>More</summary><button type="button" data-ml-duplicate="'+escapeHtml(row.id)+'">Duplicate / edit</button><button type="button" data-ml-edit-client-id="'+escapeHtml(row.client_id)+'">Edit client</button><button type="button" class="is-danger" data-ml-delete-email="'+escapeHtml(row.id)+'">Delete record</button></details></article>';}).join(''):'<div class="ml-empty"><strong>No '+(mailerMode==='drafts'?'templates':mailerMode)+' found</strong><span>Create a campaign to get started.</span></div>';
+    var result=document.querySelector('[data-ml-results]');if(result)result.textContent='Showing '+rows.length+' result'+(rows.length===1?'':'s');}
 
   function clientLanguage(client){return client&&client.language==='en'?'en':'fr';}
   function personaliseDraft(draft,client){var output=Object.assign({},draft||{});Object.keys(output).forEach(function(key){if(typeof output[key]==='string')output[key]=output[key].replace(/\{\{name\}\}/g,client.contact_name||client.business_name).replace(/\{\{business\}\}/g,client.business_name);});return output;}
@@ -961,7 +980,7 @@
   sendForm.querySelector('[data-extra-links-list]').addEventListener('click',function(event){var btn=event.target.closest('[data-remove-extra-link]');if(btn)btn.closest('.custom-metric-row').remove();});
   previewMobileToggle.addEventListener('click',function(){previewPane.classList.toggle('is-mobile');});
 
-  templateSelect.addEventListener('change',function(){var tpl=templates.find(function(t){return t.id===templateSelect.value;});if(tpl)applyTemplatePayload(tpl.payload);});
+  templateSelect.addEventListener('change',function(){var tpl=templates.find(function(t){return t.id===templateSelect.value;});if(tpl)applyTemplatePayload(templatePayloadForClient(tpl));});
   templateSaveBtn.addEventListener('click',async function(){
     var name=prompt('Template name?');if(!name)return;
     var payload=captureTemplatePayload();
@@ -976,6 +995,12 @@
     openSendDialog(clientId);
   });
   marketingClientSelect.addEventListener('change',function(){message(marketingMessage,'');updateClientRecommendation();});
+  document.querySelectorAll('[data-ml-tab]').forEach(function(button){button.addEventListener('click',function(){mailerMode=button.dataset.mlTab;document.querySelectorAll('[data-ml-tab]').forEach(function(tab){tab.classList.toggle('is-active',tab===button);});renderMailerCampaigns();});});
+  if(mailerSearch)mailerSearch.addEventListener('input',renderMailerCampaigns);
+  var mailerCreate=document.querySelector('[data-ml-create]');if(mailerCreate)mailerCreate.addEventListener('click',function(){var clientId=mailerClient&&mailerClient.value;if(!clientId){message(mailerMessage,'Choose a client first.');mailerClient.focus();return;}marketingClientSelect.value=clientId;message(mailerMessage,'');openSendDialog(clientId);});
+  var mailerEditClient=document.querySelector('[data-ml-edit-client]');if(mailerEditClient)mailerEditClient.addEventListener('click',function(){if(!mailerClient.value){message(mailerMessage,'Choose a client first.');return;}openClientDialog(mailerClient.value);});
+  if(mailerClient)mailerClient.addEventListener('change',function(){marketingClientSelect.value=mailerClient.value;message(mailerMessage,'');});
+  if(mailerList)mailerList.addEventListener('click',async function(event){var use=event.target.closest('[data-ml-use-template]');if(use){var clientId=mailerClient.value;if(!clientId){message(mailerMessage,'Choose a client first.');return;}var tpl=templates.find(function(item){return item.id===use.dataset.mlUseTemplate;});await openSendDialog(clientId);if(tpl)applyTemplatePayload(templatePayloadForClient(tpl));return;}var duplicate=event.target.closest('[data-ml-duplicate]');if(duplicate){var row=marketingHistory.find(function(item){return item.id===duplicate.dataset.mlDuplicate;});if(row){await openSendDialog(row.client_id);applyTemplatePayload(campaignPayload(row));}return;}var editClient=event.target.closest('[data-ml-edit-client-id]');if(editClient){openClientDialog(editClient.dataset.mlEditClientId);return;}var deleteEmail=event.target.closest('[data-ml-delete-email]');if(deleteEmail&&confirm('Delete this campaign record? The email already sent to the client cannot be recalled.')){try{await request('/rest/v1/client_emails?id=eq.'+encodeURIComponent(deleteEmail.dataset.mlDeleteEmail),{method:'DELETE',headers:{Prefer:'return=minimal'}});marketingHistoryLoaded=false;await loadMarketingHistory();}catch(error){message(mailerMessage,error.message);}return;}var deleteTpl=event.target.closest('[data-ml-delete-template]');if(deleteTpl)deleteTemplate(deleteTpl.dataset.mlDeleteTemplate);});
   if(marketingHistorySearch)marketingHistorySearch.addEventListener('input',renderMarketingHistory);
   templatesBody.addEventListener('click',function(event){
     var useBtn=event.target.closest('[data-use-template]');if(useBtn){useTemplate(useBtn.dataset.useTemplate);return;}
