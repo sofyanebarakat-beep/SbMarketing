@@ -142,6 +142,11 @@
             <header class="ml-campaigns__head">
               <div><span class="ml-eyebrow">Email marketing</span><h2>Email templates</h2><p>Choose a client, then start with one of the two ready-to-use emails.</p></div>
             </header>
+            <ol class="ml-workflow" aria-label="Email campaign steps">
+              <li class="is-active" data-ml-step="1"><span>1</span><div><strong>Choose client</strong><small>Select who will receive the email</small></div></li>
+              <li data-ml-step="2"><span>2</span><div><strong>Choose template</strong><small>Pick one of the two emails</small></div></li>
+              <li data-ml-step="3"><span>3</span><div><strong>Preview and send</strong><small>Edit, test and confirm</small></div></li>
+            </ol>
             <div class="ml-panel">
               <div class="ml-toolbar">
                 <select class="ml-control" data-ml-client aria-label="Campaign client"><option value="">Choose a client…</option></select>
@@ -380,6 +385,7 @@
         </select>
       </div>
       <p class="send-dialog__client" data-send-client></p>
+      <div class="send-subject-preview"><span>Email subject</span><strong data-send-subject-preview>—</strong></div>
 
       <div class="template-row">
         <span class="template-row__label">Template</span>
@@ -387,7 +393,7 @@
         <button type="button" class="secondary" data-template-save>💾 Save</button>
       </div>
 
-      <p class="send-dialog__section-title send-dialog__section-title--first">📝 Content</p>
+      <p class="send-dialog__section-title send-dialog__section-title--first">📝 Edit before sending</p>
       <div data-send-group="report">
         <label>Month<input name="month_label" placeholder="October 2026"></label>
 
@@ -501,6 +507,8 @@
       <div class="form-actions">
         <button type="submit" data-send-submit>Send email</button>
         <button type="button" class="secondary" data-send-preview>Preview</button>
+        <label class="send-test-field"><span class="sr-only">Test email address</span><input type="email" data-send-test-email placeholder="Test email address"></label>
+        <button type="button" class="secondary" data-send-test>Send test email</button>
         <button type="button" class="secondary" data-send-cancel>Cancel</button>
       </div>
       <p class="form-message" data-send-message aria-live="polite"></p>

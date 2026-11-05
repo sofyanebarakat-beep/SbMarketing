@@ -6,6 +6,7 @@
   var clientsBody=document.querySelector('[data-clients-body]'),clientsEmpty=document.querySelector('[data-clients-empty]'),clientsMessage=document.querySelector('[data-clients-message]'),clientSearch=document.querySelector('[data-client-search]'),clientDueFilter=document.querySelector('[data-client-due-filter]');
   var addClientToggle=document.querySelector('[data-add-client-toggle]'),addClientForm=document.querySelector('[data-add-client-form]'),addClientCancel=document.querySelector('[data-add-client-cancel]'),addClientMessage=document.querySelector('[data-add-client-message]');
   var sendDialog=document.querySelector('[data-send-dialog]'),sendForm=document.querySelector('[data-send-form]'),sendClientLabel=document.querySelector('[data-send-client]'),sendMessage=document.querySelector('[data-send-message]'),sendCancel=document.querySelector('[data-send-cancel]'),sendTypeSelect=document.querySelector('[data-send-type]'),sendPreviewBtn=document.querySelector('[data-send-preview]'),previewPane=document.querySelector('[data-preview-pane]'),previewFrame=document.querySelector('[data-preview-frame]'),previewClose=document.querySelector('[data-preview-close]');
+  var sendSubjectPreview=document.querySelector('[data-send-subject-preview]'),sendTestEmail=document.querySelector('[data-send-test-email]'),sendTestButton=document.querySelector('[data-send-test]');
   var clientDialog=document.querySelector('[data-client-dialog]'),clientDialogName=document.querySelector('[data-client-dialog-name]'),clientDialogStatus=document.querySelector('[data-client-dialog-status]'),clientDialogClose=document.querySelector('[data-client-dialog-close]'),clientEditForm=document.querySelector('[data-client-edit-form]'),clientEditMessage=document.querySelector('[data-client-edit-message]'),clientDeleteBtn=document.querySelector('[data-client-delete]'),clientDialogSendEmail=document.querySelector('[data-client-send-email]'),clientDialogViewEmails=document.querySelector('[data-client-view-emails]'),clientWhatsappLink=document.querySelector('[data-client-whatsapp]'),clientUnsubscribedNote=document.querySelector('[data-client-unsubscribed]');
   var settingsForm=document.querySelector('[data-settings-form]'),settingsMessage=document.querySelector('[data-settings-message]');
   var bulkToggle=document.querySelector('[data-bulk-tip-toggle]'),bulkDialog=document.querySelector('[data-bulk-dialog]'),bulkForm=document.querySelector('[data-bulk-form]'),bulkList=document.querySelector('[data-bulk-client-list]'),bulkActivityFilter=document.querySelector('[data-bulk-activity-filter]'),bulkMessage=document.querySelector('[data-bulk-message]'),bulkCancel=document.querySelector('[data-bulk-cancel]');
@@ -734,7 +735,11 @@
     (payload.custom_metrics||[]).forEach(function(m){addCustomMetricRow(m.label,m.value);});
     sendForm.querySelector('[data-extra-links-list]').innerHTML='';
     (payload.extra_links||[]).forEach(function(l){addExtraLinkRow(l.label,l.url);});
+    updateSendSubjectPreview();
   }
+  function updateMailerSteps(step){document.querySelectorAll('[data-ml-step]').forEach(function(item){var n=Number(item.dataset.mlStep);item.classList.toggle('is-active',n===step);item.classList.toggle('is-complete',n<step);});}
+  function currentSubject(payload){if(!sendTarget)return '—';payload=payload||buildSendPayload();if(payload.type==='report')return sendTarget.language==='en'?sendTarget.business_name+' — '+(payload.month_label||'Monthly')+' report':sendTarget.business_name+' — Rapport '+(payload.month_label||'mensuel');if(payload.type==='tip')return payload.headline||'—';return payload.subject||'—';}
+  function updateSendSubjectPreview(){if(sendSubjectPreview)sendSubjectPreview.textContent=currentSubject();}
   async function openSendDialog(clientId){
     var client=clients.find(function(c){return c.id===clientId;});if(!client)return;
     sendTarget=client;lastMonthMetrics=null;
@@ -753,6 +758,7 @@
     var now=new Date(),defaultMonth=new Intl.DateTimeFormat(client.language==='en'?'en-GB':'fr-FR',{month:'long',year:'numeric'}).format(now);
     sendForm.elements.month_label.value=defaultMonth.charAt(0).toUpperCase()+defaultMonth.slice(1);
     message(sendMessage,'');
+    updateSendSubjectPreview();
     sendDialog.showModal();
     try{
       var history=await request('/rest/v1/client_emails?client_id=eq.'+encodeURIComponent(clientId)+'&type=eq.report&select=highlights&order=sent_at.desc&limit=1');
@@ -816,10 +822,17 @@
     message(sendMessage,'Loading preview…');
     try{var result=await invokeFunction('send-client-report',Object.assign({},payload,{preview:true}));previewFrame.srcdoc=result.html;previewPane.hidden=false;message(sendMessage,'');}catch(error){message(sendMessage,error.message);}
   }
+  async function sendTest(){
+    var email=String(sendTestEmail&&sendTestEmail.value||'').trim();if(!/^\S+@\S+\.\S+$/.test(email)){message(sendMessage,'Enter a valid test email address.');return;}
+    var payload=buildSendPayload();if(!payload._hasAny){message(sendMessage,sendTypeSelect.value==='report'?'Add at least one website statistic before sending a test.':'Complete the subject and message before sending a test.');return;}
+    delete payload._hasAny;delete payload._historyPayload;payload.to=email;if(payload.type==='custom')payload.subject='[TEST] '+payload.subject;else if(payload.type==='tip')payload.headline='[TEST] '+payload.headline;
+    sendTestButton.disabled=true;message(sendMessage,'Sending test…');try{await invokeFunction('send-client-report',payload);message(sendMessage,'Test email sent to '+email+'.');}catch(error){message(sendMessage,error.message);}finally{sendTestButton.disabled=false;}
+  }
   async function sendEmail(event){
     event.preventDefault();if(!sendTarget)return;
     var payload=buildSendPayload();
     if(!payload._hasAny){message(sendMessage,sendTypeSelect.value==='report'?'Fill in at least one metric (visits, impressions, clicks or position).':'Fill in the required fields.');return;}
+    if(!confirm('Send “'+currentSubject(payload)+'” to '+sendTarget.email+'?'))return;
     var emailId=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():null;
     if(emailId)payload.extras=Object.assign({},payload.extras,{viewOnlineUrl:'https://www.sbmarketing.fr/view-email/?id='+emailId});
     var type=payload.type,historyPayload=payload._historyPayload;delete payload._hasAny;delete payload._historyPayload;
@@ -964,12 +977,13 @@
 
   wireShareBlock(sendForm.querySelector('[data-share-banner]'));
   wireShareBlock(bulkForm.querySelector('[data-share-banner]'));
-  sendForm.addEventListener('input',function(event){if(event.target.matches('[data-metric-field]'))refreshShare(sendForm.querySelector('[data-share-banner]'));});
+  sendForm.addEventListener('input',function(event){if(event.target.matches('[data-metric-field]'))refreshShare(sendForm.querySelector('[data-share-banner]'));updateSendSubjectPreview();});
   bulkActivityFilter.addEventListener('change',function(){var block=bulkForm.querySelector('[data-share-banner]');block.dataset.activity=bulkActivityFilter.value;if(block.dataset.edited!=='1')block.dataset.idx='0';refreshShare(block);});
   sendTypeSelect.addEventListener('change',function(){setSendType(sendTypeSelect.value);});
   sendForm.addEventListener('submit',sendEmail);
   sendCancel.addEventListener('click',function(){sendDialog.close();});
   sendPreviewBtn.addEventListener('click',previewSend);
+  if(sendTestButton)sendTestButton.addEventListener('click',sendTest);
   previewClose.addEventListener('click',function(){previewPane.hidden=true;});
   sendForm.querySelector('[data-add-custom-metric]').addEventListener('click',function(){addCustomMetricRow();});
   sendForm.querySelector('[data-custom-metrics-list]').addEventListener('click',function(event){var btn=event.target.closest('[data-remove-custom-metric]');if(btn)btn.closest('.custom-metric-row').remove();});
@@ -996,8 +1010,8 @@
   if(mailerSearch)mailerSearch.addEventListener('input',renderMailerCampaigns);
   var mailerCreate=document.querySelector('[data-ml-create]');if(mailerCreate)mailerCreate.addEventListener('click',function(){var clientId=mailerClient&&mailerClient.value;if(!clientId){message(mailerMessage,'Choose a client first.');mailerClient.focus();return;}marketingClientSelect.value=clientId;message(mailerMessage,'');openSendDialog(clientId);});
   var mailerEditClient=document.querySelector('[data-ml-edit-client]');if(mailerEditClient)mailerEditClient.addEventListener('click',function(){if(!mailerClient.value){message(mailerMessage,'Choose a client first.');return;}openClientDialog(mailerClient.value);});
-  if(mailerClient)mailerClient.addEventListener('change',function(){if(marketingClientSelect)marketingClientSelect.value=mailerClient.value;message(mailerMessage,'');});
-  if(mailerList)mailerList.addEventListener('click',async function(event){var use=event.target.closest('[data-ml-use-template]');if(use){var clientId=mailerClient.value;if(!clientId){message(mailerMessage,'Choose a client first.');return;}var tpl=templates.find(function(item){return item.id===use.dataset.mlUseTemplate;});await openSendDialog(clientId);if(tpl)applyTemplatePayload(templatePayloadForClient(tpl));return;}var duplicate=event.target.closest('[data-ml-duplicate]');if(duplicate){var row=marketingHistory.find(function(item){return item.id===duplicate.dataset.mlDuplicate;});if(row){await openSendDialog(row.client_id);applyTemplatePayload(campaignPayload(row));}return;}var editClient=event.target.closest('[data-ml-edit-client-id]');if(editClient){openClientDialog(editClient.dataset.mlEditClientId);return;}var deleteEmail=event.target.closest('[data-ml-delete-email]');if(deleteEmail&&confirm('Delete this campaign record? The email already sent to the client cannot be recalled.')){try{await request('/rest/v1/client_emails?id=eq.'+encodeURIComponent(deleteEmail.dataset.mlDeleteEmail),{method:'DELETE',headers:{Prefer:'return=minimal'}});marketingHistoryLoaded=false;await loadMarketingHistory();}catch(error){message(mailerMessage,error.message);}return;}var deleteTpl=event.target.closest('[data-ml-delete-template]');if(deleteTpl)deleteTemplate(deleteTpl.dataset.mlDeleteTemplate);});
+  if(mailerClient)mailerClient.addEventListener('change',function(){if(marketingClientSelect)marketingClientSelect.value=mailerClient.value;message(mailerMessage,'');updateMailerSteps(mailerClient.value?2:1);});
+  if(mailerList)mailerList.addEventListener('click',async function(event){var use=event.target.closest('[data-ml-use-template]');if(use){var clientId=mailerClient.value;if(!clientId){message(mailerMessage,'Choose a client first.');updateMailerSteps(1);return;}var tpl=templates.find(function(item){return item.id===use.dataset.mlUseTemplate;});await openSendDialog(clientId);if(tpl){applyTemplatePayload(templatePayloadForClient(tpl));updateMailerSteps(3);await previewSend();}return;}var duplicate=event.target.closest('[data-ml-duplicate]');if(duplicate){var row=marketingHistory.find(function(item){return item.id===duplicate.dataset.mlDuplicate;});if(row){await openSendDialog(row.client_id);applyTemplatePayload(campaignPayload(row));}return;}var editClient=event.target.closest('[data-ml-edit-client-id]');if(editClient){openClientDialog(editClient.dataset.mlEditClientId);return;}var deleteEmail=event.target.closest('[data-ml-delete-email]');if(deleteEmail&&confirm('Delete this campaign record? The email already sent to the client cannot be recalled.')){try{await request('/rest/v1/client_emails?id=eq.'+encodeURIComponent(deleteEmail.dataset.mlDeleteEmail),{method:'DELETE',headers:{Prefer:'return=minimal'}});marketingHistoryLoaded=false;await loadMarketingHistory();}catch(error){message(mailerMessage,error.message);}return;}var deleteTpl=event.target.closest('[data-ml-delete-template]');if(deleteTpl)deleteTemplate(deleteTpl.dataset.mlDeleteTemplate);});
   if(marketingHistorySearch)marketingHistorySearch.addEventListener('input',renderMarketingHistory);
   if(templatesBody)templatesBody.addEventListener('click',function(event){
     var useBtn=event.target.closest('[data-use-template]');if(useBtn){useTemplate(useBtn.dataset.useTemplate);return;}

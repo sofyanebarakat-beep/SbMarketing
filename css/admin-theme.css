@@ -157,6 +157,8 @@ dialog::backdrop{background:rgba(4,16,33,.4)}
 .ml-campaigns{--ml-green:#05c168;--ml-line:#e2e5e9;color:#202124}
 .ml-campaigns__head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:12px}
 .ml-campaigns__head h2{margin:3px 0 0;color:#08090a;font-size:34px;line-height:1.1;letter-spacing:-.035em}
+.ml-campaigns__head p{margin:8px 0 0;color:var(--n600)}
+.ml-workflow{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:0 0 18px;padding:0;list-style:none}.ml-workflow li{display:flex;align-items:center;gap:12px;padding:16px;border:1px solid var(--ml-line);border-radius:10px;background:#fff;color:var(--n600)}.ml-workflow li>span{display:grid;place-items:center;flex:0 0 32px;height:32px;border-radius:50%;background:#eef1f6;font-weight:800}.ml-workflow strong,.ml-workflow small{display:block}.ml-workflow strong{color:var(--n800)}.ml-workflow small{margin-top:3px}.ml-workflow li.is-active{border-color:#05c168;background:#f2fff8}.ml-workflow li.is-active>span,.ml-workflow li.is-complete>span{background:#05c168;color:#fff}
 .ml-eyebrow{color:#71757b;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.08em}
 .ml-create{padding:14px 24px!important;border-radius:6px!important;background:var(--ml-green)!important;color:#fff!important;font-size:16px!important;box-shadow:none!important}
 .ml-tabs{display:flex;gap:28px;margin-bottom:22px;border-bottom:1px solid var(--ml-line)}
@@ -190,6 +192,8 @@ dialog::backdrop{background:rgba(4,16,33,.4)}
 .ml-pagination{display:flex;align-items:center;justify-content:space-between;padding:24px 32px;color:#666b71}.ml-pagination div{display:flex;gap:12px}.ml-pagination button:disabled{opacity:.55}
 @media(max-width:1100px){.ml-toolbar{flex-wrap:wrap}.ml-toolbar__space{display:none}.ml-search{flex:1}.ml-campaign{grid-template-columns:100px 1fr}.ml-preview{width:100px;height:112px}.ml-results{grid-column:1/-1;grid-template-columns:repeat(4,1fr)}}
 @media(max-width:700px){.ml-campaigns__head{align-items:flex-start;flex-direction:column}.ml-campaigns__head h2{font-size:34px}.ml-create{width:100%}.ml-tabs{gap:12px}.ml-toolbar{padding:18px}.ml-toolbar>*{flex:1}.ml-check{flex-basis:100%}.ml-search{flex-basis:100%}.ml-campaign{grid-template-columns:90px 1fr;gap:18px;padding:24px 18px}.ml-preview{width:90px;height:116px}.ml-campaign__info h3{font-size:17px}.ml-results{grid-template-columns:1fr 1fr}.ml-more{top:14px;right:14px}.ml-pagination{align-items:flex-start;flex-direction:column;gap:18px}}
+@media(max-width:700px){.ml-workflow{grid-template-columns:1fr}.send-test-field{width:100%}.send-test-field input{width:100%}}
+.send-subject-preview{display:flex;align-items:center;gap:14px;margin:12px 0 18px;padding:13px 15px;border:1px solid var(--n300);border-radius:10px;background:#f8fafc}.send-subject-preview span{color:var(--n600);font-size:12px;font-weight:700;text-transform:uppercase}.send-subject-preview strong{color:var(--n800)}.send-test-field{margin:0}.send-test-field input{min-width:210px}
 
 /* ── Responsive (Dashly collapses the sidebar into a slide-in menu under 992px) ── */
 @media(max-width:991px){
