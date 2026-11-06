@@ -52,6 +52,15 @@
         <section class="cd-view" data-page="email-marketing" hidden>
           <div class="cd-head"><div><h1 data-i18n="emailMarketing">Monthly email marketing report</h1><p><span data-client-name></span> · <span data-i18n="emailCopy">Your email audience and campaign activity for the period.</span></p></div><div class="portal-period"><span data-i18n="period">Reporting period</span><strong data-period></strong><small data-updated></small></div></div>
           <div class="portal-metrics" data-email-metrics></div>
+          <section class="portal-card email-idea-box">
+            <div class="portal-section-head"><div><span class="portal-card-kicker" data-i18n="prepareCampaign">Prepare your next campaign</span><h2 data-i18n="shareIdea">Share an idea with SB Marketing</h2><p data-i18n="shareIdeaCopy">Add offers, services or news one by one. Our team will use them to prepare your next email campaign.</p></div></div>
+            <form class="email-idea-form" data-email-idea-form>
+              <label><span data-i18n="ideaType">Idea type</span><select name="idea_type"><option value="offer" data-i18n="ideaOffer">Offer</option><option value="service" data-i18n="ideaService">Service</option><option value="news" data-i18n="ideaNews">News</option><option value="other" data-i18n="ideaOther">Other</option></select></label>
+              <label><span data-i18n="ideaLabel">Your campaign idea</span><textarea name="idea" rows="4" maxlength="1500" required data-i18n-placeholder="ideaPlaceholder" placeholder="Describe what you would like to promote…"></textarea></label>
+              <button type="submit" class="cd-btn" data-i18n="sendIdea">Send this idea</button><p class="cd-feedback-msg" data-email-idea-message role="status"></p>
+            </form>
+            <div class="email-idea-history"><h3 data-i18n="submittedIdeas">Ideas already submitted</h3><div data-email-idea-list></div></div>
+          </section>
         </section>
         <section class="cd-view" data-page="calendar" hidden>
           <div class="cd-head"><div><h1 data-i18n="calendar">Content calendar</h1><p><span data-client-name></span> · <span data-i18n="calendarCopy">Click a publication to approve it, reject it or ask for a change.</span></p></div><button type="button" class="cd-help-btn" data-guide-open><span class="cd-help-btn__icon" aria-hidden="true">?</span><span data-i18n="guideBtn">How it works</span></button></div>
