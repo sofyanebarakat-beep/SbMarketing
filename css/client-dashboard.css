@@ -480,5 +480,4 @@ section{scroll-margin-top:100px}
 .search-query-list{display:grid;gap:10px}
 .search-query-row{display:flex;justify-content:space-between;gap:20px;padding:13px 16px;border-radius:12px;background:var(--n200)}
 .search-query-row strong{color:var(--n800);font-size:14px}.search-query-row span{color:var(--n600);font-size:14px;text-align:right}
-.email-summary{margin-top:24px}.email-summary .portal-card p{margin:0;color:var(--n700);font-size:16px;line-height:1.65;white-space:pre-wrap}.email-summary__focus{border-color:#f2d48a;background:linear-gradient(135deg,#fff,#fffaf0)}
 @media(max-width:600px){.search-query-row{align-items:flex-start;flex-direction:column;gap:5px}.search-query-row span{text-align:left}}
