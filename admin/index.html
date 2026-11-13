@@ -140,12 +140,12 @@
         <div data-view="marketing" hidden>
           <section class="ml-campaigns" aria-label="Campaigns template">
             <header class="ml-campaigns__head">
-              <div><span class="ml-eyebrow">Email marketing</span><h2>Email templates</h2><p>Choose a client, then start with one of the two ready-to-use emails.</p></div>
+              <div><span class="ml-eyebrow">Email marketing</span><h2>Send a branded email</h2><p>Choose who should receive it, edit the text, upload a picture and send. The SB Marketing header and footer always stay in place.</p></div>
             </header>
             <ol class="ml-workflow" aria-label="Email campaign steps">
               <li class="is-active" data-ml-step="1"><span>1</span><div><strong>Choose client</strong><small>Select who will receive the email</small></div></li>
-              <li data-ml-step="2"><span>2</span><div><strong>Choose template</strong><small>Pick one of the two emails</small></div></li>
-              <li data-ml-step="3"><span>3</span><div><strong>Preview and send</strong><small>Edit, test and confirm</small></div></li>
+              <li data-ml-step="2"><span>2</span><div><strong>Write your email</strong><small>Change the subject, text and image</small></div></li>
+              <li data-ml-step="3"><span>3</span><div><strong>Preview and send</strong><small>Check the fixed header and footer</small></div></li>
             </ol>
             <div class="ml-panel">
               <div class="ml-toolbar">
@@ -458,11 +458,13 @@
           <fieldset>
             <legend>Hero banner</legend>
             <label>Image URL <small>(optional)</small><span class="url-field-row"><input name="extra_banner_url" type="url" placeholder="https://..."><button type="button" class="icon-button" data-pick-asset="extra_banner_url" aria-label="Choose image">🖼</button></span></label>
+            <label class="secondary email-image-upload">⬆ Upload banner<input type="file" accept="image/*" data-email-image-upload="extra_banner_url" hidden></label>
             <label>Alt text <small>(optional)</small><input name="extra_banner_alt" placeholder="Describe the image"></label>
           </fieldset>
           <fieldset>
             <legend>Inline image</legend>
             <label>Image URL <small>(optional)</small><span class="url-field-row"><input name="extra_image_url" type="url" placeholder="https://..."><button type="button" class="icon-button" data-pick-asset="extra_image_url" aria-label="Choose image">🖼</button></span></label>
+            <label class="secondary email-image-upload">⬆ Upload picture<input type="file" accept="image/*" data-email-image-upload="extra_image_url" hidden></label>
             <label>Caption <small>(optional)</small><input name="extra_image_caption" placeholder="New homepage design"></label>
           </fieldset>
           <fieldset>
