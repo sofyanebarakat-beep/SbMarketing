@@ -7,7 +7,7 @@
   var addClientToggle=document.querySelector('[data-add-client-toggle]'),addClientForm=document.querySelector('[data-add-client-form]'),addClientCancel=document.querySelector('[data-add-client-cancel]'),addClientMessage=document.querySelector('[data-add-client-message]');
   var sendDialog=document.querySelector('[data-send-dialog]'),sendForm=document.querySelector('[data-send-form]'),sendClientLabel=document.querySelector('[data-send-client]'),sendMessage=document.querySelector('[data-send-message]'),sendCancel=document.querySelector('[data-send-cancel]'),sendTypeSelect=document.querySelector('[data-send-type]'),sendPreviewBtn=document.querySelector('[data-send-preview]'),previewPane=document.querySelector('[data-preview-pane]'),previewFrame=document.querySelector('[data-preview-frame]'),previewClose=document.querySelector('[data-preview-close]');
   var sendSubjectPreview=document.querySelector('[data-send-subject-preview]'),sendTestEmail=document.querySelector('[data-send-test-email]'),sendTestButton=document.querySelector('[data-send-test]');
-  var sendRecipient=document.querySelector('[data-send-recipient]'),sendRecipientField=document.querySelector('[data-send-recipient-field]');
+  var sendRecipient=document.querySelector('[data-send-recipient]'),sendRecipientField=document.querySelector('[data-send-recipient-field]'),sendRecipientEmail=document.querySelector('[data-send-recipient-email]'),genericImageSection=document.querySelector('[data-generic-image-section]'),genericImageDrop=document.querySelector('[data-generic-image-drop]');
   var clientDialog=document.querySelector('[data-client-dialog]'),clientDialogName=document.querySelector('[data-client-dialog-name]'),clientDialogStatus=document.querySelector('[data-client-dialog-status]'),clientDialogClose=document.querySelector('[data-client-dialog-close]'),clientEditForm=document.querySelector('[data-client-edit-form]'),clientEditMessage=document.querySelector('[data-client-edit-message]'),clientDeleteBtn=document.querySelector('[data-client-delete]'),clientDialogSendEmail=document.querySelector('[data-client-send-email]'),clientDialogViewEmails=document.querySelector('[data-client-view-emails]'),clientWhatsappLink=document.querySelector('[data-client-whatsapp]'),clientUnsubscribedNote=document.querySelector('[data-client-unsubscribed]');
   var settingsForm=document.querySelector('[data-settings-form]'),settingsMessage=document.querySelector('[data-settings-message]');
   var bulkToggle=document.querySelector('[data-bulk-tip-toggle]'),bulkDialog=document.querySelector('[data-bulk-dialog]'),bulkForm=document.querySelector('[data-bulk-form]'),bulkList=document.querySelector('[data-bulk-client-list]'),bulkActivityFilter=document.querySelector('[data-bulk-activity-filter]'),bulkMessage=document.querySelector('[data-bulk-message]'),bulkCancel=document.querySelector('[data-bulk-cancel]');
@@ -766,7 +766,7 @@
   async function openSendDialog(clientId){
     var client=clients.find(function(c){return c.id===clientId;});if(!client)return;
     sendTarget=client;activeEmailTemplateId='';lastMonthMetrics=null;
-    sendRecipientField.hidden=true;
+    sendRecipientField.hidden=true;genericImageSection.hidden=true;
     sendClientLabel.textContent=client.business_name+' · '+client.email;
     sendForm.reset();
     sendTypeSelect.value='report';
@@ -802,7 +802,7 @@
       previewPane.classList.remove('is-mobile');previewPane.hidden=true;setSendType('custom');message(sendMessage,'');sendDialog.showModal();
     }
     sendRecipient.innerHTML='<option value="">Choose a client…</option>'+clients.filter(function(c){return c.status==='active';}).map(function(c){return '<option value="'+escapeHtml(c.id)+'">'+escapeHtml(c.business_name)+' — '+escapeHtml(c.email||'No email')+'</option>';}).join('');
-    sendRecipient.value=client?client.id:'';sendRecipientField.hidden=false;
+    sendRecipient.value=client?client.id:'';sendRecipientEmail.value='';sendRecipientField.hidden=false;genericImageSection.hidden=false;genericImageDrop.hidden=false;sendForm.querySelector('[data-generic-image-added]').hidden=true;
     sendClientLabel.textContent=client?client.business_name+' · '+client.email:'Choose the recipient below, or write the email first.';
     var generic=templates.find(function(t){return t.id==='builtin-generic';})||BUILTIN_EMAIL_TEMPLATES[0];applyTemplatePayload(templatePayloadForClient(generic));
   }
@@ -867,24 +867,26 @@
   }
   async function sendEmail(event){
     event.preventDefault();if(!sendTarget)return;
-    if(!sendTarget.id||!sendTarget.email){message(sendMessage,'Choose the client who should receive this email.');sendRecipient.focus();return;}
+    if(!sendTarget.email){message(sendMessage,'Choose a client or enter the email address that should receive this email.');sendRecipientEmail.focus();return;}
+    if(!/^\S+@\S+\.\S+$/.test(sendTarget.email)){message(sendMessage,'Enter a valid recipient email address.');sendRecipientEmail.focus();return;}
     var payload=buildSendPayload();
     if(!payload._hasAny){message(sendMessage,sendTypeSelect.value==='report'?'Choose a month and add a short summary.':'Fill in the required fields.');return;}
     if(!confirm('Send “'+currentSubject(payload)+'” to '+sendTarget.email+'?'))return;
     var emailId=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():null;
-    if(emailId)payload.extras=Object.assign({},payload.extras,{viewOnlineUrl:'https://www.sbmarketing.fr/view-email/?id='+emailId});
+    if(emailId&&sendTarget.id)payload.extras=Object.assign({},payload.extras,{viewOnlineUrl:'https://www.sbmarketing.fr/view-email/?id='+emailId});
     var type=payload.type,historyPayload=payload._historyPayload;delete payload._hasAny;delete payload._historyPayload;
     var button=sendForm.querySelector('[data-send-submit]');button.disabled=true;message(sendMessage,'Sending…');
     try{
       var result=await invokeFunction('send-client-report',payload);
       var sentAt=new Date().toISOString();
-      var logEntry={client_id:sendTarget.id,type:type,sent_at:sentAt,rendered_html:result.html||null};
-      if(emailId)logEntry.id=emailId;
-      if(type==='report'){logEntry.subject=(sendTarget.language==='en'?sendTarget.business_name+' — '+payload.month_label+' report':sendTarget.business_name+' — Rapport '+payload.month_label);logEntry.month_label=payload.month_label;logEntry.highlights=historyPayload;logEntry.custom_metrics=(payload.custom_metrics&&payload.custom_metrics.length)?payload.custom_metrics:null;}
-      else if(type==='tip'){logEntry.subject=payload.headline;logEntry.headline=payload.headline;logEntry.body=payload.body;logEntry.cta_label=payload.cta_label||null;logEntry.cta_url=payload.cta_url||null;}
-      else{logEntry.subject=payload.subject;logEntry.body=payload.body;logEntry.cta_label=payload.cta_label||null;logEntry.cta_url=payload.cta_url||null;}
-      await postWithColumnFallback('/rest/v1/client_emails',logEntry,['rendered_html','id']);
-      if(type==='report'){await request('/rest/v1/clients?id=eq.'+encodeURIComponent(sendTarget.id),{method:'PATCH',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({last_report_sent_at:sentAt})});var c=clients.find(function(item){return item.id===sendTarget.id;});if(c)c.last_report_sent_at=sentAt;renderClients();}
+      if(sendTarget.id){var logEntry={client_id:sendTarget.id,type:type,sent_at:sentAt,rendered_html:result.html||null};
+        if(emailId)logEntry.id=emailId;
+        if(type==='report'){logEntry.subject=(sendTarget.language==='en'?sendTarget.business_name+' — '+payload.month_label+' report':sendTarget.business_name+' — Rapport '+payload.month_label);logEntry.month_label=payload.month_label;logEntry.highlights=historyPayload;logEntry.custom_metrics=(payload.custom_metrics&&payload.custom_metrics.length)?payload.custom_metrics:null;}
+        else if(type==='tip'){logEntry.subject=payload.headline;logEntry.headline=payload.headline;logEntry.body=payload.body;logEntry.cta_label=payload.cta_label||null;logEntry.cta_url=payload.cta_url||null;}
+        else{logEntry.subject=payload.subject;logEntry.body=payload.body;logEntry.cta_label=payload.cta_label||null;logEntry.cta_url=payload.cta_url||null;}
+        await postWithColumnFallback('/rest/v1/client_emails',logEntry,['rendered_html','id']);
+      }
+      if(type==='report'&&sendTarget.id){await request('/rest/v1/clients?id=eq.'+encodeURIComponent(sendTarget.id),{method:'PATCH',headers:{'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({last_report_sent_at:sentAt})});var c=clients.find(function(item){return item.id===sendTarget.id;});if(c)c.last_report_sent_at=sentAt;renderClients();}
       sendDialog.close();
       marketingHistoryLoaded=false;
       if(!views.marketing.hidden)loadMarketingHistory();
@@ -1029,14 +1031,21 @@
   previewClose.addEventListener('click',function(){previewPane.hidden=true;});
   var addCustomMetricButton=sendForm.querySelector('[data-add-custom-metric]');if(addCustomMetricButton)addCustomMetricButton.addEventListener('click',function(){addCustomMetricRow();});
   sendForm.querySelector('[data-custom-metrics-list]').addEventListener('click',function(event){var btn=event.target.closest('[data-remove-custom-metric]');if(btn)btn.closest('.custom-metric-row').remove();});
-  sendForm.addEventListener('change',async function(event){
-    var input=event.target.closest('[data-email-image-upload]');if(!input||!input.files[0])return;
-    var field=sendForm.elements[input.dataset.emailImageUpload],label=input.closest('.email-image-upload'),original=label.firstChild.textContent;
-    label.firstChild.textContent='Uploading…';message(sendMessage,'Uploading image…');
-    try{var asset=await uploadAsset(input.files[0]);field.value=asset.url;message(sendMessage,'Image uploaded and added to the email. Click Preview to check it.');}
+  async function uploadEmailImage(file,targetName,label){
+    if(!file||!file.type||file.type.indexOf('image/')!==0){message(sendMessage,'Choose an image file.');return;}
+    var field=sendForm.elements[targetName],original=label&&label.textContent;
+    if(label)label.textContent='Uploading…';message(sendMessage,'Uploading image…');
+    try{var asset=await uploadAsset(file);field.value=asset.url;var added=sendForm.querySelector('[data-generic-image-added]'),preview=sendForm.querySelector('[data-generic-image-preview]');if(targetName==='extra_image_url'){preview.src=asset.url;added.hidden=false;genericImageDrop.hidden=true;}message(sendMessage,'Image uploaded and added to the email. Click Preview to check it.');}
     catch(error){message(sendMessage,/bucket/i.test(error.message)?'Image storage is not set up yet. Run supabase/clients_schema.sql once, or paste an image URL.':error.message);}
-    finally{label.firstChild.textContent=original;input.value='';}
+    finally{if(label)label.textContent=original;}
+  }
+  sendForm.addEventListener('change',async function(event){
+    var input=event.target.closest('[data-email-image-upload]');if(input){var label=input.closest('.email-image-upload');await uploadEmailImage(input.files[0],input.dataset.emailImageUpload,label&&label.firstChild);input.value='';}
   });
+  ['dragenter','dragover'].forEach(function(name){genericImageDrop.addEventListener(name,function(event){event.preventDefault();genericImageDrop.classList.add('is-dragging');});});
+  ['dragleave','drop'].forEach(function(name){genericImageDrop.addEventListener(name,function(event){event.preventDefault();genericImageDrop.classList.remove('is-dragging');});});
+  genericImageDrop.addEventListener('drop',function(event){var file=event.dataTransfer&&event.dataTransfer.files&&event.dataTransfer.files[0];uploadEmailImage(file,'extra_image_url',genericImageDrop.querySelector('strong'));});
+  sendForm.querySelector('[data-generic-image-remove]').addEventListener('click',function(){sendForm.elements.extra_image_url.value='';sendForm.querySelector('[data-generic-image-preview]').removeAttribute('src');sendForm.querySelector('[data-generic-image-added]').hidden=true;genericImageDrop.hidden=false;message(sendMessage,'Picture removed.');});
   sendForm.querySelector('[data-add-extra-link]').addEventListener('click',function(){addExtraLinkRow();});
   sendForm.querySelector('[data-extra-links-list]').addEventListener('click',function(event){var btn=event.target.closest('[data-remove-extra-link]');if(btn)btn.closest('.custom-metric-row').remove();});
   previewMobileToggle.addEventListener('click',function(){previewPane.classList.toggle('is-mobile');});
@@ -1062,7 +1071,8 @@
   var mailerEditClient=document.querySelector('[data-ml-edit-client]');if(mailerEditClient)mailerEditClient.addEventListener('click',function(){if(!mailerClient.value){message(mailerMessage,'Choose a client first.');return;}openClientDialog(mailerClient.value);});
   if(mailerClient)mailerClient.addEventListener('change',function(){if(marketingClientSelect)marketingClientSelect.value=mailerClient.value;message(mailerMessage,'');updateMailerSteps(mailerClient.value?2:1);});
   if(mailerList)mailerList.addEventListener('click',async function(event){var use=event.target.closest('[data-ml-use-template]');if(use){var clientId=mailerClient.value;if(use.dataset.mlUseTemplate==='builtin-generic'){message(mailerMessage,'');await openGenericComposer(clientId);updateMailerSteps(clientId?3:2);return;}if(!clientId){message(mailerMessage,'Choose a client first.');updateMailerSteps(1);return;}var tpl=templates.find(function(item){return item.id===use.dataset.mlUseTemplate;});await openSendDialog(clientId);if(tpl){applyTemplatePayload(templatePayloadForClient(tpl));updateMailerSteps(3);await previewSend();}return;}var duplicate=event.target.closest('[data-ml-duplicate]');if(duplicate){var row=marketingHistory.find(function(item){return item.id===duplicate.dataset.mlDuplicate;});if(row){await openSendDialog(row.client_id);applyTemplatePayload(campaignPayload(row));}return;}var editClient=event.target.closest('[data-ml-edit-client-id]');if(editClient){openClientDialog(editClient.dataset.mlEditClientId);return;}var deleteEmail=event.target.closest('[data-ml-delete-email]');if(deleteEmail&&confirm('Delete this campaign record? The email already sent to the client cannot be recalled.')){try{await request('/rest/v1/client_emails?id=eq.'+encodeURIComponent(deleteEmail.dataset.mlDeleteEmail),{method:'DELETE',headers:{Prefer:'return=minimal'}});marketingHistoryLoaded=false;await loadMarketingHistory();}catch(error){message(mailerMessage,error.message);}return;}var deleteTpl=event.target.closest('[data-ml-delete-template]');if(deleteTpl)deleteTemplate(deleteTpl.dataset.mlDeleteTemplate);});
-  if(sendRecipient)sendRecipient.addEventListener('change',function(){var client=clients.find(function(c){return c.id===sendRecipient.value;});if(!client){sendTarget={id:'',business_name:'Your client',contact_name:'',email:'',language:'fr',activity:'',tracked_metrics:[]};sendClientLabel.textContent='Choose the recipient below, or write the email first.';updateSendSubjectPreview();return;}sendTarget=client;sendClientLabel.textContent=client.business_name+' · '+client.email;initShareBlock(sendForm.querySelector('[data-share-banner]'),client.language,client.activity);if(mailerClient)mailerClient.value=client.id;message(sendMessage,'Recipient selected: '+client.email);updateMailerSteps(3);updateSendSubjectPreview();});
+  if(sendRecipient)sendRecipient.addEventListener('change',function(){var client=clients.find(function(c){return c.id===sendRecipient.value;});if(!client){sendTarget={id:'',business_name:'Email recipient',contact_name:'',email:String(sendRecipientEmail.value||'').trim(),language:'fr',activity:'',tracked_metrics:[]};sendClientLabel.textContent=sendTarget.email||'Choose a client or enter another email address.';updateSendSubjectPreview();return;}sendTarget=client;sendRecipientEmail.value='';sendClientLabel.textContent=client.business_name+' · '+client.email;initShareBlock(sendForm.querySelector('[data-share-banner]'),client.language,client.activity);if(mailerClient)mailerClient.value=client.id;message(sendMessage,'Recipient selected: '+client.email);updateMailerSteps(3);updateSendSubjectPreview();});
+  if(sendRecipientEmail)sendRecipientEmail.addEventListener('input',function(){var email=sendRecipientEmail.value.trim();if(email){sendRecipient.value='';sendTarget={id:'',business_name:'Email recipient',contact_name:'',email:email,language:'fr',activity:'',tracked_metrics:[]};sendClientLabel.textContent=email;message(sendMessage,'');updateMailerSteps(3);}else if(!sendRecipient.value){sendTarget={id:'',business_name:'Email recipient',contact_name:'',email:'',language:'fr',activity:'',tracked_metrics:[]};sendClientLabel.textContent='Choose a client or enter another email address.';}updateSendSubjectPreview();});
   if(marketingHistorySearch)marketingHistorySearch.addEventListener('input',renderMarketingHistory);
   if(templatesBody)templatesBody.addEventListener('click',function(event){
     var useBtn=event.target.closest('[data-use-template]');if(useBtn){useTemplate(useBtn.dataset.useTemplate);return;}

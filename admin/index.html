@@ -416,6 +416,8 @@
       <p class="send-dialog__client" data-send-client></p>
       <label class="send-recipient-field" data-send-recipient-field hidden>Send to
         <select data-send-recipient aria-label="Email recipient"><option value="">Choose a client…</option></select>
+        <span class="send-recipient-divider">or enter another email address</span>
+        <input type="email" data-send-recipient-email placeholder="name@example.com" aria-label="Other recipient email">
       </label>
       <div class="send-subject-preview"><span>Email subject</span><strong data-send-subject-preview>—</strong></div>
 
@@ -454,6 +456,17 @@
           <label>Button link <small>(optional)</small><input name="custom_cta_url" type="url" placeholder="https://..."></label>
         </div>
       </div>
+
+      <section class="generic-image-section" data-generic-image-section hidden>
+        <div><strong>Add a picture</strong><span>Optional — it will appear inside the email.</span></div>
+        <label class="generic-image-drop" data-generic-image-drop>
+          <input type="file" accept="image/*" data-email-image-upload="extra_image_url" hidden>
+          <span class="generic-image-drop__icon">🖼</span>
+          <strong>Drop a picture here</strong>
+          <span>or click to upload JPG, PNG or WEBP</span>
+        </label>
+        <div class="generic-image-added" data-generic-image-added hidden><img data-generic-image-preview alt="Email picture preview"><span>Picture added to the email</span><button type="button" class="secondary" data-generic-image-remove>Remove</button></div>
+      </section>
 
       <details class="extras-details">
         <summary class="send-dialog__section-title">🖼 Rich content <small>(optional — banner, images, video, links…)</small></summary>
