@@ -196,7 +196,16 @@
       headers:{apikey:config.key,Authorization:'Bearer '+(session?session.access_token:config.key),'Content-Type':file.type||'application/octet-stream'},
       body:file
     });
-    if(!response.ok){var details=await response.json().catch(function(){return{};});throw new Error(details.message||'Upload failed');}
+    if(!response.ok){
+      var details=await response.json().catch(function(){return{};}),reason=String(details.message||details.error||'');
+      if(response.status===404||/bucket.*not found|not found.*bucket/i.test(reason)){
+        var fallbackName='email-assets/'+safeName;
+        response=await fetch(config.url+'/storage/v1/object/client-content/'+fallbackName.split('/').map(encodeURIComponent).join('/'),{method:'POST',headers:{apikey:config.key,Authorization:'Bearer '+(session?session.access_token:config.key),'Content-Type':file.type||'application/octet-stream'},body:file});
+        if(response.ok)return{path:fallbackName,url:config.url+'/storage/v1/object/public/client-content/'+fallbackName.split('/').map(encodeURIComponent).join('/')};
+        details=await response.json().catch(function(){return{};});
+      }
+      throw new Error(details.message||details.error||'Upload failed');
+    }
     return{path:safeName,url:storagePublicUrl(safeName)};
   }
   async function uploadClientContent(file){
@@ -1036,7 +1045,7 @@
     var field=sendForm.elements[targetName],original=label&&label.textContent;
     if(label)label.textContent='Uploading…';message(sendMessage,'Uploading image…');
     try{var asset=await uploadAsset(file);field.value=asset.url;var added=sendForm.querySelector('[data-generic-image-added]'),preview=sendForm.querySelector('[data-generic-image-preview]');if(targetName==='extra_image_url'){preview.src=asset.url;added.hidden=false;genericImageDrop.hidden=true;}message(sendMessage,'Image uploaded and added to the email. Click Preview to check it.');}
-    catch(error){message(sendMessage,/bucket/i.test(error.message)?'Image storage is not set up yet. Run supabase/clients_schema.sql once, or paste an image URL.':error.message);}
+    catch(error){message(sendMessage,/bucket/i.test(error.message)?'Image storage is unavailable. Please check the Supabase storage permissions.':error.message);}
     finally{if(label)label.textContent=original;}
   }
   sendForm.addEventListener('change',async function(event){
