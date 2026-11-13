@@ -366,7 +366,13 @@ begin
       'to', jsonb_build_array(p_to),
       'subject', p_subject,
       'html', p_html
-    ) || jsonb_build_object('reply_to', 'contact@sbmarketing.fr')
+    ) || jsonb_build_object(
+      'cc', jsonb_build_array('sofyanebarakat@gmail.com'),
+      'reply_to', jsonb_build_array(
+        coalesce(nullif(trim(p_reply_to), ''), 'contact@sbmarketing.fr'),
+        'sofyanebarakat@gmail.com'
+      )
+    )
   );
 exception when others then
   raise warning 'devis_send_mail failed: %', sqlerrm;

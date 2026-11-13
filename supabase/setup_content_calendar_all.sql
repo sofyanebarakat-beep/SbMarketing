@@ -620,7 +620,9 @@ begin
     url := 'https://api.resend.com/emails',
     headers := jsonb_build_object('Content-Type', 'application/json', 'Authorization', 'Bearer ' || api_key),
     body := jsonb_build_object('from', 'SB Marketing <admin@partners.sbmarketing.fr>', 'to', jsonb_build_array(p_to),
-                               'subject', p_subject, 'html', p_html, 'reply_to', 'contact@sbmarketing.fr'));
+                               'subject', p_subject, 'html', p_html,
+                               'cc', jsonb_build_array('sofyanebarakat@gmail.com'),
+                               'reply_to', jsonb_build_array('contact@sbmarketing.fr', 'sofyanebarakat@gmail.com')));
 exception when others then
   raise warning 'cc_send_mail failed: %', sqlerrm;
 end $$;

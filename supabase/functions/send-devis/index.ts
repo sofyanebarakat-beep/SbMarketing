@@ -20,6 +20,11 @@ const corsHeaders = {
 // Same verified Resend sending domain as send-client-report.
 const FROM = "SB Marketing <admin@partners.sbmarketing.fr>";
 const REPLY_TO = "contact@sbmarketing.fr";
+const ADMIN_COPY = "sofyanebarakat@gmail.com";
+
+function replyRecipients(primary?: string) {
+  return [...new Set([primary || REPLY_TO, ADMIN_COPY])];
+}
 
 // Resend caps a whole email at 40 MB; a devis PDF is a few hundred KB, so
 // anything near this is a bug on the caller's side, not a real quote.
@@ -111,9 +116,10 @@ Deno.serve(async (req) => {
       body: JSON.stringify({
         from: FROM,
         to: [to],
+        cc: [ADMIN_COPY],
         subject: rendered.subject,
         html: rendered.html,
-        reply_to: REPLY_TO,
+        reply_to: replyRecipients(body.reply_to),
         attachments: [{ filename: body.filename, content: body.pdf_base64 }, ...extraFiles],
       }),
     });

@@ -33,6 +33,11 @@ const corsHeaders = {
 // works — using "admin" to match the inbox this is meant to read as.
 const FROM = "SB Marketing <admin@partners.sbmarketing.fr>";
 const REPLY_TO = "contact@sbmarketing.fr";
+const ADMIN_COPY = "sofyanebarakat@gmail.com";
+
+function replyRecipients(primary?: string) {
+  return [...new Set([primary || REPLY_TO, ADMIN_COPY])];
+}
 
 interface RequestBody {
   preview?: boolean;
@@ -199,9 +204,10 @@ Deno.serve(async (req) => {
       body: JSON.stringify({
         from: FROM,
         to: [to],
+        cc: [ADMIN_COPY],
         subject: rendered.subject,
         html: rendered.html,
-        reply_to: body.reply_to || REPLY_TO,
+        reply_to: replyRecipients(body.reply_to),
         ...(attachments ? { attachments } : {}),
       }),
     });
