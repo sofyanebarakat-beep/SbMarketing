@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1100" role="img" aria-labelledby="title desc">
+  <title id="title">ClimaNova Energie event roll-up</title>
+  <desc id="desc">A professional roll-up concept designed for events, offices and face-to-face sales.</desc>
+  <defs><filter id="shadow" x="-30%" y="-10%" width="160%" height="150%"><feDropShadow dx="0" dy="28" stdDeviation="24" flood-color="#062946" flood-opacity=".26"/></filter><linearGradient id="panel" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff"/><stop offset=".53" stop-color="#e9f7ff"/><stop offset="1" stop-color="#075dbd"/></linearGradient></defs>
+  <rect width="1600" height="1100" rx="48" fill="#dff3ff"/>
+  <circle cx="1240" cy="230" r="220" fill="#c9ebfb"/><circle cx="260" cy="890" r="280" fill="#c9ebfb"/>
+  <g filter="url(#shadow)"><rect x="500" y="55" width="600" height="910" rx="18" fill="url(#panel)"/><rect x="465" y="950" width="670" height="54" rx="18" fill="#18384f"/><rect x="610" y="1000" width="380" height="28" rx="14" fill="#587184"/>
+  <image href="/images/climanovaenergie/round-logo.jpg" x="650" y="95" width="300" height="300"/>
+  <text x="800" y="455" text-anchor="middle" fill="#0758b8" font-family="Arial,sans-serif" font-size="49" font-weight="800">VOTRE CONFORT,</text><text x="800" y="515" text-anchor="middle" fill="#0758b8" font-family="Arial,sans-serif" font-size="49" font-weight="800">NOTRE EXPERTISE</text>
+  <g font-family="Arial,sans-serif" font-size="27" font-weight="700"><rect x="590" y="570" width="420" height="58" rx="29" fill="#fff"/><text x="800" y="608" text-anchor="middle" fill="#0d4c83">CLIMATISATION</text><rect x="590" y="648" width="420" height="58" rx="29" fill="#fff"/><text x="800" y="686" text-anchor="middle" fill="#0d4c83">CHAUFFAGE</text><rect x="590" y="726" width="420" height="58" rx="29" fill="#fff"/><text x="800" y="764" text-anchor="middle" fill="#0d4c83">PLOMBERIE</text></g>
+  <text x="800" y="855" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif" font-size="34" font-weight="800">06 52 23 81 64</text><text x="800" y="905" text-anchor="middle" fill="#d9f4ff" font-family="Arial,sans-serif" font-size="23">climanova-energie.fr</text></g>
+</svg>
