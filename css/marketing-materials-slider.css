@@ -32,15 +32,15 @@
 .climanova-sponsored-ad__actions { display: flex; align-items: center; gap: 1rem; padding: .8rem 1rem .9rem; }
 .climanova-sponsored-ad__actions svg { width: 1.45rem; height: 1.45rem; fill: none; stroke: #1a1f2e; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 .climanova-sponsored-ad__actions svg:last-child { margin-left: auto; }
-.climanova-business-cards { position: relative; display: block; min-height: clamp(31rem, 59vw, 44rem); overflow: hidden; background: radial-gradient(circle at 50% 45%, #fff 0, #edf7fd 58%, #dcecf6 100%); }
-.climanova-business-cards img { position: absolute; width: min(88%, 54rem); height: auto; border: 1px solid rgba(8,43,74,.1); border-radius: 14px; box-shadow: 0 24px 55px rgba(8,43,74,.2); }
-.climanova-business-cards img:first-child { z-index: 2; top: 8%; left: 4%; transform: rotate(-2.25deg); }
-.climanova-business-cards img:last-child { right: 4%; bottom: 8%; transform: rotate(2.25deg); }
-.climanova-wall-sticker { position: relative; min-height: clamp(31rem, 59vw, 44rem); overflow: hidden; isolation: isolate; background: #1664BF; }
-.climanova-wall-sticker::before { position: absolute; z-index: -1; content: ""; inset: 7% 8%; border: 1px solid rgba(255,255,255,.42); border-radius: 18px; background: linear-gradient(135deg, rgba(255,255,255,.2), rgba(255,255,255,.06)); box-shadow: inset 0 0 80px rgba(4,16,32,.18), 0 28px 65px rgba(4,16,32,.2); }
-.climanova-wall-sticker::after { position: absolute; z-index: -1; content: ""; right: 0; bottom: 0; left: 0; height: 17%; background: linear-gradient(180deg, rgba(5,55,113,.18), rgba(4,35,74,.42)); clip-path: polygon(0 42%, 100% 0, 100% 100%, 0 100%); }
-.climanova-wall-sticker .climanova-wall-sticker__blocks { position: absolute; z-index: 0; bottom: -7%; left: -8%; width: min(58%, 34rem); height: auto; opacity: .38; mix-blend-mode: screen; }
-.climanova-wall-sticker .climanova-wall-sticker__art { position: relative; z-index: 1; width: min(70%, 38rem); height: auto; max-height: 88%; border-radius: 50%; filter: drop-shadow(0 28px 28px rgba(4,16,32,.3)); }
+.climanova-business-cards { position: relative; display: block; min-height: clamp(31rem, 59vw, 44rem); overflow: hidden; background: #fff; }
+.climanova-business-cards img { position: absolute; width: min(66%, 41rem); height: auto; border: 1px solid rgba(8,43,74,.1); border-radius: 12px; box-shadow: 0 20px 45px rgba(8,43,74,.18); }
+.climanova-business-cards img:first-child { z-index: 2; top: 7%; left: 5%; transform: rotate(-1.4deg); }
+.climanova-business-cards img:last-child { right: 5%; bottom: 7%; transform: rotate(1.4deg); }
+.climanova-wall-sticker { position: relative; min-height: clamp(31rem, 59vw, 44rem); overflow: hidden; isolation: isolate; background: #f5f6f7; }
+.climanova-wall-sticker::before { position: absolute; z-index: -1; content: ""; inset: 5% 6% 12%; border: 1px solid #e3e7ea; border-radius: 12px; background: linear-gradient(135deg, #fff, #f8f8f7 62%, #f0f1f1); box-shadow: inset 0 0 65px rgba(8,43,74,.05), 0 22px 50px rgba(8,43,74,.1); }
+.climanova-wall-sticker::after { position: absolute; z-index: -1; content: ""; right: 0; bottom: 0; left: 0; height: 18%; border-top: 1px solid #dde1e4; background: linear-gradient(180deg, #eceeef, #dfe3e5); clip-path: polygon(0 25%, 100% 0, 100% 100%, 0 100%); }
+.climanova-wall-sticker .climanova-wall-sticker__blocks { position: absolute; z-index: 0; bottom: -8%; left: -9%; width: min(52%, 30rem); height: auto; opacity: .1; mix-blend-mode: multiply; }
+.climanova-wall-sticker .climanova-wall-sticker__art { position: relative; z-index: 1; width: min(58%, 32rem); height: auto; max-height: 78%; border: 1px solid rgba(8,43,74,.08); border-radius: 50%; filter: drop-shadow(0 18px 18px rgba(8,43,74,.18)); }
 .mms-caption { display: flex; flex-direction: column; justify-content: center; gap: .8rem; padding: clamp(1.5rem, 4vw, 3rem); color: #fff; background: #061a2b; }
 .mms-count { color: #09afee; font-size: .72rem; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
 .mms-caption strong { font-size: clamp(1.35rem, 2.5vw, 2rem); line-height: 1.2; }
@@ -61,12 +61,12 @@
   .climanova-sponsored-ad { width: min(88%, 27rem); }
   .climanova-sponsored-ad .climanova-sponsored-ad__creative { height: auto; }
   .climanova-business-cards { min-height: min(105vw, 34rem); padding: 0; }
-  .climanova-business-cards img { width: 91%; height: auto; border-radius: 8px; }
-  .climanova-business-cards img:first-child { top: 8%; left: 2.5%; }
-  .climanova-business-cards img:last-child { right: 2.5%; bottom: 8%; }
+  .climanova-business-cards img { width: 84%; height: auto; border-radius: 8px; }
+  .climanova-business-cards img:first-child { top: 5%; left: 3%; }
+  .climanova-business-cards img:last-child { right: 3%; bottom: 5%; }
   .climanova-wall-sticker { min-height: min(110vw, 36rem); padding: 0; }
-  .climanova-wall-sticker .climanova-wall-sticker__blocks { width: 68%; height: auto; }
-  .climanova-wall-sticker .climanova-wall-sticker__art { width: 78%; height: auto; }
+  .climanova-wall-sticker .climanova-wall-sticker__blocks { width: 62%; height: auto; }
+  .climanova-wall-sticker .climanova-wall-sticker__art { width: 68%; height: auto; }
   .mms-caption { min-height: 12rem; }
   .mms-arrow { top: 42%; width: 2.65rem; height: 2.65rem; }
 }
