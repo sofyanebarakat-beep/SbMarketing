@@ -4,6 +4,7 @@ create table if not exists public.cm_contacts (
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   business_name text not null,
+  full_name text,
   email text,
   service text not null,
   whatsapp_country text not null default '+33',
@@ -14,6 +15,7 @@ create table if not exists public.cm_contacts (
   last_clicked_at timestamptz,
   click_count integer not null default 0
 );
+alter table public.cm_contacts add column if not exists full_name text;
 create index if not exists cm_contacts_status_idx on public.cm_contacts(status);
 create index if not exists cm_contacts_email_idx on public.cm_contacts(lower(email));
 
