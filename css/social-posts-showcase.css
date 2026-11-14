@@ -136,6 +136,26 @@
   background: #eef0f6;
 }
 
+/* ClimaNova creatives use Instagram's 4:5 portrait format (1080 × 1350). */
+.sps-showcase--climanova .sps-post__media {
+  aspect-ratio: 4 / 5;
+  object-fit: contain;
+  object-position: center;
+  background: #fff;
+}
+
+.sps-showcase--climanova .sps-brand__badge img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.sps-showcase--climanova .sps-post__avatar {
+  width: 2.5rem;
+  height: 2.5rem;
+  object-fit: contain;
+}
+
 .sps-post__actions {
   display: flex;
   align-items: center;
