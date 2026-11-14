@@ -24,6 +24,11 @@
 .climanova-business-cards img { position: absolute; width: min(88%, 54rem); height: auto; border: 1px solid rgba(8,43,74,.1); border-radius: 14px; box-shadow: 0 24px 55px rgba(8,43,74,.2); }
 .climanova-business-cards img:first-child { z-index: 2; top: 8%; left: 4%; transform: rotate(-2.25deg); }
 .climanova-business-cards img:last-child { right: 4%; bottom: 8%; transform: rotate(2.25deg); }
+.climanova-wall-sticker { position: relative; min-height: clamp(31rem, 59vw, 44rem); overflow: hidden; isolation: isolate; background: #1664BF; }
+.climanova-wall-sticker::before { position: absolute; z-index: -1; content: ""; inset: 7% 8%; border: 1px solid rgba(255,255,255,.42); border-radius: 18px; background: linear-gradient(135deg, rgba(255,255,255,.2), rgba(255,255,255,.06)); box-shadow: inset 0 0 80px rgba(4,16,32,.18), 0 28px 65px rgba(4,16,32,.2); }
+.climanova-wall-sticker::after { position: absolute; z-index: -1; content: ""; right: 0; bottom: 0; left: 0; height: 17%; background: linear-gradient(180deg, rgba(5,55,113,.18), rgba(4,35,74,.42)); clip-path: polygon(0 42%, 100% 0, 100% 100%, 0 100%); }
+.climanova-wall-sticker .climanova-wall-sticker__blocks { position: absolute; z-index: 0; bottom: -7%; left: -8%; width: min(58%, 34rem); height: auto; opacity: .38; mix-blend-mode: screen; }
+.climanova-wall-sticker .climanova-wall-sticker__art { position: relative; z-index: 1; width: min(70%, 38rem); height: auto; max-height: 88%; border-radius: 50%; filter: drop-shadow(0 28px 28px rgba(4,16,32,.3)); }
 .mms-caption { display: flex; flex-direction: column; justify-content: center; gap: .8rem; padding: clamp(1.5rem, 4vw, 3rem); color: #fff; background: #061a2b; }
 .mms-count { color: #09afee; font-size: .72rem; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
 .mms-caption strong { font-size: clamp(1.35rem, 2.5vw, 2rem); line-height: 1.2; }
@@ -44,6 +49,9 @@
   .climanova-business-cards img { width: 91%; height: auto; border-radius: 8px; }
   .climanova-business-cards img:first-child { top: 8%; left: 2.5%; }
   .climanova-business-cards img:last-child { right: 2.5%; bottom: 8%; }
+  .climanova-wall-sticker { min-height: min(110vw, 36rem); padding: 0; }
+  .climanova-wall-sticker .climanova-wall-sticker__blocks { width: 68%; height: auto; }
+  .climanova-wall-sticker .climanova-wall-sticker__art { width: 78%; height: auto; }
   .mms-caption { min-height: 12rem; }
   .mms-arrow { top: 42%; width: 2.65rem; height: 2.65rem; }
 }
