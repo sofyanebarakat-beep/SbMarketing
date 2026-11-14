@@ -20,6 +20,10 @@
 .mms-figure { display: grid; grid-template-columns: minmax(0,1.45fr) minmax(16rem,.55fr); min-height: clamp(34rem, 64vw, 48rem); margin: 0; }
 .mms-media { display: grid; place-items: center; min-width: 0; padding: clamp(1rem, 3vw, 2rem); background: #f4f7fa; }
 .mms-media img { display: block; width: 100%; height: clamp(31rem, 59vw, 44rem); object-fit: contain; object-position: center; }
+.climanova-business-cards { position: relative; display: block; min-height: clamp(31rem, 59vw, 44rem); overflow: hidden; background: radial-gradient(circle at 50% 45%, #fff 0, #edf7fd 58%, #dcecf6 100%); }
+.climanova-business-cards img { position: absolute; width: min(88%, 54rem); height: auto; border: 1px solid rgba(8,43,74,.1); border-radius: 14px; box-shadow: 0 24px 55px rgba(8,43,74,.2); }
+.climanova-business-cards img:first-child { z-index: 2; top: 8%; left: 4%; transform: rotate(-2.25deg); }
+.climanova-business-cards img:last-child { right: 4%; bottom: 8%; transform: rotate(2.25deg); }
 .mms-caption { display: flex; flex-direction: column; justify-content: center; gap: .8rem; padding: clamp(1.5rem, 4vw, 3rem); color: #fff; background: #061a2b; }
 .mms-count { color: #09afee; font-size: .72rem; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
 .mms-caption strong { font-size: clamp(1.35rem, 2.5vw, 2rem); line-height: 1.2; }
@@ -36,6 +40,10 @@
 @media (max-width: 760px) {
   .mms-figure { grid-template-columns: 1fr; min-height: 0; }
   .mms-media img { height: min(118vw, 38rem); }
+  .climanova-business-cards { min-height: min(105vw, 34rem); padding: 0; }
+  .climanova-business-cards img { width: 91%; height: auto; border-radius: 8px; }
+  .climanova-business-cards img:first-child { top: 8%; left: 2.5%; }
+  .climanova-business-cards img:last-child { right: 2.5%; bottom: 8%; }
   .mms-caption { min-height: 12rem; }
   .mms-arrow { top: 42%; width: 2.65rem; height: 2.65rem; }
 }
