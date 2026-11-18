@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="/css/client-dashboard.css">
   <link rel="stylesheet" href="/css/content-calendar.css">
+  <link rel="stylesheet" href="/css/client-uploads.css?v=1">
 </head>
 <body>
   <aside class="cd-sidebar" data-sidebar hidden>
@@ -24,6 +25,7 @@
           <a href="#analytics" class="is-active"><span data-i18n="navAnalytics">Website analytics</span></a>
           <a href="#email-marketing"><span data-i18n="navEmail">Email marketing</span></a>
           <a href="#calendar"><span data-i18n="navCalendar">Content calendar</span></a>
+          <a href="#uploads"><span data-i18n="navUploads">Uploads</span></a>
         </div>
       </details>
     </nav>
@@ -77,6 +79,22 @@
           </div>
           <div class="portal-card cd-cal-undated" data-cal-undated hidden></div>
         </section>
+        <section class="cd-view" data-page="uploads" hidden>
+          <div class="cd-head"><div><h1 data-i18n="uploads">Upload your pictures</h1><p><span data-client-name></span> · <span data-i18n="uploadsCopy">Send fresh pictures to SB Marketing for your website and social media.</span></p></div><div class="upload-summary"><strong data-upload-count>0</strong><span data-i18n="picturesSaved">pictures saved</span><small data-upload-size>0 MB</small></div></div>
+          <section class="portal-card upload-panel">
+            <div class="upload-intro"><span class="upload-intro__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 16V4m0 0L7 9m5-5 5 5M5 14v5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-5"/></svg></span><div><h2 data-i18n="addPictures">Add your latest pictures</h2><p data-i18n="addPicturesCopy">Choose several pictures at once. They are saved automatically with their upload date.</p></div></div>
+            <label class="upload-drop" data-upload-drop>
+              <input type="file" accept="image/*" multiple data-upload-input>
+              <span class="upload-drop__art" aria-hidden="true"><i></i><i></i><i></i></span>
+              <strong data-i18n="dropPictures">Drop pictures here</strong>
+              <span data-i18n="orBrowse">or click to choose from your device</span>
+              <small data-i18n="uploadLimit">JPG, PNG, WEBP, HEIC and other image formats · up to 100 MB each</small>
+            </label>
+            <div class="upload-queue" data-upload-queue hidden></div>
+            <p class="cd-feedback-msg" data-upload-message role="status"></p>
+          </section>
+          <section class="upload-library"><div class="upload-library__head"><div><h2 data-i18n="yourPictures">Your pictures</h2><p data-i18n="yourPicturesCopy">Every picture is dated and available to the SB Marketing team.</p></div></div><div class="upload-grid" data-upload-grid></div></section>
+        </section>
       </div>
     </main>
   <footer class="cd-footer">Private dashboard prepared by <strong>SB Marketing</strong> · <a href="mailto:contact@sbmarketing.fr">contact@sbmarketing.fr</a></footer>
@@ -93,6 +111,7 @@
   <script src="/js/supabase-config.js"></script>
   <script src="/js/content-calendar-view.js"></script>
   <script src="/js/client-dashboard.js"></script>
+  <script src="/js/client-uploads.js?v=1"></script>
   <script src="/js/dashboard-shell.js"></script>
 </body>
 </html>

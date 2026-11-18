@@ -256,11 +256,11 @@
   });
 
   // ── Pages (hash routing: #analytics, #calendar) ──
-  var PAGES=['analytics','email-marketing','calendar'];
+  var PAGES=['analytics','email-marketing','calendar','uploads'];
   function showPage(){var name=(location.hash||'').replace('#','');if(PAGES.indexOf(name)<0)name='analytics';
     document.querySelectorAll('[data-page]').forEach(function(page){page.hidden=page.dataset.page!==name;});
     document.querySelectorAll('.cd-nav a[href^="#"]').forEach(function(link){link.classList.toggle('is-active',link.getAttribute('href')==='#'+name);});
-    var t=state.t;text('[data-page-title]',name==='calendar'?t.calendar:name==='email-marketing'?t.emailMarketing:t.analytics);window.scrollTo(0,0);if(name==='calendar')maybeShowGuide();}
+    var t=state.t;text('[data-page-title]',name==='calendar'?t.calendar:name==='email-marketing'?t.emailMarketing:name==='uploads'?(state.lang==='fr'?'Photos':'Uploads'):t.analytics);window.scrollTo(0,0);if(name==='calendar')maybeShowGuide();}
   window.addEventListener('hashchange',showPage);
 
   document.addEventListener('change',function(e){var sel=e.target.closest&&e.target.closest('[data-digest]');if(!sel)return;rpc('set_calendar_digest',{mode:sel.value}).then(function(){toast(state.t.digestSaved);}).catch(function(err){console.warn('Digest not saved',err);toast(state.t.saveError,true);});});
