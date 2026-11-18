@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="/css/admin-devis.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap">
-  <link rel="stylesheet" href="/css/client-uploads.css?v=1">
+  <link rel="stylesheet" href="/css/client-uploads.css?v=2">
   <link rel="stylesheet" href="/css/admin-theme.css">
   <link rel="stylesheet" href="/css/admin-cold-marketing.css?v=4">
   <link rel="stylesheet" href="/css/content-calendar.css">
@@ -336,7 +336,7 @@
           <div class="admin-upload-head"><div><span class="admin-kicker">Client portal</span><h2>Client uploads</h2><p>Fresh pictures uploaded by your clients, saved automatically with their date.</p></div><div class="admin-upload-stat"><strong data-admin-upload-count>0</strong><span>pictures</span><small data-admin-upload-size>0 MB</small></div></div>
           <section class="admin-upload-reminder">
             <div class="admin-upload-reminder__intro"><span>✉</span><div><h3>Envoyer un rappel en français</h3><p>Le message est entièrement modifiable. Le bouton ouvre directement la page Photos du tableau de bord privé du client.</p></div></div>
-            <form data-upload-reminder-form>
+            <div class="admin-upload-reminder__layout"><form data-upload-reminder-form>
               <div class="admin-upload-reminder__fields"><label>Client<select name="client_id" required><option value="">Choisir un client…</option></select></label><label>Objet<input name="subject" required value="Nous avons besoin de nouvelles photos"></label></div>
               <label>Message<textarea name="body" rows="7" required>Bonjour {{prenom}},
 
@@ -348,6 +348,15 @@ Merci de partager vos produits, services, réalisations, équipe, locaux ou actu
               <div class="admin-upload-reminder__fields"><label>Texte du bouton<input name="cta_label" required value="Ajouter mes photos"></label><label>Lien personnel<input name="cta_url" readonly placeholder="Choisissez un client"></label></div>
               <div class="form-actions"><button type="submit">Envoyer le rappel</button><button type="button" class="secondary" data-upload-reminder-reset>Réinitialiser le texte</button></div><p class="form-message" data-upload-reminder-message role="status"></p>
             </form>
+            <aside class="upload-email-preview" aria-label="Aperçu de l’email">
+              <div class="upload-email-preview__bar"><strong>Aperçu de l’email</strong><span data-upload-preview-recipient>Sélectionnez un client</span></div>
+              <div class="upload-email-preview__mail">
+                <header><img src="/images/sb-marketing-email-logo.png" alt="SB Marketing"><span>Communication digitale</span></header>
+                <div class="upload-email-preview__content"><span class="upload-email-preview__eyebrow">SB MARKETING · PHOTOS</span><h3 data-upload-preview-subject>Nous avons besoin de nouvelles photos</h3><div data-upload-preview-body></div><a href="#" data-upload-preview-cta>Ajouter mes photos</a></div>
+                <footer>SB Marketing · Agence marketing digital à Nice</footer>
+              </div>
+              <small>Le bouton de l’email ouvrira directement la rubrique Photos du tableau de bord privé.</small>
+            </aside></div>
           </section>
           <div class="admin-upload-toolbar"><div><strong>Photos reçues</strong><span data-upload-gallery-label>Tous les clients</span></div><button type="button" class="secondary" data-admin-upload-refresh>Actualiser</button></div>
           <p class="form-message" data-admin-upload-message role="status"></p><div class="admin-upload-grid" data-admin-upload-grid></div>
@@ -970,7 +979,7 @@ Merci de partager vos produits, services, réalisations, équipe, locaux ou actu
   <script src="/js/admin.js?v=cold-marketing-1"></script>
   <script src="/js/admin-operations.js"></script>
   <script src="/js/devis-core.js"></script>
-  <script src="/js/client-uploads-admin.js?v=1"></script>
+  <script src="/js/client-uploads-admin.js?v=2"></script>
   <script src="/js/admin-devis.js"></script>
   <script src="/js/content-calendar-view.js"></script>
   <script src="/js/admin-calendar.js"></script>
