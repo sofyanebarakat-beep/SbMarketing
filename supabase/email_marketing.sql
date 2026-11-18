@@ -145,8 +145,21 @@ create table if not exists public.em_sends (
   variant text,
   status text not null default 'sent' check (status in ('sent','failed')),
   error text,
-  provider_id text
+  provider_id text,
+  clicks integer not null default 0,
+  clicked_at timestamptz
 );
+alter table public.em_sends add column if not exists clicks integer not null default 0;
+alter table public.em_sends add column if not exists clicked_at timestamptz;
+
+-- One row per tracked link click (links in sent emails go through /r/).
+create table if not exists public.em_clicks (
+  id uuid primary key default gen_random_uuid(),
+  clicked_at timestamptz not null default now(),
+  send_id uuid not null references public.em_sends(id) on delete cascade,
+  url text not null
+);
+create index if not exists em_clicks_send_idx on public.em_clicks (send_id);
 create index if not exists em_sends_campaign_idx on public.em_sends (campaign_id);
 create index if not exists em_sends_automation_idx on public.em_sends (automation_id);
 create index if not exists em_sends_subscriber_idx on public.em_sends (subscriber_id);
@@ -154,7 +167,7 @@ create unique index if not exists em_sends_campaign_subscriber_key on public.em_
 
 -- ── Row level security: admin only ───────────────────────────────
 do $$ declare t text; begin
-  foreach t in array array['em_subscribers','em_groups','em_subscriber_groups','em_templates','em_campaigns','em_automations','em_automation_runs','em_forms','em_sends'] loop
+  foreach t in array array['em_subscribers','em_groups','em_subscriber_groups','em_templates','em_campaigns','em_automations','em_automation_runs','em_forms','em_sends','em_clicks'] loop
     execute format('alter table public.%I enable row level security', t);
     execute format('grant select, insert, update, delete on table public.%I to authenticated', t);
     execute format('drop policy if exists "Admin manages %s" on public.%I', t, t);
@@ -285,6 +298,24 @@ as $$
   update public.em_automation_runs set status = 'cancelled' where subscriber_id = target_id and status = 'active';
 $$;
 grant execute on function public.em_unsubscribe(uuid) to anon, authenticated;
+
+-- Public click tracking for /r/: records the click and returns true only
+-- when the send exists, so /r/ never works as an open redirect.
+create or replace function public.em_track_click(target_send uuid, target_url text)
+returns boolean
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  if target_url !~ '^https?://' or length(target_url) > 2000 then return false; end if;
+  update public.em_sends set clicks = clicks + 1, clicked_at = coalesce(clicked_at, now()) where id = target_send;
+  if not found then return false; end if;
+  insert into public.em_clicks (send_id, url) values (target_send, target_url);
+  return true;
+end;
+$$;
+grant execute on function public.em_track_click(uuid, text) to anon, authenticated;
 
 -- ── Starter groups ────────────────────────────────────────────────
 insert into public.em_groups (name, description, color)

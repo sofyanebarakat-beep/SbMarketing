@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Redirection | SB Marketing</title>
+<style>body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;color:#6b7280;background:#f5f6f8}</style>
+</head>
+<body>
+<p id="m">Redirection…</p>
+<script src="/js/supabase-config.js"></script>
+<script>
+(function(){
+  'use strict';
+  // Email link click tracking: logs the click for the send, then forwards.
+  // Only redirects when the send exists (checked server-side), so this page
+  // can't be used to bounce people to arbitrary sites.
+  var p=new URLSearchParams(location.search),id=p.get('i'),url=p.get('u'),c=window.SB_SUPABASE;
+  function home(){location.replace('https://www.sbmarketing.fr/');}
+  if(!id||!url||!/^https?:\/\//i.test(url)||!c){home();return;}
+  var done=false,timer=setTimeout(home,4000);
+  fetch(c.url+'/rest/v1/rpc/em_track_click',{method:'POST',headers:{apikey:c.key,Authorization:'Bearer '+c.key,'Content-Type':'application/json'},body:JSON.stringify({target_send:id,target_url:url})})
+    .then(function(r){return r.ok?r.json():false;})
+    .then(function(ok){if(done)return;done=true;clearTimeout(timer);if(ok===true)location.replace(url);else home();})
+    .catch(function(){if(!done){done=true;clearTimeout(timer);home();}});
+})();
+</script>
+</body>
+</html>

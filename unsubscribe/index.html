@@ -38,6 +38,21 @@
 
     var params = new URLSearchParams(location.search);
     var clientId = params.get('client');
+    var subscriberId = params.get('s');
+    // Newsletter / campaign emails (admin → Marketing) carry ?s=<subscriber id>.
+    if (subscriberId && config) {
+      fetch(config.url + '/rest/v1/rpc/em_unsubscribe', {
+        method: 'POST',
+        headers: { apikey: config.key, Authorization: 'Bearer ' + config.key, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ target_id: subscriberId })
+      }).then(function (res) {
+        if (!res.ok) throw new Error('Request failed');
+        show('✅', 'Désinscription confirmée', 'Vous ne recevrez plus nos emails marketing. You have been unsubscribed.');
+      }).catch(function () {
+        show('⚠️', 'Something went wrong', 'We could not process this automatically. Please reply to any of our emails and we will unsubscribe you by hand.');
+      });
+      return;
+    }
     if (!clientId || !config) { show('⚠️', 'Invalid link', 'This unsubscribe link is missing some information. Please contact us directly if you want to stop receiving marketing tips.'); return; }
 
     fetch(config.url + '/rest/v1/rpc/unsubscribe_client', {

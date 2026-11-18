@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Inscription | SB Marketing</title>
+<link rel="icon" href="/images/sb-favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;padding:24px 16px;background:#f5f6f8;font-family:Inter,system-ui,sans-serif}
+  .brand img{height:30px;display:block}
+  .wrap{width:100%;display:flex;justify-content:center}
+  .wrap .sbmf{width:100%}
+  footer{font-size:12px;color:#989aad}
+  footer a{color:#989aad}
+</style>
+</head>
+<body>
+  <a class="brand" href="https://www.sbmarketing.fr"><img src="/images/logo-climanova.svg" alt="SB Marketing"></a>
+  <div class="wrap" id="form"></div>
+  <footer><a href="/politique-de-confidentialite/">Politique de confidentialité</a> · Désinscription en un clic dans chaque email</footer>
+  <script>
+    (function(){var id=new URLSearchParams(location.search).get('f'),el=document.getElementById('form');
+      if(!id){el.innerHTML='<p style="color:#6f7182">Lien d’inscription incomplet.</p>';return;}
+      el.setAttribute('data-sbm-form',id);})();
+  </script>
+  <script src="/js/sbm-form.js"></script>
+</body>
+</html>

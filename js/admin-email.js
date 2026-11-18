@@ -333,7 +333,7 @@
       msg.textContent='Syncing…';
       try{var total=0;
         var groupFor=function(name){var g=state.groups.find(function(x){return x.name.toLowerCase()===name.toLowerCase();});return g?g.id:null;};
-        if(what.indexOf('clients')>-1){var clients=await api('/rest/v1/clients?select=id,email,contact_name,business_name,language,unsubscribed_at,whatsapp_number');var p=clients.filter(function(c){return validEmail(c.email);}).map(function(c){return{email:c.email.toLowerCase(),name:c.contact_name||null,company:c.business_name||null,language:c.language==='en'?'en':'fr',client_id:c.id,phone:c.whatsapp_number||null,status:c.unsubscribed_at?'unsubscribed':'active'};});var r1=await upsertPeople(p,'client',false);total+=r1.created;var g1=groupFor('Clients');if(g1)await addManyToGroup(r1.ids,g1);}
+        if(what.indexOf('clients')>-1){var clients=await api('/rest/v1/clients?select=*');var p=clients.filter(function(c){return validEmail(c.email);}).map(function(c){return{email:c.email.toLowerCase(),name:c.contact_name||null,company:c.business_name||null,language:c.language==='en'?'en':'fr',client_id:c.id,phone:c.whatsapp_number||null,status:c.unsubscribed_at?'unsubscribed':'active'};});clients.forEach(function(c){if(validEmail(c.email_secondary)&&c.email_secondary.toLowerCase()!==String(c.email||'').toLowerCase())p.push({email:c.email_secondary.toLowerCase(),name:null,company:c.business_name||null,language:c.language==='en'?'en':'fr',client_id:c.id,status:c.unsubscribed_at?'unsubscribed':'active'});});var r1=await upsertPeople(p,'client',false);total+=r1.created;var g1=groupFor('Clients');if(g1)await addManyToGroup(r1.ids,g1);}
         var prospects=[];
         if(what.indexOf('leads')>-1){var leads=await api('/rest/v1/butcher_leads?select=*').catch(function(){return[];});leads.forEach(function(l){if(validEmail(l.email))prospects.push({email:l.email.toLowerCase(),name:l.name||l.full_name||l.contact_name||null,company:l.shop_name||l.business_name||null,city:l.city||null,phone:l.phone||null,language:l.language==='en'?'en':'fr',_src:'lead'});});}
         if(what.indexOf('contacts')>-1){var contacts=await api('/rest/v1/contact_submissions?select=*').catch(function(){return[];});contacts.forEach(function(l){if(validEmail(l.email))prospects.push({email:l.email.toLowerCase(),name:l.name||l.full_name||null,company:l.company||null,phone:l.phone||null,language:l.language==='en'?'en':'fr',_src:'contact'});});}
@@ -724,6 +724,6 @@
     if(!state.loaded)el.innerHTML='<div class="ops-loading">Loading email marketing…</div>';
     try{await load();render(tab);}catch(error){el.innerHTML='<div class="empty"><h2>Could not load email marketing</h2><p>'+esc(error.message)+'</p></div>';}
   }
-  window.SBEmail={show:show,tabs:TABS,reload:function(){state.loaded=false;return show(ui.current||'email');}};
+  window.SBEmail={show:show,tabs:TABS,search:function(term){ui.subSearch=String(term||'');ui.subStatus='';ui.subGroup='';},reload:function(){state.loaded=false;return show(ui.current||'email');}};
   setInterval(tick,60000);setTimeout(tick,8000);
 })();

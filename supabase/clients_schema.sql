@@ -37,6 +37,7 @@ alter table public.clients
   add column if not exists activity text,
   add column if not exists marketing_consent boolean not null default true,
   add column if not exists unsubscribed_at timestamptz,
+  add column if not exists email_secondary text,
   add column if not exists tracked_metrics jsonb not null default
     '["website_visits","google_impressions","google_clicks","google_avg_position"]'::jsonb;
 

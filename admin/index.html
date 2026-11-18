@@ -10,9 +10,11 @@
   <link rel="stylesheet" href="/css/admin-devis.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="/css/client-uploads.css?v=1">
   <link rel="stylesheet" href="/css/admin-theme.css">
   <link rel="stylesheet" href="/css/admin-cold-marketing.css?v=4">
   <link rel="stylesheet" href="/css/content-calendar.css">
+  <link rel="stylesheet" href="/css/admin-email.css?v=1">
 </head>
 <body>
   <main class="admin-page">
@@ -54,10 +56,10 @@
           <button type="button" class="sidebar-close" data-sidebar-toggle aria-label="Close menu">&times;</button>
         </div>
         <nav class="sidebar-nav" aria-label="Admin sections">
-          <details class="sidebar-group" open><summary><svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h7v9H3zM14 3h7v5h-7zM14 12h7v9h-7zM3 16h7v5H3z"/></svg><span>Dashboard</span><svg class="sidebar-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></summary><div class="sidebar-sub"><a href="#overview" class="sidebar-link" data-tab="overview">Overview</a><a href="#reports" class="sidebar-link" data-tab="reports">Reports</a><a href="#tasks" class="sidebar-link" data-tab="tasks">Tasks</a></div></details>
+          <details class="sidebar-group" open><summary><svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h7v9H3zM14 3h7v5h-7zM14 12h7v9h-7zM3 16h7v5H3z"/></svg><span>Dashboard</span><svg class="sidebar-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></summary><div class="sidebar-sub"><a href="#overview" class="sidebar-link" data-tab="overview">Overview</a></div></details>
           <details class="sidebar-group"><summary><svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>CRM</span><svg class="sidebar-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></summary><div class="sidebar-sub"><a href="#leads" class="sidebar-link" data-tab="leads">Leads</a><a href="#contacts" class="sidebar-link" data-tab="contacts">Contact requests</a><a href="#clients" class="sidebar-link" data-tab="clients">Clients</a></div></details>
           <details class="sidebar-group"><summary><svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Client portal</span><svg class="sidebar-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></summary><div class="sidebar-sub"><a href="#calendar" class="sidebar-link" data-tab="calendar">Content calendar</a><a href="#site-stats" class="sidebar-link" data-tab="site-stats">Statistiques du site</a><a href="#email-stats" class="sidebar-link" data-tab="email-stats">Email marketing</a><a href="#dashboards" class="sidebar-link" data-tab="dashboards">Client dashboards</a><a href="#assets" class="sidebar-link" data-tab="assets">Assets</a></div></details>
-          <details class="sidebar-group"><summary><svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11v2a1 1 0 0 0 1 1h2l5 4V6L6 10H4a1 1 0 0 1-1-1zM15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg><span>Marketing</span><svg class="sidebar-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></summary><div class="sidebar-sub"><a href="#campaigns" class="sidebar-link" data-tab="campaigns">Campaigns</a><a href="#marketing" class="sidebar-link" data-tab="marketing">Email marketing</a><a href="#cold-marketing" class="sidebar-link" data-tab="cold-marketing">Cold marketing</a></div></details>
+          <details class="sidebar-group"><summary><svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11v2a1 1 0 0 0 1 1h2l5 4V6L6 10H4a1 1 0 0 1-1-1zM15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg><span>Marketing</span><svg class="sidebar-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></summary><div class="sidebar-sub"><a href="#email" class="sidebar-link" data-tab="email">Email dashboard</a><a href="#email-subscribers" class="sidebar-link" data-tab="email-subscribers">Subscribers</a><a href="#email-groups" class="sidebar-link" data-tab="email-groups">Groups</a><a href="#email-campaigns" class="sidebar-link" data-tab="email-campaigns">Campaigns</a><a href="#email-automations" class="sidebar-link" data-tab="email-automations">Automations</a><a href="#email-templates" class="sidebar-link" data-tab="email-templates">Templates</a><a href="#email-forms" class="sidebar-link" data-tab="email-forms">Sign-up forms</a><a href="#cold-marketing" class="sidebar-link" data-tab="cold-marketing">Cold marketing</a></div></details>
           <details class="sidebar-group"><summary><svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg><span>Sales</span><svg class="sidebar-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></summary><div class="sidebar-sub"><a href="#devis" class="sidebar-link" data-tab="devis">Quotes &amp; invoices</a></div></details>
           <details class="sidebar-group sidebar-group--secondary"><summary><svg class="sidebar-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Settings</span><svg class="sidebar-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></summary><div class="sidebar-sub"><a href="#settings" class="sidebar-link" data-tab="settings">Settings</a></div></details>
         </nav>
@@ -118,6 +120,7 @@
             <div class="field-grid">
               <label>Full name<input name="contact_name" required placeholder="Karim Haddad"></label>
               <label>Email<input name="email" type="email" required placeholder="client@example.com"></label>
+              <label>Second email <small>(optional)</small><input name="email_secondary" type="email" placeholder="associate@example.com"></label>
               <label class="phone-field">WhatsApp number <small>(optional)</small>
                 <span class="phone-row"><select class="country-select" name="whatsapp_country" aria-label="Country code"></select><input name="whatsapp_local" inputmode="tel" placeholder="6 12 34 56 78"></span>
               </label>
@@ -127,8 +130,6 @@
             </div>
             <label>Notes <small>(optional)</small><input name="notes" placeholder="Campaign, package, anything useful"></label>
             <label class="checkbox-field"><input type="checkbox" name="marketing_consent" checked> Can receive marketing tips (not just reports)</label>
-            <p class="field-hint">Which metrics does this client track?</p>
-            <div class="tracked-metrics" data-tracked-metrics="add"></div>
             <div class="form-actions"><button type="submit" data-add-client-submit>Save client</button><button type="button" class="secondary" data-add-client-cancel>Cancel</button></div>
             <p class="form-message" data-add-client-message aria-live="polite"></p>
           </form>
@@ -298,6 +299,13 @@
           </form>
         </div>
 
+        <div data-view="email" class="em-view" hidden><div data-em-root="email"></div></div>
+        <div data-view="email-subscribers" class="em-view" hidden><div data-em-root="email-subscribers"></div></div>
+        <div data-view="email-groups" class="em-view" hidden><div data-em-root="email-groups"></div></div>
+        <div data-view="email-campaigns" class="em-view" hidden><div data-em-root="email-campaigns"></div></div>
+        <div data-view="email-automations" class="em-view" hidden><div data-em-root="email-automations"></div></div>
+        <div data-view="email-templates" class="em-view" hidden><div data-em-root="email-templates"></div></div>
+        <div data-view="email-forms" class="em-view" hidden><div data-em-root="email-forms"></div></div>
         <div data-view="tasks" class="ops-view" hidden><div data-ops-tasks></div></div>
         <div data-view="content" class="ops-view" hidden><div data-ops-content></div></div>
         <div data-view="calendar" class="cc-page" hidden>
@@ -601,6 +609,7 @@
         <div class="field-grid">
           <label>Full name<input name="contact_name" required></label>
           <label>Email<input name="email" type="email" required></label>
+          <label>Second email <small>(optional)</small><input name="email_secondary" type="email"></label>
           <label class="phone-field">WhatsApp number <small>(optional)</small>
             <span class="phone-row"><select class="country-select" name="whatsapp_country" aria-label="Country code"></select><input name="whatsapp_local" inputmode="tel" placeholder="6 12 34 56 78"></span>
           </label>
@@ -618,8 +627,6 @@
         <label>Notes<input name="notes"></label>
         <label class="checkbox-field"><input type="checkbox" name="marketing_consent"> Can receive marketing tips (not just reports)</label>
         <p class="muted-note" data-client-unsubscribed hidden>⚠️ This client unsubscribed from marketing tips. They'll still receive monthly reports.</p>
-        <p class="field-hint">Which metrics does this client track?</p>
-        <div class="tracked-metrics" data-tracked-metrics="edit"></div>
         <div class="form-actions">
           <button type="submit">Save changes</button>
           <a class="secondary whatsapp-link" data-client-whatsapp href="#" target="_blank" rel="noopener" hidden>💬 WhatsApp</a>
@@ -946,6 +953,7 @@
   <script src="/js/admin-devis.js"></script>
   <script src="/js/content-calendar-view.js"></script>
   <script src="/js/admin-calendar.js"></script>
+  <script src="/js/admin-email.js?v=1"></script>
   <script src="/js/dashboard-shell.js"></script>
 </body>
 </html>
