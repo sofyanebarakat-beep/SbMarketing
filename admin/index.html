@@ -335,6 +335,21 @@
         <div data-view="assets" class="ops-view" hidden><div data-ops-assets></div></div>
         <div data-upload-admin-view hidden>
           <div class="admin-upload-head"><div><span class="admin-kicker">Client portal</span><h2>Client uploads</h2><p>Fresh pictures uploaded by your clients, saved automatically with their date.</p></div><div class="admin-upload-stat"><strong data-admin-upload-count>0</strong><span>pictures</span><small data-admin-upload-size>0 MB</small></div></div>
+          <section class="admin-upload-reminder">
+            <div class="admin-upload-reminder__intro"><span>✉</span><div><h3>Envoyer un rappel en français</h3><p>Le message est entièrement modifiable. Le bouton ouvre directement la page Photos du tableau de bord privé du client.</p></div></div>
+            <form data-upload-reminder-form>
+              <div class="admin-upload-reminder__fields"><label>Client<select name="client_id" required><option value="">Choisir un client…</option></select></label><label>Objet<input name="subject" required value="Nous avons besoin de nouvelles photos"></label></div>
+              <label>Message<textarea name="body" rows="7" required>Bonjour {{prenom}},
+
+Afin de garder votre site internet et vos réseaux sociaux à jour, nous avons besoin de nouvelles photos de votre activité.
+
+Vous pouvez ajouter plusieurs photos en une seule fois depuis votre tableau de bord privé. Elles seront enregistrées automatiquement et transmises directement à l’équipe SB Marketing.
+
+Merci de partager vos produits, services, réalisations, équipe, locaux ou actualités récentes.</textarea></label>
+              <div class="admin-upload-reminder__fields"><label>Texte du bouton<input name="cta_label" required value="Ajouter mes photos"></label><label>Lien personnel<input name="cta_url" readonly placeholder="Choisissez un client"></label></div>
+              <div class="form-actions"><button type="submit">Envoyer le rappel</button><button type="button" class="secondary" data-upload-reminder-reset>Réinitialiser le texte</button></div><p class="form-message" data-upload-reminder-message role="status"></p>
+            </form>
+          </section>
           <div class="admin-upload-toolbar"><label>Client<select data-admin-upload-client><option value="">All clients</option></select></label><button type="button" class="secondary" data-admin-upload-refresh>Refresh</button></div>
           <p class="form-message" data-admin-upload-message role="status"></p><div class="admin-upload-grid" data-admin-upload-grid></div>
         </div>
