@@ -8,7 +8,7 @@
   var sendDialog=document.querySelector('[data-send-dialog]'),sendForm=document.querySelector('[data-send-form]'),sendClientLabel=document.querySelector('[data-send-client]'),sendMessage=document.querySelector('[data-send-message]'),sendCancel=document.querySelector('[data-send-cancel]'),sendTypeSelect=document.querySelector('[data-send-type]'),sendPreviewBtn=document.querySelector('[data-send-preview]'),previewPane=document.querySelector('[data-preview-pane]'),previewFrame=document.querySelector('[data-preview-frame]'),previewClose=document.querySelector('[data-preview-close]');
   var sendSubjectPreview=document.querySelector('[data-send-subject-preview]'),sendTestEmail=document.querySelector('[data-send-test-email]'),sendTestButton=document.querySelector('[data-send-test]');
   var sendRecipient=document.querySelector('[data-send-recipient]'),sendRecipientField=document.querySelector('[data-send-recipient-field]'),sendRecipientEmail=document.querySelector('[data-send-recipient-email]'),genericImageSection=document.querySelector('[data-generic-image-section]'),genericImageDrop=document.querySelector('[data-generic-image-drop]');
-  var clientDialog=document.querySelector('[data-client-dialog]'),clientDialogName=document.querySelector('[data-client-dialog-name]'),clientDialogStatus=document.querySelector('[data-client-dialog-status]'),clientDialogClose=document.querySelector('[data-client-dialog-close]'),clientEditForm=document.querySelector('[data-client-edit-form]'),clientEditMessage=document.querySelector('[data-client-edit-message]'),clientDeleteBtn=document.querySelector('[data-client-delete]'),clientDialogSendEmail=document.querySelector('[data-client-send-email]'),clientDialogViewEmails=document.querySelector('[data-client-view-emails]'),clientWhatsappLink=document.querySelector('[data-client-whatsapp]'),clientUnsubscribedNote=document.querySelector('[data-client-unsubscribed]');
+  var clientDialog=document.querySelector('[data-client-dialog]'),clientDialogName=document.querySelector('[data-client-dialog-name]'),clientDialogStatus=document.querySelector('[data-client-dialog-status]'),clientDialogClose=document.querySelector('[data-client-dialog-close]'),clientEditForm=document.querySelector('[data-client-edit-form]'),clientEditMessage=document.querySelector('[data-client-edit-message]'),clientDeleteBtn=document.querySelector('[data-client-delete]'),clientDialogRequestUploads=document.querySelector('[data-client-request-uploads]'),clientDialogSendEmail=document.querySelector('[data-client-send-email]'),clientDialogViewEmails=document.querySelector('[data-client-view-emails]'),clientWhatsappLink=document.querySelector('[data-client-whatsapp]'),clientUnsubscribedNote=document.querySelector('[data-client-unsubscribed]');
   var settingsForm=document.querySelector('[data-settings-form]'),settingsMessage=document.querySelector('[data-settings-message]');
   var bulkToggle=document.querySelector('[data-bulk-tip-toggle]'),bulkDialog=document.querySelector('[data-bulk-dialog]'),bulkForm=document.querySelector('[data-bulk-form]'),bulkList=document.querySelector('[data-bulk-client-list]'),bulkActivityFilter=document.querySelector('[data-bulk-activity-filter]'),bulkMessage=document.querySelector('[data-bulk-message]'),bulkCancel=document.querySelector('[data-bulk-cancel]');
   var templateSelect=document.querySelector('[data-template-select]'),templateSaveBtn=document.querySelector('[data-template-save]');
@@ -280,7 +280,7 @@
         +'<td><select class="status-select" data-client-status="'+escapeHtml(c.id)+'"><option value="active">Active</option><option value="paused">Paused</option></select></td>'
         +'<td>'+escapeHtml(lastSent)+'</td>'
         +'<td>'+dueBadgeHtml(c)+'</td>'
-        +'<td class="client-row-actions"><button type="button" class="secondary" data-send-email="'+escapeHtml(c.id)+'">Send email</button><button type="button" class="secondary" data-portal-open-real="'+escapeHtml(c.id)+'">Dashboard ↗</button></td>'
+        +'<td class="client-row-actions"><button type="button" class="secondary" data-request-uploads="'+escapeHtml(c.id)+'">Request photos</button><button type="button" class="secondary" data-send-email="'+escapeHtml(c.id)+'">Send email</button><button type="button" class="secondary" data-portal-open-real="'+escapeHtml(c.id)+'">Dashboard ↗</button></td>'
         +'</tr>';
     }).join('');
     filtered.forEach(function(c,index){clientsBody.querySelectorAll('[data-client-status]')[index].value=c.status||'active';});
@@ -773,6 +773,12 @@
     if(marketingClientSelect)marketingClientSelect.value=clientId;
     openSendDialog(clientId);
   }
+  function goToUploadRequestFor(clientId){
+    if(clientDialog.open)clientDialog.close();
+    if(location.hash==='#uploads'&&window.SBClientUploads){window.SBClientUploads.show(clientId);return;}
+    try{sessionStorage.setItem('sb_upload_reminder_client',clientId);}catch(error){}
+    location.hash='#uploads';
+  }
   function captureTemplatePayload(){
     var data=new FormData(sendForm),payload={type:sendTypeSelect.value};
     TEMPLATE_FIELD_NAMES.forEach(function(key){var v=data.get(key);if(v)payload[key]=String(v);});
@@ -1006,6 +1012,7 @@
 
   clientsBody.addEventListener('change',function(event){var select=event.target.closest('[data-client-status]');if(select)updateClientStatus(select.dataset.clientStatus,select.value,select);});
   clientsBody.addEventListener('click',function(event){var openReal=event.target.closest('[data-portal-open-real]');if(openReal){openClientDashboard(clients.find(function(item){return item.id===openReal.dataset.portalOpenReal;}),openReal);return;}
+    var uploadBtn=event.target.closest('[data-request-uploads]');if(uploadBtn){goToUploadRequestFor(uploadBtn.dataset.requestUploads);return;}
     var sendBtn=event.target.closest('[data-send-email]');if(sendBtn){goToComposeFor(sendBtn.dataset.sendEmail);return;}
     var detailBtn=event.target.closest('[data-client-detail]');if(detailBtn)openClientDialog(detailBtn.dataset.clientDetail);
   });
@@ -1143,6 +1150,7 @@
   clientEditForm.addEventListener('submit',saveClientEdits);
   clientDialogClose.addEventListener('click',function(){clientDialog.close();});
   clientDeleteBtn.addEventListener('click',deleteClient);
+  clientDialogRequestUploads.addEventListener('click',function(){if(!dialogTarget)return;goToUploadRequestFor(dialogTarget.id);});
   clientDialogSendEmail.addEventListener('click',function(){if(!dialogTarget)return;goToComposeFor(dialogTarget.id);});
   clientDialogViewEmails.addEventListener('click',function(){
     if(!dialogTarget)return;
