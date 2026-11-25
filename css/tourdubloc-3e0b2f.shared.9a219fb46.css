@@ -4557,6 +4557,19 @@ figcaption {
   transform: translateY(-1px);
 }
 
+.sb-footer-legal {
+  margin: 1.25rem 0 0;
+  font-size: .75rem;
+  line-height: 1.6;
+  opacity: .7;
+}
+
+@media screen and (max-width: 767px) {
+  .sb-footer-legal {
+    text-align: center;
+  }
+}
+
 .sb-footer-contact__icon svg {
   width: 1rem;
   height: 1rem;

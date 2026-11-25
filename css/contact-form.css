@@ -73,3 +73,12 @@ textarea.cf-input{resize:none;min-height:130px}
 .cf-consent{display:flex;align-items:flex-start;gap:10px;font-size:13px;line-height:1.5;color:rgba(4,16,32,.6);cursor:pointer}
 .cf-consent input{width:18px;height:18px;margin:1px 0 0;flex-shrink:0;accent-color:#FABB32;cursor:pointer}
 .cf-consent a{color:#041020}
+
+/* Offices + company details under the founder card */
+.cf-offices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:24px}
+.cf-office{display:flex;align-items:flex-start;gap:10px;padding:14px 16px;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:rgba(255,255,255,.04)}
+.cf-office svg{width:20px;height:20px;flex-shrink:0;margin-top:2px;fill:none;stroke:#FABB32;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.cf-office strong{display:block;color:#fff;font-weight:600}
+.cf-office span{font-size:14px;color:rgba(255,255,255,.5)}
+.cf-legal{margin:14px 0 0;text-align:left;font-size:12px;line-height:1.5;color:rgba(255,255,255,.45)}
+@media (max-width:479px){.cf-offices{grid-template-columns:1fr}}
